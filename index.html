@@ -224,9 +224,9 @@
     opacity: 0.8;
   }
   .logo-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     object-fit: cover;
     background: #FFFFFF;
     padding: 3px;
@@ -659,7 +659,9 @@
     }
     .feat-chip {
       position: static; left: auto; top: auto;
-      transform: none !important; animation: none !important;
+      /* AJAN-A: "!important" kaldirildi — mini yorunge animasyonunun
+         (asagidaki AJAN-A blogu) calisabilmesi icin gerekli */
+      transform: none; animation: none !important;
       font-size: 12.5px; padding: 9px 14px;
     }
   }
@@ -1395,6 +1397,107 @@
   #neden .reveal-group { grid-template-columns: repeat(2, 1fr) !important; max-width: 640px !important; }
 }
 </style>
+
+<style>
+/* ================================================================
+   AJAN-A: MOBIL MINI YORUNGE (mini orbit)
+   - Mobilde (<=768px) cip bulutu kaldirildi; cipler yalnizca emoji
+     gosteren 38px yuvarlak baloncuklara donusur ve telefonun
+     etrafindaki kucultulmus kesikli elips yorungeye dizilir.
+   - Baloncuklar yorunge uzerinde +/-2 derece sakin salinir (saf CSS,
+     JS gerektirmez). Konumlar matematiksel olarak dogrulandi:
+     telefonla ve birbirleriyle cakismazlar (phoneFloat -12px dahil).
+   - Cipler tiklanabilir kalir (showPhoneFeature) ve metin etiketleri
+     ekran okuyucular icin gorunmez sekilde korunur.
+   - Yaricaplar --orx/--ory degiskenlerinden tek yerden ayarlanir.
+   ================================================================ */
+@media (max-width: 768px) {
+  /* Yorunge yaricaplari (yatay / dusey) */
+  .phone-mockup { --orx: 160px; --ory: 282px; margin: 44px auto 68px; }
+
+  /* Kesikli elips yeniden gorunur — mini boyut */
+  .phone-orbit {
+    display: block;
+    width: calc(var(--orx) * 2);
+    height: calc(var(--ory) * 2);
+    border-color: rgba(232,165,152,0.55); /* mobilde biraz daha belirgin */
+  }
+
+  /* Cip katmani yeniden telefonu saran mutlak katman (bulut iptal) */
+  .feat-chips {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0 !important;
+    padding: 0;
+    max-width: none;
+    pointer-events: none; /* sadece baloncuklar tiklanir */
+  }
+
+  /* Cip -> 38px emoji baloncugu */
+  .feat-chip {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 38px; height: 38px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    gap: 0;
+    pointer-events: auto;
+  }
+  .feat-chip .fc-emoji { font-size: 17px; }
+  /* Metin gorsel olarak gizli, erisilebilirlik icin DOM'da kalir */
+  .feat-chip span:not(.fc-emoji) {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* 12 baloncugun elips uzerindeki konumu + sakin salinim.
+     Katsayilar = cos/sin(aci); asagidaki acilar telefonun kenarlarini
+     bos birakacak sekilde secildi (ust/alt 2'ser, sag/sol 4'er). */
+  .feat-chip.fc1 { transform: translate(calc(-50% + var(--orx)*-0.2079), calc(-50% + var(--ory)*-0.9781)); animation: orbGlide-fc1 7.2s ease-in-out infinite !important; animation-delay: -0.9s !important; }
+  @keyframes orbGlide-fc1 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.2419), calc(-50% + var(--ory)*-0.9703)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.1736), calc(-50% + var(--ory)*-0.9848)); } }
+  .feat-chip.fc2 { transform: translate(calc(-50% + var(--orx)*0.2079), calc(-50% + var(--ory)*-0.9781)); animation: orbGlide-fc2 7.9s ease-in-out infinite !important; animation-delay: -1.8s !important; }
+  @keyframes orbGlide-fc2 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.1736), calc(-50% + var(--ory)*-0.9848)); } 50% { transform: translate(calc(-50% + var(--orx)*0.2419), calc(-50% + var(--ory)*-0.9703)); } }
+  .feat-chip.fc3 { transform: translate(calc(-50% + var(--orx)*0.9063), calc(-50% + var(--ory)*-0.4226)); animation: orbGlide-fc3 8.6s ease-in-out infinite !important; animation-delay: -2.7s !important; }
+  @keyframes orbGlide-fc3 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.8910), calc(-50% + var(--ory)*-0.4540)); } 50% { transform: translate(calc(-50% + var(--orx)*0.9205), calc(-50% + var(--ory)*-0.3907)); } }
+  .feat-chip.fc4 { transform: translate(calc(-50% + var(--orx)*0.9903), calc(-50% + var(--ory)*-0.1392)); animation: orbGlide-fc4 9.3s ease-in-out infinite !important; animation-delay: -3.6s !important; }
+  @keyframes orbGlide-fc4 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.9848), calc(-50% + var(--ory)*-0.1736)); } 50% { transform: translate(calc(-50% + var(--orx)*0.9945), calc(-50% + var(--ory)*-0.1045)); } }
+  .feat-chip.fc5 { transform: translate(calc(-50% + var(--orx)*0.9903), calc(-50% + var(--ory)*0.1392)); animation: orbGlide-fc5 6.5s ease-in-out infinite !important; animation-delay: -4.5s !important; }
+  @keyframes orbGlide-fc5 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.9945), calc(-50% + var(--ory)*0.1045)); } 50% { transform: translate(calc(-50% + var(--orx)*0.9848), calc(-50% + var(--ory)*0.1736)); } }
+  .feat-chip.fc6 { transform: translate(calc(-50% + var(--orx)*0.9063), calc(-50% + var(--ory)*0.4226)); animation: orbGlide-fc6 7.2s ease-in-out infinite !important; animation-delay: -5.4s !important; }
+  @keyframes orbGlide-fc6 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.9205), calc(-50% + var(--ory)*0.3907)); } 50% { transform: translate(calc(-50% + var(--orx)*0.8910), calc(-50% + var(--ory)*0.4540)); } }
+  .feat-chip.fc7 { transform: translate(calc(-50% + var(--orx)*0.2079), calc(-50% + var(--ory)*0.9781)); animation: orbGlide-fc7 7.9s ease-in-out infinite !important; animation-delay: -6.3s !important; }
+  @keyframes orbGlide-fc7 { 0%,100% { transform: translate(calc(-50% + var(--orx)*0.2419), calc(-50% + var(--ory)*0.9703)); } 50% { transform: translate(calc(-50% + var(--orx)*0.1736), calc(-50% + var(--ory)*0.9848)); } }
+  .feat-chip.fc8 { transform: translate(calc(-50% + var(--orx)*-0.2079), calc(-50% + var(--ory)*0.9781)); animation: orbGlide-fc8 8.6s ease-in-out infinite !important; animation-delay: -7.2s !important; }
+  @keyframes orbGlide-fc8 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.1736), calc(-50% + var(--ory)*0.9848)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.2419), calc(-50% + var(--ory)*0.9703)); } }
+  .feat-chip.fc9 { transform: translate(calc(-50% + var(--orx)*-0.9063), calc(-50% + var(--ory)*0.4226)); animation: orbGlide-fc9 9.3s ease-in-out infinite !important; animation-delay: -8.1s !important; }
+  @keyframes orbGlide-fc9 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.8910), calc(-50% + var(--ory)*0.4540)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.9205), calc(-50% + var(--ory)*0.3907)); } }
+  .feat-chip.fc10 { transform: translate(calc(-50% + var(--orx)*-0.9903), calc(-50% + var(--ory)*0.1392)); animation: orbGlide-fc10 6.5s ease-in-out infinite !important; animation-delay: -9.0s !important; }
+  @keyframes orbGlide-fc10 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.9848), calc(-50% + var(--ory)*0.1736)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.9945), calc(-50% + var(--ory)*0.1045)); } }
+  .feat-chip.fc11 { transform: translate(calc(-50% + var(--orx)*-0.9903), calc(-50% + var(--ory)*-0.1392)); animation: orbGlide-fc11 7.2s ease-in-out infinite !important; animation-delay: -9.9s !important; }
+  @keyframes orbGlide-fc11 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.9945), calc(-50% + var(--ory)*-0.1045)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.9848), calc(-50% + var(--ory)*-0.1736)); } }
+  .feat-chip.fc12 { transform: translate(calc(-50% + var(--orx)*-0.9063), calc(-50% + var(--ory)*-0.4226)); animation: orbGlide-fc12 7.9s ease-in-out infinite !important; animation-delay: -10.8s !important; }
+  @keyframes orbGlide-fc12 { 0%,100% { transform: translate(calc(-50% + var(--orx)*-0.9205), calc(-50% + var(--ory)*-0.3907)); } 50% { transform: translate(calc(-50% + var(--orx)*-0.8910), calc(-50% + var(--ory)*-0.4540)); } }
+}
+
+/* Cok dar ekranlar: telefon ve yorunge birlikte kuculur (320px'e sigar) */
+@media (max-width: 370px) {
+  .phone-frame { width: 200px; height: 400px; }
+  .phone-mockup { --orx: 138px; --ory: 244px; }
+}
+
+/* Hareket azaltma tercihi: salinim durur, baloncuklar sabit kalir */
+@media (prefers-reduced-motion: reduce) {
+  .feat-chip { animation: none !important; }
+}
+</style>
 </head>
 <body>
 
@@ -2073,9 +2176,7 @@
       <!-- Left: Logo + Description -->
       <div style="max-width:300px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#E8A598;display:flex;align-items:center;justify-content:center;">
-            <span style="color:#FFFFFF;font-size:14px;font-weight:700;">E</span>
-          </div>
+          <img src="enapp-mark-2.png" alt="ENAPP" style="width:38px;height:38px;border-radius:11px;object-fit:cover;background:#FFFFFF;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,0.25);">
           <span style="color:#FFFFFF;font-size:20px;font-weight:700;">ENAPP</span>
         </div>
         <p style="color:#8A8580;font-size:14px;line-height:1.7;" data-i18n="footer.desc">Bebek bakımı ve ebeveyn destek uygulamaları geliştiren teknoloji şirketi.</p>
@@ -2985,7 +3086,13 @@ function showFeatCat(i) {
   var hticking = false;
   function heroRender() {
     var y = window.scrollY || 0;
-    if (y < 900) {
+    // AJAN-A DUZELTME: mobilde parallax kapali. translateY(y*0.12) telefonu
+    // asagi itiyor, .hero{overflow:hidden} ile birlesince cipler hero
+    // sinirinda kirpiliyordu (iPhone'da 3. satirin gorunmemesinin nedeni).
+    if (window.innerWidth <= 768) {
+      if (heroRight) heroRight.style.transform = '';
+      if (heroLeft)  heroLeft.style.transform  = '';
+    } else if (y < 900) {
       if (heroRight) heroRight.style.transform = 'translateY(' + (y * 0.12).toFixed(1) + 'px)';
       if (heroLeft)  heroLeft.style.transform  = 'translateY(' + (y * -0.04).toFixed(1) + 'px)';
     }
@@ -3117,8 +3224,10 @@ function closePhoneFeature() {
 
   function sync() {
     if (isMobile()) {
-      // Mobil: yörünge kapalı, çipler CSS ile bulut olarak dizilir
+      // Mobil: JS devre disi — mini yorunge saf CSS ile cizilir (AJAN-A).
+      // measure()'un yazdigi inline boyutlar CSS'i ezmesin diye temizlenir.
       stop(); clearChips();
+      if (ring) { ring.style.width = ''; ring.style.height = ''; }
     } else if (reduce) {
       stop(); measure(); chips.forEach(place);
     } else {
