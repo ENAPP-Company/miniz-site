@@ -227,9 +227,10 @@
     width: 48px;
     height: 48px;
     border-radius: 13px;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: 70% 48%;
     background: #FFFFFF;
-    padding: 3px;
+    padding: 2px;
     box-shadow: 0 2px 10px rgba(45,42,38,0.12);
     border: 1px solid rgba(45,42,38,0.06);
   }
@@ -429,16 +430,23 @@
     gap: 24px;
   }
   .hero-label {
-    font-size: 12px;
+    font-size: 13.5px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #E8A598;
-    background: rgba(232,165,152,0.12);
-    padding: 6px 16px;
+    color: #D9755E;
+    background: linear-gradient(120deg, rgba(242,196,188,0.28), rgba(196,181,224,0.22));
+    padding: 9px 20px;
     border-radius: 9999px;
     display: inline-block;
     width: fit-content;
+    border: 1px solid rgba(232,165,152,0.35);
+    box-shadow: 0 4px 14px rgba(232,165,152,0.16);
+  }
+  /* Sadece hero'daki etikete sevimli bebek dokunusu (i18n metnini bozmaz) */
+  .hero-left .hero-label::before {
+    content: '\1F476  ';
+    letter-spacing: 0;
   }
   .hero h1 {
     font-family: var(--font-display);
@@ -456,13 +464,15 @@
     font-weight: 500;
   }
   .gradient-shimmer {
-    background: linear-gradient(90deg, #E8A598, #F2C4BC, #E8A598);
+    background: linear-gradient(100deg, #E0634A 15%, #B18AE0 45%, #E8A598 65%, #E0634A 85%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 4s linear infinite;
+    font-weight: 600;
+    text-shadow: 0 3px 22px rgba(224,99,74,0.22);
   }
   @keyframes shimmer {
     0%   { background-position: 0% center; }
@@ -1374,7 +1384,7 @@
   .bg-orb.o5 { width: 300px; height: 300px; }
   .hero h1 { text-shadow: 0 1px 0 rgba(255,255,255,0.65); }
   .hero h1 .gradient-shimmer {
-    background: linear-gradient(90deg, #D9755E, #E8998A, #D9755E);
+    background: linear-gradient(100deg, #D5573E 15%, #A379D6 45%, #DB937F 65%, #D5573E 85%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -2054,8 +2064,8 @@
 
       <!-- Card 2: EnBilgi (Coming Soon) -->
       <div class="glass-card reveal" style="flex:1;min-width:280px;max-width:360px;padding:40px;text-align:center;opacity:0.75;transition:transform 0.3s ease,box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 32px rgba(45,42,38,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='';" data-observed="true">
-        <div style="width:80px;height:80px;border-radius:50%;background:#8A8580;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
-          <span style="color:#FFFFFF;font-size:32px;font-weight:700;">E</span>
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#A8C8EC,#C4B5E0);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(168,200,236,0.35);">
+          <span style="font-size:38px;line-height:1;">💡</span>
         </div>
         <h3 style="font-size:24px;font-weight:600;color:#2D2A26;margin-bottom:12px;" data-i18n="app.enbilgi.name">EnBilgi</h3>
         <p style="color:#8A8580;font-size:15px;line-height:1.6;margin-bottom:20px;" data-i18n="app.enbilgi.desc">Kaydır, şaşır, öğren! 400'den fazla görsel bilgi kartı — her kaydırışta yeni bir ilginç bilgi ve merak uyandıran açıklaması.</p>
@@ -2066,8 +2076,8 @@
 
       <!-- Card 3: EnHedef (Coming Soon) -->
       <div class="glass-card reveal" style="flex:1;min-width:280px;max-width:360px;padding:40px;text-align:center;opacity:0.75;transition:transform 0.3s ease,box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 32px rgba(45,42,38,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='';" data-observed="true">
-        <div style="width:80px;height:80px;border-radius:50%;background:#8A8580;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
-          <span style="color:#FFFFFF;font-size:32px;font-weight:700;">H</span>
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#F2C4BC,#E8A598);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(232,165,152,0.35);">
+          <span style="font-size:38px;line-height:1;">🎯</span>
         </div>
         <h3 style="font-size:24px;font-weight:600;color:#2D2A26;margin-bottom:12px;" data-i18n="app.enhedef.name">EnHedef</h3>
         <p style="color:#8A8580;font-size:15px;line-height:1.6;margin-bottom:20px;" data-i18n="app.enhedef.desc">Refleks oyunu: 0'dan 100'e akan barı tam hedefte durdurabilecek misin? Basit kural, büyük heyecan — rekorunu geç, arkadaşlarına meydan oku!</p>
@@ -2176,7 +2186,7 @@
       <!-- Left: Logo + Description -->
       <div style="max-width:300px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-          <img src="enapp-mark-2.png" alt="ENAPP" style="width:38px;height:38px;border-radius:11px;object-fit:contain;background:#FFFFFF;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+          <img src="enapp-mark-2.png" alt="ENAPP" style="width:38px;height:38px;border-radius:11px;object-fit:cover;object-position:70% 48%;background:#FFFFFF;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,0.25);">
           <span style="color:#FFFFFF;font-size:20px;font-weight:700;">ENAPP</span>
         </div>
         <p style="color:#8A8580;font-size:14px;line-height:1.7;" data-i18n="footer.desc">Bebek bakımı ve ebeveyn destek uygulamaları geliştiren teknoloji şirketi.</p>
