@@ -54,12 +54,13 @@ img { max-width: 100%; display: block; }
 .skip-link:focus { left: 0; }
 
 /* ---------- Zemin: mesh gradyan + grain ---------- */
+/* Nötr, çatı-marka zemini: sıcak gri taban + çok hafif mor/mavi. Pembe minimum. */
 .bg-layer { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-.mesh { position: absolute; border-radius: 50%; filter: blur(140px); will-change: transform; }
-.mesh.m1 { width: 52vw; height: 52vw; background: var(--c-miniz);   opacity: .42; top: -12vw; left: -8vw; }
-.mesh.m2 { width: 46vw; height: 46vw; background: var(--c-ticko);   opacity: .38; top: 6vw;  right: -10vw; }
-.mesh.m3 { width: 44vw; height: 44vw; background: var(--c-nfshift); opacity: .30; top: 52vh; left: 18vw; }
-.mesh.m4 { width: 40vw; height: 40vw; background: var(--c-enmix);   opacity: .32; top: 84vh; right: 4vw; }
+.mesh { position: absolute; border-radius: 50%; filter: blur(150px); will-change: transform; }
+.mesh.m1 { width: 54vw; height: 54vw; background: #C9C1B4;           opacity: .16; top: -14vw; left: -6vw; }  /* sıcak gri */
+.mesh.m2 { width: 44vw; height: 44vw; background: var(--c-ticko);   opacity: .12; top: 4vw;  right: -8vw; }   /* hafif mor */
+.mesh.m3 { width: 42vw; height: 42vw; background: var(--c-nfshift); opacity: .10; top: 56vh; left: 22vw; }   /* hafif mavi */
+.mesh.m4 { width: 36vw; height: 36vw; background: var(--c-miniz);   opacity: .07; top: 86vh; right: 6vw; }   /* çok hafif pembe */
 .grain {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .022;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -94,9 +95,10 @@ h1, h2, h3 { color: var(--ink); font-weight: 500; }
 /* ---------- Navigasyon ---------- */
 .nav { position: sticky; top: 0; z-index: 100; background: rgba(251,250,248,0.72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.nav-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); font-size: 1.05rem; }
-.nav-brand img { width: 32px; height: 32px; }
-.nav-brand .acc { color: var(--ink-3); }
+/* Kelime markası: TEK renk, tek ağırlık, ferah harf aralığı */
+.nav-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; letter-spacing: 0.12em; color: var(--ink); font-size: 1.0rem; }
+.nav-brand img { width: 32px; height: 32px; object-fit: contain; }
+.nav-brand .acc { color: inherit; }
 .nav-links { display: flex; align-items: center; gap: 26px; }
 .nav-links a { font-size: 0.9rem; color: var(--ink-2); transition: color .2s var(--ease); }
 .nav-links a:hover { color: var(--ink); }
@@ -143,12 +145,14 @@ h1, h2, h3 { color: var(--ink); font-weight: 500; }
 .phone .screen { width: 100%; height: 100%; border-radius: 24px; overflow: hidden; background: #fff; }
 .phone .screen img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ---------- Marquee ---------- */
-.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-.marquee-track { display: inline-flex; align-items: center; gap: 44px; white-space: nowrap; will-change: transform; animation: marquee 26s linear infinite; }
-.marquee-item { display: inline-flex; align-items: center; gap: 12px; color: var(--ink-2); font-size: 0.98rem; font-weight: 500; }
-.marquee-item img { width: 30px; height: 30px; border-radius: 8px; }
-@keyframes marquee { to { transform: translateX(-50%); } }
+/* ---------- Marquee (sabit sıra, 28px ikon, ayraçsız, kesintisiz) ---------- */
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.marquee-track { display: flex; align-items: center; gap: 52px; white-space: nowrap; width: max-content; will-change: transform; animation: marquee 30s linear infinite; }
+.marquee-item { display: inline-flex; align-items: center; gap: 11px; color: var(--ink-2); font-size: 0.98rem; font-weight: 500; }
+.marquee-item img, .marquee-item .mq-tile { width: 28px; height: 28px; border-radius: 7px; flex: 0 0 auto; }
+.marquee-item .mq-tile { display: grid; place-items: center; font-size: 0.8rem; font-weight: 600; color: var(--c-enmix); background: color-mix(in srgb, var(--c-enmix) 18%, #fff); }
+.marquee-item .mq-soon { font-size: 0.7rem; color: var(--ink-3); border: 1px solid var(--line-2); border-radius: 9999px; padding: 2px 8px; margin-left: 2px; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ---------- Yaklaşım ---------- */
 .icon-box { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink); }
@@ -174,15 +178,18 @@ h1, h2, h3 { color: var(--ink); font-weight: 500; }
 .scroll-cue .bar { width: 1px; height: 34px; background: linear-gradient(var(--ink-3), transparent); animation: cue 1.8s var(--ease) infinite; transform-origin: top; }
 @keyframes cue { 0% { transform: scaleY(0); opacity: 0; } 40% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1) translateY(6px); opacity: 0; } }
 
-/* ---------- Logo giriş (ölçek + opacity) ---------- */
-.mark-hero { width: 140px; height: 140px; will-change: transform; }
+/* ---------- Logo: kasıtlı ikon kabı (beyaz squircle) + süzülme ---------- */
+.mark-tile { width: 132px; height: 132px; border-radius: 30px; background: #fff; border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(0,0,0,0.07); display: grid; place-items: center; will-change: transform; }
+.mark-tile img { width: 100px; height: 100px; object-fit: contain; }
 .mark-float { animation: markFloat 5.5s var(--ease) infinite alternate; }
 @keyframes markFloat { from { transform: translateY(-6px); } to { transform: translateY(8px); } }
 
 /* ---------- Özel imleç ---------- */
-.cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 999; mix-blend-mode: multiply; }
+/* İmleç: sayfa yüklenince GÖRÜNMEZ; ilk fare hareketinde belirir (boşta daire kalmasın) */
+.cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 999; mix-blend-mode: multiply; opacity: 0; transition: opacity .2s var(--ease); }
+.cursor-dot.on, .cursor-ring.on { opacity: 1; }
 .cursor-dot { width: 7px; height: 7px; background: var(--ink); transform: translate(-50%,-50%); }
-.cursor-ring { width: 34px; height: 34px; border: 1px solid var(--ink-3); transform: translate(-50%,-50%); transition: width .25s var(--ease), height .25s var(--ease), border-color .25s var(--ease); }
+.cursor-ring { width: 34px; height: 34px; border: 1px solid var(--ink-3); transform: translate(-50%,-50%); transition: opacity .2s var(--ease), width .25s var(--ease), height .25s var(--ease), border-color .25s var(--ease); }
 .cursor-ring.grow { width: 56px; height: 56px; border-color: var(--ink); }
 body.has-cursor { cursor: none; }
 body.has-cursor a, body.has-cursor button { cursor: none; }
@@ -195,7 +202,7 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 html.gsap-ready .reveal,
 html.gsap-ready .hero-title,
 html.gsap-ready .hero-rise,
-html.gsap-ready .mark-hero { opacity: 0; }
+html.gsap-ready .mark-tile { opacity: 0; }
 
 /* ---------- Duyarlı ---------- */
 @media (max-width: 960px) {
@@ -220,7 +227,7 @@ html.gsap-ready .mark-hero { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   html:not(.lenis) { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal, .hero-title, .hero-rise, .mark-hero { opacity: 1 !important; transform: none !important; }
+  .reveal, .hero-title, .hero-rise, .mark-tile { opacity: 1 !important; transform: none !important; }
   .mesh { display: none; }
   .cursor-dot, .cursor-ring { display: none !important; }
   .marquee-track { animation: none !important; }

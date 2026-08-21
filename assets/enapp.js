@@ -64,7 +64,7 @@
 
     // Hero: önce hedefleri GÖRÜNÜR set et (gsap-ready CSS opacity:0'ı ez), sonra from ile getir.
     var tl = gsap.timeline();
-    var mark = document.querySelector(".mark-hero");
+    var mark = document.querySelector(".mark-tile");
     var title = document.querySelector(".hero-title");
     var rises = gsap.utils.toArray(".hero-rise");
     gsap.set([mark, title].filter(Boolean).concat(rises), { opacity: 1 });
@@ -133,7 +133,13 @@
     document.body.appendChild(dot); document.body.appendChild(ring); document.body.classList.add("has-cursor");
     var dx=gsap.quickTo(dot,"x",{duration:.05}), dy=gsap.quickTo(dot,"y",{duration:.05});
     var rx=gsap.quickTo(ring,"x",{duration:.28,ease:"power3"}), ry=gsap.quickTo(ring,"y",{duration:.28,ease:"power3"});
-    window.addEventListener("mousemove", function(e){ dx(e.clientX);dy(e.clientY);rx(e.clientX);ry(e.clientY); });
+    var shown=false;
+    window.addEventListener("mousemove", function(e){
+      if(!shown){ gsap.set([dot,ring],{x:e.clientX,y:e.clientY}); dot.classList.add("on"); ring.classList.add("on"); shown=true; }
+      dx(e.clientX);dy(e.clientY);rx(e.clientX);ry(e.clientY);
+    });
+    window.addEventListener("mouseleave", function(){ dot.classList.remove("on"); ring.classList.remove("on"); });
+    window.addEventListener("mouseenter", function(){ if(shown){ dot.classList.add("on"); ring.classList.add("on"); } });
     document.querySelectorAll("a,button,.tilt").forEach(function(el){
       el.addEventListener("mouseenter", function(){ ring.classList.add("grow"); });
       el.addEventListener("mouseleave", function(){ ring.classList.remove("grow"); });

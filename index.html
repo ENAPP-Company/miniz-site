@@ -28,21 +28,24 @@
   if (!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches))
     document.documentElement.classList.add("gsap-ready");</script>
 <style>
-  .hero { position: relative; padding-top: clamp(48px, 8vh, 92px); }
-  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .hero { position: relative; min-height: 82vh; display: flex; flex-direction: column; justify-content: center; padding-top: clamp(28px, 4vh, 56px); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(24px, 4vw, 52px); align-items: center; }
   .hero-lead { margin-top: 22px; max-width: 520px; }
   .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-  .hero-mark-row { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
-  .hero-phones { position: relative; height: clamp(360px, 46vw, 540px); }
-  .hero-phones .phone { position: absolute; width: clamp(190px, 22vw, 258px); }
-  .hero-phones .p-back { right: 4%; top: 2%; transform: rotate(7deg); z-index: 1; opacity: .96; }
-  .hero-phones .p-front { left: 2%; top: 12%; transform: rotate(-5deg); z-index: 2; }
-  .scroll-wrap { margin-top: 34px; }
+  .hero-mark-row { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+  /* Telefonlar: ikisi de tam görünür, sağda >=48px boşluk */
+  .hero-phones { position: relative; height: clamp(330px, 38vw, 452px); padding-right: 8px; }
+  .hero-phones .phone { position: absolute; width: clamp(168px, 19vw, 214px); }
+  .hero-phones .p-back { right: 9%; top: 0; transform: rotate(6deg); z-index: 1; opacity: .97; }
+  .hero-phones .p-front { left: 3%; top: 14%; transform: rotate(-5deg); z-index: 2; }
+  .hero-scrollcue { margin-top: clamp(18px, 2.4vh, 30px); }
   @media (max-width: 860px) {
+    .hero { min-height: auto; }
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-phones { height: 420px; max-width: 420px; margin: 8px auto 0; }
+    .hero-phones { height: 400px; max-width: 380px; margin: 6px auto 0; padding-right: 0; }
+    .hero-phones .p-back { right: 6%; } .hero-phones .p-front { left: 6%; }
   }
-  .marquee { margin-top: clamp(40px, 6vh, 72px); padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .marquee { margin-top: clamp(28px, 4vh, 52px); padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .card-title-row { display: flex; align-items: center; gap: 8px; }
   .approach-col h3 { font-size: 1.16rem; margin: 16px 0 8px; }
   .approach-col p { font-size: 0.99rem; }
@@ -86,7 +89,7 @@
     <div class="hero-grid">
       <div class="hero-text">
         <div class="hero-mark-row">
-          <img class="mark-hero mark-float" src="/assets/enapp-mark-140.webp" width="140" height="140" alt="ENAPP" fetchpriority="high">
+          <div class="mark-tile mark-float"><img src="/assets/enapp-mark-140.webp" width="100" height="100" alt="ENAPP" fetchpriority="high"></div>
           <span class="kicker">ENAPP</span>
         </div>
         <h1 class="h-hero hero-title" data-i18n="hero.title">Küçük uygulamalar, temiz iş.</h1>
@@ -95,29 +98,27 @@
           <a class="btn btn-primary magnetic" href="#apps"><span class="mag-inner" data-i18n="hero.btn1">Uygulamaları gör</span></a>
           <a class="btn magnetic" href="#contact"><span class="mag-inner" data-i18n="hero.btn2">İletişim</span></a>
         </div>
-        <div class="scroll-wrap hero-rise">
-          <span class="scroll-cue"><span class="bar"></span><span data-i18n="hero.scroll">Kaydır</span></span>
-        </div>
       </div>
-      <div class="hero-phones hero-rise" data-parallax="0.08" aria-hidden="true">
-        <div class="phone p-back"><div class="screen"><img src="/assets/shots/miniz-1.webp" width="222" height="480" alt="" loading="eager"></div></div>
-        <div class="phone p-front"><div class="screen"><img src="/assets/shots/ticko-1.webp" width="222" height="480" alt="" loading="eager"></div></div>
+      <div class="hero-phones hero-rise" data-parallax="0.06" aria-hidden="true">
+        <div class="phone p-back"><div class="screen"><img src="/assets/shots/miniz-hero.webp" width="222" height="480" alt="" loading="eager"></div></div>
+        <div class="phone p-front"><div class="screen"><img src="/assets/shots/ticko-hero.webp" width="222" height="480" alt="" loading="eager"></div></div>
       </div>
     </div>
+    <div class="hero-scrollcue" aria-hidden="true"><span class="scroll-cue"><span class="bar"></span><span data-i18n="hero.scroll">Kaydır</span></span></div>
 
-    <!-- Marquee -->
+    <!-- Marquee: sabit sıra, kesintisiz (iki özdeş dizi) -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="30" height="30" alt="">Miniz</span>
-        <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="30" height="30" alt="">Ticko</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="30" height="30" alt="">NFShift</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="30" height="30" alt="">NFShift HQ</span>
-        <span class="marquee-item">EnMix · <span data-i18n="badge.soon">Yakında</span></span>
-        <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="30" height="30" alt="">Miniz</span>
-        <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="30" height="30" alt="">Ticko</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="30" height="30" alt="">NFShift</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="30" height="30" alt="">NFShift HQ</span>
-        <span class="marquee-item">EnMix · <span data-i18n="badge.soon">Yakında</span></span>
+        <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="28" height="28" alt="">Miniz</span>
+        <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="28" height="28" alt="">Ticko</span>
+        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift</span>
+        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ</span>
+        <span class="marquee-item"><span class="mq-tile">E</span>EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
+        <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="28" height="28" alt="">Miniz</span>
+        <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="28" height="28" alt="">Ticko</span>
+        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift</span>
+        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ</span>
+        <span class="marquee-item"><span class="mq-tile">E</span>EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
       </div>
     </div>
   </section>
@@ -136,14 +137,14 @@
         <div class="card-head"><img class="app-icon" src="/assets/apps/ticko.webp" width="64" height="64" alt="Ticko" loading="lazy"><div><div class="card-title-row"><h3>Ticko</h3></div><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" style="max-width:56%;" data-i18n="app.ticko.desc">Zamanlama refleksi oyunu — ibreyi tam hedefte durdur.</p>
         <div class="card-links"><a class="card-link magnetic" href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="card.appstore">App Store ↗</span></a></div>
-        <img class="card-shot" src="/assets/shots/ticko-2.webp" width="222" height="480" alt="" loading="lazy">
+        <img class="card-shot" src="/assets/shots/ticko-bento.webp" width="222" height="480" alt="" loading="lazy">
       </article>
       <!-- Miniz büyük -->
       <article class="card tilt card-span-2" style="--accent: var(--c-miniz); min-height: 280px;">
         <div class="card-head"><img class="app-icon" src="/assets/apps/miniz.webp" width="64" height="64" alt="Miniz" loading="lazy"><div><div class="card-title-row"><h3>Miniz</h3></div><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" style="max-width:56%;" data-i18n="app.miniz.desc">Bebek takibi ve ebeveyn günlüğü — ilk yılın özenli yardımcısı.</p>
         <div class="card-links"><a class="card-link magnetic" href="/miniz/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a><a class="card-link store" href="https://apps.apple.com/tr/app/miniz-bebek-asistani/id6788558323" target="_blank" rel="noopener">App Store ↗</a></div>
-        <img class="card-shot" src="/assets/shots/miniz-2.webp" width="222" height="480" alt="" loading="lazy">
+        <img class="card-shot" src="/assets/shots/miniz-bento.webp" width="222" height="480" alt="" loading="lazy">
       </article>
       <!-- NFShift -->
       <article class="card tilt card-span-2" style="--accent: var(--c-nfshift);">
