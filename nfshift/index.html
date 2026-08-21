@@ -6,53 +6,48 @@
 <title data-i18n="meta.title">NFShift & NFShift HQ — NFC ile mesai takibi | ENAPP</title>
 <meta name="description" data-i18n-content="meta.desc" content="NFC etiketi veya Bluetooth işaretçisiyle mesai giriş-çıkış ve puantaj. Çalışan için NFShift, yönetici için NFShift HQ. Biyometri toplanmaz.">
 <meta name="author" content="ENAPP">
-<meta name="theme-color" content="#0B0B0D">
+<meta name="theme-color" content="#FBFAF8">
 <meta name="robots" content="index, follow">
-<!-- ZORUNLU: bu geçit sayfası aramada nfshift.com ile yarışmasın -->
 <link rel="canonical" href="https://nfshift.com/">
-
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ENAPP">
 <meta property="og:title" content="NFShift & NFShift HQ — NFC ile mesai takibi">
 <meta property="og:description" content="NFC veya Bluetooth ile mesai giriş-çıkış ve puantaj. Çalışan ve yönetici uygulamaları.">
-<meta property="og:image" content="https://enapp.tr/app-icon.png">
+<meta property="og:image" content="https://enapp.tr/enapp-mark-2.png">
 <meta property="og:url" content="https://enapp.tr/nfshift/">
-<meta property="og:locale" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://enapp.tr/app-icon.png">
-
-<link rel="icon" type="image/png" href="/app-icon.png">
-<link rel="apple-touch-icon" href="/app-icon.png">
+<meta name="twitter:image" content="https://enapp.tr/enapp-mark-2.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/enapp.css">
+<script>if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("gsap-ready");</script>
 <style>
-  .hero { position: relative; padding-top: clamp(60px, 10vh, 110px); }
-  .hero-inner { position: relative; z-index: 1; max-width: 780px; }
-  .hero .lead { margin-top: 20px; max-width: 620px; }
+  .hero { position: relative; padding-top: clamp(48px, 8vh, 92px); }
+  .hero-inner { max-width: 780px; }
+  .hero-lead { margin-top: 20px; max-width: 620px; }
   .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-  .privacy-note {
-    margin-top: 30px; padding: 16px 18px; border: 1px solid var(--hairline);
-    border-radius: 14px; background: var(--bg-raise); font-size: 0.95rem; color: var(--ink-2);
-    display: flex; gap: 12px; align-items: flex-start; max-width: 640px;
-  }
+  .privacy-note { margin-top: 30px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-2); font-size: 0.96rem; color: var(--ink-2); display: flex; gap: 12px; align-items: flex-start; max-width: 640px; }
   .privacy-note .icon-box { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 9px; }
   .privacy-note .icon-box svg { width: 18px; height: 18px; }
-  .step h3 { font-size: 1.1rem; margin: 14px 0 6px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+  @media (max-width:760px){ .grid-3,.grid-2{grid-template-columns:1fr;} }
+  .step .step-num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); color: var(--ink); font-weight: 500; font-size: 0.9rem; margin-bottom: 12px; }
+  .step h3 { font-size: 1.12rem; margin-bottom: 6px; }
   .step p { font-size: 0.96rem; }
-  .card-title h3 { font-size: 1.25rem; letter-spacing: -0.01em; }
-  .card-links { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
-  .card-title { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .card p { font-size: 0.96rem; color: var(--ink-2); }
-  .card-link { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
   .foot-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--ink-3); }
 </style>
 </head>
 <body>
 
 <a class="skip-link" href="#how" data-i18n="a11y.skip">İçeriğe atla</a>
+<div class="bg-layer" aria-hidden="true"><span class="mesh m1"></span><span class="mesh m2"></span><span class="mesh m3"></span></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="page-veil" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="nav-brand" href="/" aria-label="ENAPP">EN<span class="acc">APP</span></a>
+    <a class="nav-brand" href="/" aria-label="ENAPP ana sayfa"><img src="/assets/enapp-mark-64.webp" width="32" height="32" alt=""><span>EN<span class="acc">APP</span></span></a>
     <nav class="nav-links" aria-label="Menü">
       <a class="nav-hide" href="/" data-i18n="nav.home">Ana sayfa</a>
       <a class="nav-hide" href="#apps" data-i18n="nav.apps">Uygulamalar</a>
@@ -66,81 +61,52 @@
 </header>
 
 <main>
-  <!-- HERO -->
   <section class="hero wrap">
-    <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-inner">
-      <p class="kicker" style="margin-bottom:18px;color:var(--c-nfshift);">NFSHIFT</p>
-      <h1 class="h-hero hero-title">
-        <span class="hero-line"><span data-i18n="hero.title1">Mesai takibi,</span></span>
-        <span class="hero-line"><span data-i18n="hero.title2">dokunması kadar basit.</span></span>
-      </h1>
-      <p class="lead" data-i18n="hero.lead">NFShift bir ekosistem: çalışanlar NFShift ile giriş-çıkış yapar, yöneticiler NFShift HQ ile puantajı yönetir. NFC etiketi ya da Bluetooth işaretçisi yeter.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="https://nfshift.com/" target="_blank" rel="noopener" data-i18n="hero.btn1">Detaylı bilgi: nfshift.com</a>
-        <a class="btn" href="#apps" data-i18n="hero.btn2">Uygulamalar</a>
+      <p class="kicker hero-rise" style="margin-bottom:16px;color:var(--c-nfshift);">NFSHIFT</p>
+      <h1 class="h-hero hero-title">Mesai takibi, dokunması kadar basit.</h1>
+      <p class="lead hero-lead hero-rise" data-i18n="hero.lead">NFShift bir ekosistem: çalışanlar NFShift ile giriş-çıkış yapar, yöneticiler NFShift HQ ile puantajı yönetir. NFC etiketi ya da Bluetooth işaretçisi yeter.</p>
+      <div class="hero-cta hero-rise">
+        <a class="btn btn-primary magnetic" href="https://nfshift.com/" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="hero.btn1">Detaylı bilgi: nfshift.com</span></a>
+        <a class="btn magnetic" href="#apps"><span class="mag-inner" data-i18n="hero.btn2">Uygulamalar</span></a>
       </div>
-      <div class="privacy-note">
-        <span class="icon-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
-        </span>
+      <div class="privacy-note hero-rise">
+        <span class="icon-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
         <span data-i18n="hero.privacy">Biyometri toplanmaz. Arka planda konum takibi yapılmaz — konum yalnızca okutma anında ölçülür.</span>
       </div>
     </div>
   </section>
 
-  <!-- NASIL ÇALIŞIR -->
   <section class="section wrap" id="how">
     <div class="reveal">
       <p class="kicker" data-i18n="how.kicker">NASIL ÇALIŞIR</p>
       <h2 class="h-section" style="margin-top:12px;" data-i18n="how.title">Üç adımda mesai</h2>
     </div>
-    <div class="grid grid-3 stagger" style="margin-top:40px;">
-      <div class="step card" style="--accent: var(--c-nfshift);">
-        <span class="step-num">1</span>
-        <h3 data-i18n="how.1.title">Etiketi okut</h3>
-        <p data-i18n="how.1.body">İş yerindeki NFC etiketine dokun ya da Bluetooth işaretçisinin yanına gel.</p>
-      </div>
-      <div class="step card" style="--accent: var(--c-nfshift);">
-        <span class="step-num">2</span>
-        <h3 data-i18n="how.2.title">Giriş-çıkış kaydı</h3>
-        <p data-i18n="how.2.body">Mesai başlangıç ve bitişin anında, doğru zaman damgasıyla kaydedilir.</p>
-      </div>
-      <div class="step card" style="--accent: var(--c-nfshift);">
-        <span class="step-num">3</span>
-        <h3 data-i18n="how.3.title">Puantaj hazır</h3>
-        <p data-i18n="how.3.body">Yönetici NFShift HQ'da ekibin puantajını görür ve dışa aktarır.</p>
-      </div>
+    <div class="grid-3 reveal" data-stagger style="margin-top:40px;">
+      <div class="card step" style="--accent: var(--c-nfshift);"><span class="step-num">1</span><h3 data-i18n="how.1.title">Etiketi okut</h3><p data-i18n="how.1.body">İş yerindeki NFC etiketine dokun ya da Bluetooth işaretçisinin yanına gel.</p></div>
+      <div class="card step" style="--accent: var(--c-nfshift);"><span class="step-num">2</span><h3 data-i18n="how.2.title">Giriş-çıkış kaydı</h3><p data-i18n="how.2.body">Mesai başlangıç ve bitişin anında, doğru zaman damgasıyla kaydedilir.</p></div>
+      <div class="card step" style="--accent: var(--c-nfshift);"><span class="step-num">3</span><h3 data-i18n="how.3.title">Puantaj hazır</h3><p data-i18n="how.3.body">Yönetici NFShift HQ'da ekibin puantajını görür ve dışa aktarır.</p></div>
     </div>
   </section>
 
-  <!-- İKİ UYGULAMA -->
   <section class="section wrap" id="apps">
     <div class="reveal">
       <p class="kicker" data-i18n="apps.kicker">İKİ UYGULAMA, TEK SİSTEM</p>
       <h2 class="h-section" style="margin-top:12px;" data-i18n="apps.title">Çalışan ve yönetici</h2>
     </div>
-    <div class="grid grid-2 stagger" style="margin-top:40px;">
-      <div class="card" style="--accent: var(--c-nfshift);">
-        <div class="card-title"><span class="dot-accent"></span><h3>NFShift</h3></div>
-        <p data-i18n="app.nfshift.desc">Çalışan uygulaması — giriş-çıkış yap, kendi kayıtlarını gör.</p>
-        <div class="card-links">
-          <span class="badge" data-i18n="badge.live">App Store'da</span>
-          <a class="card-link" href="https://apps.apple.com/tr/app/nfshift/id6791711776" target="_blank" rel="noopener" data-i18n="card.appstore">App Store ↗</a>
-        </div>
-      </div>
-      <div class="card" style="--accent: var(--c-nfshift);">
-        <div class="card-title"><span class="dot-accent"></span><h3>NFShift HQ</h3></div>
-        <p data-i18n="app.nfshifthq.desc">Yönetici uygulaması — ekip puantajını yönet ve raporla.</p>
-        <div class="card-links">
-          <span class="badge" data-i18n="badge.live">App Store'da</span>
-          <a class="card-link" href="https://apps.apple.com/tr/app/nfshift-hq/id6799249642" target="_blank" rel="noopener" data-i18n="card.appstore">App Store ↗</a>
-        </div>
-      </div>
+    <div class="grid-2 reveal" data-stagger style="margin-top:40px;">
+      <article class="card tilt" style="--accent: var(--c-nfshift);">
+        <div class="card-head"><img class="app-icon" src="/assets/apps/nfshift.webp" width="64" height="64" alt="NFShift" loading="lazy"><div><h3>NFShift</h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
+        <p class="desc" data-i18n="app.nfshift.desc">Çalışan uygulaması — giriş-çıkış yap, kendi kayıtlarını gör.</p>
+        <div class="card-links"><a class="card-link magnetic" href="https://apps.apple.com/tr/app/nfshift/id6791711776" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="card.appstore">App Store ↗</span></a></div>
+      </article>
+      <article class="card tilt" style="--accent: var(--c-nfshift);">
+        <div class="card-head"><img class="app-icon" src="/assets/apps/nfshifthq.webp" width="64" height="64" alt="NFShift HQ" loading="lazy"><div><h3>NFShift HQ</h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
+        <p class="desc" data-i18n="app.nfshifthq.desc">Yönetici uygulaması — ekip puantajını yönet ve raporla.</p>
+        <div class="card-links"><a class="card-link magnetic" href="https://apps.apple.com/tr/app/nfshift-hq/id6799249642" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="card.appstore">App Store ↗</span></a></div>
+      </article>
     </div>
-    <div class="reveal" style="margin-top:36px;">
-      <a class="btn" href="https://nfshift.com/" target="_blank" rel="noopener" data-i18n="apps.more">Tüm detaylar: nfshift.com →</a>
-    </div>
+    <div class="reveal" style="margin-top:34px;"><a class="btn magnetic" href="https://nfshift.com/" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="apps.more">Tüm detaylar: nfshift.com →</span></a></div>
   </section>
 </main>
 
@@ -159,71 +125,15 @@
 
 <script>
 window.I18N = {
-  tr: {
-    "meta.title": "NFShift & NFShift HQ — NFC ile mesai takibi | ENAPP",
-    "meta.desc": "NFC etiketi veya Bluetooth işaretçisiyle mesai giriş-çıkış ve puantaj. Çalışan için NFShift, yönetici için NFShift HQ. Biyometri toplanmaz.",
-    "a11y.skip": "İçeriğe atla",
-    "nav.home": "Ana sayfa", "nav.apps": "Uygulamalar",
-    "hero.title1": "Mesai takibi,", "hero.title2": "dokunması kadar basit.",
-    "hero.lead": "NFShift bir ekosistem: çalışanlar NFShift ile giriş-çıkış yapar, yöneticiler NFShift HQ ile puantajı yönetir. NFC etiketi ya da Bluetooth işaretçisi yeter.",
-    "hero.btn1": "Detaylı bilgi: nfshift.com", "hero.btn2": "Uygulamalar",
-    "hero.privacy": "Biyometri toplanmaz. Arka planda konum takibi yapılmaz — konum yalnızca okutma anında ölçülür.",
-    "how.kicker": "NASIL ÇALIŞIR", "how.title": "Üç adımda mesai",
-    "how.1.title": "Etiketi okut", "how.1.body": "İş yerindeki NFC etiketine dokun ya da Bluetooth işaretçisinin yanına gel.",
-    "how.2.title": "Giriş-çıkış kaydı", "how.2.body": "Mesai başlangıç ve bitişin anında, doğru zaman damgasıyla kaydedilir.",
-    "how.3.title": "Puantaj hazır", "how.3.body": "Yönetici NFShift HQ'da ekibin puantajını görür ve dışa aktarır.",
-    "apps.kicker": "İKİ UYGULAMA, TEK SİSTEM", "apps.title": "Çalışan ve yönetici",
-    "app.nfshift.desc": "Çalışan uygulaması — giriş-çıkış yap, kendi kayıtlarını gör.",
-    "app.nfshifthq.desc": "Yönetici uygulaması — ekip puantajını yönet ve raporla.",
-    "badge.live": "App Store'da", "card.appstore": "App Store ↗",
-    "apps.more": "Tüm detaylar: nfshift.com →",
-    "footer.copyright": "© 2026 ENAPP. Tüm hakları saklıdır.",
-    "footer.home": "ENAPP", "footer.privacy": "NFShift Gizlilik"
-  },
-  en: {
-    "meta.title": "NFShift & NFShift HQ — NFC time tracking | ENAPP",
-    "meta.desc": "Clock in and out with an NFC tag or Bluetooth beacon. NFShift for staff, NFShift HQ for managers. No biometrics collected.",
-    "a11y.skip": "Skip to content",
-    "nav.home": "Home", "nav.apps": "Apps",
-    "hero.title1": "Time tracking,", "hero.title2": "as simple as a tap.",
-    "hero.lead": "NFShift is one ecosystem: staff clock in with NFShift, managers run timesheets with NFShift HQ. An NFC tag or Bluetooth beacon is all you need.",
-    "hero.btn1": "Learn more: nfshift.com", "hero.btn2": "Apps",
-    "hero.privacy": "No biometrics collected. No background location tracking — location is measured only at the moment you tap.",
-    "how.kicker": "HOW IT WORKS", "how.title": "Three steps to a timesheet",
-    "how.1.title": "Tap the tag", "how.1.body": "Tap the NFC tag at your workplace, or step near the Bluetooth beacon.",
-    "how.2.title": "Clock in or out", "how.2.body": "Your start and end are logged instantly with an accurate timestamp.",
-    "how.3.title": "Timesheet ready", "how.3.body": "In NFShift HQ, the manager sees and exports the team's timesheet.",
-    "apps.kicker": "TWO APPS, ONE SYSTEM", "apps.title": "Employee and manager",
-    "app.nfshift.desc": "The employee app — clock in and out, see your own records.",
-    "app.nfshifthq.desc": "The manager app — manage and report your team's timesheets.",
-    "badge.live": "On the App Store", "card.appstore": "App Store ↗",
-    "apps.more": "All the details: nfshift.com →",
-    "footer.copyright": "© 2026 ENAPP. All rights reserved.",
-    "footer.home": "ENAPP", "footer.privacy": "NFShift Privacy"
-  },
-  de: {
-    "meta.title": "NFShift & NFShift HQ — NFC-Zeiterfassung | ENAPP",
-    "meta.desc": "Ein- und Ausstempeln per NFC-Tag oder Bluetooth-Beacon. NFShift für Mitarbeitende, NFShift HQ für Manager. Keine Biometrie.",
-    "a11y.skip": "Zum Inhalt springen",
-    "nav.home": "Startseite", "nav.apps": "Apps",
-    "hero.title1": "Zeiterfassung,", "hero.title2": "so einfach wie ein Tippen.",
-    "hero.lead": "NFShift ist ein Ökosystem: Mitarbeitende stempeln mit NFShift, Manager führen die Zeiterfassung mit NFShift HQ. Ein NFC-Tag oder Bluetooth-Beacon genügt.",
-    "hero.btn1": "Mehr erfahren: nfshift.com", "hero.btn2": "Apps",
-    "hero.privacy": "Keine Biometrie. Kein Standort-Tracking im Hintergrund — der Standort wird nur beim Stempeln erfasst.",
-    "how.kicker": "SO FUNKTIONIERT'S", "how.title": "In drei Schritten zur Zeiterfassung",
-    "how.1.title": "Tag antippen", "how.1.body": "Tippe den NFC-Tag am Arbeitsplatz an oder geh nah an den Bluetooth-Beacon.",
-    "how.2.title": "Ein- oder ausstempeln", "how.2.body": "Beginn und Ende werden sofort mit genauem Zeitstempel erfasst.",
-    "how.3.title": "Zeiterfassung bereit", "how.3.body": "In NFShift HQ sieht und exportiert der Manager die Zeiterfassung des Teams.",
-    "apps.kicker": "ZWEI APPS, EIN SYSTEM", "apps.title": "Mitarbeitende und Manager",
-    "app.nfshift.desc": "Die Mitarbeiter-App — stempeln und eigene Einträge sehen.",
-    "app.nfshifthq.desc": "Die Manager-App — Zeiterfassung des Teams verwalten und auswerten.",
-    "badge.live": "Im App Store", "card.appstore": "App Store ↗",
-    "apps.more": "Alle Details: nfshift.com →",
-    "footer.copyright": "© 2026 ENAPP. Alle Rechte vorbehalten.",
-    "footer.home": "ENAPP", "footer.privacy": "NFShift Datenschutz"
-  }
+  tr: { "meta.title":"NFShift & NFShift HQ — NFC ile mesai takibi | ENAPP","meta.desc":"NFC etiketi veya Bluetooth işaretçisiyle mesai giriş-çıkış ve puantaj. Çalışan için NFShift, yönetici için NFShift HQ. Biyometri toplanmaz.","a11y.skip":"İçeriğe atla","nav.home":"Ana sayfa","nav.apps":"Uygulamalar","hero.lead":"NFShift bir ekosistem: çalışanlar NFShift ile giriş-çıkış yapar, yöneticiler NFShift HQ ile puantajı yönetir. NFC etiketi ya da Bluetooth işaretçisi yeter.","hero.btn1":"Detaylı bilgi: nfshift.com","hero.btn2":"Uygulamalar","hero.privacy":"Biyometri toplanmaz. Arka planda konum takibi yapılmaz — konum yalnızca okutma anında ölçülür.","how.kicker":"NASIL ÇALIŞIR","how.title":"Üç adımda mesai","how.1.title":"Etiketi okut","how.1.body":"İş yerindeki NFC etiketine dokun ya da Bluetooth işaretçisinin yanına gel.","how.2.title":"Giriş-çıkış kaydı","how.2.body":"Mesai başlangıç ve bitişin anında, doğru zaman damgasıyla kaydedilir.","how.3.title":"Puantaj hazır","how.3.body":"Yönetici NFShift HQ'da ekibin puantajını görür ve dışa aktarır.","apps.kicker":"İKİ UYGULAMA, TEK SİSTEM","apps.title":"Çalışan ve yönetici","app.nfshift.desc":"Çalışan uygulaması — giriş-çıkış yap, kendi kayıtlarını gör.","app.nfshifthq.desc":"Yönetici uygulaması — ekip puantajını yönet ve raporla.","badge.live":"App Store'da","card.appstore":"App Store ↗","apps.more":"Tüm detaylar: nfshift.com →","footer.copyright":"© 2026 ENAPP. Tüm hakları saklıdır.","footer.home":"ENAPP","footer.privacy":"NFShift Gizlilik" },
+  en: { "meta.title":"NFShift & NFShift HQ — NFC time tracking | ENAPP","meta.desc":"Clock in and out with an NFC tag or Bluetooth beacon. NFShift for staff, NFShift HQ for managers. No biometrics collected.","a11y.skip":"Skip to content","nav.home":"Home","nav.apps":"Apps","hero.lead":"NFShift is one ecosystem: staff clock in with NFShift, managers run timesheets with NFShift HQ. An NFC tag or Bluetooth beacon is all you need.","hero.btn1":"Learn more: nfshift.com","hero.btn2":"Apps","hero.privacy":"No biometrics collected. No background location tracking — location is measured only at the moment you tap.","how.kicker":"HOW IT WORKS","how.title":"Three steps to a timesheet","how.1.title":"Tap the tag","how.1.body":"Tap the NFC tag at your workplace, or step near the Bluetooth beacon.","how.2.title":"Clock in or out","how.2.body":"Your start and end are logged instantly with an accurate timestamp.","how.3.title":"Timesheet ready","how.3.body":"In NFShift HQ, the manager sees and exports the team's timesheet.","apps.kicker":"TWO APPS, ONE SYSTEM","apps.title":"Employee and manager","app.nfshift.desc":"The employee app — clock in and out, see your own records.","app.nfshifthq.desc":"The manager app — manage and report your team's timesheets.","badge.live":"On the App Store","card.appstore":"App Store ↗","apps.more":"All the details: nfshift.com →","footer.copyright":"© 2026 ENAPP. All rights reserved.","footer.home":"ENAPP","footer.privacy":"NFShift Privacy" },
+  de: { "meta.title":"NFShift & NFShift HQ — NFC-Zeiterfassung | ENAPP","meta.desc":"Ein- und Ausstempeln per NFC-Tag oder Bluetooth-Beacon. NFShift für Mitarbeitende, NFShift HQ für Manager. Keine Biometrie.","a11y.skip":"Zum Inhalt springen","nav.home":"Startseite","nav.apps":"Apps","hero.lead":"NFShift ist ein Ökosystem: Mitarbeitende stempeln mit NFShift, Manager führen die Zeiterfassung mit NFShift HQ. Ein NFC-Tag oder Bluetooth-Beacon genügt.","hero.btn1":"Mehr erfahren: nfshift.com","hero.btn2":"Apps","hero.privacy":"Keine Biometrie. Kein Standort-Tracking im Hintergrund — der Standort wird nur beim Stempeln erfasst.","how.kicker":"SO FUNKTIONIERT'S","how.title":"In drei Schritten zur Zeiterfassung","how.1.title":"Tag antippen","how.1.body":"Tippe den NFC-Tag am Arbeitsplatz an oder geh nah an den Bluetooth-Beacon.","how.2.title":"Ein- oder ausstempeln","how.2.body":"Beginn und Ende werden sofort mit genauem Zeitstempel erfasst.","how.3.title":"Zeiterfassung bereit","how.3.body":"In NFShift HQ sieht und exportiert der Manager die Zeiterfassung des Teams.","apps.kicker":"ZWEI APPS, EIN SYSTEM","apps.title":"Mitarbeitende und Manager","app.nfshift.desc":"Die Mitarbeiter-App — stempeln und eigene Einträge sehen.","app.nfshifthq.desc":"Die Manager-App — Zeiterfassung des Teams verwalten und auswerten.","badge.live":"Im App Store","card.appstore":"App Store ↗","apps.more":"Alle Details: nfshift.com →","footer.copyright":"© 2026 ENAPP. Alle Rechte vorbehalten.","footer.home":"ENAPP","footer.privacy":"NFShift Datenschutz" }
 };
 </script>
-<script src="/assets/enapp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="/assets/enapp.js" defer></script>
 </body>
 </html>

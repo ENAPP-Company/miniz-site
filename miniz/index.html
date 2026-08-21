@@ -1554,7 +1554,7 @@
 <!-- ========== NAVBAR ========== -->
 <nav class="navbar" id="navbar">
   <div class="navbar-inner">
-    <a href="#hero" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="/enapp-mark-2.png" alt="ENAPP" class="logo-icon">
       <span class="logo-text">EN<span class="logo-accent">APP</span></span>
     </a>
@@ -1563,7 +1563,6 @@
       <a href="#features" data-i18n="nav.features">Özellikler</a>
       <a href="#neden" data-i18n="nav.whyminiz">Neden Miniz?</a>
       <a href="#yorumlar" data-i18n="nav.reviews">Öne Çıkanlar</a>
-      <a href="#uygulamalar" data-i18n="nav.apps">Uygulamalarımız</a>
       <a href="#iletisim" data-i18n="nav.contact">İletişim</a>
       <a href="#cta" class="nav-cta" data-i18n="nav.download">İndir</a>
       <!-- Dil Seçici -->
@@ -1588,7 +1587,6 @@
   <a href="#features" onclick="toggleDrawer()" data-i18n="nav.features">Özellikler</a>
   <a href="#neden" onclick="toggleDrawer()" data-i18n="nav.whyminiz">Neden Miniz?</a>
   <a href="#yorumlar" onclick="toggleDrawer()" data-i18n="nav.reviews">Öne Çıkanlar</a>
-  <a href="#uygulamalar" onclick="toggleDrawer()" data-i18n="nav.apps">Uygulamalarımız</a>
   <a href="#iletisim" onclick="toggleDrawer()" data-i18n="nav.contact">İletişim</a>
   <a href="#cta" onclick="toggleDrawer()" data-i18n="nav.download">İndir</a>
   <!-- Dil Seçici -->
@@ -2055,65 +2053,7 @@
 <!-- ============================================ -->
 
 <!-- UYGULAMALARIMIZ SECTION -->
-<section id="uygulamalar" style="background:transparent;padding:100px 24px;">
-  <div style="max-width:1200px;margin:0 auto;">
-
-    <!-- Header -->
-    <div style="text-align:center;margin-bottom:64px;" class="reveal">
-      <p style="color:#E8A598;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;" data-i18n="apps.label">UYGULAMALARIMIZ</p>
-      <h2 style="font-family:var(--font-display);color:#2D2A26;font-size:40px;font-weight:500;margin-bottom:16px;letter-spacing:-0.025em;"><span data-i18n="apps.pre"></span><span class="enapp-brand">EN<span class="acc">APP</span></span><span data-i18n="apps.suf"> Ailesi</span></h2>
-      <p style="color:#8A8580;font-size:16px;max-width:440px;margin:0 auto;line-height:1.6;" data-i18n="apps.sub">Geliştirdiğimiz uygulamalarla hayatınızı kolaylaştırıyoruz.</p>
-    </div>
-
-    <!-- App Cards -->
-    <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">
-
-      <!-- Card 1: Miniz (Active) -->
-      <div class="glass-card reveal" style="flex:1;min-width:280px;max-width:360px;padding:40px;text-align:center;transition:transform 0.3s ease,box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 32px rgba(45,42,38,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='';" data-observed="true">
-        <!-- Icon: Pink Gradient Circle with Baby Face -->
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#F2C4BC,#E8A598);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="16" r="9" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-            <circle cx="17" cy="15" r="1.2" fill="#FFFFFF"/>
-            <circle cx="23" cy="15" r="1.2" fill="#FFFFFF"/>
-            <path d="M16.5 18.5Q20 22 23.5 18.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <path d="M11 28Q20 34 29 28" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <h3 style="font-size:24px;font-weight:600;color:#2D2A26;margin-bottom:12px;" data-i18n="app.miniz.name">Miniz</h3>
-        <p style="color:#8A8580;font-size:15px;line-height:1.6;margin-bottom:20px;" data-i18n="app.miniz.desc">Bebek takip, ebeveyn günlüğü ve gelişim takibi. İlk yılın en kapsamlı yardımcısı.</p>
-        <span style="display:inline-block;background:#E8A598;color:#FFFFFF;font-size:12px;font-weight:600;padding:6px 16px;border-radius:9999px;margin-bottom:20px;" data-i18n="app.miniz.badge">App Store'da</span>
-        <br>
-        <a href="https://apps.apple.com/tr/app/miniz-bebek-asistan%C4%B1/id6788558323?l=tr" target="_blank" rel="noopener" style="display:inline-block;border:1px solid #2D2A26;color:#2D2A26;font-size:14px;font-weight:600;padding:10px 28px;border-radius:9999px;text-decoration:none;transition:all 0.3s ease;" onmouseover="this.style.backgroundColor='#2D2A26';this.style.color='#FFFFFF';" onmouseout="this.style.backgroundColor='transparent';this.style.color='#2D2A26';" data-i18n="app.miniz.btn">Keşfet</a>
-      </div>
-
-      <!-- Card 2: EnBilgi (Coming Soon) -->
-      <div class="glass-card reveal" style="flex:1;min-width:280px;max-width:360px;padding:40px;text-align:center;opacity:0.75;transition:transform 0.3s ease,box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 32px rgba(45,42,38,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='';" data-observed="true">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#A8C8EC,#C4B5E0);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(168,200,236,0.35);">
-          <span style="font-size:38px;line-height:1;">💡</span>
-        </div>
-        <h3 style="font-size:24px;font-weight:600;color:#2D2A26;margin-bottom:12px;" data-i18n="app.enbilgi.name">EnBilgi</h3>
-        <p style="color:#8A8580;font-size:15px;line-height:1.6;margin-bottom:20px;" data-i18n="app.enbilgi.desc">Kaydır, şaşır, öğren! 400'den fazla görsel bilgi kartı — her kaydırışta yeni bir ilginç bilgi ve merak uyandıran açıklaması.</p>
-        <span style="display:inline-block;background:#8A8580;color:#FFFFFF;font-size:12px;font-weight:600;padding:6px 16px;border-radius:9999px;margin-bottom:20px;" data-i18n="app.enbilgi.badge">Yakında</span>
-        <br>
-        <a href="#haberdar" style="display:inline-block;border:1px solid #E8A598;color:#E8A598;font-size:14px;font-weight:600;padding:10px 28px;border-radius:9999px;text-decoration:none;transition:all 0.3s ease;" onmouseover="this.style.background='#E8A598';this.style.color='#FFFFFF';" onmouseout="this.style.background='transparent';this.style.color='#E8A598';" data-i18n="app.enbilgi.btn">Haberdar Ol</a>
-      </div>
-
-      <!-- Card 3: Ticko (Coming Soon) -->
-      <div class="glass-card reveal" style="flex:1;min-width:280px;max-width:360px;padding:40px;text-align:center;opacity:0.75;transition:transform 0.3s ease,box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 32px rgba(45,42,38,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='';" data-observed="true">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#F2C4BC,#E8A598);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(232,165,152,0.35);">
-          <span style="font-size:38px;line-height:1;">🎯</span>
-        </div>
-        <h3 style="font-size:24px;font-weight:600;color:#2D2A26;margin-bottom:12px;" data-i18n="app.enhedef.name">Ticko</h3>
-        <p style="color:#8A8580;font-size:15px;line-height:1.6;margin-bottom:20px;" data-i18n="app.enhedef.desc">Zamanlaman kadar iyisin! İbreyi tam hedefte durdur: 50 bölüm, 8 zorluk mekaniği ve Sonsuz Mod. Basit kural, büyük heyecan!</p>
-        <span style="display:inline-block;background:#8A8580;color:#FFFFFF;font-size:12px;font-weight:600;padding:6px 16px;border-radius:9999px;margin-bottom:20px;" data-i18n="app.enhedef.badge">Yakında</span>
-        <br>
-        <a href="#haberdar" style="display:inline-block;border:1px solid #E8A598;color:#E8A598;font-size:14px;font-weight:600;padding:10px 28px;border-radius:9999px;text-decoration:none;transition:all 0.3s ease;" onmouseover="this.style.background='#E8A598';this.style.color='#FFFFFF';" onmouseout="this.style.background='transparent';this.style.color='#E8A598';" data-i18n="app.enhedef.btn">Haberdar Ol</a>
-      </div>
-
-    </div>
-  </div>
-</section>
+<!-- Uygulamalarimiz bolumu kaldirildi: uygulama listesi ENAPP ana sayfasinda -->
 
 <!-- CTA SECTION -->
 <section id="cta" style="background:linear-gradient(135deg,#F2C4BC,#E8A598);padding:80px 24px;text-align:center;">
@@ -2214,7 +2154,7 @@
           <img src="/enapp-mark-2.png" alt="ENAPP" style="width:38px;height:38px;border-radius:11px;object-fit:cover;background:#FFFFFF;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,0.25);">
           <span style="color:#FFFFFF;font-size:20px;font-weight:700;">ENAPP</span>
         </div>
-        <p style="color:#8A8580;font-size:14px;line-height:1.7;" data-i18n="footer.desc">Günlük hayatı kolaylaştıran, özenle tasarlanmış mobil uygulamalar geliştiriyoruz. İlk göz ağrımız: Miniz.</p>
+        <p style="color:#8A8580;font-size:14px;line-height:1.7;" data-i18n="footer.desc">Yeni ebeveynler için özenle tasarlanmış bir bebek bakım uygulaması.</p>
       </div>
 
       <!-- Right: 3 Columns -->
@@ -2224,9 +2164,7 @@
         <div>
           <p style="color:#8A8580;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;" data-i18n="footer.pages">Sayfalar</p>
           <ul style="list-style:none;padding:0;margin:0;">
-            <li style="margin-bottom:10px;"><a href="#hero" style="color:#FFFFFF;font-size:14px;text-decoration:none;opacity:0.7;transition:opacity 0.3s ease;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" data-i18n="footer.home">Ana Sayfa</a></li>
-            <li style="margin-bottom:10px;"><a href="#neden" style="color:#FFFFFF;font-size:14px;text-decoration:none;opacity:0.7;transition:opacity 0.3s ease;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" data-i18n="footer.about">Hakkımızda</a></li>
-            <li style="margin-bottom:10px;"><a href="#features" style="color:#FFFFFF;font-size:14px;text-decoration:none;opacity:0.7;transition:opacity 0.3s ease;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" data-i18n="footer.miniz">Miniz</a></li>
+            <li style="margin-bottom:10px;"><a href="/" style="color:#FFFFFF;font-size:14px;text-decoration:none;opacity:0.7;transition:opacity 0.3s ease;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" data-i18n="footer.home">Ana Sayfa</a></li>
             <li><a href="#iletisim" style="color:#FFFFFF;font-size:14px;text-decoration:none;opacity:0.7;transition:opacity 0.3s ease;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" data-i18n="footer.contact">İletişim</a></li>
           </ul>
         </div>
@@ -2258,6 +2196,7 @@
 
     <!-- Bottom Row -->
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <p style="color:#8A8580;font-size:13px;margin:12px 0 0;" data-i18n-html="footer.byenapp">Miniz, <a href="/" style="color:#E8A598;text-decoration:none;">ENAPP</a> tarafından geliştirildi.</p>
       <p style="color:#8A8580;font-size:13px;margin:0;" data-i18n="footer.copyright">© 2026 ENAPP. Tüm hakları saklıdır.</p>
       <p style="color:#8A8580;font-size:13px;margin:0;"><span data-i18n="footer.madein.pre">Türkiye'de </span><span style="color:#E8A598;">❤</span><span data-i18n="footer.madein.suf"> ile geliştirildi</span></p>
     </div>
@@ -2358,22 +2297,6 @@ const i18n = {
     "review3.name": "Sizi de Düşünür",
     "review3.role": "Ebeveyn odaklı",
     "review3.text": "'Ben de İyiyim' alanı, nefes egzersizleri ve ebeveyn rehberleriyle Miniz yalnız bebeğinizi değil, sizi de gözetir.",
-    "apps.pre": "",
-    "apps.suf": " Ailesi",
-    "apps.sub": "Geliştirdiğimiz uygulamalarla hayatınızı kolaylaştırıyoruz.",
-    "apps.label": "UYGULAMALARIMIZ",
-    "app.miniz.name": "Miniz",
-    "app.miniz.desc": "Bebek takip, ebeveyn günlüğü ve gelişim takibi. İlk yılın en kapsamlı yardımcısı.",
-    "app.miniz.badge": "App Store'da",
-    "app.miniz.btn": "Keşfet",
-    "app.enbilgi.name": "EnBilgi",
-    "app.enbilgi.desc": "Kaydır, şaşır, öğren! 400'den fazla görsel bilgi kartı — her kaydırışta yeni bir ilginç bilgi ve merak uyandıran açıklaması.",
-    "app.enbilgi.badge": "Yakında",
-    "app.enbilgi.btn": "Haberdar Ol",
-    "app.enhedef.name": "Ticko",
-    "app.enhedef.desc": "Zamanlaman kadar iyisin! İbreyi tam hedefte durdur: 50 bölüm, 8 zorluk mekaniği ve Sonsuz Mod. Basit kural, büyük heyecan!",
-    "app.enhedef.badge": "Yakında",
-    "app.enhedef.btn": "Haberdar Ol",
     "cta.heading": "Hemen Ücretsiz İndirin",
     "cta.sub": "Lansmana özel: ilk kullanıcılar arasında yerinizi alın.",
     "cta.btn": "App Store'dan İndir",
@@ -2411,11 +2334,9 @@ const i18n = {
     "signup.error": "Bir sorun oluştu, lütfen tekrar deneyin.",
     "signup.validation": "Lütfen geçerli bir e-posta girin.",
     "signup.notconnected": "Form henüz bağlanmadı (Formspree kimliğini ekleyin).",
-    "footer.desc": "Günlük hayatı kolaylaştıran, özenle tasarlanmış mobil uygulamalar geliştiriyoruz. İlk göz ağrımız: Miniz.",
+    "footer.desc": "Yeni ebeveynler için özenle tasarlanmış bir bebek bakım uygulaması.",
     "footer.pages": "Sayfalar",
     "footer.home": "Ana Sayfa",
-    "footer.about": "Hakkımızda",
-    "footer.miniz": "Miniz",
     "footer.contact": "İletişim",
     "footer.contactlabel": "İletişim",
     "footer.email": "info@enapp.tr",
@@ -2423,6 +2344,7 @@ const i18n = {
     "footer.legal": "Yasal",
     "footer.privacy": "Gizlilik Politikası",
     "footer.terms": "Kullanım Koşulları",
+    "footer.byenapp": "Miniz, <a href=\"/\" style=\"color:#E8A598;text-decoration:none;\">ENAPP</a> tarafından geliştirildi.",
     "footer.copyright": "© 2026 ENAPP. Tüm hakları saklıdır.",
     "footer.madein.pre": "Türkiye'de ",
     "footer.madein.suf": " ile geliştirildi",
@@ -2520,22 +2442,6 @@ const i18n = {
     "review3.name": "Cares For You Too",
     "review3.role": "Parent-focused",
     "review3.text": "With the 'I'm Okay Too' space, breathing exercises and parent guides, Miniz cares for you as well as your baby.",
-    "apps.pre": "The ",
-    "apps.suf": " Family",
-    "apps.sub": "We make your life easier with the apps we develop.",
-    "apps.label": "OUR APPS",
-    "app.miniz.name": "Miniz",
-    "app.miniz.desc": "Baby tracking, parent diary and growth monitoring. The most comprehensive assistant for the first year.",
-    "app.miniz.badge": "On the App Store",
-    "app.miniz.btn": "Discover",
-    "app.enbilgi.name": "EnBilgi",
-    "app.enbilgi.desc": "Swipe, wonder, learn! 400+ visual fact cards — a fascinating new fact with its story on every swipe.",
-    "app.enbilgi.badge": "Coming Soon",
-    "app.enbilgi.btn": "Notify Me",
-    "app.enhedef.name": "Ticko",
-    "app.enhedef.desc": "You're as good as your timing! Stop the needle right on target: 50 levels, 8 challenge mechanics and an Endless Mode. Simple rule, big thrill!",
-    "app.enhedef.badge": "Coming Soon",
-    "app.enhedef.btn": "Notify Me",
     "cta.heading": "Download Free Now",
     "cta.sub": "Launch special: be among the very first users.",
     "cta.btn": "Download on App Store",
@@ -2573,11 +2479,9 @@ const i18n = {
     "signup.error": "Something went wrong, please try again.",
     "signup.validation": "Please enter a valid email.",
     "signup.notconnected": "The form isn't connected yet (add your Formspree ID).",
-    "footer.desc": "We craft thoughtfully designed mobile apps that make everyday life easier. Our first: Miniz.",
+    "footer.desc": "Eine sorgfältig gestaltete Baby-App für frischgebackene Eltern.",
     "footer.pages": "Pages",
     "footer.home": "Home",
-    "footer.about": "About Us",
-    "footer.miniz": "Miniz",
     "footer.contact": "Contact",
     "footer.contactlabel": "Contact",
     "footer.email": "info@enapp.tr",
@@ -2585,6 +2489,7 @@ const i18n = {
     "footer.legal": "Legal",
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Use",
+    "footer.byenapp": "Miniz is built by <a href=\"/\" style=\"color:#E8A598;text-decoration:none;\">ENAPP</a>.",
     "footer.copyright": "© 2026 ENAPP. All rights reserved.",
     "footer.madein.pre": "Made with ",
     "footer.madein.suf": " in Turkey",
@@ -2682,22 +2587,6 @@ const i18n = {
     "review3.name": "Denkt auch an Sie",
     "review3.role": "Elternfokussiert",
     "review3.text": "Mit dem Bereich 'Mir geht es auch gut', Atemübungen und Eltern-Ratgebern denkt Miniz auch an Sie.",
-    "apps.pre": "Die ",
-    "apps.suf": " Familie",
-    "apps.sub": "Wir erleichtern Ihr Leben mit den von uns entwickelten Apps.",
-    "apps.label": "UNSERE APPS",
-    "app.miniz.name": "Miniz",
-    "app.miniz.desc": "Baby-Tracking, Elterntagebuch und Wachstumsüberwachung. Der umfassendste Assistent für das erste Jahr.",
-    "app.miniz.badge": "Im App Store",
-    "app.miniz.btn": "Entdecken",
-    "app.enbilgi.name": "EnBilgi",
-    "app.enbilgi.desc": "Wischen, staunen, lernen! Über 400 visuelle Wissenskarten — bei jedem Wischen ein neuer faszinierender Fakt mit Erklärung.",
-    "app.enbilgi.badge": "Demnächst",
-    "app.enbilgi.btn": "Benachrichtigen",
-    "app.enhedef.name": "Ticko",
-    "app.enhedef.desc": "Du bist so gut wie dein Timing! Stoppe den Zeiger genau am Ziel: 50 Level, 8 Mechaniken und ein Endlos-Modus. Einfache Regel, großer Nervenkitzel!",
-    "app.enhedef.badge": "Demnächst",
-    "app.enhedef.btn": "Benachrichtigen",
     "cta.heading": "Jetzt Kostenlos Herunterladen",
     "cta.sub": "Zum Start: Seien Sie unter den allerersten Nutzern.",
     "cta.btn": "Im App Store laden",
@@ -2735,11 +2624,9 @@ const i18n = {
     "signup.error": "Etwas ist schiefgelaufen, bitte erneut versuchen.",
     "signup.validation": "Bitte geben Sie eine gültige E-Mail ein.",
     "signup.notconnected": "Das Formular ist noch nicht verbunden (Formspree-ID hinzufügen).",
-    "footer.desc": "Wir entwickeln sorgfältig gestaltete Apps, die den Alltag leichter machen. Unsere erste: Miniz.",
+    "footer.desc": "Eine sorgfältig gestaltete Baby-App für frischgebackene Eltern.",
     "footer.pages": "Seiten",
     "footer.home": "Startseite",
-    "footer.about": "Über Uns",
-    "footer.miniz": "Miniz",
     "footer.contact": "Kontakt",
     "footer.contactlabel": "Kontakt",
     "footer.email": "info@enapp.tr",
@@ -2747,6 +2634,7 @@ const i18n = {
     "footer.legal": "Rechtliches",
     "footer.privacy": "Datenschutz",
     "footer.terms": "Nutzungsbedingungen",
+    "footer.byenapp": "Miniz wird von <a href=\"/\" style=\"color:#E8A598;text-decoration:none;\">ENAPP</a> entwickelt.",
     "footer.copyright": "© 2026 ENAPP. Alle Rechte vorbehalten.",
     "footer.madein.pre": "Mit ",
     "footer.madein.suf": " in der Türkei entwickelt",
