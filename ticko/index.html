@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr" data-lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="meta.title">Ticko — Zamanlaman kadar iyisin | ENAPP</title>
+<meta name="description" data-i18n-content="meta.desc" content="Ticko, zamanlama refleksi oyunu: ibreyi tam hedefte durdur. 50 bölüm, 8 zorluk mekaniği ve Sonsuz Mod. Basit kural, büyük heyecan.">
+<meta name="author" content="ENAPP">
+<meta name="theme-color" content="#FBFAF8">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://enapp.tr/ticko/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ENAPP">
+<meta property="og:title" content="Ticko — Zamanlaman kadar iyisin">
+<meta property="og:description" content="Zamanlama refleksi oyunu: ibreyi tam hedefte durdur. 50 bölüm, 8 mekanik, Sonsuz Mod.">
+<meta property="og:image" content="https://enapp.tr/assets/og-ticko.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://enapp.tr/ticko/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://enapp.tr/assets/og-ticko.webp">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/enapp.css">
+<script>if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("gsap-ready");</script>
+<style>
+  .hero { position: relative; padding-top: clamp(40px, 7vh, 84px); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(24px,4vw,52px); align-items: center; }
+  .hero-lead { margin-top: 20px; max-width: 560px; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
+  .hero-meta { margin-top: 22px; color: var(--ink-3); font-size: 0.95rem; }
+  .hero-phones { position: relative; height: clamp(400px, 44vw, 470px); }
+  .hero-phones .phone { position: absolute; width: clamp(160px, 18vw, 200px); }
+  .hero-phones .p-back { right: 10%; top: 6px; transform: rotate(6deg); z-index: 1; opacity: .97; }
+  .hero-phones .p-front { left: 6%; top: 48px; transform: rotate(-5deg); z-index: 2; }
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} .hero-phones{height:440px;max-width:360px;margin:8px auto 0;} }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  @media (max-width:760px){ .grid-3{grid-template-columns:1fr;} }
+  .step .step-num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); color: var(--ink); font-weight: 500; font-size: 0.9rem; margin-bottom: 12px; }
+  .step h3 { font-size: 1.12rem; margin-bottom: 6px; }
+  .step p { font-size: 0.96rem; }
+  .foot-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">İçeriğe atla</a>
+<div class="bg-layer" aria-hidden="true"><span class="mesh m1"></span><span class="mesh m2"></span><span class="mesh m3"></span></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="page-veil" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href="/" aria-label="ENAPP ana sayfa"><img src="/assets/enapp-mark-64.webp" width="32" height="32" alt=""><span>EN<span class="acc">APP</span></span></a>
+    <nav class="nav-links" aria-label="Menü">
+      <a class="nav-hide" href="/" data-i18n="nav.home">Ana sayfa</a>
+      <a class="nav-hide" href="#how" data-i18n="nav.how">Nasıl oynanır</a>
+      <div class="lang-switch" role="group" aria-label="Dil / Language">
+        <button type="button" data-lang-btn="tr" aria-pressed="true">TR</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang-btn="de" aria-pressed="false">DE</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <img src="/assets/apps/ticko.webp" width="48" height="48" alt="Ticko" style="border-radius:12px;border:1px solid var(--line);">
+          <span class="kicker" style="color:var(--c-ticko);">TICKO</span>
+        </div>
+        <h1 class="h-hero hero-title">Zamanlaman kadar iyisin.</h1>
+        <p class="lead hero-lead hero-rise" data-i18n="hero.lead">İbreyi tam hedefte durdur. Basit bir kural, refleks ve odak isteyen büyük bir heyecan.</p>
+        <div class="hero-cta hero-rise">
+          <a class="btn btn-primary magnetic" href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="hero.btn">App Store'dan indir ↗</span></a>
+        </div>
+        <p class="hero-meta hero-rise" data-i18n="hero.meta">50 bölüm · 8 zorluk mekaniği · Sonsuz Mod</p>
+      </div>
+      <div class="hero-phones hero-rise" aria-hidden="true">
+        <div class="phone p-back"><div class="screen"><img src="/assets/shots/ticko-bento.webp" width="222" height="480" alt="" loading="eager"></div></div>
+        <div class="phone p-front"><div class="screen"><img src="/assets/shots/ticko-hero.webp" width="222" height="480" alt="" loading="eager"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="how">
+    <div class="reveal">
+      <p class="kicker" data-i18n="how.kicker">NASIL OYNANIR</p>
+      <h2 class="h-section" style="margin-top:12px;" data-i18n="how.title">Üç saniyede öğren</h2>
+    </div>
+    <div class="grid-3 reveal" data-stagger style="margin-top:40px;">
+      <div class="card step" style="--accent: var(--c-ticko);"><span class="step-num">1</span><h3 data-i18n="how.1.title">Başlat</h3><p data-i18n="how.1.body">Butona dokun; ibre gösterge üzerinde dönmeye başlar.</p></div>
+      <div class="card step" style="--accent: var(--c-ticko);"><span class="step-num">2</span><h3 data-i18n="how.2.title">Nişan al</h3><p data-i18n="how.2.body">İbre hedef bölgeye yaklaşırken doğru anı yakalamaya hazırlan.</p></div>
+      <div class="card step" style="--accent: var(--c-ticko);"><span class="step-num">3</span><h3 data-i18n="how.3.title">Tam hedefte durdur</h3><p data-i18n="how.3.body">Ne kadar hedefe yakın durursan o kadar çok puan. Mükemmel için tam ortada dur.</p></div>
+    </div>
+    <div class="reveal" style="margin-top:38px;">
+      <a class="btn magnetic" href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="how.cta">Hemen dene — App Store ↗</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-bottom">
+      <span data-i18n="footer.copyright">© 2026 ENAPP. Tüm hakları saklıdır.</span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap;">
+        <a href="/" data-i18n="footer.home">ENAPP</a>
+        <a href="/ticko-privacy.html" data-i18n="footer.privacy">Ticko Gizlilik</a>
+        <a href="/ticko-terms.html" data-i18n="footer.terms">Kullanım Koşulları</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.I18N = {
+  tr: { "meta.title":"Ticko — Zamanlaman kadar iyisin | ENAPP","meta.desc":"Ticko, zamanlama refleksi oyunu: ibreyi tam hedefte durdur. 50 bölüm, 8 zorluk mekaniği ve Sonsuz Mod. Basit kural, büyük heyecan.","a11y.skip":"İçeriğe atla","nav.home":"Ana sayfa","nav.how":"Nasıl oynanır","hero.lead":"İbreyi tam hedefte durdur. Basit bir kural, refleks ve odak isteyen büyük bir heyecan.","hero.btn":"App Store'dan indir ↗","hero.meta":"50 bölüm · 8 zorluk mekaniği · Sonsuz Mod","how.kicker":"NASIL OYNANIR","how.title":"Üç saniyede öğren","how.1.title":"Başlat","how.1.body":"Butona dokun; ibre gösterge üzerinde dönmeye başlar.","how.2.title":"Nişan al","how.2.body":"İbre hedef bölgeye yaklaşırken doğru anı yakalamaya hazırlan.","how.3.title":"Tam hedefte durdur","how.3.body":"Ne kadar hedefe yakın durursan o kadar çok puan. Mükemmel için tam ortada dur.","how.cta":"Hemen dene — App Store ↗","footer.copyright":"© 2026 ENAPP. Tüm hakları saklıdır.","footer.home":"ENAPP","footer.privacy":"Ticko Gizlilik","footer.terms":"Kullanım Koşulları" },
+  en: { "meta.title":"Ticko — As good as your timing | ENAPP","meta.desc":"Ticko is a timing-reflex game: stop the needle right on target. 50 levels, 8 difficulty mechanics and Endless Mode. Simple rule, big thrill.","a11y.skip":"Skip to content","nav.home":"Home","nav.how":"How to play","hero.lead":"Stop the needle right on target. A simple rule, and a big thrill that takes reflexes and focus.","hero.btn":"Download on the App Store ↗","hero.meta":"50 levels · 8 difficulty mechanics · Endless Mode","how.kicker":"HOW TO PLAY","how.title":"Learn in three seconds","how.1.title":"Start","how.1.body":"Tap the button; the needle starts sweeping across the gauge.","how.2.title":"Take aim","how.2.body":"As the needle nears the target zone, get ready to catch the right moment.","how.3.title":"Stop on target","how.3.body":"The closer you stop to the target, the more points. Stop dead center for a perfect.","how.cta":"Try it now — App Store ↗","footer.copyright":"© 2026 ENAPP. All rights reserved.","footer.home":"ENAPP","footer.privacy":"Ticko Privacy","footer.terms":"Terms of Use" },
+  de: { "meta.title":"Ticko — So gut wie dein Timing | ENAPP","meta.desc":"Ticko ist ein Timing-Reflex-Spiel: stoppe den Zeiger genau am Ziel. 50 Level, 8 Schwierigkeits-Mechaniken und Endlos-Modus. Einfache Regel, großer Nervenkitzel.","a11y.skip":"Zum Inhalt springen","nav.home":"Startseite","nav.how":"Spielweise","hero.lead":"Stoppe den Zeiger genau am Ziel. Eine einfache Regel — und ein großer Nervenkitzel, der Reflexe und Fokus verlangt.","hero.btn":"Im App Store laden ↗","hero.meta":"50 Level · 8 Schwierigkeits-Mechaniken · Endlos-Modus","how.kicker":"SPIELWEISE","how.title":"In drei Sekunden gelernt","how.1.title":"Starten","how.1.body":"Tippe den Button; der Zeiger dreht über die Anzeige.","how.2.title":"Zielen","how.2.body":"Wenn der Zeiger die Zielzone erreicht, bereite dich auf den richtigen Moment vor.","how.3.title":"Am Ziel stoppen","how.3.body":"Je näher am Ziel du stoppst, desto mehr Punkte. Genau in der Mitte gibt es „Perfekt“.","how.cta":"Jetzt ausprobieren — App Store ↗","footer.copyright":"© 2026 ENAPP. Alle Rechte vorbehalten.","footer.home":"ENAPP","footer.privacy":"Ticko Datenschutz","footer.terms":"Nutzungsbedingungen" }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="/assets/enapp.js" defer></script>
+</body>
+</html>

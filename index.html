@@ -13,11 +13,13 @@
 <meta property="og:site_name" content="ENAPP">
 <meta property="og:title" content="ENAPP — Küçük uygulamalar, temiz iş.">
 <meta property="og:description" content="Günlük hayatı kolaylaştıran özenli mobil uygulamalar geliştiren bağımsız bir stüdyo.">
-<meta property="og:image" content="https://enapp.tr/enapp-mark-2.png">
+<meta property="og:image" content="https://enapp.tr/assets/og-cover.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://enapp.tr/">
 <meta property="og:locale" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://enapp.tr/enapp-mark-2.png">
+<meta name="twitter:image" content="https://enapp.tr/assets/og-cover.webp">
 
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" href="/enapp-mark-2.png">
@@ -62,7 +64,7 @@
 </head>
 <body data-redirect-old>
 
-<a class="skip-link" href="#apps" data-i18n="a11y.skip">İçeriğe atla</a>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">İçeriğe atla</a>
 <div class="bg-layer" aria-hidden="true"><span class="mesh m1"></span><span class="mesh m2"></span><span class="mesh m3"></span><span class="mesh m4"></span></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="page-veil" aria-hidden="true"></div>
@@ -83,7 +85,7 @@
   </div>
 </header>
 
-<main>
+<main id="main">
   <!-- HERO -->
   <section class="hero wrap">
     <div class="hero-grid">
@@ -135,7 +137,7 @@
       <article class="card tilt card-span-2" style="--accent: var(--c-ticko); min-height: 280px;">
         <div class="card-head"><img class="app-icon" src="/assets/apps/ticko.webp" width="64" height="64" alt="Ticko" loading="lazy"><div><div class="card-title-row"><h3>Ticko</h3></div><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" style="max-width:56%;" data-i18n="app.ticko.desc">Zamanlama refleksi oyunu — ibreyi tam hedefte durdur.</p>
-        <div class="card-links"><a class="card-link magnetic" href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener"><span class="mag-inner" data-i18n="card.appstore">App Store ↗</span></a></div>
+        <div class="card-links"><a class="card-link magnetic" href="/ticko/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a><a class="card-link store" href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener">App Store ↗</a></div>
         <img class="card-shot" src="/assets/shots/ticko-bento.webp" width="222" height="480" alt="" loading="lazy">
       </article>
       <!-- Miniz büyük -->
@@ -149,19 +151,18 @@
       <article class="card tilt card-span-2" style="--accent: var(--c-nfshift);">
         <div class="card-head"><img class="app-icon" src="/assets/apps/nfshift.webp" width="64" height="64" alt="NFShift" loading="lazy"><div><h3>NFShift<span class="role-tag" data-i18n="role.employee">Çalışan</span></h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" data-i18n="app.nfshift.desc">NFC veya Bluetooth ile mesai giriş-çıkışı — çalışan tarafı.</p>
-        <div class="card-links"><a class="card-link magnetic" href="/nfshift/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a></div>
+        <div class="card-links"><a class="card-link magnetic" href="/nfshift/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a><a class="card-link store" href="https://apps.apple.com/tr/app/nfshift/id6791711776" target="_blank" rel="noopener">App Store ↗</a></div>
       </article>
       <!-- NFShift HQ (Yönetici) -->
       <article class="card tilt card-span-1" style="--accent: var(--c-nfshift);">
-        <div class="card-head"><img class="app-icon sm" src="/assets/apps/nfshifthq.webp" width="44" height="44" alt="NFShift HQ" loading="lazy"><h3 style="font-size:1.1rem;">NFShift HQ<span class="role-tag" data-i18n="role.manager">Yönetici</span></h3></div>
+        <div class="card-head"><img class="app-icon sm" src="/assets/apps/nfshifthq.webp" width="44" height="44" alt="NFShift HQ" loading="lazy"><div><h3 style="font-size:1.1rem;">NFShift HQ<span class="role-tag" data-i18n="role.manager">Yönetici</span></h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" data-i18n="app.nfshifthq.desc">Ekip puantajını yönet — yönetici tarafı.</p>
-        <div class="card-links"><a class="card-link" href="/nfshift/" data-i18n="card.open">Aç →</a></div>
+        <div class="card-links"><a class="card-link magnetic" href="/nfshift/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a><a class="card-link store" href="https://apps.apple.com/tr/app/nfshift-hq/id6799249642" target="_blank" rel="noopener">App Store ↗</a></div>
       </article>
-      <!-- EnMix -->
+      <!-- EnMix (rozet başlığın altında, diğerleriyle aynı konum) -->
       <article class="card is-soon card-span-1" style="--accent: var(--c-enmix);">
-        <div class="card-head"><img class="app-icon sm" src="/assets/apps/enmix.webp" width="44" height="44" alt="EnMix" loading="lazy"><h3 style="font-size:1.1rem;">EnMix</h3></div>
+        <div class="card-head"><img class="app-icon sm" src="/assets/apps/enmix.webp" width="44" height="44" alt="EnMix" loading="lazy"><div><h3 style="font-size:1.1rem;">EnMix</h3><span class="badge badge-soon" data-i18n="badge.soon">Yakında</span></div></div>
         <p class="desc" data-i18n="app.enmix.desc">Yeni bir ENAPP uygulaması — çok yakında.</p>
-        <div class="card-links"><span class="badge badge-soon" data-i18n="badge.soon">Yakında</span></div>
       </article>
     </div>
   </section>
@@ -219,10 +220,16 @@
         <p style="font-size:0.9rem;color:var(--ink-2);max-width:280px;margin-top:12px;" data-i18n="footer.tagline">Bağımsız bir uygulama stüdyosu. Az, ama özenli.</p>
       </div>
       <div><p class="col-title" data-i18n="footer.pages">Sayfalar</p><ul><li><a href="#apps" data-i18n="nav.apps">Uygulamalar</a></li><li><a href="#approach" data-i18n="nav.approach">Yaklaşım</a></li><li><a href="#contact" data-i18n="nav.contact">İletişim</a></li></ul></div>
-      <div><p class="col-title" data-i18n="footer.apps">Uygulamalar</p><ul><li><a href="/miniz/">Miniz</a></li><li><a href="https://apps.apple.com/tr/app/ticko/id6796479194" target="_blank" rel="noopener">Ticko</a></li><li><a href="/nfshift/">NFShift</a></li></ul></div>
+      <div><p class="col-title" data-i18n="footer.apps">Uygulamalar</p><ul>
+        <li><a href="/miniz/">Miniz</a></li>
+        <li><a href="/ticko/">Ticko</a></li>
+        <li><a href="/nfshift/">NFShift</a></li>
+        <li><a href="/nfshift/">NFShift HQ</a></li>
+        <li><span style="color:var(--ink-3);">EnMix</span> <span class="role-tag" data-i18n="badge.soon">Yakında</span></li>
+      </ul></div>
       <div><p class="col-title" data-i18n="footer.legal">Yasal</p><ul>
-        <li><a href="/yasal/privacy.html" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
-        <li><a href="/yasal/kvkk.html">KVKK Aydınlatma Metni</a></li>
+        <li><a href="/yasal/privacy.html" data-i18n="footer.privacy">Miniz Gizlilik Politikası</a></li>
+        <li><a href="/yasal/kvkk.html" data-i18n="footer.kvkk">Miniz KVKK</a></li>
         <li><a href="/yasal/terms.html" data-i18n="footer.terms">Kullanım Koşulları</a></li>
         <li><a href="/ticko-privacy.html" data-i18n="footer.ticko">Ticko Gizlilik</a></li>
         <li><a href="https://nfshift.com/gizlilik" target="_blank" rel="noopener" data-i18n="footer.nfshift">NFShift Gizlilik</a></li>
@@ -264,7 +271,7 @@ window.I18N = {
     "contact.note":"Teşekkürler! E-posta uygulamanız açılıyor — açılmazsa info@enapp.tr adresine yazın.",
     "footer.tagline":"Bağımsız bir uygulama stüdyosu. Az, ama özenli.",
     "footer.pages":"Sayfalar","footer.apps":"Uygulamalar","footer.legal":"Yasal",
-    "footer.privacy":"Gizlilik Politikası","footer.terms":"Kullanım Koşulları","footer.ticko":"Ticko Gizlilik","footer.nfshift":"NFShift Gizlilik",
+    "footer.privacy":"Miniz Gizlilik Politikası","footer.kvkk":"Miniz KVKK","footer.terms":"Kullanım Koşulları","footer.ticko":"Ticko Gizlilik","footer.nfshift":"NFShift Gizlilik",
     "footer.copyright":"© 2026 ENAPP. Tüm hakları saklıdır.","footer.madein":"Türkiye'de geliştirildi"
   },
   en: {
@@ -294,7 +301,7 @@ window.I18N = {
     "contact.note":"Thanks! Your email app is opening — if it doesn't, write to info@enapp.tr.",
     "footer.tagline":"An independent app studio. Few, but careful.",
     "footer.pages":"Pages","footer.apps":"Apps","footer.legal":"Legal",
-    "footer.privacy":"Privacy Policy","footer.terms":"Terms of Use","footer.ticko":"Ticko Privacy","footer.nfshift":"NFShift Privacy",
+    "footer.privacy":"Miniz Privacy Policy","footer.kvkk":"Miniz KVKK","footer.terms":"Terms of Use","footer.ticko":"Ticko Privacy","footer.nfshift":"NFShift Privacy",
     "footer.copyright":"© 2026 ENAPP. All rights reserved.","footer.madein":"Made in Türkiye"
   },
   de: {
@@ -324,7 +331,7 @@ window.I18N = {
     "contact.note":"Danke! Deine E-Mail-App öffnet sich — falls nicht, schreib an info@enapp.tr.",
     "footer.tagline":"Ein unabhängiges App-Studio. Wenige, aber sorgfältig.",
     "footer.pages":"Seiten","footer.apps":"Apps","footer.legal":"Rechtliches",
-    "footer.privacy":"Datenschutz","footer.terms":"Nutzungsbedingungen","footer.ticko":"Ticko Datenschutz","footer.nfshift":"NFShift Datenschutz",
+    "footer.privacy":"Miniz Datenschutz","footer.kvkk":"Miniz KVKK","footer.terms":"Nutzungsbedingungen","footer.ticko":"Ticko Datenschutz","footer.nfshift":"NFShift Datenschutz",
     "footer.copyright":"© 2026 ENAPP. Alle Rechte vorbehalten.","footer.madein":"Entwickelt in der Türkei"
   }
 };
