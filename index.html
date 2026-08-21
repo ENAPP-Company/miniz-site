@@ -33,17 +33,17 @@
   .hero-lead { margin-top: 22px; max-width: 520px; }
   .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
   .hero-mark-row { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
-  /* Telefonlar: ikisi de tam görünür, sağda >=48px boşluk */
-  .hero-phones { position: relative; height: clamp(330px, 38vw, 452px); padding-right: 8px; }
-  .hero-phones .phone { position: absolute; width: clamp(168px, 19vw, 214px); }
-  .hero-phones .p-back { right: 9%; top: 0; transform: rotate(6deg); z-index: 1; opacity: .97; }
-  .hero-phones .p-front { left: 3%; top: 14%; transform: rotate(-5deg); z-index: 2; }
-  .hero-scrollcue { margin-top: clamp(18px, 2.4vh, 30px); }
+  /* Telefonlar: ikisi de TAM görünür (alt kesilmez), sağda >=48px boşluk, dikey ortalı */
+  .hero-phones { position: relative; height: clamp(404px, 44vw, 476px); padding-right: 8px; }
+  .hero-phones .phone { position: absolute; width: clamp(150px, 17vw, 188px); }
+  .hero-phones .p-back { right: 8%; top: 4px; transform: rotate(6deg); z-index: 1; opacity: .97; }
+  .hero-phones .p-front { left: 4%; top: 50px; transform: rotate(-5deg); z-index: 2; }
   @media (max-width: 860px) {
     .hero { min-height: auto; }
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-phones { height: 400px; max-width: 380px; margin: 6px auto 0; padding-right: 0; }
-    .hero-phones .p-back { right: 6%; } .hero-phones .p-front { left: 6%; }
+    .hero-phones { height: 452px; max-width: 360px; margin: 8px auto 0; padding-right: 0; }
+    .hero-phones .phone { width: 172px; }
+    .hero-phones .p-back { right: 4%; } .hero-phones .p-front { left: 4%; }
   }
   .marquee { margin-top: clamp(28px, 4vh, 52px); padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .card-title-row { display: flex; align-items: center; gap: 8px; }
@@ -89,10 +89,10 @@
     <div class="hero-grid">
       <div class="hero-text">
         <div class="hero-mark-row">
-          <div class="mark-tile mark-float"><img src="/assets/enapp-mark-140.webp" width="100" height="100" alt="ENAPP" fetchpriority="high"></div>
-          <span class="kicker">ENAPP</span>
+          <div class="mark-tile mark-float"><img src="/assets/enapp-mark-140.webp" width="84" height="84" alt="ENAPP" fetchpriority="high"></div>
         </div>
         <h1 class="h-hero hero-title" data-i18n="hero.title">Küçük uygulamalar, temiz iş.</h1>
+        <div class="slogan hero-rise" aria-hidden="true"><span>Bebeğinizi takip edin</span></div>
         <p class="lead hero-lead hero-rise" data-i18n="hero.lead">Bağımsız bir mobil uygulama stüdyosuyuz. Az sayıda, özenle yapılmış uygulama — sade tasarım, tüketici odaklı.</p>
         <div class="hero-cta hero-rise">
           <a class="btn btn-primary magnetic" href="#apps"><span class="mag-inner" data-i18n="hero.btn1">Uygulamaları gör</span></a>
@@ -104,21 +104,20 @@
         <div class="phone p-front"><div class="screen"><img src="/assets/shots/ticko-hero.webp" width="222" height="480" alt="" loading="eager"></div></div>
       </div>
     </div>
-    <div class="hero-scrollcue" aria-hidden="true"><span class="scroll-cue"><span class="bar"></span><span data-i18n="hero.scroll">Kaydır</span></span></div>
 
     <!-- Marquee: sabit sıra, kesintisiz (iki özdeş dizi) -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
         <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="28" height="28" alt="">Miniz</span>
         <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="28" height="28" alt="">Ticko</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ</span>
-        <span class="marquee-item"><span class="mq-tile">E</span>EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
+        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift<span class="role-tag" data-i18n="role.employee">Çalışan</span></span>
+        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ<span class="role-tag" data-i18n="role.manager">Yönetici</span></span>
+        <span class="marquee-item"><img src="/assets/apps/enmix.webp" width="28" height="28" alt="">EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
         <span class="marquee-item"><img src="/assets/apps/miniz.webp" width="28" height="28" alt="">Miniz</span>
         <span class="marquee-item"><img src="/assets/apps/ticko.webp" width="28" height="28" alt="">Ticko</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift</span>
-        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ</span>
-        <span class="marquee-item"><span class="mq-tile">E</span>EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
+        <span class="marquee-item"><img src="/assets/apps/nfshift.webp" width="28" height="28" alt="">NFShift<span class="role-tag" data-i18n="role.employee">Çalışan</span></span>
+        <span class="marquee-item"><img src="/assets/apps/nfshifthq.webp" width="28" height="28" alt="">NFShift HQ<span class="role-tag" data-i18n="role.manager">Yönetici</span></span>
+        <span class="marquee-item"><img src="/assets/apps/enmix.webp" width="28" height="28" alt="">EnMix<span class="mq-soon" data-i18n="badge.soon">Yakında</span></span>
       </div>
     </div>
   </section>
@@ -146,21 +145,21 @@
         <div class="card-links"><a class="card-link magnetic" href="/miniz/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a><a class="card-link store" href="https://apps.apple.com/tr/app/miniz-bebek-asistani/id6788558323" target="_blank" rel="noopener">App Store ↗</a></div>
         <img class="card-shot" src="/assets/shots/miniz-bento.webp" width="222" height="480" alt="" loading="lazy">
       </article>
-      <!-- NFShift -->
+      <!-- NFShift (Çalışan) -->
       <article class="card tilt card-span-2" style="--accent: var(--c-nfshift);">
-        <div class="card-head"><img class="app-icon" src="/assets/apps/nfshift.webp" width="64" height="64" alt="NFShift" loading="lazy"><div><h3>NFShift</h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
+        <div class="card-head"><img class="app-icon" src="/assets/apps/nfshift.webp" width="64" height="64" alt="NFShift" loading="lazy"><div><h3>NFShift<span class="role-tag" data-i18n="role.employee">Çalışan</span></h3><span class="badge" data-i18n="badge.live">App Store'da</span></div></div>
         <p class="desc" data-i18n="app.nfshift.desc">NFC veya Bluetooth ile mesai giriş-çıkışı — çalışan tarafı.</p>
         <div class="card-links"><a class="card-link magnetic" href="/nfshift/"><span class="mag-inner" data-i18n="card.open">Aç →</span></a></div>
       </article>
-      <!-- NFShift HQ -->
+      <!-- NFShift HQ (Yönetici) -->
       <article class="card tilt card-span-1" style="--accent: var(--c-nfshift);">
-        <div class="card-head"><img class="app-icon sm" src="/assets/apps/nfshifthq.webp" width="44" height="44" alt="NFShift HQ" loading="lazy"><h3 style="font-size:1.1rem;">NFShift HQ</h3></div>
+        <div class="card-head"><img class="app-icon sm" src="/assets/apps/nfshifthq.webp" width="44" height="44" alt="NFShift HQ" loading="lazy"><h3 style="font-size:1.1rem;">NFShift HQ<span class="role-tag" data-i18n="role.manager">Yönetici</span></h3></div>
         <p class="desc" data-i18n="app.nfshifthq.desc">Ekip puantajını yönet — yönetici tarafı.</p>
         <div class="card-links"><a class="card-link" href="/nfshift/" data-i18n="card.open">Aç →</a></div>
       </article>
       <!-- EnMix -->
       <article class="card is-soon card-span-1" style="--accent: var(--c-enmix);">
-        <div class="card-head"><span class="app-icon sm" style="background: color-mix(in srgb, var(--c-enmix) 22%, #fff); display:grid;place-items:center;color:var(--c-enmix);font-weight:600;">E</span><h3 style="font-size:1.1rem;">EnMix</h3></div>
+        <div class="card-head"><img class="app-icon sm" src="/assets/apps/enmix.webp" width="44" height="44" alt="EnMix" loading="lazy"><h3 style="font-size:1.1rem;">EnMix</h3></div>
         <p class="desc" data-i18n="app.enmix.desc">Yeni bir ENAPP uygulaması — çok yakında.</p>
         <div class="card-links"><span class="badge badge-soon" data-i18n="badge.soon">Yakında</span></div>
       </article>
@@ -245,7 +244,9 @@ window.I18N = {
     "nav.apps":"Uygulamalar","nav.approach":"Yaklaşım","nav.contact":"İletişim",
     "hero.title":"Küçük uygulamalar, temiz iş.",
     "hero.lead":"Bağımsız bir mobil uygulama stüdyosuyuz. Az sayıda, özenle yapılmış uygulama — sade tasarım, tüketici odaklı.",
-    "hero.btn1":"Uygulamaları gör","hero.btn2":"İletişim","hero.scroll":"Kaydır",
+    "hero.btn1":"Uygulamaları gör","hero.btn2":"İletişim",
+    "hero.slogans":["Bebeğinizi takip edin","Refleksinizi test edin","Mesainizi kaydedin","Merakınızı besleyin"],
+    "role.employee":"Çalışan","role.manager":"Yönetici",
     "apps.kicker":"UYGULAMALAR","apps.title":"ENAPP ailesi","apps.sub":"Az ama özenli. Her biri tek bir işi iyi yapsın diye.",
     "app.ticko.desc":"Zamanlama refleksi oyunu — ibreyi tam hedefte durdur.",
     "app.miniz.desc":"Bebek takibi ve ebeveyn günlüğü — ilk yılın özenli yardımcısı.",
@@ -273,7 +274,9 @@ window.I18N = {
     "nav.apps":"Apps","nav.approach":"Approach","nav.contact":"Contact",
     "hero.title":"Small apps, done right.",
     "hero.lead":"We're an independent mobile app studio. A few carefully made apps — clean design, made for people.",
-    "hero.btn1":"See the apps","hero.btn2":"Contact","hero.scroll":"Scroll",
+    "hero.btn1":"See the apps","hero.btn2":"Contact",
+    "hero.slogans":["Track your baby","Test your reflexes","Log your work hours","Feed your curiosity"],
+    "role.employee":"Employee","role.manager":"Manager",
     "apps.kicker":"APPS","apps.title":"The ENAPP family","apps.sub":"Few but careful. Each one built to do one thing well.",
     "app.ticko.desc":"A timing-reflex game — stop the needle right on target.",
     "app.miniz.desc":"Baby tracking and a parent journal — a careful companion for the first year.",
@@ -301,7 +304,9 @@ window.I18N = {
     "nav.apps":"Apps","nav.approach":"Ansatz","nav.contact":"Kontakt",
     "hero.title":"Kleine Apps, sauber gemacht.",
     "hero.lead":"Wir sind ein unabhängiges Studio für mobile Apps. Wenige, sorgfältig gemachte Apps — klares Design, für Menschen gemacht.",
-    "hero.btn1":"Apps ansehen","hero.btn2":"Kontakt","hero.scroll":"Scrollen",
+    "hero.btn1":"Apps ansehen","hero.btn2":"Kontakt",
+    "hero.slogans":["Verfolge dein Baby","Teste deine Reflexe","Erfasse deine Arbeitszeit","Nähre deine Neugier"],
+    "role.employee":"Mitarbeiter","role.manager":"Manager",
     "apps.kicker":"APPS","apps.title":"Die ENAPP-Familie","apps.sub":"Wenige, aber sorgfältig. Jede macht eine Sache gut.",
     "app.ticko.desc":"Ein Timing-Reflex-Spiel — stoppe den Zeiger genau am Ziel.",
     "app.miniz.desc":"Baby-Tracking und Eltern-Tagebuch — ein sorgfältiger Begleiter fürs erste Jahr.",
