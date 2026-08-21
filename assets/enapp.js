@@ -33,7 +33,7 @@
     if (lang===null) { try { lang = localStorage.getItem("enapp_lang"); } catch(e){} }
     if (LANGS.indexOf(lang)===-1) { var n=(navigator.language||"tr").slice(0,2).toLowerCase(); lang=LANGS.indexOf(n)!==-1?n:"tr"; }
     applyLang(lang);
-    document.querySelectorAll("[data-lang-btn]").forEach(function (b){ b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang-btn")); }); });
+    document.querySelectorAll("[data-lang-btn]").forEach(function (b){ b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang-btn")); if(window.__heroReplay) window.__heroReplay(); }); });
   }
 
   /* ---------------- Sayaç (varsa) ---------------- */
@@ -62,19 +62,13 @@
       window.__lenis = lenis;
     }
 
-    // Hero: önce hedefleri GÖRÜNÜR set et (gsap-ready CSS opacity:0'ı ez), sonra from ile getir.
+    // Hero logo + alt öğeler (başlık ayrı modülde: initHeroTitle, boot'ta çağrılır).
     var tl = gsap.timeline();
     var mark = document.querySelector(".mark-tile");
-    var title = document.querySelector(".hero-title");
     var rises = gsap.utils.toArray(".hero-rise");
-    gsap.set([mark, title].filter(Boolean).concat(rises), { opacity: 1 });
+    gsap.set([mark].filter(Boolean).concat(rises), { opacity: 1 });
     if (mark) tl.from(mark, { scale: 0.8, opacity: 0, duration: 0.7, ease: "power3.out" }, 0);
-    if (title && window.SplitType) {
-      var st = new SplitType(title, { types: "words" });
-      tl.from(st.words, { y: 26, opacity: 0, filter: "blur(10px)", duration: 0.6, stagger: 0.04, ease: "power3.out" }, 0.15)
-        .set(st.words, { filter: "none" });
-    }
-    rises.forEach(function(el,i){ tl.from(el, { y: 18, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.4 + i*0.08); });
+    rises.forEach(function(el,i){ tl.from(el, { y: 18, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3 + i*0.08); });
 
     // Reveal + stagger (ScrollTrigger)
     if (ST) {
@@ -102,6 +96,56 @@
     } else { showAllReveals(); }
 
     if (HEAVY) { initTilt(gsap); initMagnetic(gsap); }
+  }
+
+  /* ---------------- Hero başlığı: harf harf geliş (3 sahne) ---------------- */
+  function initHeroTitle(){
+    var title=document.querySelector(".hero-title"); if(!title) return;
+    var line1=title.querySelector(".line1"), line2=title.querySelector(".line2"); if(!line1||!line2) return;
+    var gsap=window.gsap;
+    function txt(){ var l=document.documentElement.getAttribute("lang")||"tr"; var d=(window.I18N&&window.I18N[l])||(window.I18N&&window.I18N.tr)||{}; return [d["hero.title1"],d["hero.title2"]]; }
+    function render(){ var t=txt(); if(t[0]!==undefined) line1.textContent=t[0]; if(t[1]!==undefined) line2.textContent=t[1]; }
+    render();
+    // reduced-motion / GSAP yok: metin ANINDA görünür (SEO düz metin zaten DOM'da)
+    if(!gsap || REDUCED){ title.style.opacity="1"; return; }
+
+    var ease1 = window.CustomEase ? CustomEase.create("enHeroEase","M0,0 C0.16,1 0.3,1 1,1") : "power4.out";
+    var tl=null, scrolled=false;
+    function finishNow(){ if(tl) tl.progress(1); }   // yarıda kalan harf kalmasın (kaydırınca)
+    function onScroll(){ if(scrolled)return; scrolled=true; finishNow(); window.removeEventListener("scroll",onScroll); }
+
+    function play(){
+      scrolled=false; window.addEventListener("scroll",onScroll,{passive:true});
+      title.style.opacity="1"; gsap.set(title,{opacity:1});
+      var s1=new SplitType(line1,{types:"chars"}), s2=new SplitType(line2,{types:"chars"});
+      var c2=s2.chars.slice(); var dot=c2.length?c2.pop():null;   // son karakter = nokta
+      var n1=s1.chars.length, n2=c2.length;
+      // 1.6s SERT sınır: stagger'ları spec değerinde tut (28/20ms, mobilde yarısı),
+      // metin uzunsa toplam 1.6s'yi aşmasın diye orantılı kıs.
+      var maxStag1 = SMALL?0.014:0.028, maxStag2 = SMALL?0.010:0.020;
+      var dur1=0.6, dur2=0.44, dotDur=0.34, gap=0.18, dotDelay=0.12, budget=1.5;
+      var stagBudget = Math.max(0, budget - (gap+dur2+dotDelay+dotDur));
+      var stag1 = Math.min(maxStag1, n1>1 ? stagBudget*0.6/(n1-1) : maxStag1);
+      var stag2 = Math.min(maxStag2, n2>1 ? stagBudget*0.4/(n2-1) : maxStag2);
+      tl=gsap.timeline();
+      // Sahne 1: y40 + opacity0 + blur6 -> yerine
+      tl.from(s1.chars,{y:40,opacity:0,filter:"blur(6px)",duration:dur1,stagger:stag1,ease:ease1},0);
+      // Sahne 2: 1. bölümün stagger'ı bittikten +180ms; daha hızlı + scale1.06->1 (vurgulu)
+      var scene2Pos=(n1-1)*stag1 + gap;
+      tl.from(c2,{y:40,opacity:0,filter:"blur(6px)",scale:1.06,duration:dur2,stagger:stag2,ease:ease1}, scene2Pos);
+      // Sahne 3: nokta en son, +120ms, scale0->1 yaylanarak
+      if(dot){ var scene2End=scene2Pos+(n2-1)*stag2+dur2; tl.from(dot,{scale:0,opacity:0,duration:dotDur,ease:"back.out(2.2)"}, scene2End+dotDelay); }
+      tl.eventCallback("onComplete",function(){ title.querySelectorAll(".char").forEach(function(c){ c.style.filter="none"; }); });
+    }
+    play();
+
+    // Dil değişiminde yeniden oynat (eski harfler yukarı+blur çıkar, yeniler gelir)
+    window.__heroReplay=function(){
+      if(REDUCED){ render(); return; }
+      var chars=title.querySelectorAll(".char");
+      if(!chars.length){ render(); play(); return; }
+      gsap.to(chars,{y:-24,opacity:0,filter:"blur(6px)",duration:0.26,stagger:0.004,ease:"power2.in",onComplete:function(){ render(); play(); }});
+    };
   }
 
   /* ---------------- Slogan şeridi (yukarıdan kayarak değişen) ---------------- */
@@ -159,6 +203,7 @@
   function boot(){
     redirectOldAnchors();
     initLang();
+    initHeroTitle();
     initSlogan();
     initMotion();
     initPageTransition(window.gsap);

@@ -47,6 +47,8 @@
     .hero-phones .phone { width: 172px; }
     .hero-phones .p-back { right: 4%; } .hero-phones .p-front { left: 4%; }
   }
+  .hero-title { font-size: clamp(2.05rem, 3.6vw, 3.2rem); line-height: 1.06; letter-spacing: -0.01em; }
+  .hero-title .line { display: block; }
   .marquee { margin-top: clamp(28px, 4vh, 52px); padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .card-title-row { display: flex; align-items: center; gap: 8px; }
   .approach-col h3 { font-size: 1.16rem; margin: 16px 0 8px; }
@@ -93,7 +95,7 @@
         <div class="hero-mark-row">
           <div class="mark-tile mark-float"><img src="/assets/enapp-mark-140.webp" width="84" height="84" alt="ENAPP" fetchpriority="high"></div>
         </div>
-        <h1 class="h-hero hero-title" data-i18n="hero.title">Küçük uygulamalar, temiz iş.</h1>
+        <h1 class="h-hero hero-title"><span class="line line1">İhtiyacınız olanı yapar,</span><span class="line line2">fazlasını değil.</span></h1>
         <div class="slogan hero-rise" aria-hidden="true"><span>Bebeğinizi takip edin</span></div>
         <p class="lead hero-lead hero-rise" data-i18n="hero.lead">Bağımsız bir mobil uygulama stüdyosuyuz. Az sayıda, özenle yapılmış uygulama — sade tasarım, tüketici odaklı.</p>
         <div class="hero-cta hero-rise">
@@ -249,7 +251,7 @@ window.I18N = {
     "meta.desc":"ENAPP, günlük hayatı kolaylaştıran özenli mobil uygulamalar geliştiren bağımsız bir stüdyodur.",
     "a11y.skip":"İçeriğe atla",
     "nav.apps":"Uygulamalar","nav.approach":"Yaklaşım","nav.contact":"İletişim",
-    "hero.title":"Küçük uygulamalar, temiz iş.",
+    "hero.title1":"İhtiyacınız olanı yapar,","hero.title2":"fazlasını değil.",
     "hero.lead":"Bağımsız bir mobil uygulama stüdyosuyuz. Az sayıda, özenle yapılmış uygulama — sade tasarım, tüketici odaklı.",
     "hero.btn1":"Uygulamaları gör","hero.btn2":"İletişim",
     "hero.slogans":["Bebeğinizi takip edin","Refleksinizi test edin","Mesainizi kaydedin","Merakınızı besleyin"],
@@ -279,7 +281,7 @@ window.I18N = {
     "meta.desc":"ENAPP is an independent studio building careful mobile apps that make daily life simpler.",
     "a11y.skip":"Skip to content",
     "nav.apps":"Apps","nav.approach":"Approach","nav.contact":"Contact",
-    "hero.title":"Small apps, done right.",
+    "hero.title1":"Does what you need,","hero.title2":"nothing more.",
     "hero.lead":"We're an independent mobile app studio. A few carefully made apps — clean design, made for people.",
     "hero.btn1":"See the apps","hero.btn2":"Contact",
     "hero.slogans":["Track your baby","Test your reflexes","Log your work hours","Feed your curiosity"],
@@ -309,7 +311,7 @@ window.I18N = {
     "meta.desc":"ENAPP ist ein unabhängiges Studio für sorgfältige mobile Apps, die den Alltag einfacher machen.",
     "a11y.skip":"Zum Inhalt springen",
     "nav.apps":"Apps","nav.approach":"Ansatz","nav.contact":"Kontakt",
-    "hero.title":"Kleine Apps, sauber gemacht.",
+    "hero.title1":"Tut, was du brauchst —","hero.title2":"nicht mehr.",
     "hero.lead":"Wir sind ein unabhängiges Studio für mobile Apps. Wenige, sorgfältig gemachte Apps — klares Design, für Menschen gemacht.",
     "hero.btn1":"Apps ansehen","hero.btn2":"Kontakt",
     "hero.slogans":["Verfolge dein Baby","Teste deine Reflexe","Erfasse deine Arbeitszeit","Nähre deine Neugier"],
@@ -339,6 +341,7 @@ window.I18N = {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
 <script src="/assets/enapp.js" defer></script>
