@@ -265,7 +265,7 @@ input[type=text]{font:inherit;width:100%;padding:12px 14px;border:2px solid var(
     <div class="row" style="justify-content:center"><button class="big" id="btn-back">Haritaya dön</button></div>
   </section>
 
-  <p class="footer-note">Prototip · ENAPP · İlerleme bu tarayıcıda saklanır</p>
+  <p class="footer-note">Sayıgo · ENAPP · İlerleme bu cihazda saklanır, aile koduyla yedeklenir</p>
 </div>
 
 <script>
@@ -933,7 +933,7 @@ gece(area){
     // saat
     x.fillStyle="#fffdf8";x.beginPath();x.arc(CX,CY,R,0,7);x.fill();x.strokeStyle="#2b2a33";x.lineWidth=5;x.stroke();
     for(let i=0;i<60;i++){const a=i*Math.PI/30;x.strokeStyle="#aaa";x.lineWidth=i%5?1:2;x.beginPath();x.moveTo(CX+Math.sin(a)*(R-4),CY-Math.cos(a)*(R-4));x.lineTo(CX+Math.sin(a)*(R-(i%5?9:14)),CY-Math.cos(a)*(R-(i%5?9:14)));x.stroke()}
-    const ha=h/12*Math.PI*2,ma=(mins%60)/60*Math.PI*2;x.lineCap="round";x.strokeStyle="#ef6f4b";x.lineWidth=5;x.beginPath();x.moveTo(CX,CY);x.lineTo(CX+Math.sin(ma)*R*.72,CY-Math.cos(ma)*R*.72);x.stroke();x.strokeStyle="#2b2a33";x.lineWidth=9;x.beginPath();x.moveTo(CX,CY);x.lineTo(CX+Math.sin(ha)*R*.48,CY-Math.cos(ha)*R*.48);x.stroke();x.fillStyle="#2b2a33";x.beginPath();x.arc(CX,CY,7,0,7);x.fill();
+    const ha=h/12*Math.PI*2,ma=(mins%60)/60*Math.PI*2;x.lineCap="round";x.strokeStyle="#ef4b4b";x.lineWidth=5;x.beginPath();x.moveTo(CX,CY);x.lineTo(CX+Math.sin(ma)*R*.72,CY-Math.cos(ma)*R*.72);x.stroke();x.strokeStyle="#2b2a33";x.lineWidth=9;x.beginPath();x.moveTo(CX,CY);x.lineTo(CX+Math.sin(ha)*R*.48,CY-Math.cos(ha)*R*.48);x.stroke();x.fillStyle="#2b2a33";x.beginPath();x.arc(CX,CY,7,0,7);x.fill();
     const curH=Math.floor(mins/60)||12,curM=(mins%60)/5||12;for(let i=1;i<=12;i++){const a=i*Math.PI/6;const nx=CX+Math.sin(a)*(R-30),ny=CY-Math.cos(a)*(R-30);const on=hand==="h"?i===curH:i===curM;x.fillStyle=on?(flash>0?"#f6c445":(hand==="h"?"#2b2a33":"#ef6f4b")):"#f3eee4";x.beginPath();x.arc(nx,ny,16,0,7);x.fill();x.strokeStyle=on?"#1f6fb0":"#d6cfc0";x.lineWidth=2;x.stroke();label(x,String(i),nx,ny+1,17,on?"#fff":"#2b2a33")}if(flash>0)flash--;
     const hh=Math.floor(mins/60)||12;x.fillStyle="rgba(0,0,0,.35)";x.beginPath();x.roundRect(CX-46,CY+R+6,92,30,10);x.fill();label(x,`${hh}.${pad(mins%60)}`,CX,CY+R+21,22,"#fff");const mm=mins%60;tip(x,hand==="h"?"Akrep seçili · rakama dokun":"Yelkovan seçili · rakama dokun",CX,22,W,15);tip(x,`Uzun kol ${nd(curM,"da")} → ${mm} dk${mm===0?" (tam)":mm===15?" (çeyrek geçe)":mm===30?" (buçuk)":mm===45?" (çeyrek kala)":""}`,CX,52,W,15);
     drawParts(x,parts);raf=requestAnimationFrame(loop)}
@@ -971,7 +971,7 @@ pizza(area){
 // ---------- 9. ŞEKİL YAKALA (1. sınıf) ----------
 sekil(area){
   const W=380,H=340;const{c,x}=makeCanvas(area,W,H);let f=null,items=[],parts=[],locked=false,t=0,caught=0;
-  const SH=["ucgen","kare","cember","dikdortgen"],COL={kırmızı:"#ef6f4b",mavi:"#2f8fd8",sarı:"#f6c445"};
+  const SH=["ucgen","kare","cember","dikdortgen"],COL={kırmızı:"#e53935",mavi:"#2f8fd8",sarı:"#f6c445"};
   function spawn(){const r=Math.random;let k=SH[Math.floor(r()*4)],cn=["kırmızı","mavi","sarı"][Math.floor(r()*3)];if(f&&r()<.4){if(f.mode==="renk"){k="kare";cn=f.color}else k=f.shape}if(f&&f.shape==="dikdortgen"&&k==="kare")k="ucgen";items.push({k,cn,v:Math.floor(r()*3),x:30+r()*(W-60),y:-40,vy:.45+r()*.4,rot:r()*6,vr:(r()-.5)*.04,s:20+r()*8})}
   game.round=ff=>{f=ff;locked=false;items=[];parts=[];caught=0;for(let i=0;i<5;i++){spawn();items[i].y=70+i*48;items[i].x=40+((i*97)%300)}const it0=items[1];if(f.mode==="renk"){it0.k="kare";it0.cn=f.color}else it0.k=f.shape};
   function isTarget(it){return f.mode==="renk"?(it.k==="kare"&&it.cn===f.color):it.k===f.shape}
@@ -3706,7 +3706,7 @@ Object.assign(G,{
 });
 SETS[9]={1:["konum1","farkli1","say1","elma","kurbaga"],2:["cisim2","basamak2","sirala2","araba","bakkal"],3:["sayi3","basamak3","sirala3","labirent","roket"],4:["buyuk4","yuvarla4","islem4","top","kamyon"]};
 
-const SHP=["daire","kare","üçgen","yıldız"],SCOL=[["#ef6f4b","kırmızı"],["#2f8fd8","mavi"],["#3dbb8a","yeşil"],["#f6c445","sarı"]];
+const SHP=["daire","kare","üçgen","yıldız"],SCOL=[["#e53935","kırmızı"],["#2f8fd8","mavi"],["#3dbb8a","yeşil"],["#f6c445","sarı"]];
 const SOLREAL=[["🥫","konserve kutusu","silindir"],["⚽","top","küre"],["🎲","zar","küp"],["📦","koli","dikdörtgen prizma"],["⛺","çadır","üçgen prizma"]];
 function rnd(n,p){return Math.floor(n/p+.5)*p}
 
@@ -4621,6 +4621,109 @@ function sayigoLogo(el,fs){if(!el)return;const sc=0.66*fs/230;el.innerHTML=`<svg
   if(!localStorage.getItem("sayigo_demo_hello")){modal.innerHTML=`<div class="box"><h3>Hoş geldiniz 👋</h3><p>Bu, Sayıgo'nun <b>inceleme sürümü</b>. Uygulamanın tüm bölümleri (harita, resim tamamlama, seri, rozetler, Veli bölümü) açık; içerik olarak yalnızca <b>${MN} ayı</b> var.</p><p>1. Üstten sınıfı seçin.<br>2. Ana sayfadaki oyunları oynayın.<br>3. Her oyunun sonunda 👍/👎 ve kısa not bırakın.<br>4. Bitirince <b>📝 Notlarım</b> → WhatsApp ya da e-posta ile gönderin.</p><div class="row"><button id="dh-ok">Başlayalım</button></div></div>`;
     modal.hidden=false;$("#dh-ok").onclick=()=>{modal.hidden=true;try{localStorage.setItem("sayigo_demo_hello","1")}catch(e){}}}
   drawBar();
+})();
+
+// ============ AİLE KODU — otomatik bulut yedeği (Supabase) ============
+;(function(){
+  if(typeof DEMO!=="undefined"&&DEMO)return;
+  const SB=(window.SAYIGO_SB||{url:"https://qnqatbaactsamurotxml.supabase.co",key:"sb_publishable_diFvP6xx0vDiJlqi5ckU9w_oE4SEJ0Q"});
+  const AK="sayigo_aile";            // {kod, son, kirli}
+  const ABC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // karışan 0/O, 1/I yok
+  let A={kod:"",son:0,kirli:false};try{Object.assign(A,JSON.parse(localStorage.getItem(AK)||"{}"))}catch(e){}
+  const aSave=()=>{try{localStorage.setItem(AK,JSON.stringify(A))}catch(e){}};
+  const fmt=k=>k?k.slice(0,5)+"-"+k.slice(5):"";
+  const norm=s=>(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  function newCode(){const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>ABC[x%32]).join("")}
+  let durum="";               // ekranda gösterilen durum
+  async function rpc(fn,body){
+    const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),12000);
+    try{const r=await fetch(SB.url+"/rest/v1/rpc/"+fn,{method:"POST",signal:ctl.signal,
+        headers:{"apikey":SB.key,"Authorization":"Bearer "+SB.key,"Content-Type":"application/json"},body:JSON.stringify(body)});
+      if(!r.ok)throw new Error("HTTP "+r.status);const t=await r.text();return t?JSON.parse(t):null}
+    finally{clearTimeout(to)}}
+  // ---- yedek içeriği ve birleştirme ----
+  const KEEP=["grade","name","days","badges","acc","homeDone","full","tts","ttsRate","_mt"];
+  function payload(){const o={v:1};KEEP.forEach(k=>{if(store[k]!==undefined)o[k]=store[k]});return o}
+  function merge(a,b){ // a: yerel, b: bulut → birleşik (hiçbir oyun kaybolmaz)
+    const out=Object.assign({},a);const newer=(b._mt||0)>(a._mt||0)?b:a;
+    ["grade","name","full","tts","ttsRate"].forEach(k=>{if(newer[k]!==undefined)out[k]=newer[k]});
+    if(!out.grade)out.grade=a.grade||b.grade;
+    const d=Object.assign({},a.days||{});Object.entries(b.days||{}).forEach(([k,v])=>{const x=d[k];if(!x||(v&&(v.t||0)>(x.t||0)))d[k]=v});out.days=d;
+    const bg=Object.assign({},a.badges||{});Object.entries(b.badges||{}).forEach(([k,v])=>{if(!bg[k]||(v&&v<bg[k]))bg[k]=v});out.badges=bg;
+    const ac=[...(a.acc||[])];(b.acc||[]).forEach(x=>{if(!ac.includes(x))ac.push(x)});out.acc=ac;
+    const hd=Object.assign({},a.homeDone||{});Object.entries(b.homeDone||{}).forEach(([k,v])=>{if(v)hd[k]=true});out.homeDone=hd;
+    out._mt=Math.max(a._mt||0,b._mt||0);return out}
+  function apply(o){KEEP.forEach(k=>{if(o[k]!==undefined)store[k]=o[k]});_save()}
+  const hasProgress=()=>Object.keys(store.days||{}).length>0;
+  // ---- eşitleme ----
+  let busy=false,again=false,tmr=0;
+  async function sync(){
+    if(!A.kod)return;if(busy){again=true;return}
+    if(!navigator.onLine){durum="off";drawCard();return}
+    busy=true;durum="busy";drawCard();
+    try{
+      const r=await rpc("yedek_getir",{p_kod:A.kod});const remote=r&&r[0]&&r[0].veri;
+      if(remote){const m=merge(payload(),remote);const before=JSON.stringify(payload());apply(m);
+        if(JSON.stringify(payload())!==before)refreshUI()}
+      await rpc("yedek_kaydet",{p_kod:A.kod,p_veri:payload()});
+      A.son=Date.now();A.kirli=false;aSave();durum="ok"}
+    catch(e){durum=navigator.onLine?"err":"off"}
+    busy=false;drawCard();if(again){again=false;sync()}}
+  function later(ms){clearTimeout(tmr);tmr=setTimeout(sync,ms==null?1500:ms)}
+  // her kayıtta: değişiklik zamanı + bulut yedeği
+  const _save=save;
+  save=function(){store._mt=Date.now();_save();
+    if(!A.kod&&hasProgress()){A.kod=newCode()}     // ilk oyunda otomatik kod
+    if(A.kod){A.kirli=true;aSave();later()}};
+  addEventListener("online",()=>later(300));
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&A.kod)later(800)});
+  function refreshUI(){try{if(!$("#screen-home").hidden){renderHome();const t=[...$("#tabs").children].find(b=>b.classList.contains("on"));if(t)showTab(t.dataset.tab)}}catch(e){}}
+  // ---- geri yükleme ----
+  async function restore(raw,msgEl){
+    const k=norm(raw);if(k.length!==10){msgEl.textContent="Kod 10 karakter olmalı (örn. K7MQP-3XZ9A).";return false}
+    if(!navigator.onLine){msgEl.textContent="İnternet yok. Geri yükleme için bağlantı gerekli.";return false}
+    msgEl.textContent="Yükleniyor…";
+    try{const r=await rpc("yedek_getir",{p_kod:k});const remote=r&&r[0]&&r[0].veri;
+      if(!remote){msgEl.textContent="Bu kodla bir yedek bulunamadı. Kodu kontrol edin.";return false}
+      apply(merge(payload(),remote));A.kod=k;A.kirli=true;aSave();
+      msgEl.textContent=`Yüklendi ✓ ${Object.keys(store.days||{}).length} günlük ilerleme geldi.`;later(200);return true}
+    catch(e){msgEl.textContent="Bağlantı hatası. Biraz sonra tekrar deneyin.";return false}}
+  // ---- stil ----
+  const st=document.createElement("style");st.textContent=`
+  .aile-kod{font-family:var(--display);font-size:1.7rem;font-weight:800;letter-spacing:.08em;color:var(--grape,#5b3fd0);background:#f4f0ff;border:2px dashed #b9a8f5;border-radius:14px;padding:6px 14px;display:inline-block}
+  .aile-st{font-size:.85rem;font-weight:700}.aile-st.ok{color:#1f7a55}.aile-st.off{color:#8a5a00}.aile-st.err{color:#b3261e}
+  #aile-card input,#start-aile input{font:inherit;font-weight:800;letter-spacing:.06em;text-transform:uppercase;max-width:200px}
+  #start-aile{margin-top:4px}#start-aile summary{cursor:pointer;color:var(--grape,#5b3fd0);font-weight:800;list-style:none}#start-aile summary::-webkit-details-marker{display:none}`;
+  document.head.appendChild(st);
+  // ---- Veli kartı ----
+  const card=document.createElement("div");card.className="card stack";card.id="aile-card";
+  const veli=$("#tab-veli");const first=veli.querySelector(".card");first?first.after(card):veli.prepend(card);
+  function stText(){
+    if(durum==="busy")return["","Yedekleniyor…"];
+    if(durum==="off"||(!navigator.onLine&&A.kirli))return["off","📴 İnternet yok — bağlanınca otomatik yedeklenecek."];
+    if(durum==="err")return["err","⚠️ Yedeklenemedi, birazdan tekrar denenecek."];
+    if(A.son&&!A.kirli){const d=new Date(A.son);return["ok","✓ Son yedek: "+d.toLocaleDateString("tr-TR",{day:"numeric",month:"long"})+" "+d.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})]}
+    if(A.kirli)return["off","Yedek bekliyor…"];return["",""]}
+  function drawCard(){const [c,t]=stText();
+    card.innerHTML=`<h3>🔑 Aile kodu (otomatik yedek)</h3>
+      ${A.kod?`<div class="row" style="align-items:center;gap:10px"><span class="aile-kod" id="aile-kod">${fmt(A.kod)}</span><button class="ghost" id="aile-copy">Kopyala</button></div>
+        <div class="aile-st ${c}" id="aile-st">${t}</div>
+        <p class="muted" style="font-size:.85rem">İlerleme her oyundan sonra bu koda otomatik yedeklenir. Telefon değişirse ya da tarayıcı temizlenirse, yeni cihazda Sayıgo'yu açıp bu kodu girmeniz yeterli. <b>Kodu bir yere not edin</b> (ekran görüntüsü de olur). Kodu bilen herkes bu ilerlemeyi görebilir; sadece aile içinde paylaşın.</p>`
+      :`<p class="muted" style="font-size:.85rem">İlk oyun bitince size özel bir aile kodu otomatik oluşur ve ilerleme buluta yedeklenir. Ad, e-posta ya da telefon istenmez.</p>`}
+      <details id="aile-rest"><summary class="muted" style="cursor:pointer;font-weight:700">Başka cihazdaki ilerlemeyi bu cihaza getir</summary>
+        <div class="row" style="margin-top:8px"><input type="text" id="aile-in" placeholder="Aile kodu" maxlength="12" autocomplete="off"><button id="aile-go">Geri yükle</button></div>
+        <p class="muted" id="aile-msg" style="font-size:.85rem"></p></details>`;
+    const cp=$("#aile-copy");if(cp)cp.onclick=()=>{try{navigator.clipboard.writeText(fmt(A.kod));cp.textContent="Kopyalandı ✓"}catch(e){}};
+    $("#aile-go").onclick=async()=>{const ok=await restore($("#aile-in").value,$("#aile-msg"));if(ok){const m=$("#aile-msg").textContent;refreshUI();drawCard();$("#aile-rest").open=true;$("#aile-msg").textContent=m}}}
+  // ---- giriş ekranı: "aile kodum var" ----
+  const sc=$("#screen-start");if(sc){const d=document.createElement("details");d.id="start-aile";
+    d.innerHTML=`<summary>🔑 Daha önce oynadınız mı? Aile koduyla devam edin</summary><div class="row" style="margin-top:8px;justify-content:center"><input type="text" id="sa-in" placeholder="Aile kodu" maxlength="12" autocomplete="off"><button id="sa-go">Devam et</button></div><p class="muted" id="sa-msg" style="font-size:.85rem"></p>`;
+    sc.appendChild(d);
+    $("#sa-go").onclick=async()=>{const ok=await restore($("#sa-in").value,$("#sa-msg"));if(ok&&store.grade){renderHome();show("home");showTab("bugun")}}}
+  drawCard();
+  const _sp=showTab;showTab=function(t){_sp(t);if(t==="veli")drawCard()};
+  if(A.kod&&A.kirli)later(1000);
+  window.sayigoAile={get kod(){return A.kod},sync,merge};
 })();
 
 // ============ bağlantılar ============
