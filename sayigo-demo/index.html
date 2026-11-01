@@ -1012,7 +1012,7 @@ kurbaga(area){
     for(let i=0;i<=20;i++){const px=padX(i),py=padY(i);if(px<cam-50||px>cam+W+50)continue;x.fillStyle=i%5===0?"#2e9a55":"#49b86a";x.beginPath();x.ellipse(px,py,26,18,0,0,7);x.fill();x.fillStyle="#3aa0d8";x.beginPath();x.moveTo(px,py);x.lineTo(px+26,py-8);x.lineTo(px+26,py+2);x.fill();x.fillStyle="rgba(255,255,255,.25)";x.beginPath();x.ellipse(px-8,py-6,8,4,-.4,0,7);x.fill();label(x,String(i),px,py+34,16,i%5===0?"#1b4d2b":"#2b2a33")}
     if(jump>0){jump-=reduced?1:.08;const p=1-Math.max(0,jump);const cx=padX(from)+(padX(pos)-padX(from))*p,cy=padY(from)+(padY(pos)-padY(from))*p;frog(cx,cy,Math.sin(p*Math.PI)*55)}else frog(padX(pos),padY(pos),Math.abs(Math.sin(t/15))*2);
     x.restore();
-    tip(x,`Kurbağa ${nd(pos,"da")}`,W/2,36,W,22);if(hops)tip(x,`${hops} zıplama`,W/2,72,W,16);
+    tip(x,`Kurbağa ${nd(pos,"da")}`,W/2,36,W,22);{const net=Math.round((pos-f.start)/(f.step||1));if(net)tip(x,`${Math.abs(net)} kez ${net>0?"ileri ▶":"◀ geri"}`,W/2,72,W,16)}
     drawParts(x,parts);raf=requestAnimationFrame(loop)}
   loop();return()=>cancelAnimationFrame(raf)
 },
