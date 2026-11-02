@@ -4968,6 +4968,8 @@ function sayigoLogo(el,fs){if(!el)return;const sc=0.66*fs/230;el.innerHTML=`<svg
   document.head.appendChild(st);
   // sınıf seçilmemişse doğrudan 1. sınıf ile başla
   if(!store.grade){store.grade=1;store.name="";save()}
+  // inceleme için ayın tüm günleri açık (gelecek günler deneme olarak oynanır)
+  if(!store.full){store.full=true;save()}
   // ayar kartlarını gizle (tüm aylar / test modu)
   const ft=$("#full-toggle");if(ft&&ft.closest(".card"))ft.closest(".card").style.display="none";
   const dd=$("#dev-date");if(dd&&dd.closest(".card"))dd.closest(".card").style.display="none";
