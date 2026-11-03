@@ -68,8 +68,9 @@ svg text{font-family:var(--body)}
   <div class="card"><h2>Yeni sınıf oluştur</h2>
     <label>Sınıf adı<input id="n-ad" maxlength="40" placeholder="Örn. 2-A Sınıfı"></label>
     <label>Seviye<select id="n-sn"><option value="1">1. sınıf</option><option value="2" selected>2. sınıf</option><option value="3">3. sınıf</option><option value="4">4. sınıf</option></select></label>
-    <label>Şifre (en az 4 karakter)<input id="n-sif" type="password" autocomplete="new-password"></label>
+    <label>Şifre (en az 6 karakter)<input id="n-sif" type="password" autocomplete="new-password"></label>
     <label>Şifre tekrar<input id="n-sif2" type="password" autocomplete="new-password"></label>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:700;font-size:.85rem;line-height:1.4"><input type="checkbox" id="n-kabul" style="width:20px;height:20px;flex:none;margin-top:1px"><span><a href="../gizlilik/ogretmen-kosullari.html" target="_blank" rel="noopener">Öğretmen Kullanım Koşulları</a>'nı ve <a href="../gizlilik/" target="_blank" rel="noopener">Aydınlatma Metni</a>'ni okudum, kabul ediyorum. Öğrenci verilerini yalnızca eğitim amacıyla kullanacağım ve paylaşmayacağım.</span></label>
     <div class="row"><button id="n-go">Sınıfı oluştur</button></div><div class="msg" id="n-msg"></div>
     <p class="muted small" style="margin:0">E-posta ya da telefon istenmez. Kodu ve şifreyi not edin; şifreyi unutursanız yeni sınıf açmanız gerekir.</p></div>
 </section>
@@ -99,7 +100,9 @@ svg text{font-family:var(--body)}
       <div class="tg"><span class="sw"><input type="checkbox" id="a-sir"><i></i></span><div><b>🏆 Sıralama</b><p class="muted small">Haftalık yıldız sıralaması (ilk 10) çocukların ekranında görünür. Varsayılan kapalı: rekabet bazı çocukları motive eder, bazılarını üzer. Siz karar verin.</p></div></div>
       <div class="tg"><div style="flex:1"><b>⭐ Haftalık sınıf hedefi</b><p class="muted small">Sınıfın bu hafta birlikte toplayacağı yıldız. Her doğru cevap 1 yıldız (günde en çok 5).</p>
         <div class="row" style="margin-top:6px"><input type="number" id="a-hdf" min="10" max="5000" step="10" style="max-width:130px"><span class="muted small" id="a-onr"></span></div></div></div>
-      <div class="row"><button id="a-save">Ayarları kaydet</button><span class="msg" id="a-msg"></span></div></div>
+      <div class="row"><button id="a-save">Ayarları kaydet</button><span class="msg" id="a-msg"></span></div>
+      <div class="tg" style="border-top:1px solid var(--line);border-bottom:0"><div style="flex:1"><b>🗑 Sınıfı sil</b><p class="muted small">Sınıf, tüm öğrenci kayıtları ve sonuçlar kalıcı olarak silinir. Geri alınamaz.</p>
+        <div class="row" style="margin-top:6px"><button class="ghost" id="a-del" style="color:var(--coral)">Sınıfı ve tüm verileri sil</button><span class="msg" id="a-dmsg"></span></div></div></div></div>
   </div>
   <div class="card"><div class="row" style="justify-content:space-between"><h3>Öğrenciler</h3><span class="muted small">Son 7 gün: <span class="dots" style="display:inline-flex;vertical-align:middle"><i class="on"></i></span> 4–5 doğru · <span class="dots" style="display:inline-flex;vertical-align:middle"><i class="mid"></i></span> 0–3 doğru</span></div>
     <div class="tw"><table><thead><tr><th>Takma ad</th><th>Son 7 gün</th><th>İlk denemede doğru</th><th>Zorlandığı konu</th><th>Veli gözlemi</th><th></th></tr></thead><tbody id="stu"></tbody></table></div>
@@ -108,7 +111,7 @@ svg text{font-family:var(--body)}
     <p class="muted small" style="margin:0">Seçtiğiniz günün oyun konusuyla 10 soruluk kâğıt + cevap anahtarı. Herkes aynı kâğıdı alır; yazdırın ya da PDF kaydedin.</p>
     <div class="row"><input type="date" id="w-d" style="max-width:190px"><button id="w-go">Kâğıdı aç</button></div></div>
 </section>
-<p class="muted small" style="text-align:center">Sayıgo · ENAPP · Veriler yalnızca takma ad ve oyun sonuçlarıdır.</p>
+<p class="muted small" style="text-align:center">Sayıgo · ENAPP · Veriler yalnızca takma ad ve oyun sonuçlarıdır. Öğrenci verilerini paylaşmayın. · <a href="../gizlilik/" target="_blank" rel="noopener" style="color:inherit">Aydınlatma Metni</a> · <a href="../gizlilik/ogretmen-kosullari.html" target="_blank" rel="noopener" style="color:inherit">Kullanım Koşulları</a></p>
 </main>
 <script>
 (function(){
@@ -120,11 +123,12 @@ const TODAY=(window.SAYIGO_DEMO&&window.SAYIGO_DEMO.date)||iso(new Date());
 const addD=(ds,n)=>{const d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)};
 const weekStart=ds=>{const d=new Date(ds+"T12:00:00");const w=(d.getDay()+6)%7;return addD(ds,-w)};
 const GN=["Paz","Pzt","Sal","Çar","Per","Cum","Cmt"];
-const ERR={giris_hatali:"Kod ya da şifre hatalı.",ad_kisa:"Sınıf adı en az 2 harf olmalı.",sifre_kisa:"Şifre en az 4 karakter olmalı."};
+const ERR={giris_hatali:"Kod ya da şifre hatalı.",cok_deneme:"Çok fazla hatalı deneme. Güvenlik için 15 dakika bekleyip tekrar deneyin.",ad_kisa:"Sınıf adı 2–40 harf olmalı.",sifre_kisa:"Şifre en az 6 karakter olmalı.",kabul_yok:"Kullanım koşullarını kabul etmelisiniz."};
 async function rpc(fn,body){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),15000);
   try{const r=await fetch(SB.url+"/rest/v1/rpc/"+fn,{method:"POST",signal:ctl.signal,headers:{"apikey":SB.key,"Authorization":"Bearer "+SB.key,"Content-Type":"application/json"},body:JSON.stringify(body)});
     const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){}
     if(!r.ok){const m=(j&&j.message)||("HTTP "+r.status);const k=Object.keys(ERR).find(k=>m.includes(k));throw new Error(k?ERR[k]:(r.status===404?"Sunucu hazır değil (veritabanı kurulumu eksik).":"Bağlantı hatası. Tekrar deneyin."))}
+    if(j&&j.hata)throw new Error(ERR[j.hata]||"İşlem yapılamadı.");
     return j}catch(e){if(e.name==="AbortError")throw new Error("Bağlantı zaman aşımına uğradı.");if(e instanceof TypeError)throw new Error("İnternet bağlantısı yok.");throw e}finally{clearTimeout(to)}}
 const appUrl=()=>new URL("../oyna/",location.href).href;
 const veliMsg=(kod,ad)=>`Sevgili veliler,\n${ad} olarak Sayıgo'da her gün 5 dakikalık bir matematik oyunu oynuyoruz.\n\n1) Bu bağlantıyı açın: ${appUrl()}#sinif=${kod}\n2) Veli sekmesinde çocuğunuzun takma adını yazın (örn. Elif K.) ve onay kutusunu işaretleyin.\n\nSınıf kodu: ${kod}\nGerçek ad, e-posta ya da telefon istenmez. Ben yalnızca takma adı, puanı ve zorlanılan konuları görürüm.`;
@@ -142,9 +146,9 @@ $("#l-go").onclick=async()=>{const kod=$("#l-kod").value.toUpperCase().replace(/
 $("#l-sif").addEventListener("keydown",e=>{if(e.key==="Enter")$("#l-go").click()});
 // ---- yeni sınıf ----
 $("#n-go").onclick=async()=>{const ad=$("#n-ad").value.trim(),sn=+$("#n-sn").value,s1=$("#n-sif").value,s2=$("#n-sif2").value,m=$("#n-msg");m.className="msg err";
-  if(ad.length<2){m.textContent="Sınıf adını yazın.";return}if(s1.length<4){m.textContent="Şifre en az 4 karakter olmalı.";return}if(s1!==s2){m.textContent="Şifreler aynı değil.";return}
+  if(ad.length<2){m.textContent="Sınıf adını yazın.";return}if(s1.length<6){m.textContent="Şifre en az 6 karakter olmalı.";return}if(s1!==s2){m.textContent="Şifreler aynı değil.";return}if(!$("#n-kabul").checked){m.textContent="Devam etmek için kullanım koşullarını kabul edin.";return}
   m.className="msg";m.textContent="Oluşturuluyor…";$("#n-go").disabled=true;
-  try{const kod=await rpc("sinif_olustur",{p_ad:ad,p_sinif:sn,p_sifre:s1});A={kod,sif:s1};try{sessionStorage.setItem("sayigo_ogr",JSON.stringify(A))}catch(e){}
+  try{const kod=await rpc("sinif_olustur",{p_ad:ad,p_sinif:sn,p_sifre:s1,p_kabul:"ogr-1.0"});A={kod,sif:s1};try{sessionStorage.setItem("sayigo_ogr",JSON.stringify(A))}catch(e){}
     $("#nw-kod").textContent=kod;$("#nw-txt").value=veliMsg(kod,ad);m.textContent="";view("new")}
   catch(e){m.className="msg err";m.textContent=e.message}$("#n-go").disabled=false};
 $("#nw-copy").onclick=()=>copy($("#nw-txt").value,$("#nw-copy"));
@@ -204,6 +208,9 @@ $("#a-save").onclick=async()=>{const m=$("#a-msg");m.className="msg";m.textConte
   const ay={yildizlar:$("#a-yil").checked,siralama:$("#a-sir").checked,hedef:Math.max(10,Math.min(5000,+$("#a-hdf").value||300))};
   try{await rpc("ogretmen_ayar",{p_kod:A.kod,p_sifre:A.sif,p_ayar:ay});D.ayar=ay;m.className="msg ok";m.textContent="Kaydedildi ✓ Çocukların ekranı birkaç dakika içinde güncellenir.";render()}
   catch(e){m.className="msg err";m.textContent=e.message}};
+$("#a-del").onclick=async()=>{const b=$("#a-del"),m=$("#a-dmsg");if(b.dataset.c!=="1"){b.dataset.c="1";b.textContent="Emin misiniz? Tekrar basınca kalıcı silinir";setTimeout(()=>{b.dataset.c="";b.textContent="Sınıfı ve tüm verileri sil"},5000);return}
+  b.disabled=true;try{await rpc("ogretmen_sinif_sil",{p_kod:A.kod,p_sifre:A.sif});A=null;D=null;try{sessionStorage.removeItem("sayigo_ogr")}catch(e){}view("login");$("#l-msg").className="msg ok";$("#l-msg").textContent="Sınıf ve tüm verileri silindi."}
+  catch(e){m.className="msg err";m.textContent=e.message;b.disabled=false}};
 $("#w-go").onclick=()=>{const d=$("#w-d").value||TODAY;window.open(appUrl()+"#kagit="+d+"&g="+D.sinif_no,"_blank")};
 if(A&&A.kod)load();
 })();
