@@ -6802,7 +6802,12 @@ window._tierLog=window._tierFix();
 // eski oyunlar (KTIER yok): günün 5 sorusunu kolaydan zora sırala
 const _dfOlk=dailyFacts;
 dailyFacts=function(grade,dateStr,gameId){const out=_dfOlk(grade,dateStr,gameId);if(KTIER[gameId]||!Array.isArray(out))return out;
-  const sc=out.map((f,i)=>[factScore(f),i,f]);sc.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);return sc.map(x=>x[2])};
+  const sc=out.map((f,i)=>[factScore(f),i,f]);sc.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const res=sc.map(x=>x[2]);
+  // Kasım düzeni tüm oyunlarda: 1-2 kolay, 3-4 normal, 5 ⭐ final; önceki turlarda 2+ hata olursa final yerine normal bir soru
+  if(res.length===5&&!res[4].fin){res.forEach((f,i)=>f.lvl=["E","E","N","N","F"][i]);res[4].fin=true;
+    try{const d=+dateStr.slice(8,10),d2=((d+13)%28)+1,ds2=dateStr.slice(0,8)+String(d2).padStart(2,"0");const o2=_dfOlk(grade,ds2,gameId);const qs=new Set(res.map(f=>f.q));
+      const c=(o2||[]).map(f=>[factScore(f),f]).filter(x=>!qs.has(x[1].q)).sort((a,b)=>a[0]-b[0]);if(c.length){const alt=c[Math.floor((c.length-1)/2)][1];alt.lvl="N";res[4].alt=alt}}catch(e){}}
+  return res};
 })();
 
 // ===== Olkun #2: en küçük yazı ≈12 punto (ekranda ≥16 px) =====
