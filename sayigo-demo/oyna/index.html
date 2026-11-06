@@ -7338,7 +7338,7 @@ Object.assign(ENGINES,{citustasi:ENG_CIT,adim100:ENG_KIBRIT});
 Object.assign(KTIER,{citustasi:{E:[[0]],N:[[1]],F:[[2]]},adim100:{E:[[0]],N:[[1],[3]],F:[[2]]}});
 
 // ---------- Aralık setlerine: her sınıfta bir tekrar oyununun yerine ----------
-const SW={1:[["sepet","kuptren"]],2:[["tablet","masadiz"]],3:[["kur3","citustasi"]],4:[["saathesap","adim100"],["grafik","khafiza"]]};
+const SW={1:[["sepet","kuptren"]],2:[["tablet","masadiz"]],3:[["kur3","citustasi"]],4:[["saathesap","adim100"],["grafik","bhafiza"]]};
 // (4. sınıf Aralık: veri Mart konusu; Hasat Grafiği yerine Kasım'ın çarpma hafıza oyunu)
 for(const g in SW)SW[g].forEach(([o,n])=>{SETS[12][g]=SETS[12][g].map(id=>id===o?n:id)});
 const C=(t,konu,mat,s,q,kesif,dikkat)=>Object.assign(HC(t,konu,mat,s,q),{kesif,dikkat,yeni:true});
@@ -7876,6 +7876,7 @@ function sayigoLogo(el,fs){if(!el)return;const sc=0.66*fs/230;el.innerHTML=`<svg
     modal.hidden=false;$("#dh-ok").onclick=()=>{modal.hidden=true;try{localStorage.setItem("sayigo_demo_hello2","1")}catch(e){}}}
   // diğer ay görünümünde "bugünün oyunu" yerine o ayın kısa yönlendirmesi
   const _rh=renderHome;renderHome=function(){_rh.apply(this,arguments);try{if(VM!==curMonth){const hb=$("#hero-bubble");if(hb)hb.innerHTML=`<b>📅 ${MONTHS[VM-1]} oyunları</b><p class="muted">Haritada bir güne ya da aşağıdaki listeden bir oyuna dokunun. Bu aydaki oyunlar deneme olarak oynanır.</p>`}}catch(e){}};
+  try{const fn=document.querySelector(".footer-note");if(fn)fn.textContent="Sayıgo · ENAPP · İnceleme sürümü: ilerleme yalnızca bu cihazda saklanır"}catch(e){}
   drawBar();
 })();
 
@@ -8382,7 +8383,7 @@ window.KD_OZEL={"aci4": ["Saatin iki kolunun arasındaki açıklığın bir aç�
   .uz-card{text-align:left;background:#fffdf7;border:2px solid #e9dcc0;border-radius:20px;overflow:hidden;margin:4px 0 2px;color:#2b2a3d}
   .uz-hd{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1f4d6b,#2f6f8f);color:#fff;padding:14px 16px}
   .uz-hd .av{width:54px;height:54px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:1.8rem;flex:none;box-shadow:0 0 0 3px #f6c445}
-  .uz-hd b{display:block;font-family:var(--display);font-size:1.6rem;font-weight:800;white-space:nowrap;line-height:1.1;letter-spacing:.01em}
+  .uz-hd>div{min-width:0}.uz-hd b{display:block;font-family:var(--display);font-size:clamp(1.3rem,5.6vw,1.6rem);font-weight:800;line-height:1.15;letter-spacing:.01em;overflow-wrap:anywhere}
   .uz-hd b i{display:block;font-style:normal;font-size:.95rem;font-weight:700;opacity:.9;margin-bottom:1px}
   .uz-hd b em{display:block;font-style:normal;font-size:1.1rem;font-weight:700;color:#ffe08a;margin-top:2px}
   .uz-hd small{display:block;opacity:.9;font-size:.8rem;font-weight:700;margin-top:4px}
@@ -8425,7 +8426,7 @@ window.KD_OZEL={"aci4": ["Saatin iki kolunun arasındaki açıklığın bir aç�
   .kvkk-lnk{font-size:.8rem;text-align:center;margin-top:6px}.kvkk-lnk a{color:var(--muted);font-weight:700}`;document.head.appendChild(st);
   function draw(){c.innerHTML=`<h3>🔒 Gizlilik ve verilerim</h3>
     <ul><li>Hesap, ad-soyad, e-posta, telefon <b>istenmez</b>. Reklam, çerez ve takip aracı <b>yoktur</b>.</li>
-    <li>Oyun ilerlemesi bu cihazda tutulur. Buluta yalnızca aile kodu yedeği ve (onay verdiyseniz) sınıf sonuçları gider; çocuğun adı gönderilmez.</li>
+    <li>Oyun ilerlemesi bu cihazda tutulur. Buluta yalnızca ${window.SAYIGO_DEMO?"":"aile kodu yedeği ve "}(onay verdiyseniz) sınıf sonuçları gider; çocuğun adı gönderilmez.</li>
     <li>Verilerinizi aşağıdan istediğiniz an silebilirsiniz.</li></ul>
     <div class="row" style="gap:8px;flex-wrap:wrap"><a class="ghost" href="../gizlilik/" target="_blank" rel="noopener" style="text-decoration:none;padding:8px 12px;border-radius:12px;font-weight:800">Aydınlatma Metni</a>
       <a class="ghost" href="../gizlilik/acik-riza.html" target="_blank" rel="noopener" style="text-decoration:none;padding:8px 12px;border-radius:12px;font-weight:800">Açık Rıza Metni</a></div>
