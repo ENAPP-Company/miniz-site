@@ -1531,8 +1531,8 @@ ciftlik(area){
   game.round=ff=>{f=ff;locked=false;parts=[];tapped=[];sel=-1;fly=null;bar.innerHTML="";const dag=f.mode==="dagit";const g=f.g,n=f.n;
     const cols=dag?g:(g<=2?g:(g===4?2:3)),rows=Math.ceil(g/cols);const pw=Math.min(170,(W-24)/cols-10),Y0=dag?150:118;let ph=dag?62:(40+Math.ceil(n/3)*46);let rs=46;if(!dag){const avail=(H-Y0-6-(rows-1)*16)/rows;if(ph>avail){ph=avail;rs=Math.max(26,(ph-40)/Math.ceil(n/3))}}geo={cols,rows,pw,ph,rs,px0:(W-(pw+10)*cols)/2+5,Y0};
     if(dag){coops=Array(g).fill(0);hens=Array.from({length:g*n},(_,j)=>({x:36+(j%8)*44,y:geo.Y0+rows*(ph+16)+24+Math.floor(j/8)*42,home:-1}))}
-    const ok=document.createElement("button");ok.textContent="Tamam ✓";ok.onclick=()=>{if(locked||fly)return;let v;if(dag){if(hens.some(h=>h.home<0)){setMsg("Önce bütün tavukları kümeslere koy.","hint");return}v=coops.every(k=>k===coops[0])?coops[0]:-1;if(v<0){setMsg("Kümeslerde eşit sayıda tavuk olmalı. Bir daha dağıt.","hint");coops=Array(g).fill(0);hens.forEach(h=>h.home=-1);sfx.bad();return}}else v=tapped.length*n;
-      if(judge(v)){locked=true;sfx.goal();confetti(parts,W/2,180,40)}else{sfx.bad();if(!dag)tapped=[]}};bar.appendChild(ok)};
+    const ok=document.createElement("button");ok.textContent="Tamam ✓";ok.onclick=()=>{if(locked||fly)return;let v;if(dag){if(hens.some(h=>h.home<0)){setMsg("Önce bütün tavukları kümeslere koy.","hint");return}v=coops.every(k=>k===coops[0])?coops[0]:-1;if(v<0){if(window._otoDry)return;setMsg("Kümeslerde eşit sayıda tavuk olmalı. Bir daha dağıt.","hint");coops=Array(g).fill(0);hens.forEach(h=>h.home=-1);sfx.bad();return}}else v=tapped.length*n;
+      if(judge(v)){locked=true;sfx.goal();confetti(parts,W/2,180,40)}else if(!window._otoDry){sfx.bad();if(!dag)tapped=[]}};bar.appendChild(ok)};
   function penAt(p){const{cols,pw,ph,px0,Y0}=geo;for(let i=0;i<f.g;i++){const X=px0+(i%cols)*(pw+10),Y=Y0+Math.floor(i/cols)*(ph+16);if(p.x>=X&&p.x<=X+pw&&p.y>=Y-30&&p.y<=Y+ph)return i}return -1}
   c.addEventListener("pointerdown",e=>{if(locked||!f||fly)return;const p=c.pt(e);
     if(f.mode==="dagit"){for(let j=hens.length-1;j>=0;j--){const h=hens[j];if(h.home>=0)continue;if(Math.hypot(p.x-h.x,p.y-h.y)<26){const target=coops.indexOf(Math.min(...coops));const{cols,pw,ph,px0,Y0}=geo;const X=px0+(target%cols)*(pw+10),Y=Y0;fly={h,tx:X+14+(coops[target]%4)*18,ty:Y+ph-22-Math.floor(coops[target]/4)*16,p:0,target};sfx.step();return}}
@@ -1980,11 +1980,11 @@ kenken(area){
   const W=380,H=300;const{c,x}=makeCanvas(area,W,H);const bar=document.createElement("div");bar.className="hopbar";area.appendChild(bar);let f=null,K=null,parts=[],locked=false,t=0,val=[],giv=new Set(),sel=null,errT=0,err=new Set();
   let CS=72,X0=0,Y0=22;
   function setVal(v){if(!sel||locked)return;const[i,j]=sel;if(giv.has(i*K.n+j))return;val[i][j]=v;sfx.step();if(v){for(let k=1;k<=K.n*K.n;k++){const z=(i*K.n+j+k)%(K.n*K.n);const a=Math.floor(z/K.n),b=z%K.n;if(!val[a][b]){sel=[a,b];break}}}}
-  function check(){if(locked)return;if(val.some(r=>r.some(v=>!v))){setMsg("Önce boş kareleri doldur.","hint");return}err=new Set();const n=K.n;
+  function check(){if(locked)return;if(val.some(r=>r.some(v=>!v))){if(window._otoDry)return;setMsg("Önce boş kareleri doldur.","hint");return}err=new Set();const n=K.n;
     for(let i=0;i<n;i++){const row=val[i],col=val.map(r=>r[i]);if(new Set(row).size<n)row.forEach((_,j)=>err.add(i*n+j));if(new Set(col).size<n)col.forEach((_,j)=>err.add(j*n+i))}
     K.cages.forEach(cg=>{if(cg.cells.reduce((s,[a,b])=>s+val[a][b],0)!==cg.sum)cg.cells.forEach(([a,b])=>err.add(a*n+b))});
     if(!err.size){judge(1);locked=true;sfx.goal();confetti(parts,W/2,140,40);return}
-    errT=70;let rv=null;for(let z=0;z<n*n&&!rv;z++){const a=Math.floor(z/n),b=z%n;if(!giv.has(z)&&val[a][b]!==K.sol[a][b])rv=[a,b]}
+    if(window._otoDry)return;errT=70;let rv=null;for(let z=0;z<n*n&&!rv;z++){const a=Math.floor(z/n),b=z%n;if(!giv.has(z)&&val[a][b]!==K.sol[a][b])rv=[a,b]}
     if(rv){val[rv[0]][rv[1]]=K.sol[rv[0]][rv[1]];giv.add(rv[0]*n+rv[1]);f.hint=`Kırmızı yerlerde sorun var. Sana bir kare açtım: ${rv[0]+1}. satır ${rv[1]+1}. sütun = ${K.sol[rv[0]][rv[1]]}.`}judge(0)}
   game.round=ff=>{f=ff;K=f.K;locked=false;parts=[];err=new Set();errT=0;CS=K.n===3?70:56;X0=(W-K.n*CS)/2;giv=new Set(K.giv);val=K.sol.map((r,i)=>r.map((v,j)=>giv.has(i*K.n+j)?v:0));sel=null;for(let z=0;z<K.n*K.n;z++)if(!giv.has(z)){sel=[Math.floor(z/K.n),z%K.n];break}
     bar.innerHTML="";for(let v=1;v<=K.n;v++){const b=document.createElement("button");b.textContent=v;b.style.minWidth="54px";b.onclick=()=>setVal(v);bar.appendChild(b)}const del=document.createElement("button");del.className="ghost";del.textContent="Sil";del.onclick=()=>setVal(0);const ok=document.createElement("button");ok.textContent="Kontrol ✓";ok.onclick=check;bar.append(del,ok)};
@@ -6167,7 +6167,7 @@ const ENG_ALANKARE=K.mkPaint({bg:bg("plan"),cell(x,b,on){x.fillStyle=on?"#ffce54
 const ENG_KUTLEHATA=ENG_HATA;
 const ENG_CEVREBUL=ENG_CEVREYOL;
 const ENG_ALANCIZ=aEngine({H:330,bg:bg("plan"),
-  init(f,S,A){S.a=null;S.b=null;A.btn("Temizle",()=>{if(!S.locked){S.a=null;S.b=null}});A.btn("Tamam ✓",()=>{if(S.locked)return;if(!S.a||!S.b){A.fail();return}const w=Math.abs(S.a[0]-S.b[0]),h=Math.abs(S.a[1]-S.b[1]);f.check(w,h)?A.done():(A.fail(),S.a=null,S.b=null)},"")},
+  init(f,S,A){S.a=null;S.b=null;A.btn("Temizle",()=>{if(!S.locked){S.a=null;S.b=null}});A.btn("Tamam ✓",()=>{if(S.locked)return;if(!S.a||!S.b){A.fail();return}const w=Math.abs(S.a[0]-S.b[0]),h=Math.abs(S.a[1]-S.b[1]);f.check(w,h)?A.done():(A.fail(),window._otoDry||(S.a=null,S.b=null))},"")},
   g(A){const n=8,sp=Math.min(36,(A.W-40)/n),x0=(A.W-sp*n)/2,y0=52;return{n,sp,x0,y0}},
   down(p,S,A){if(S.locked)return;const g=this.g(A);const i=Math.round((p.x-g.x0)/g.sp),j=Math.round((p.y-g.y0)/g.sp);if(i<0||j<0||i>g.n||j>g.n-2)return;if(Math.hypot(p.x-(g.x0+i*g.sp),p.y-(g.y0+j*g.sp))>16)return;if(!S.a||S.b){S.a=[i,j];S.b=null}else S.b=[i,j];sfx.pop()},
   draw(x,S,A){const g=this.g(A);if(S.a&&S.b){const x1=Math.min(S.a[0],S.b[0]),y1=Math.min(S.a[1],S.b[1]),w=Math.abs(S.a[0]-S.b[0]),h=Math.abs(S.a[1]-S.b[1]);x.fillStyle="rgba(255,206,84,.55)";x.fillRect(g.x0+x1*g.sp,g.y0+y1*g.sp,w*g.sp,h*g.sp);x.strokeStyle="#ffce54";x.lineWidth=3;x.strokeRect(g.x0+x1*g.sp,g.y0+y1*g.sp,w*g.sp,h*g.sp);
@@ -7514,6 +7514,33 @@ window.fitCard=function(x,b,s,col){s=String(s);const mw=b.w-12;x.save();x.textAl
     out.forEach((f,i)=>{if(bad(f)){const n=pick(i);if(n){used.add(n.q+"|"+n.ansTxt);const keep={lvl:f.lvl,fin:f.fin,alt:f.alt};Object.keys(f).forEach(k=>delete f[k]);Object.assign(f,n,keep);delete f._olkSwap}else window._olkLog.push(gameId+" "+dateStr+" "+f.q)}
       if(f.alt&&bad(f.alt)){const n=pick(2);if(n){used.add(n.q+"|"+n.ansTxt);f.alt=Object.assign({},n,{lvl:"N"})}else delete f.alt}});
     return out};
+})();
+// ===== Otomatik bitiş: durum doğruysa Tamam/Öde/Kontrol'e basılmış gibi say =====
+(function(){
+  const RX=/^(Tamam|Öde|Kontrol)/;
+  let tm=[];
+  function okBtn(){const a=document.querySelector("#area");if(!a)return null;return [...a.querySelectorAll("button")].find(b=>RX.test(b.textContent.trim())&&!b.disabled&&b.offsetParent!==null&&typeof b.onclick==="function")||null}
+  function tryAuto(gi){
+    try{
+      if(typeof game!=="object"||!game||game.i!==gi||document.querySelector("#screen-play")?.hidden)return;
+      const f=game.facts&&game.facts[game.i];if(!f)return;
+      const b=okBtn();if(!b)return;
+      const J=judge,SM=setMsg,sv={},h=f.hint,at=f.ansTxt;let rec,called=false;
+      for(const k in sfx)if(typeof sfx[k]==="function"){sv[k]=sfx[k];sfx[k]=()=>{}}
+      judge=v=>{called=true;rec=v;return v===f.a};setMsg=()=>{};window._otoDry=true;
+      try{b.onclick.call(b,null)}catch(e){}
+      finally{window._otoDry=false;judge=J;setMsg=SM;for(const k in sv)sfx[k]=sv[k]}
+      if(called&&rec===f.a){sfx.goal&&sfx.goal();judge(rec)}
+      else if(called){f.hint=h;if(at===undefined)delete f.ansTxt;else f.ansTxt=at}
+    }catch(e){}
+  }
+  function sched(e){
+    if(typeof game!=="object"||!game)return;
+    const a=document.querySelector("#area");if(!a||!a.contains(e.target))return;
+    const t=e.target.closest&&e.target.closest("button");if(t&&RX.test(t.textContent.trim()))return;
+    tm.forEach(clearTimeout);const gi=game.i;tm=[setTimeout(()=>tryAuto(gi),380),setTimeout(()=>tryAuto(gi),1200)];
+  }
+  document.addEventListener("pointerup",sched);document.addEventListener("click",sched);
 })();
 
 // ============ SESLİ OKUMA (TTS) ============
