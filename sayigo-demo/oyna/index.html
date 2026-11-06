@@ -1748,9 +1748,9 @@ mangala:[
 okey:[
   r=>{const col=["k","s","m","z"][ri(r,0,3)],st=[1,1,2,5,10][ri(r,0,4)];const s=st===10?ri(r,1,5)*10:st===5?ri(r,1,10)*5:ri(r,1,Math.min(90,99-5*st));const seq=[0,1,2,3,4].map(i=>s+i*st);const miss=ri(r,1,4);const v=seq[miss];const oth=["k","s","m","z"].filter(k=>k!==col);
     const ids=[...new Set([oth[ri(r,0,2)]+"|"+v,col+"|"+(v+1),col+"|"+(v+2*st<=99?v+2*st:v-2*st),oth[ri(r,0,2)]+"|"+(v+st)])].filter(z=>z!==col+"|"+v).slice(0,3);
-    return{t:"Seri (ritmik)",mode:"seri",col,seq,miss,a:col+"|"+v,tiles:shuffle(r,[col+"|"+v,...ids]),q:`${OKC[col][1].toLocaleUpperCase("tr")} seride eksik taş hangisi?`,hint:`Seri: hep aynı renk, sayılar ${nd(st,"er")} artıyor.`,ansTxt:`${OKC[col][1]} ${v}`}},
-  r=>{const N=ri(r,1,13);const cs=shuffle(r,["k","s","m","z"]).slice(0,3);const tl=cs.map(c=>c+"|"+N);tl.push(cs[0]+"|"+N);while(tl.length<8){const v=ri(r,1,13);if(v!==N)tl.push(["k","s","m","z"][ri(r,0,3)]+"|"+v)}return{t:"Per",mode:"per",N,rack:shuffle(r,tl),a:"per",q:"Per yap: aynı sayıdan, üç FARKLI renkte taşa dokun",hint:`Per: sayılar aynı, renkler farklı. ${N} taşlarına bak; aynı renk iki kez olmaz.`,ansTxt:`${N} sayısından üç farklı renk`}},
-  r=>{const col=["k","s","m","z"][ri(r,0,3)],st=[1,2,5][ri(r,0,2)];const s=ri(r,1,Math.max(1,Math.floor((60-4*st)/1)));const seq=[0,1,2,3,4].map(i=>({c:col,v:s+i*st}));const j=ri(r,0,4);const byColor=r()<.5||seq[j].v+3*st>99;if(byColor){const oth=["k","s","m","z"].filter(k=>k!==col);seq[j]={c:oth[ri(r,0,2)],v:seq[j].v}}else seq[j]={c:col,v:seq[j].v+3*st};return{t:"Seriyi bozan",mode:"bozan",col,seq,a:j,q:"Bu seriyi bozan taşa dokun",hint:"Seride hepsi aynı renk olmalı ve sayılar düzenli artmalı.",ansTxt:`${j+1}. taş`}},
+    return{t:"Sayı örüntüsü (ritmik sayma)",mode:"seri",col,seq,miss,a:col+"|"+v,tiles:shuffle(r,[col+"|"+v,...ids]),q:`${OKC[col][1].toLocaleUpperCase("tr")} örüntüde eksik taş hangisi?`,hint:`Örüntü: hep aynı renk, sayılar ${nd(st,"er")} artıyor.`,ansTxt:`${OKC[col][1]} ${v}`}},
+  r=>{const N=ri(r,1,13);const cs=shuffle(r,["k","s","m","z"]).slice(0,3);const tl=cs.map(c=>c+"|"+N);tl.push(cs[0]+"|"+N);while(tl.length<8){const v=ri(r,1,13);if(v!==N)tl.push(["k","s","m","z"][ri(r,0,3)]+"|"+v)}return{t:"Renk üçlüsü",mode:"per",N,rack:shuffle(r,tl),a:"per",q:"Renk üçlüsü kur: aynı sayıdan üç farklı renkte taş seç",hint:`Sayılar aynı, renkler farklı olmalı. ${N} taşlarına bak; aynı renk iki kez olmaz.`,ansTxt:`${N} sayısından üç farklı renk`}},
+  r=>{const col=["k","s","m","z"][ri(r,0,3)],st=[1,2,5][ri(r,0,2)];const s=ri(r,1,Math.max(1,Math.floor((60-4*st)/1)));const seq=[0,1,2,3,4].map(i=>({c:col,v:s+i*st}));const j=ri(r,0,4);const byColor=r()<.5||seq[j].v+3*st>99;if(byColor){const oth=["k","s","m","z"].filter(k=>k!==col);seq[j]={c:oth[ri(r,0,2)],v:seq[j].v}}else seq[j]={c:col,v:seq[j].v+3*st};return{t:"Örüntüyü bozan",mode:"bozan",col,seq,a:j,q:"Bu örüntüyü bozan taşa dokun",hint:"Örüntüde hepsi aynı renk olmalı ve sayılar düzenli artmalı.",ansTxt:`${j+1}. taş`}},
 ],
 bozuk:[
   r=>{const it=[["Simit","🥯",[15,25]],["Su","💧",[8,15]],["Kalem","✏️",[15,35]],["Ayran","🥛",[18,35]],["Silgi","🧽",[10,25]]][ri(r,0,4)];let T,mc;do{T=ri(r,it[2][0],it[2][1])*100+[0,25,50,75][ri(r,0,3)];mc=minCoins(T)}while(mc.length>6||mc.length<3);return{t:"En az para ile ödeme",mode:"ode",T,it,a:mc.length,q:`${it[0]} ${krTxt(T)}. Tam tutarı en az sayıda parayla öde`,hint:"Büyük paradan başla: önce 20 TL, 10 TL, 5 TL, sonra 1 TL, 50 kr, 25 kr…",ansTxt:`${mc.map(coinLbl).join(" + ")} (${mc.length} para)`}},
@@ -1786,7 +1786,7 @@ Object.assign(G,{
   avuc:{id:"avuc",name:"Kase Tahmini",ico:"🥣",task:"Bir an bak, saymadan tahmin et"},
   kilim:{id:"kilim",name:"Kilim Örüntüsü",ico:"🧶",task:"Kilimdeki kuralı bul, eksik parçayı seç"},
   mangala:{id:"mangala",name:"Mini Mangala",ico:"🪨",task:"Taşları dağıt, son taşı tahmin et"},
-  okey:{id:"okey",name:"Sayı Taşları",ico:"🀄",task:"Kurala uyan taş serisini kur"},
+  okey:{id:"okey",name:"Sayı Taşları",ico:"🀄",task:"Kurala uyan taş örüntüsünü kur"},
   bozuk:{id:"bozuk",name:"Bozuk Para",ico:"🪙",task:"Paraları say, tam tutarı öde"},
   kargo:{id:"kargo",name:"Kargo Tartısı",ico:"📦",task:"Paketleri tart, kilogram ve gramı eşle"},
   kenken:{id:"kenken",name:"KenKen Mini",ico:"🔢",task:"Kareye dokun, sayıyı seç"},
@@ -1924,10 +1924,10 @@ okey(area){
     else{f.rack.forEach((id,i)=>{const q=rowPos(8,i,110);if(inT(q)){const k=sel.indexOf(i);if(k>=0)sel.splice(k,1);else if(sel.length<3)sel.push(i);beep(500+sel.length*80,.05,"triangle",.07);
       if(sel.length===3){const ts=sel.map(j=>f.rack[j].split("|"));const ok=ts.every(z=>z[1]===ts[0][1])&&new Set(ts.map(z=>z[0])).size===3;if(judge(ok?"per":"x")){locked=true;sfx.goal();confetti(parts,W/2,130,36)}else{sfx.bad();setTimeout(()=>{sel=[]},650)}}}})}});
   function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1f6e4f");g.addColorStop(1,"#14523a");x.fillStyle=g;x.fillRect(0,0,W,H);x.strokeStyle="rgba(255,255,255,.06)";for(let i=-H;i<W;i+=18){x.beginPath();x.moveTo(i,0);x.lineTo(i+H,H);x.stroke()}
-    if(f.mode==="seri"){rack(150);f.seq.forEach((v,i)=>{const q=rowPos(5,i,92);i===f.miss&&!locked?tileD(q.x,q.y,null,0,true):tileD(q.x,q.y,f.col+"|"+v,i===f.miss?"ok":0)});tip(x,"Seriye uyan taşa dokun",W/2,182,W,14);f.tiles.forEach((id,i)=>{const q=rowPos(4,i,206);tileD(q.x,q.y,id,bad===i&&badT>0?"bad":(!locked&&game.tries>=4&&id===f.a?"ok":0))})}
+    if(f.mode==="seri"){rack(150);f.seq.forEach((v,i)=>{const q=rowPos(5,i,92);i===f.miss&&!locked?tileD(q.x,q.y,null,0,true):tileD(q.x,q.y,f.col+"|"+v,i===f.miss?"ok":0)});tip(x,"Örüntüye uyan taşa dokun",W/2,182,W,14);f.tiles.forEach((id,i)=>{const q=rowPos(4,i,206);tileD(q.x,q.y,id,bad===i&&badT>0?"bad":(!locked&&game.tries>=4&&id===f.a?"ok":0))})}
     else if(f.mode==="bozan"){rack(154);f.seq.forEach((tl,i)=>{const q=rowPos(5,i,96);tileD(q.x,q.y,tl.c+"|"+tl.v,(locked&&i===f.a)?"ok":(bad===i&&badT>0?"bad":0))});tip(x,"Hepsi aynı renk mi? Sayılar düzenli artıyor mu?",W/2,214,W,13)}
     else{rack(170);f.rack.forEach((id,i)=>{const q=rowPos(8,i,110);tileD(q.x,q.y,id,sel.includes(i)?"sel":0)});tip(x,`Seçilen: ${sel.length} / 3`,W/2,220,W,14)}
-    if(badT>0)badT--;tip(x,f.mode==="per"?"Per: aynı sayı, farklı renk":f.mode==="seri"?"Seri: aynı renk, düzenli sayılar":"Seriyi bozan taşı bul",W/2,34,W,15);
+    if(badT>0)badT--;tip(x,f.mode==="per"?"Aynı sayı, farklı renk":f.mode==="seri"?"Örüntü: aynı renk, düzenli artan sayılar":"Örüntüyü bozan taşı bul",W/2,34,W,15);
     drawParts(x,parts);raf=requestAnimationFrame(loop)}
   loop();return()=>cancelAnimationFrame(raf)
 },
