@@ -4058,9 +4058,9 @@ gol1:[
   r=>{let a,b;do{a=ri(r,2,9);b=ri(r,1,8)}while(a<=b);const d=a-b;return{t:"Kaç fazla?",mode:"fark",g:[a,b],a:d,wrong:pad3(d,[a,a+b,d+1],0),q:`${TEAMS[0]}, ${TEAMS[1]}'dan kaç gol fazla attı?`,hint:"Topları eşleştir, eşi olmayanları say.",ansTxt:`${a} − ${b} = ${d}`}},
 ],
 skor1:[
-  r=>{const h1=ri(r,1,9),h2=ri(r,1,9);const a=h1+h2;return{t:"Toplama (20 içinde)",mode:"topla",h1,h2,a,wrong:pad3(a,[a+1,a-1,Math.abs(h1-h2)],1),q:`Penaltı yarışmasında 1. turda ${h1}, 2. turda ${h2} gol atıldı. Toplam kaç gol atıldı?`,hint:a>10&&Math.max(h1,h2)<10?"Büyük sayıdan başla, küçüğü üstüne say. 10'u geçerken önce 10'a tamamla.":"Büyük sayıdan başla, küçüğü üstüne say.",ansTxt:`${h1} + ${h2} = ${a}`}},
-  r=>{const tot=ri(r,5,18),h1=ri(r,1,tot-1);const a=tot-h1;return{t:"Çıkarma (20 içinde)",mode:"cikar",tot,h1,a,wrong:pad3(a,[a+1,a-1,tot],1),q:`Sınıfımız penaltı yarışmasında ${tot} gol attı. ${h1} tanesi 1. turda. 2. turda kaç gol attı?`,hint:a<=3?`Toplamdan 1. turu çıkar: ${tot} − ${h1}. Ya da ${nd(h1,"dan")} ${nd(tot,"ya")} kadar say.`:h1<=3?`${nd(tot,"dan")} ${h1} geri say.`:`Toplamdan 1. turu çıkar: ${tot} − ${h1}.`,ansTxt:`${tot} − ${h1} = ${a}`}},
-  r=>{const a=ri(r,1,9),b0=ri(r,1,9);const tot=a+b0;return{t:"Verilmeyen toplanan",mode:"eksik",b0,tot,a,wrong:pad3(a,[a+1,a-1,tot],1),q:`Penaltı yarışmasında 1. turda ${b0} gol atıldı. Toplam ${tot} gol oldu. Tabelada silinen 2. tur sayısı kaçtır?`,hint:`${nd(b0,"dan")} başla, ${nd(tot,"ya")} kadar kaç adım ileri sayıyorsun?`,ansTxt:`${b0} + ${a} = ${tot}`}},
+  r=>{const h1=ri(r,1,9),h2=ri(r,1,9);const a=h1+h2;return{t:"Toplama (20 içinde)",mode:"topla",h1,h2,a,wrong:pad3(a,[a+1,a-1,Math.abs(h1-h2)],1),q:`Penaltı atışında Ali ${h1}, Ayşe ${h2} gol attı. İkisi toplam kaç gol attı?`,hint:a>10&&Math.max(h1,h2)<10?"Büyük sayıdan başla, küçüğü üstüne say. 10'u geçerken önce 10'a tamamla.":"Büyük sayıdan başla, küçüğü üstüne say.",ansTxt:`${h1} + ${h2} = ${a}`}},
+  r=>{const tot=ri(r,5,18),h1=ri(r,1,tot-1);const a=tot-h1;return{t:"Çıkarma (20 içinde)",mode:"cikar",tot,h1,a,wrong:pad3(a,[a+1,a-1,tot],1),q:`Ali ile Ayşe penaltı atışında toplam ${tot} gol attı. Ali ${h1} gol attı. Ayşe kaç gol attı?`,hint:a<=3?`Toplamdan Ali'nin gollerini çıkar: ${tot} − ${h1}. Ya da ${nd(h1,"dan")} ${nd(tot,"ya")} kadar say.`:h1<=3?`${nd(tot,"dan")} ${h1} geri say.`:`Toplamdan Ali'nin gollerini çıkar: ${tot} − ${h1}.`,ansTxt:`${tot} − ${h1} = ${a}`}},
+  r=>{const a=ri(r,1,9),b0=ri(r,1,9);const tot=a+b0;return{t:"Verilmeyen toplanan",mode:"eksik",b0,tot,a,wrong:pad3(a,[a+1,a-1,tot],1),q:`Penaltı atışında Ali ${b0} gol attı. İkisinin toplamı ${tot} gol. Ayşe kaç gol attı?`,hint:`${nd(b0,"dan")} başla, ${nd(tot,"ya")} kadar kaç adım ileri sayıyorsun?`,ansTxt:`${b0} + ${a} = ${tot}`}},
 ],
 forma1:[
   r=>{const n=ri(r,2,19),after=r()<.5;const a=after?n+1:n-1;return{t:after?"Sonraki sayı":"Önceki sayı",mode:"sira",n,after,a,wrong:pad3(a,[n,after?n-1:n+1,after?a+1:a-1],1),q:`${n} numaralı formadan ${after?"hemen sonra":"hemen önce"} hangi numara gelir?`,hint:after?"Bir sonraki sayı 1 fazlasıdır.":"Bir önceki sayı 1 eksiğidir.",ansTxt:after?`${n} → ${a}`:`${a} → ${n}`}},
@@ -4119,9 +4119,9 @@ Object.assign(ENGINES,{
 gol1:simpleChoiceEngine((x,W,H,S)=>{const f=S.f;if(f.mode==="say"){jGoal(x,50,40,W-100,130);for(let i=0;i<f.n;i++)jBall(x,82+(i%6)*44,72+Math.floor(i/6)*48,28)}
   else{f.g.forEach((n,i)=>{const py=86+i*70;jPanel(x,16,py-30,W-32,60);jJersey(x,50,py-6,30,TCOL[i]);label(x,TEAMS[i],50,py+20,11,"#2b2a33");for(let k=0;k<n;k++)jBall(x,104+k*29,py,24)})}},380,260,stadiumBg),
 skor1:simpleChoiceEngine((x,W,H,S)=>{const f=S.f;jBoard(x,40,40,W-80,150);boardTxt(x,"SKOR TABELASI",W/2,60,12,"#9ca3af");const L=S.locked;
-  if(f.mode==="topla"){boardTxt(x,`1. TUR  ${f.h1}`,W/2,92,22);boardTxt(x,`2. TUR  ${f.h2}`,W/2,126,22);boardTxt(x,`TOPLAM  ${L?f.a:"?"}`,W/2,164,24,"#7ee08a")}
-  else if(f.mode==="cikar"){boardTxt(x,`TOPLAM  ${f.tot}`,W/2,92,22);boardTxt(x,`1. TUR  ${f.h1}`,W/2,126,22);boardTxt(x,`2. TUR  ${L?f.a:"?"}`,W/2,164,24,"#7ee08a")}
-  else{boardTxt(x,`1. TUR  ${f.b0}`,W/2,92,22);boardTxt(x,`2. TUR  ${L?f.a:"?"}`,W/2,126,22,"#7ee08a");boardTxt(x,`TOPLAM  ${f.tot}`,W/2,164,24)}},380,240,stadiumBg),
+  if(f.mode==="topla"){boardTxt(x,`ALİ  ${f.h1}`,W/2,92,22);boardTxt(x,`AYŞE  ${f.h2}`,W/2,126,22);boardTxt(x,`TOPLAM  ${L?f.a:"?"}`,W/2,164,24,"#7ee08a")}
+  else if(f.mode==="cikar"){boardTxt(x,`ALİ  ${f.h1}`,W/2,92,22);boardTxt(x,`AYŞE  ${L?f.a:"?"}`,W/2,126,22,"#7ee08a");boardTxt(x,`TOPLAM  ${f.tot}`,W/2,164,24)}
+  else{boardTxt(x,`ALİ  ${f.b0}`,W/2,92,22);boardTxt(x,`AYŞE  ${L?f.a:"?"}`,W/2,126,22,"#7ee08a");boardTxt(x,`TOPLAM  ${f.tot}`,W/2,164,24)}},380,240,stadiumBg),
 forma1:simpleChoiceEngine((x,W,H,S)=>{const f=S.f;const L=S.locked;
   if(f.mode==="sira"){const nums=f.after?[f.n,L?f.a:"?"]:[L?f.a:"?",f.n];nums.forEach((v,i)=>jJersey(x,W/2-60+i*120,120,96,i===(f.after?1:0)?"#9ca3af":"#2f8fd8",v))}
   else if(f.mode==="ritim"){f.seq.forEach((v,i)=>jJersey(x,40+i*75,124,64,i===f.k?"#9ca3af":TCOL[i%4],i===f.k&&!L?"?":v))}
