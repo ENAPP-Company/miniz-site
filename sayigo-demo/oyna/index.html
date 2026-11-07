@@ -5358,7 +5358,7 @@ const ENG_DTERAZI=K.mkBalance({bg:bg("mercan"),btn:w=>`+${w} kabuk`,stand(x,cx,c
   weight(x,px,py,w,left,j){if(w===1)shell(x,px+8,py,1);else if(w===5){x.fillStyle="#ffd1dc";x.beginPath();x.roundRect(px-4,py-10,26,18,6);x.fill();label(x,"5",px+9,py,14,"#8a2a4a")}else{x.fillStyle=left?"#2f8fd8":"#3dbb8a";x.beginPath();x.roundRect(px-10,py-12,44,22,7);x.fill();label(x,String(w),px+12,py,15,"#fff")}}});
 const ENG_KABARCIK=K.mkRise({bg:bg("deniz"),icon:"🫧 ",watch:"Kabarcıkları izle…",doneTxt:"Kabarcıklar tamam! 🫧",
   body(x,cx,cy,r,on,i){x.fillStyle=on?"rgba(220,245,255,.95)":"rgba(255,255,255,.18)";x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.strokeStyle="#fff";x.lineWidth=2;x.stroke();x.fillStyle="rgba(255,255,255,.8)";x.beginPath();x.arc(cx-r*.35,cy-r*.4,r*.18,0,7);x.fill()}});
-const seaCard=(x,b,v,ok,side)=>{kCard(x,b,"",{bg:ok?"#e5f4e4":"#f2fbff",line:ok?"#3dbb8a":"#7cc3f0"});const s=String(v);label(x,s,b.x+b.w/2,b.y+b.h/2+1,s.length>8?15:s.length>5?18:21,"#1f2a44")};
+const seaCard=(x,b,v,ok,side)=>{kCard(x,b,"",{bg:ok?"#e5f4e4":"#f2fbff",line:ok?"#3dbb8a":"#7cc3f0"});const s=String(v);let fs=s.length>8?15:s.length>5?18:21;x.font=`700 ${fs}px Baloo2, Nunito, sans-serif`;if(x.measureText(s).width>b.w-14&&s.includes(" ")){const w=s.split(" ");let best=1,bd=1e9;for(let i=1;i<w.length;i++){const d=Math.abs(w.slice(0,i).join(" ").length-w.slice(i).join(" ").length);if(d<bd){bd=d;best=i}}const l1=w.slice(0,best).join(" "),l2=w.slice(best).join(" ");label(x,l1,b.x+b.w/2,b.y+b.h/2-8,14,"#1f2a44");label(x,l2,b.x+b.w/2,b.y+b.h/2+10,14,"#1f2a44")}else label(x,s,b.x+b.w/2,b.y+b.h/2+1,fs,"#1f2a44")};
 const ENG_ESLES=K.mkMatch({bg:bg("deniz"),card:seaCard,line:"#ffe066"});
 const ENG_MERCANES=K.mkMatch({bg:bg("mercan"),card:(x,b,v,ok)=>{kCard(x,b,"",{bg:ok?"#e5f4e4":"#fff4f6",line:ok?"#3dbb8a":"#ff9fb0"});const s=String(v);label(x,s,b.x+b.w/2,b.y+b.h/2+1,s.length>7?16:20,"#4a1f2c")},line:"#fff"});
 function inciDraw(x,S,A,tot){A.c.noTheme=true;BG.deniz(x,A.W,A.H,S.t);const f=S.f;tip(x,`İnci: ${tot} / ${f.target}`,A.W/2,22,A.W,15);const n=S.items.length,cols=Math.min(4,Math.max(1,n)),bw=74,bh=58;
@@ -8163,8 +8163,10 @@ const TP={
  topla(r,g,ds,lab){const L=(lab||"").toLocaleLowerCase("tr");const R=range(g,ds,"add");
    if(/10'a tamam|tamamla/.test(L)&&g<=2){const T0=g===1?10:100,a=g===1?(window._olkLim&&_olkLim(ds)<4?ri(r,8,9):ri(r,1,9)):ri(r,1,9)*10+ri(r,0,9);return{q:`${T0}'${T0===10?"a":"e"} tamamla.`,body:g===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7))?`<div class="kw-big">${nd(a,"ya")} kaç eklersek ${T0} olur? ${BX()}</div>`:`<div class="kw-big">${a} + ${BX()} = ${T0}</div>`,a:String(T0-a)}}
    let a,b;if(g===1){let t=0;do{a=ri(r,1,R-1);b=ri(r,1,R-a)}while(window._olkOK&&!_olkOK(ds,a,b,"+")&&++t<80)}else if(g===2){const eld=/eldeli/.test(L)||(!/eldesiz/.test(L)&&r()<.5);do{a=ri(r,10,89);b=ri(r,1,99-a)}while(eld?((a%10)+(b%10)<10):((a%10)+(b%10)>=10))}else if(g===3){a=ri(r,100,800);b=ri(r,10,999-a)}else{a=ri(r,1000,7000);b=ri(r,100,9999-a)}
+   if(g===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7)))return b<=3&&r()<.5?{q:"Fazlasını bul.",body:`<div class="kw-big">${nd(a,"nin")} ${b} fazlası kaç? ${BX()}</div>`,a:M(a+b)}:{q:"Birlikte kaç eder?",body:`<div class="kw-big">${a} ile ${b} birlikte kaç eder? ${BX()}</div>`,a:M(a+b)};
    return{q:"İşlemi yap.",body:g>=3?`<div class="kw-col">${colOp(a,b,"+")}</div>`:`<div class="kw-big">${M(a)} + ${M(b)} = ${BX()}</div>`,a:M(a+b)}},
  cikar(r,g,ds,lab){const R=range(g,ds,"add");let a,b;if(g===1){let t=0;do{a=ri(r,3,R);b=ri(r,1,a-1)}while(window._olkOK&&!_olkOK(ds,a,b,"-")&&++t<80)}else if(g===2){a=ri(r,20,99);b=ri(r,1,a-5)}else if(g===3){a=ri(r,200,999);b=ri(r,10,a-50)}else{a=ri(r,2000,9999);b=ri(r,100,a-500)}
+   if(g===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7)))return b<=3&&r()<.5?{q:"Eksiğini bul.",body:`<div class="kw-big">${nd(a,"nin")} ${b} eksiği kaç? ${BX()}</div>`,a:M(a-b)}:{q:"Kaç kalır?",body:`<div class="kw-big">${a} taneden ${b} tanesi gitti. Kaç kaldı? ${BX()}</div>`,a:M(a-b)};
    return{q:"İşlemi yap.",body:g>=3?`<div class="kw-col">${colOp(a,b,"−")}</div>`:`<div class="kw-big">${M(a)} − ${M(b)} = ${BX()}</div>`,a:M(a-b)}},
  eksik(r,g,ds){const R=range(g,ds,"add");const c=ri(r,Math.min(6,R),g===1?R:g===2?99:g===3?999:9999);const a=ri(r,1,c-1);const sub=r()<.4;
    if(g===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7)))return sub?{q:"Kutuya hangi sayı gelmeli?",body:`<div class="kw-big">${nd(c,"dan")} kaç çıkarsa ${a} kalır? ${BX()}</div>`,a:M(c-a)}:{q:"Kutuya hangi sayı gelmeli?",body:`<div class="kw-big">${nd(a,"ya")} kaç eklersek ${c} olur? ${BX()}</div>`,a:M(c-a)};
@@ -8219,6 +8221,7 @@ const TP={
    else if(k===1){const x=g===1?ri(r,6,R):g===2?ri(r,30,99):ri(r,300,999),y=g===1?ri(r,1,x-2):g===2?ri(r,5,25):ri(r,50,250);q=`Kütüphanede ${x} kitap vardı. ${y} tanesi ödünç verildi. Kaç kitap kaldı?`;a=x-y}
    else if(k===2){const n=ri(r,3,9),b=ri(r,3,g===3?9:25);q=`Her kutuda ${b} kalem var. ${n} kutuda toplam kaç kalem vardır?`;a=n*b}
    else{const b=ri(r,3,8),qq=ri(r,4,12);q=`${b*qq} ceviz ${b} sincaba eşit paylaştırıldı. Her sincap kaç ceviz aldı?`;a=qq}
+   if(g===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7)))return{q,body:`<div class="kw-work"><span>Çiz ya da say:</span><i></i></div><div class="kw-r">Cevap: ${BX()}</div>`,a:M(a)};
    return{q,body:`<div class="kw-work"><span>İşlem:</span><i></i></div><div class="kw-r">Cevap: ${BX()}</div>`,a:M(a)}},
 };
 function T0(t){return`<b class="kw-lab">${t}</b>`}
@@ -8248,7 +8251,8 @@ KG.build=function(grade,ds,gid,errs){
     let it;try{it=TP[k](r,grade,ds,lab)}catch(e){it=TP.topla(r,grade,ds,"")}it.k=k;it.lab=lab;items.push(it)});
   // problem kurma (Maarif): bonus
   const R=range(grade,ds,"add");const tot=grade===1?ri(r,6,Math.min(10,R)):grade===2?ri(r,3,9)*10:grade===3?ri(r,2,9)*100:ri(r,2,9)*1000;
-  const bonus={q:`Kendi sorunu kur: Toplamı ${M(tot)} olan iki sayı yaz ve bu işlemle ilgili kısa bir soru uydur.`,body:grade===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7))?`<span class="kw-big">Birlikte ${M(tot)} eden iki sayı: ${BX()} ile ${BX()}</span>`:`<span class="kw-big">${BX()} + ${BX()} = ${M(tot)}</span>`,a:`Örnek: ${M(Math.round(tot/2))} + ${M(tot-Math.round(tot/2))}`};
+  const e1=grade===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7));
+  const bonus={q:e1?`Kendi sorunu kur: Birlikte ${M(tot)} eden iki sayı bul ve bunlarla kısa bir soru uydur.`:`Kendi sorunu kur: Toplamı ${M(tot)} olan iki sayı yaz ve bu işlemle ilgili kısa bir soru uydur.`,body:grade===1&&[9,10,11,12,1].includes(+String(ds).slice(5,7))?`<span class="kw-big">Birlikte ${M(tot)} eden iki sayı: ${BX()} ile ${BX()}</span>`:`<span class="kw-big">${BX()} + ${BX()} = ${M(tot)}</span>`,a:e1?`Örnek: ${M(Math.round(tot/2))} ile ${M(tot-Math.round(tot/2))}`:`Örnek: ${M(Math.round(tot/2))} + ${M(tot-Math.round(tot/2))}`};
   return{items,bonus,today,game:(G[gid]||{}).name||gid}};
 // ---------- görünüm ----------
 const CSS=`#kw-wrap{position:fixed;inset:0;z-index:200;background:#eceaf3;overflow:auto;-webkit-overflow-scrolling:touch}
@@ -8834,7 +8838,7 @@ S.karcizgi=()=>{let o="";const P=[[180,24],[204,74],[258,80],[216,114],[232,168]
   P.forEach(([x,y],i)=>o+=`<circle cx="${x}" cy="${y}" r="9" fill="#fff" stroke="${C.blue[2]}" stroke-width="2"/>`+T(x,y+.5,String(i+1),{s:11}));
   return {svg:svg(360,196,o),cap:"1'den 10'a sırayla birleştir: yıldız çıktı!"}};
 S.kartopu=()=>{let o="";const glass=(cx,full)=>{let s=`<g filter="url(#sh${uid})"><path d="M${cx-30} 20 L${cx-24} 140 H${cx+24} L${cx+30} 20z" fill="#eaf6ff" stroke="#9fc2df" stroke-width="2"/></g>`;if(full)for(let i=0;i<10;i++)s+=ball(cx-10+(i%2)*20,128-Math.floor(i/2)*22,10,"blue");return s};
-  o+=glass(70,true)+T(70,162,"1 bardak = 10",{s:14,c:C.blue[2]});for(let i=0;i<3;i++)o+=ball(150+i*30,128,11,"orange");o+=T(180,162,"3 tek top",{s:14,c:C.orange[2]});
+  o+=glass(70,true)+T(70,162,"1 bardak: 10 top",{s:14,c:C.blue[2]});for(let i=0;i<3;i++)o+=ball(150+i*30,128,11,"orange");o+=T(180,162,"3 tek top",{s:14,c:C.orange[2]});
   o+=`<rect x="250" y="70" width="96" height="70" rx="16" fill="#fff1b8"/>`+T(298,96,"13",{s:32})+T(298,124,"on üç",{s:14,c:"#6b4a2b"});
   return {svg:svg(360,180,o),cap:"Dolu bardak bir onluk, tek toplar birlik."}};
 S.kizak=()=>{let o="";for(let n=8;n<=16;n++){const x=24+(n-8)*39;o+=footprint(x,110+(n%2?8:-8),1.25,n===13?C.green[1]:n===12?C.blue[1]:"#b9a2ff")+T(x,148,String(n),{s:15,c:n===13?C.green[2]:C.ink})}
@@ -10109,29 +10113,29 @@ S.farkli1=()=>{let o="";for(let i=0;i<3;i++)o+=`<g transform="translate(${50+i*8
   o+=T(180,140,"Çatal farklı: ucunun şekli başka",{s:15,c:"#e0453a"});
   return {svg:svg(360,156,o),cap:"Farklı olanı bul, nedenini söyle."}};
 S.say1=()=>{let o="";o+=`<g filter="url(#sh${uid})"><rect x="40" y="70" width="140" height="80" rx="10" fill="#5d9cec"/><rect x="48" y="78" width="124" height="64" rx="8" fill="#eef5ff"/></g>`;for(let i=0;i<5;i++)o+=pencilV(62+i*22,30,70,["red","blue","green","yellow","purple"][i]);
-  o+=T(110,170,"1, 2, 3, 4, 5",{s:15,c:C.blue[2]});o+=T(270,70,"+1 → 6",{s:20,c:C.green[2]})+T(270,110,"−1 → 4",{s:20,c:"#e0453a"});
+  o+=T(110,170,"1, 2, 3, 4, 5",{s:15,c:C.blue[2]});o+=T(280,64,"1 fazlası: 6",{s:18,c:C.green[2]})+T(280,104,"1 eksiği: 4",{s:18,c:"#e0453a"});
   return {svg:svg(360,184,o),cap:"Tek tek say; bir fazlasını, bir eksiğini bul."}};
 S.elma=()=>{let o="";o+=bowl(110,80,160,"#f2b0c4");["apple","pear","orange","apple"].forEach((k,i)=>o+=fruit(62+i*32,72,k));for(let i=0;i<3;i++)o+=fruit(250+i*30,50,["orange","apple","pear"][i]);o+=arrow(240,70,196,74,C.green[1]);
   o+=T(110,136,"4",{s:18})+T(280,90,"3 tane daha",{s:13,c:C.green[2]});o+=box3(60,150,240,34,"4… 5, 6, 7",{s:18,bg:"#fff1b8",st:"#f5d36a"});
   return {svg:svg(360,194,o),cap:"4'ten devam ederek say."}};
 S.merdiven=()=>{let o="";for(let n=1;n<=30;n++){const x=10+((n-1)%10)*34,y=n<=10?150:n<=20?100:50;o+=`<rect x="${x+2}" y="${y-16}" width="30" height="32" rx="5" fill="${n===7?"#cfeaff":n===17?"#ffe08a":n%10===0?"#e5f4e4":"#fff"}" stroke="#e4dccb"/>`+T(x+17,y,String(n),{s:12})}
   o+=`<path d="M${10+6*34+17} 134 V${100+16}" stroke="#8b5a2b" stroke-width="4"/>`+T(250,186,"7'den 10 ileri: 17 (bir sıra yukarı)",{s:13.5,c:C.ink});
-  return {svg:svg(360,196,o),cap:"10 ileri = bir sıra yukarı."}};
+  return {svg:svg(360,196,o),cap:"10 ileri: bir sıra yukarı."}};
 S.kalemsay=()=>{let o="";for(let i=0;i<6;i++)o+=shoe(36+i*52,70,["blue","red","blue","red","green","green"][i]);for(let i=0;i<6;i++)o+=T(36+i*52,104,String(i+1),{s:14,c:C.blue[2]});
-  o+=`<rect x="${36+4*52-26}" y="44" width="96" height="42" rx="8" fill="none" stroke="#e0453a" stroke-width="2.4" stroke-dasharray="5 4"/>`+box3(60,124,240,34,"Bir çift kalktı: 6 − 2 = 4",{s:16,bg:"#fff1b8",st:"#f5d36a"});
+  o+=`<rect x="${36+4*52-26}" y="44" width="96" height="42" rx="8" fill="none" stroke="#e0453a" stroke-width="2.4" stroke-dasharray="5 4"/>`+box3(60,124,240,34,"Bir çift kalktı: 4 ayakkabı kaldı",{s:16,bg:"#fff1b8",st:"#f5d36a"});
   return {svg:svg(360,168,o),cap:"Her ayakkabıya dokunarak say."}};
 S.konumbul=()=>{let o="";o+=`<g filter="url(#sh${uid})"><rect x="30" y="14" width="300" height="150" rx="6" fill="#fff"/><rect x="40" y="24" width="280" height="130" fill="#e7f1fb"/></g>`;o+=kid(110,70,20,HAIR[0],SHIRT[4])+T(110,124,"anne",{s:13})+kid(190,76,15,HAIR[2],SHIRT[2])+T(190,124,"Ali",{s:13});o+=`<rect x="230" y="96" width="70" height="8" fill="#c98a52"/>`+ball(265,130,10,"red");
   o+=T(180,182,"Annenin sağında kim var? Masanın altında ne var?",{s:13,c:C.ink});
   return {svg:svg(360,194,o),cap:"Fotoğrafta yer sözcükleriyle konuş."}};
 S.sayiesle=()=>{let o="";o+=card(70,70,70,90,"7",{s:40,hl:true});const hand=(cx,up)=>{let t=`<g filter="url(#shs${uid})"><rect x="${cx-26}" y="90" width="52" height="50" rx="16" fill="#ffd9b8" stroke="#e0a77a"/>`;for(let i=0;i<5;i++)t+=`<rect x="${cx-24+i*10.5}" y="${i<up?44:80}" width="9" height="${i<up?52:16}" rx="4.5" fill="#ffd9b8" stroke="#e0a77a"/>`;return t+`</g>`};
-  o+=hand(190,5)+hand(260,2);o+=T(225,166,"bir el dolu + 2",{s:14,c:C.green[2]});
+  o+=hand(190,5)+hand(260,2);o+=T(225,166,"bir el dolu ve 2",{s:14,c:C.green[2]});
   return {svg:svg(360,180,o),cap:"Sayı kadar parmak kaldır."}};
 S.cantasira=()=>{let o="";[2,4,6,8,9].forEach((v,i)=>{const x=40+i*70;o+=`<g filter="url(#sh${uid})"><path d="M${x-22} 30 L${x-18} 90 H${x+18} L${x+22} 30z" fill="${["#f2709c","#5aa0f0","#3dbb7a","#f5b821","#7c5cff"][i]}"/></g>`+box3(x-18,98,36,26,String(v),{s:15})});
   o+=T(180,152,"küçükten büyüğe",{s:15,c:C.green[2]});
   return {svg:svg(360,166,o),cap:"Bardakları sayılara göre diz."}};
 S.zilsay=()=>{let o="";o+=`<g filter="url(#sh${uid})"><rect x="110" y="10" width="140" height="170" rx="6" fill="#e9edf2"/></g>`;for(let k=0;k<6;k++){const y=150-k*26;o+=`<line x1="110" y1="${y+13}" x2="250" y2="${y+13}" stroke="#cbd5e1"/>`+T(90,y,k===0?"zemin":k+". kat",{s:12,a:"end",c:k===3?C.blue[2]:k===5?C.green[2]:C.ink})}
   o+=`<rect x="160" y="${150-3*26-10}" width="40" height="22" rx="4" fill="${C.blue[0]}" stroke="${C.blue[1]}"/>`+`<path d="M215 ${150-3*26} V${150-5*26+6}" stroke="${C.green[1]}" stroke-width="3"/><path d="M209 ${150-5*26+12} l6 -8 l6 8" stroke="${C.green[1]}" stroke-width="3" fill="none"/>`;
-  o+=T(310,60,"3 + 2 = 5",{s:17,c:C.green[2]});
+  o+=T(306,52,"3. kattan",{s:14,c:C.blue[2]})+T(306,74,"2 kat yukarı:",{s:14,c:C.ink})+T(306,98,"5. kat",{s:17,c:C.green[2]});
   return {svg:svg(360,190,o),cap:"Katları sayarak yukarı çık, aşağı in."}};
 S.cisim2=()=>{let o="";o+=cubeD(16,40,44,"#f2b0c4")+T(44,120,"küp",{s:13});o+=`<g filter="url(#sh${uid})"><rect x="94" y="40" width="44" height="60" fill="#9fd6f5"/><ellipse cx="116" cy="40" rx="22" ry="8" fill="#cfeaff" stroke="#6aa6d6"/><ellipse cx="116" cy="100" rx="22" ry="8" fill="#9fd6f5"/></g>`+T(116,120,"silindir",{s:13});
   o+=`<g filter="url(#sh${uid})"><circle cx="190" cy="70" r="28" fill="url(#gorange${uid})"/></g>`+T(190,120,"küre",{s:13});o+=`<g filter="url(#sh${uid})"><path d="M240 50 L260 36 H330 V82 L310 96 H240z" fill="#ffd75e" stroke="#c98f0a"/><path d="M240 50 H310 V96 M310 50 L330 36" stroke="#c98f0a" fill="none"/></g>`+T(285,120,"prizma",{s:13});
@@ -10228,23 +10232,23 @@ const leaf=(cx,cy,col)=>`<g filter="url(#shs${uid})" transform="rotate(-30 ${cx}
 S["isik@1@10"]=()=>{let o="";o+=handF(70,4)+T(70,160,"4",{s:18});o+=handF(180,5)+T(180,160,"bir fazlası 5",{s:15,c:C.green[2]});o+=`<g>`+handF(290,5)+handF(290,1,150).replace(/y="150"/,'y="150"')+`</g>`;
   o="";o+=handF(70,4)+T(70,160,"4",{s:18});o+=handF(180,5)+T(180,160,"4'ün bir fazlası 5",{s:13.5,c:C.green[2]});o+=T(300,90,"iki fazlası",{s:15,c:C.blue[2]})+T(300,118,"6",{s:24,c:C.blue[2]});
   return {svg:svg(360,176,o),cap:"Saymadan söyle: bir fazlası, iki fazlası."}};
-S["kurbaga@1@10"]=()=>{let o="";const L=numLine(20,340,90,0,10,1,1,{hl:[5,6,7,8]});o+=L.svg;o+=hop(L.X(5)+3,L.X(6)-3,82,C.green[1],12)+T(L.X(5.5),56,"5 + 1 = 6",{s:13,c:C.green[2]});
-  o+=`<path d="M${L.X(8)} 104 Q${L.X(7)} 136 ${L.X(6)} 104" stroke="#e0453a" stroke-width="2.4" fill="none"/>`+T(L.X(7),146,"8 − 2 = 6",{s:13,c:"#e0453a"});
-  return {svg:svg(360,160,o),cap:"Bir adım, iki adım: ileri ekle, geri çıkar."}};
+S["kurbaga@1@10"]=()=>{let o="";const L=numLine(20,340,90,0,10,1,1,{hl:[5,6,7,8]});o+=L.svg;o+=hop(L.X(5)+3,L.X(6)-3,82,C.green[1],12)+T(L.X(5.5),56,"5'in 1 fazlası 6",{s:13,c:C.green[2]});
+  o+=`<path d="M${L.X(8)} 104 Q${L.X(7)} 136 ${L.X(6)} 104" stroke="#e0453a" stroke-width="2.4" fill="none"/>`+T(L.X(7),146,"8'in 2 eksiği 6",{s:13,c:"#e0453a"});
+  return {svg:svg(360,160,o),cap:"İleri zıpla: fazlası. Geri zıpla: eksiği."}};
 S.balon=()=>{let o="";for(let n=1;n<=20;n++){const x=10+((n-1)%10)*34,y=n<=10?50:110;const on=n%5===0;o+=`<rect x="${x+2}" y="${y-18}" width="30" height="36" rx="5" fill="${n===8?"#cfeaff":n===7||n===9?"#fff1b8":on?"#e5f4e4":"#fff"}" stroke="${on?C.green[1]:"#e4dccb"}"/>`+T(x+17,y,String(n),{s:13,c:on?C.green[2]:C.ink})}
   o+=T(180,160,"8'den önce 7, sonra 9 · beşer: 5, 10, 15, 20",{s:13.5});
   return {svg:svg(360,174,o),cap:"Öncesini ve sonrasını söyle; beşer zıpla."}};
-S.aile1=()=>{let o="";o+=handF(60,2)+handF(124,3)+T(92,160,"2 + 3 = 5",{s:15,c:C.green[2]});o+=handF(236,5)+T(236,160,"5 − 3 = 2",{s:15,c:"#e0453a"});o+=`<path d="M218 40 l36 0" stroke="#e0453a" stroke-width="0"/>`;
-  o+=T(320,90,"3 + 2 = 5",{s:13,c:C.blue[2]})+T(320,114,"5 − 2 = 3",{s:13,c:C.blue[2]});
-  return {svg:svg(360,176,o),cap:"Aynı üç sayı: iki toplama, iki çıkarma."}};
-S["domino@1@10"]=()=>{let o="";o+=dice(70,60,5,60)+T(130,60,"+",{s:26})+card(190,60,50,64,"2",{s:28,bg:"#fff8e0"})+T(250,60,"=",{s:26})+box3(270,36,60,48,"7",{s:28,bg:"#e5f4e4",st:C.green[1]});
+S.aile1=()=>{let o="";o+=handF(60,2)+handF(124,3)+T(92,160,"2 ile 3 birlikte 5",{s:14,c:C.green[2]});o+=handF(236,5)+T(236,160,"3'ü kapat: 2 kalır",{s:14,c:"#e0453a"});o+=`<path d="M218 40 l36 0" stroke="#e0453a" stroke-width="0"/>`;
+  o+=T(318,80,"3 ile 2",{s:13,c:C.blue[2]})+T(318,100,"birlikte 5",{s:13,c:C.blue[2]})+T(318,124,"2'yi kapat:",{s:13,c:C.blue[2]})+T(318,144,"3 kalır",{s:13,c:C.blue[2]});
+  return {svg:svg(360,176,o),cap:"Aynı üç sayı: 2, 3 ve 5 bir aile."}};
+S["domino@1@10"]=()=>{let o="";o+=dice(60,60,5,60)+T(60,104,"zar 5",{s:13})+card(150,60,50,64,"2",{s:28,bg:"#fff8e0"})+T(150,104,"kâğıt 2",{s:13})+hop(196,256,52,C.green[1],12)+T(226,26,"2 ileri",{s:13,c:C.green[2]})+box3(266,36,60,48,"7",{s:28,bg:"#e5f4e4",st:C.green[1]});
   o+=T(180,130,"“5… 6, 7” saymadan söyle",{s:15,c:C.green[2]});
-  return {svg:svg(360,146,o),cap:"Zarın sayısına 1 ya da 2 ekle."}};
+  return {svg:svg(360,146,o),cap:"Zarın sayısından 1 ya da 2 ileri say."}};
 S.palamut=()=>{let o="";o+=`<g filter="url(#sh${uid})"><rect x="30" y="20" width="60" height="120" rx="12" fill="#33405a"/></g>`;for(let i=0;i<9;i++)o+=`<circle cx="${45+(i%3)*15}" cy="${50+Math.floor(i/3)*22}" r="6" fill="${i===2?"#f5b821":"#9aa0ad"}"/>`;o+=T(60,154,"kumandada 3",{s:12});
   o+=clockF(170,76,46,4,0)+T(170,154,"saatte 4",{s:12});for(let n=1;n<=7;n++){const m=n===5;o+=`<rect x="${236+((n-1)%4)*30}" y="${50+Math.floor((n-1)/4)*34}" width="26" height="28" rx="5" fill="${m?"#e5f4e4":"#fff"}" stroke="${m?C.green[2]:"#e4dccb"}" stroke-width="${m?2:1}"/>`+T(249+((n-1)%4)*30,65+Math.floor((n-1)/4)*34,String(n),{s:13,c:m?C.green[2]:C.ink})}o+=`<rect x="232" y="30" width="126" height="16" rx="4" fill="#e0453a"/>`+T(295,38,"TAKVİM",{s:10,c:"#fff"});o+=T(296,154,"takvimde 5",{s:12});
   return {svg:svg(360,168,o),cap:"Evde 1'den 10'a sayıları sırayla bul."}};
 S.kirpi=()=>{let o="";o+=dice(60,50,5,52)+card(130,50,46,56,"2",{s:24,bg:"#fff8e0"});o+=T(250,40,"“5… 6, 7”",{s:18,c:C.green[2]})+T(250,70,"toplam 7",{s:15});
-  o+=dice(60,124,4,44)+card(124,124,40,50,"1",{s:20,bg:"#fff8e0"})+T(250,124,"4 + 1 = 5",{s:15});o+=T(180,166,"7 > 5: ilk oyuncu puan alır",{s:14,c:C.blue[2]});
+  o+=dice(60,124,4,44)+card(124,124,40,50,"1",{s:20,bg:"#fff8e0"})+T(250,124,"4'ten 1 ileri: 5",{s:15});o+=T(180,166,"7 > 5: ilk oyuncu puan alır",{s:14,c:C.blue[2]});
   return {svg:svg(360,180,o),cap:"Zardan ileri say, büyük toplam kazanır."}};
 S.yaprakdus=()=>{let o="";o+=playCard(110,64,8,"♥",70,96)+playCard(250,64,5,"♠",70,96)+T(180,64,">",{s:36,c:C.green[2]});o+=T(180,138,"8, 5'ten büyük",{s:17,c:C.green[2]});
   return {svg:svg(360,154,o),cap:"Aynı anda aç; büyük sayı kazanır."}};
@@ -10252,7 +10256,7 @@ S.sincapsira=()=>{let o="";[["Ali",7],["Anne",12],["Ayşe",9]].sort((a,b)=>a[1]-
   o+=T(180,146,"azdan çoğa: 7, 9, 12",{s:15,c:C.green[2]});
   return {svg:svg(360,160,o),cap:"Avuçları say, azdan çoğa sırala."}};
 S.ikizyaprak=()=>{let o="";for(let i=0;i<4;i++)o+=leaf(40+i*36,60,"#f5b821");for(let i=0;i<2;i++)o+=leaf(230+i*36,60,"#e8574a");o+=T(94,100,"4 sarı",{s:15,c:"#c98f0a"})+T(248,100,"2 kırmızı",{s:15,c:C.red[2]});
-  o+=box3(80,120,200,36,"4 + 2 = 6 yaprak",{s:17,bg:"#fff1b8",st:"#f5d36a"});
+  o+=box3(80,120,200,36,"4 ile 2 birlikte 6 yaprak",{s:17,bg:"#fff1b8",st:"#f5d36a"});
   return {svg:svg(360,166,o),cap:"Rengi ayrı say, sonra topla."}};
 S.kilim=()=>{let o="";const tw=(x,n,col)=>{let t="";for(let i=0;i<n;i++)t+=`<rect x="${x}" y="${150-(i+1)*18}" width="30" height="16" rx="3" fill="${C[col][1]}"/>`;return t};
   [1,2,3].forEach((n,i)=>o+=tw(30+i*44,n,"blue"));o+=`<rect x="162" y="${150-4*18}" width="30" height="${4*18-2}" rx="3" fill="none" stroke="${C.green[1]}" stroke-width="2" stroke-dasharray="4 3"/>`+T(177,166,"4?",{s:13,c:C.green[2]});
@@ -10355,6 +10359,19 @@ const st=document.createElement("style");st.textContent=`.uz-vis{background:#fff
  .uz-cap{display:flex;align-items:center;gap:8px;margin-top:4px;font-weight:800;color:#22314d;font-size:.95rem;text-align:center}.uz-cap span{flex:1;height:1.5px;background:#d9c9a3}.uz-cap i{flex:0 1 auto}`;
 document.head.appendChild(st);
 window._homeVisKeys=()=>Object.keys(S);
+})();
+
+// 1. sınıf Eylül–Ocak: + / − işareti yok (sözel)
+;(function(){const A=(k,o)=>{if(HOME[k])Object.assign(HOME[k],o)};
+A("kurbaga@1@10",{s:["Yere 0'dan 10'a kadar bir sayı doğrusu yapın.","Çocuğunuz 5'te dursun, 1 ileri zıplasın: 5'in 1 fazlası 6; 2 ileri zıplasın: 5'in 2 fazlası 7.","Sonra 8'den 2 geri zıplasın: 8'in 2 eksiği 6."]});
+A("aile1",{konu:"Bir sayıyı iki parçaya ayırma (sayı ailesi)",s:["Bir elde 2, diğer elde 3 parmak açın: 2 ile 3 birlikte 5 eder.","Elleri değiştirin: 3 ile 2 de birlikte 5 eder.","5 parmaktan 3'ünü kapatın: 2 kalır. Sonra 2'sini kapatın: 3 kalır."],q:"2, 3 ve 5 sayılarıyla kaç farklı cümle kurabildik?"});
+A("domino@1@10",{s:["Zarı atın; gelen sayıyı söyleyin (ör. 5).","Kapalı kâğıtlardan birini çekin: 1 ya da 2.","Zarın sayısından kâğıttaki kadar ileri sayın: 5'ten 2 ileri, 7. Saymadan söylemeye çalışın."],q:"Hangi sayıların 1 ve 2 fazlasını saymadan biliyorsun?"});
+A("ikizyaprak",{s:["Birlikte iki renkte yaprak toplayın.","Her rengi ayrı sayın: 4 sarı, 2 kırmızı.","Hepsini birlikte söyleyin: 4 sarı ile 2 kırmızı birlikte 6 yaprak eder."]});
+A("geri",{s:["11. basamakta durun.","3 basamak geri inin: önce 1 adımla 10'a, sonra 2 adım daha: 8.","15'ten 6 basamak geri inmeyi de deneyin: 5 adımla 10'a, 1 adım daha: 9."]});
+A("balikagi",{s:["Kâseye 4 balık koyun.","“10 olana kadar balık tut” deyin; çocuğunuz kaşıkla birer birer eklerken saysın.","Kaç balık eklediğini söylesin: 4 balığa 6 balık ekleyince 10 oldu."]});
+A("esles@1@1",{s:["Bir çorabın üzerine iki sayı (ör. 4 ile 4), eşinin üzerine bunların birlikte ettiği sayıyı (8) yazılı kâğıdı mandalla tutturun.","Çiftlerden ve 10'a tamamlayan ikililerden (7 ile 3) karışık kartlar hazırlayın.","Çocuğunuz iki sayıyı birlikte ettiği sayıyla eşleyerek çorapları çiftlesin."],q:"4 ile 4 birlikte 8 ediyorsa, 8'den 4 çıkarsak kaç kalır?",dikkat:"Her seferinde parmakla saymaya dönerse önce çiftleri (1 ile 1'den 5 ile 5'e) birlikte tekrar edin."});
+A("sayiesle",{s:["Siz bir sayı kartı gösterin; çocuğunuz o kadar parmak kaldırsın.","Sonra o parmak gösterir, siz doğru kartı bulursunuz (bazen bilerek yanlış kart seçin).","5'ten büyük sayılarda “bir el dolu ve 2 parmak daha” gibi söyleyin."]});
+A("isik@1@10",{konu:"Bir fazlası, iki fazlası"});
 })();
 // ============ UZMAN ÖNERİSİ KARTI (Evde dene kartının yeni hâli: keşif, soru, dikkat, gözlem) ============
 ;(function(){
