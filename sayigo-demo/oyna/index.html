@@ -4906,10 +4906,14 @@ function mkSlide(o){return aEngine({H:262,bg:typeof o.bg==="function"?o.bg:sky(o
     x.fillStyle="#f4f9ff";x.beginPath();x.roundRect(20,Y-8,A.W-40,16,8);x.fill();x.strokeStyle="#9cc3e6";x.lineWidth=2;x.stroke();
     const big=f.tick;const PL=[];for(let v=f.lo;v<=f.hi+1e-9;v+=big){const px=this.X(S,A,v);const maj=f.isMaj?f.isMaj(v):(!f.maj||Math.round(v-f.lo)%f.maj===0);x.strokeStyle=maj?"#3d6690":"#4d79a8";x.lineWidth=maj?3:2;x.beginPath();x.moveTo(px,Y-(maj?14:10));x.lineTo(px,Y+(maj?14:10));x.stroke();if(maj)PL.push([px,f.fmt?f.fmt(v):String(v)])}pillLabels(x,PL,Y+17,A.W);
     // hedef bayrağı (göster seçeneği)
-    const px=this.X(S,A,S.v);o.rider(x,px,Y-10,S.t);
+    const px=this.X(S,A,S.v);
+    // durulan yer: vurgulu çizgi + daire (nesne geniş olsa da yer belli)
+    x.save();x.strokeStyle="#ef6f4b";x.lineWidth=3;x.beginPath();x.moveTo(px,Y-16);x.lineTo(px,Y+16);x.stroke();x.fillStyle="#ef6f4b";x.beginPath();x.arc(px,Y,7,0,7);x.fill();x.fillStyle="#fff";x.beginPath();x.arc(px,Y,3,0,7);x.fill();x.restore();
+    o.rider(x,px,Y-18,S.t);
+    {const vt=f.fmt?f.fmt(S.v):String(S.v);x.font="800 15px Nunito, sans-serif";const w=x.measureText(vt).width+18;x.fillStyle="#ef6f4b";x.beginPath();x.roundRect(px-w/2,Y-78,w,24,8);x.fill();x.beginPath();x.moveTo(px-5,Y-54);x.lineTo(px+5,Y-54);x.lineTo(px,Y-48);x.fill();label(x,vt,px,Y-66,15,"#fff")}
     tip(x,`${o.what}: ${f.fmt?f.fmt(S.v):S.v}`,A.W/2,24,A.W,15);
     tip(x,S.locked?f.ansTxt:"Parmağınla kaydır, sonra Tamam",A.W/2,A.H-16,A.W,13)}})}
-const ENG_KIZAKDURAK=mkSlide({bg:"tepe",what:"Kızak",rider(x,px,y,t){if(window.SPR&&SPR.ok("sled")){SPR.d(x,"sled",px,y+2,54,{bottom:true});return}const b={x:px-26,y:y-38,w:52,h:44};sledShape(x,b,"#e8574a");x.fillStyle="#fff";x.beginPath();x.arc(px-4,y-36,9,0,7);x.fill();x.fillStyle="#2f8fd8";x.fillRect(px-12,y-30,16,12)}});
+const ENG_KIZAKDURAK=mkSlide({bg:"tepe",what:"Kızak",rider(x,px,y,t){if(window.SPR&&SPR.ok("sled")){SPR.d(x,"sled",px,y+4,40,{bottom:true});return}const b={x:px-26,y:y-38,w:52,h:44};sledShape(x,b,"#e8574a");x.fillStyle="#fff";x.beginPath();x.arc(px-4,y-36,9,0,7);x.fill();x.fillStyle="#2f8fd8";x.fillRect(px-12,y-30,16,12)}});
 const ENG_PIST=mkSlide({bg:"gece",what:"Kayakçı",rider(x,px,y,t){x.save();x.translate(px,y-20);x.strokeStyle="#ff6f61";x.lineWidth=4;x.lineCap="round";x.beginPath();x.moveTo(-16,16);x.lineTo(16,16);x.stroke();x.fillStyle="#ffd85c";x.beginPath();x.arc(0,-14,7,0,7);x.fill();x.fillStyle="#2f8fd8";x.beginPath();x.roundRect(-7,-7,14,18,4);x.fill();x.strokeStyle="#cfd6e4";x.lineWidth=2;x.beginPath();x.moveTo(-10,0);x.lineTo(-16,16);x.moveTo(10,0);x.lineTo(16,16);x.stroke();x.restore()}});
 
 // ---------- D: NOKTA BİRLEŞTİR (kar tanesi çiz) ----------
