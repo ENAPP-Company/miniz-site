@@ -4519,7 +4519,7 @@ const ENG_CATCH=sbEngine({H:330,hold:true,
 const ENG_KAVANOZ=sbEngine({H:330,
   init(f,S,A){window._jar=S;S.got=f.pre||0;S.pop=null;S.msg=null;S.fly=[];const n=12,P=[];let g=0;while(P.length<n&&g++<400){const px=28+Math.random()*(A.W-56),py=46+Math.random()*118;if(P.every(q=>Math.hypot(q.x-px,q.y-py)>44))P.push({x:px,y:py,ph:Math.random()*6,s:.9+Math.random()*.3})}S.stars=P;
     A.btn("Boşalt",()=>{if(S.locked)return;S.got=f.pre||0;S.fly=[];S.msg=null;S.stars.forEach(st=>st.used=false)});
-    A.btn("Tamam ✓",()=>{if(S.locked)return;if(S.fly.length)return;if(S.got===f.need)A.done();else{S.msg={t:S.t,n:S.got};A.fail();S.got=f.pre||0;S.stars.forEach(st=>st.used=false)}},"")},
+    A.btn("Tamam ✓",()=>{if(S.locked)return;if(S.fly.length)return;if(S.got===f.need)A.done();else{A.fail();if(!window._otoDry){S.msg={t:S.t,n:S.got};S.got=f.pre||0;S.fly=[];S.stars.forEach(st=>st.used=false)}}},"")},
   jar(A){return{x:A.W/2-70,y:A.H-124,w:140,h:112}},
   slot(S,A,i){const j=this.jar(A),per=4,r=Math.floor(i/per),c=i%per;return{x:j.x+22+c*32+(r%2?8:0),y:j.y+j.h-18-r*26}},
   down(p,S,A){if(S.locked||S.got>=15)return;for(const st of S.stars){if(st.used)continue;if(Math.hypot(p.x-st.x,p.y-st.y)<30){st.used=true;const to=this.slot(S,A,S.got);S.got++;S.pop={t:S.t,n:S.got};S.fly.push({x:st.x,y:st.y,tx:to.x,ty:to.y,p:0});sfx.pop();return}}},
