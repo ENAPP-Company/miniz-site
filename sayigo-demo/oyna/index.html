@@ -4486,7 +4486,7 @@ const ENG_SLIDE=sbEngine({H:230,
     const px=this.X(S,A,S.v);
     x.strokeStyle="#cfc4ff";x.lineWidth=3;x.beginPath();x.moveTo(px,Y-14);x.lineTo(px,Y-30);x.stroke();
     x.fillStyle="#fff";x.beginPath();x.arc(px,Y,13,0,7);x.fill();x.strokeStyle="#7c5cff";x.lineWidth=4;x.stroke();x.fillStyle="#7c5cff";x.beginPath();x.arc(px,Y,4,0,7);x.fill();
-    x.font="30px serif";x.textAlign="center";x.textBaseline="middle";x.fillText(f.ico||"☄️",px,Y-44+Math.sin(S.t/8)*2);
+    if(!(window.SPR&&!f.ico&&SPR.d(x,"comet",px,Y-40+Math.sin(S.t/8)*2,44))){x.font="30px serif";x.textAlign="center";x.textBaseline="middle";x.fillText(f.ico||"☄️",px,Y-44+Math.sin(S.t/8)*2)}
     tip(x,`${f.what||"İşaret"}: ${f.fmt?f.fmt(S.v):S.v}`,A.W/2,24,A.W,15);if(S.locked)tip(x,f.ansTxt,A.W/2,206,A.W,14);else tip(x,"Parmağınla kaydır",A.W/2,206,A.W,13)}});
 
 // ---------- J: YAKALA ----------
@@ -4910,7 +4910,7 @@ function mkSlide(o){return aEngine({H:262,bg:typeof o.bg==="function"?o.bg:sky(o
     // durulan yer: vurgulu çizgi + daire (nesne geniş olsa da yer belli)
     x.save();x.strokeStyle="#ef6f4b";x.lineWidth=3;x.beginPath();x.moveTo(px,Y-16);x.lineTo(px,Y+16);x.stroke();x.fillStyle="#ef6f4b";x.beginPath();x.arc(px,Y,7,0,7);x.fill();x.fillStyle="#fff";x.beginPath();x.arc(px,Y,3,0,7);x.fill();x.restore();
     o.rider(x,px,Y-18,S.t);
-    {const vt=f.fmt?f.fmt(S.v):String(S.v);x.font="800 15px Nunito, sans-serif";const w=x.measureText(vt).width+18;x.fillStyle="#ef6f4b";x.beginPath();x.roundRect(px-w/2,Y-78,w,24,8);x.fill();x.beginPath();x.moveTo(px-5,Y-54);x.lineTo(px+5,Y-54);x.lineTo(px,Y-48);x.fill();label(x,vt,px,Y-66,15,"#fff")}
+    {const vt=f.fmt?f.fmt(S.v):String(S.v);x.font="800 15px Nunito, sans-serif";const w=x.measureText(vt).width+18,bx=Math.max(w/2+4,Math.min(A.W-w/2-4,px));x.fillStyle="#ef6f4b";x.beginPath();x.roundRect(bx-w/2,Y-78,w,24,8);x.fill();x.beginPath();x.moveTo(px-5,Y-54);x.lineTo(px+5,Y-54);x.lineTo(px,Y-48);x.fill();label(x,vt,bx,Y-66,15,"#fff")}
     tip(x,`${o.what}: ${f.fmt?f.fmt(S.v):S.v}`,A.W/2,24,A.W,15);
     tip(x,S.locked?f.ansTxt:"Parmağınla kaydır, sonra Tamam",A.W/2,A.H-16,A.W,13)}})}
 const ENG_KIZAKDURAK=mkSlide({bg:"tepe",what:"Kızak",rider(x,px,y,t){if(window.SPR&&SPR.ok("sled")){SPR.d(x,"sled",px,y+4,40,{bottom:true});return}const b={x:px-26,y:y-38,w:52,h:44};sledShape(x,b,"#e8574a");x.fillStyle="#fff";x.beginPath();x.arc(px-4,y-36,9,0,7);x.fill();x.fillStyle="#2f8fd8";x.fillRect(px-12,y-30,16,12)}});
@@ -7481,7 +7481,7 @@ function bgRay(x,W,H,t){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0
   x.fillStyle="#8a6a4a";x.fillRect(0,192,W,6);x.fillStyle="#6b4a2b";for(let i=4;i<W;i+=22)x.fillRect(i,198,12,6)}
 const ENG_TREN=AK.aEngine({H:300,bg:bgRay,
   init(f,S,A){shuffle(f.r,Object.keys(KR)).forEach(k=>A.btn(KR[k][0],()=>{if(S.locked)return;KR[k][0]===f.a?A.done():A.fail()},""))},
-  draw(x,S,A){const f=S.f,W=A.W,N=Math.max(f.k,f.show+2),LW=70,s=Math.min(44,(W-LW-16)/N-6),gap=s+6,X0=LW+8+(W-LW-8-N*gap+6)/2,Y=166,RY=Y+s+10;
+  draw(x,S,A){const f=S.f,W=A.W,N=Math.max(f.k,f.show+2),LW=N>8?44:70,s=Math.min(44,(W-LW-16)/N-6),gap=s+6,X0=LW+8+(W-LW-8-N*gap+6)/2,Y=166,RY=Y+s+10;
     tip(x,`Vagonlar bu kurala göre diziliyor`,W/2,22,W,15);
     // zemin + ray
     x.fillStyle="rgba(255,255,255,.35)";x.fillRect(0,RY+8,W,A.H-RY-8);
@@ -7498,7 +7498,7 @@ const ENG_TREN=AK.aEngine({H:300,bg:bgRay,
       else{x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.roundRect(X,Y,s,s,7);x.fill();x.setLineDash([5,4]);x.strokeStyle=ask?"#7c3aed":"#8a8aa0";x.lineWidth=2.5;x.stroke();x.setLineDash([]);if(ask)label(x,"?",X+s/2,Y+s/2+1,22,"#7c3aed")}
       if(S.locked&&ask){x.strokeStyle="#ffd85c";x.lineWidth=4;x.beginPath();x.roundRect(X-3,Y-3,s+6,s+6,9);x.stroke()}
       x.fillStyle="#3a3a48";[s*.25,s*.75].forEach(dx=>{x.beginPath();x.arc(X+dx,RY,5.5,0,7);x.fill()});x.fillStyle="#b9bfcc";[s*.25,s*.75].forEach(dx=>{x.beginPath();x.arc(X+dx,RY,2,0,7);x.fill()});x.restore();
-      x.fillStyle=ask?"#7c3aed":"rgba(255,255,255,.9)";x.beginPath();x.roundRect(X+s/2-12,Y-26,24,18,6);x.fill();label(x,String(i+1),X+s/2,Y-17,12,ask?"#fff":"#4a4660")}
+      {const bw=Math.min(24,s);x.fillStyle=ask?"#7c3aed":"rgba(255,255,255,.9)";x.beginPath();x.roundRect(X+s/2-bw/2,Y-26,bw,18,6);x.fill();label(x,String(i+1),X+s/2,Y-17,bw<22?10:12,ask?"#fff":"#4a4660")}}
     x.fillStyle="rgba(255,255,255,.75)";x.beginPath();x.roundRect(14,48,W-28,64,12);x.fill();
     label(x,f.inv?`Hangi renk küp ${f.k}. sırada?`:`${f.k}. küp hangi renk?`,W/2,80,22,"#4b2b8a");
     tip(x,S.locked?f.ansTxt:"Kuralı bul: hangi renkler tekrar ediyor?",W/2,A.H-24,W,13)}});
@@ -10770,13 +10770,13 @@ kumbaraDraw=function(x,S,A,tot){const f=S.f;moonGround(x,A.W,196);tip(x,`Ödenen
   while(S._n<S.items.length){S._fly.push({k:S.items[S._n],t0:S.t});S._n++}
   if(S._n>S.items.length){S._n=S.items.length;S._fly=S._fly.filter(fl=>S.items.length>0)}
   const bounce=S._fly.some(fl=>S.t-fl.t0>14&&S.t-fl.t0<22)?1.06:1;
-  const kx=104,ky=160;kittyBank(x,kx,ky,bounce);
+  const kx=92,ky=162;kittyBank(x,kx,ky,bounce*.92);
   // para çizimi
   const coin=(cx,cy,pc,sc=1)=>{if(pc.val>=500){x.fillStyle=pc.val>=1000?"#d9534f":"#7c5cff";x.beginPath();x.roundRect(cx-21*sc,cy-14*sc,42*sc,28*sc,4);x.fill();x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=1.5;x.stroke();label(x,pc.lab,cx,cy+1,13*sc,"#fff")}else{const r=(pc.val===100?19:pc.val===50?17:15)*sc;x.fillStyle=pc.val===100?"#e2b84a":"#c9d0d9";x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.strokeStyle="rgba(0,0,0,.3)";x.lineWidth=2;x.stroke();x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.arc(cx-r*.3,cy-r*.3,r*.35,0,7);x.fill();label(x,pc.lab.replace(" ",""),cx,cy+1,(pc.val===25?10:12)*sc,"#3b2f1c")}};
   // atılan paralar: yarığa düşer
   S._fly=S._fly.filter(fl=>{const k=(S.t-fl.t0)/18;if(k>=1)return false;const pc=f.pieces[fl.k];coin(kx,ky-112+k*k*60,pc,1-k*.7);return true});
   // kedinin içindekiler: sağda liste
-  const tx=186,ty=48,tw=A.W-tx-10,th=156;x.save();x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(tx,ty,tw,th,14);x.fill();x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=1.5;x.stroke();x.restore();
+  const tx=200,ty=48,tw=A.W-tx-10,th=156;x.save();x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(tx,ty,tw,th,14);x.fill();x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=1.5;x.stroke();x.restore();
   label(x,"Kumbaradakiler",tx+tw/2,ty+14,13,"#fff");
   if(!S.items.length)label(x,"Henüz para yok",tx+tw/2,ty+th/2+6,14,"rgba(255,255,255,.7)");
   S.items.forEach((k,i)=>{if(i>=S._n-S._fly.length)return;const pc=f.pieces[k],cx=tx+26+(i%4)*44,cy=ty+46+Math.floor(i/4)*40;coin(cx,cy,pc,.9)});
