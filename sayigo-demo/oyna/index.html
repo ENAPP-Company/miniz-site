@@ -10657,6 +10657,97 @@ A("isik@1@10",{konu:"Bir fazlası, iki fazlası"});
   draw();const _st=showTab;showTab=function(t){_st(t);if(t==="veli")draw()};
   const sc=$("#screen-start");if(sc){const d=document.createElement("div");d.className="kvkk-lnk";d.innerHTML=`<a href="../gizlilik/" target="_blank" rel="noopener">Gizlilik ve KVKK Aydınlatma Metni</a>`;sc.appendChild(d)}
 })();
+// ============ TELEFON TESTİ DÜZELTMELERİ (8 Kasım 2026, 2. tur) ============
+// 1) Analog saat: kollar birbirine girmesin, küçük yüzde okunur olsun
+jClock=function(x,cx,cy,R,h,m){x.save();x.fillStyle="#fff";x.beginPath();x.arc(cx,cy,R,0,7);x.fill();x.strokeStyle="#2b2a33";x.lineWidth=Math.max(3,R*.09);x.stroke();
+  const small=R<48;
+  for(let i=1;i<=12;i++){if(small&&i%3)continue;const a=i*Math.PI/6-Math.PI/2;label(x,String(i),cx+Math.cos(a)*(R-R*.26),cy+Math.sin(a)*(R-R*.26),small?R*.3:R*.19,"#2b2a33")}
+  for(let i=0;i<60;i++){if(small&&i%5)continue;const a=i*Math.PI/30;x.fillStyle="#2b2a33";const rr=i%5?1:R*.045;x.beginPath();x.arc(cx+Math.cos(a)*(R-R*.1),cy+Math.sin(a)*(R-R*.1),rr,0,7);x.fill()}
+  const ha=((h%12)+m/60)*Math.PI/6-Math.PI/2,ma=m*Math.PI/30-Math.PI/2;x.lineCap="round";
+  // yelkovan: uzun, ince, kırmızı — önce çizilir
+  x.strokeStyle="#fff";x.lineWidth=R*.16;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.72,cy+Math.sin(ma)*R*.72);x.stroke();
+  x.strokeStyle="#ef4b4b";x.lineWidth=R*.08;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.72,cy+Math.sin(ma)*R*.72);x.stroke();
+  // akrep: kısa, kalın, lacivert — beyaz kenarlıkla ayrılır
+  x.strokeStyle="#fff";x.lineWidth=R*.26;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ha)*R*.42,cy+Math.sin(ha)*R*.42);x.stroke();
+  x.strokeStyle="#2b3a8a";x.lineWidth=R*.16;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ha)*R*.42,cy+Math.sin(ha)*R*.42);x.stroke();
+  x.fillStyle="#2b2a33";x.beginPath();x.arc(cx,cy,R*.08,0,7);x.fill();x.restore()};
+
+// 2) Zaman Çevirici / Uzay Zamanı: soru tekrarı yok, kronometre yerine anlamlı simge
+ENGINES.zaman=function(area){
+  const W=380,H=250;const{c,x}=makeCanvas(area,W,H);const bar=document.createElement("div");area.appendChild(bar);let f=null,parts=[],locked=false,t=0;
+  game.round=ff=>{f=ff;locked=false;parts=[];bar.innerHTML="";bar.className="";choices(bar,f.r,f.a,f.wrong,v=>{if(locked)return null;if(judge(v)){locked=true;sfx.goal();confetti(parts,W/2,120,30);return true}return false},f.fmt||(v=>String(v)))};
+  function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}farmBg(x,W,H,t,false);
+    const tak=f.mode==="takvim";const key=tak?(window.SPR&&SPR.EMO["📅"]):"stopwatch";
+    if(!(window.SPR&&key&&SPR.d(x,key,86,118,120))){x.fillStyle="#fff";x.beginPath();x.arc(86,118,50,0,7);x.fill();x.strokeStyle="#2b2a33";x.lineWidth=4;x.stroke()}
+    const facts=tak?["1 gün = 24 saat","1 hafta = 7 gün","1 yıl = 12 ay","1 ay ≈ 30 gün"]:["1 saat = 60 dakika","1 dakika = 60 saniye","1 gün = 24 saat"];
+    const fy0=tak?48:62;facts.forEach((s,i)=>tip(x,s,262,fy0+i*36,220,14));
+    if(locked)tip(x,f.ansTxt,W/2,H-18,W,14);
+    drawParts(x,parts);raf=requestAnimationFrame(loop)}
+  loop();return()=>cancelAnimationFrame(raf)};
+
+// 3) Metre Atölyesi / Uzay Metresi: soruya uygun görsel (fidan + cetvel)
+ENGINES.uzunluk4=simpleChoiceEngine((x,W,H,S)=>{const f=S.f;const base=H-26;
+  if(f.mode==="prob"){const mm=f.q.match(/(\d+) m (\d+) cm.*?(\d+) cm kesildi/);const m1=mm?+mm[1]:1,c1=mm?+mm[2]:50,c2=mm?+mm[3]:20;const tot=m1*100+c1,rem=tot-c2;const sc=160/Math.max(tot,200);
+    // dikey cetvel
+    const rx=60,top=base-200*sc;x.fillStyle="#f6c445";x.fillRect(rx-12,top-10*sc,24,base-top+10*sc);x.strokeStyle="#2b2a33";x.lineWidth=1.5;x.strokeRect(rx-12,top-10*sc,24,base-top+10*sc);
+    for(let v=0;v<=Math.max(tot,200);v+=10){const y=base-v*sc;x.fillStyle="#2b2a33";x.fillRect(rx-12,y,v%100?v%50?5:8:12,1.2);if(v%100===0)label(x,v/100+" m",rx+16,y,11,"#fff")}
+    // fidan: gövde + yapraklar (boy = tot)
+    const tx=200,hT=tot*sc;x.strokeStyle="#8a5a2b";x.lineWidth=8;x.lineCap="round";x.beginPath();x.moveTo(tx,base);x.lineTo(tx,base-hT*.55);x.stroke();
+    const leaf=(ly,dir,s)=>{x.fillStyle="#4caf50";x.beginPath();x.ellipse(tx+dir*s*.55,base-ly,s*.6,s*.28,dir*-.6,0,7);x.fill()};
+    leaf(hT*.22,-1,34);leaf(hT*.34,1,34);leaf(hT*.46,-1,30);
+    x.fillStyle="#3dbb8a";x.beginPath();x.ellipse(tx,base-hT*.72,30,hT*.28,0,0,7);x.fill();x.fillStyle="#6ad08f";x.beginPath();x.ellipse(tx-8,base-hT*.78,14,hT*.14,0,0,7);x.fill();
+    x.fillStyle="#8a86b8";x.beginPath();x.ellipse(tx,base+2,40,7,0,0,7);x.fill();
+    // boy etiketi
+    tip(x,`Boy: ${m1} m ${c1} cm`,tx-30,base-hT-18,150,14);
+    // kesim çizgisi
+    const cy=base-rem*sc;x.save();x.setLineDash([6,4]);x.strokeStyle="#ef4b4b";x.lineWidth=3;x.beginPath();x.moveTo(tx-56,cy);x.lineTo(tx+56,cy);x.stroke();x.restore();
+    if(!(window.SPR&&SPR.EMO["✂️"]&&SPR.d(x,SPR.EMO["✂️"],tx+70,cy,30))){label(x,"✂",tx+70,cy,22,"#ef4b4b")}
+    tip(x,`${c2} cm kesildi`,tx+118,cy+24,120,13);
+    // kalan: sağda ayraç
+    const bx=tx+62;x.strokeStyle="#ffd85c";x.lineWidth=2;x.beginPath();x.moveTo(bx,cy+4);x.lineTo(bx+8,cy+4);x.lineTo(bx+8,base);x.lineTo(bx,base);x.stroke();label(x,S.locked?`${rem} cm`:"? cm",bx+34,(cy+base)/2,14,"#ffd85c");
+    return}
+  // çevirme: büyük etiket + yatay cetvel
+  let q=null;if(f.q.includes(" = "))q=f.q.split(" = ")[0]+"  →  ?";else{const mm=f.q.match(/^(.+?) kaç (.+?) eder/);if(mm)q=mm[1]+"  →  ? "+mm[2].replace(" kaç "," ? ")}if(q)tip(x,q,W/2,60,W-40,22);
+  x.fillStyle="#f6c445";x.fillRect(20,150,340,34);x.strokeStyle="#2b2a33";x.lineWidth=1.5;x.strokeRect(20,150,340,34);for(let i=0;i<=40;i++){x.fillStyle="#2b2a33";x.fillRect(20+i*8.5,150,1.2,i%10?6:i%5?9:14);if(i%10===0)label(x,String(i/10),20+i*8.5,176,10,"#2b2a33")}
+  const facts=+store.grade===3?["1 m = 100 cm"]:["1 km = 1000 m","1 m = 100 cm","1 cm = 10 mm"];facts.forEach((s,i)=>tip(x,s,facts.length===1?190:70+i*120,106,120,13))},380,250,(x,W,H,t)=>{starfield(x,W,H,t);moonGround(x,W,H-26)});
+
+// 4) Sayı Doğrusu / Yıldız Doğrusu: doğru cevapta kartlar sıraya dizilir
+ENGINES.sirala3=simpleChoiceEngine((x,W,H,S)=>{const f=S.f;
+  if(f.mode==="kart"){numCards(x,f.N,W,80);return}
+  if(f.mode==="sira"){const N=f.N,w=90,h=56,gap=(W-N.length*w)/(N.length+1);const sorted=N.slice().sort((a,b)=>a-b);
+    if(S.locked){if(!S.st.l0)S.st.l0=S.t}const k=S.st.l0?Math.min(1,(S.t-S.st.l0)/28):0,e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    N.forEach((v,i)=>{const j=sorted.indexOf(v);const x0=gap+i*(w+gap),x1=gap+j*(w+gap);const px=x0+(x1-x0)*e,py=80-Math.sin(e*Math.PI)*22*(i!==j?1:0);
+      x.save();x.fillStyle="rgba(0,0,0,.22)";x.beginPath();x.roundRect(px+3,py+4,w,h,14);x.fill();x.fillStyle=k>=1?"#d9f5e4":"#fff1b8";x.beginPath();x.roundRect(px,py,w,h,14);x.fill();if(k>=1){x.strokeStyle="#3dbb8a";x.lineWidth=3;x.stroke()}x.restore();label(x,spN(v),px+w/2,py+h/2,26,"#2b2a33")});
+    if(k>=1){for(let j=0;j<N.length-1;j++){const ax=gap+(j+1)*(w+gap)-gap/2;label(x,"<",ax,108,22,"#ffd85c")}}
+    return}
+  jPanel(x,10,50,W-20,130);const X0=30,X1=W-30,Y=130,st=(X1-X0)/10;x.strokeStyle="#2b2a33";x.lineWidth=3;x.beginPath();x.moveTo(X0-6,Y);x.lineTo(X1+6,Y);x.stroke();for(let i=0;i<=10;i++){x.lineWidth=i%10?2:3;x.beginPath();x.moveTo(X0+i*st,Y-(i%10?8:12));x.lineTo(X0+i*st,Y+(i%10?8:12));x.stroke()}label(x,String(f.H),X0,Y+28,15,"#2b2a33");label(x,String(f.H+100),X1,Y+28,15,"#2b2a33");const ax=X0+f.k*st;x.fillStyle="#ef6f4b";x.beginPath();x.moveTo(ax,Y-14);x.lineTo(ax-9,Y-34);x.lineTo(ax+9,Y-34);x.fill();x.fillRect(ax-3,Y-56,6,24);if(S.locked)label(x,String(f.a),ax,Y+28,15,"#3dbb8a")},380,240,schoolBg);
+
+// 5) Uzay Kumbarası: paralar kedinin içine atılır
+kumbaraDraw=function(x,S,A,tot){const f=S.f;moonGround(x,A.W,196);tip(x,`Ödenen: ${kTL(tot)} · İstenen: ${kTL(f.target)}`,A.W/2,22,A.W,15);
+  if(S._n==null){S._n=0;S._fly=[]}
+  while(S._n<S.items.length){S._fly.push({k:S.items[S._n],t0:S.t});S._n++}
+  if(S._n>S.items.length){S._n=S.items.length;S._fly=S._fly.filter(fl=>S.items.length>0)}
+  const bounce=S._fly.some(fl=>S.t-fl.t0>14&&S.t-fl.t0<22)?1.06:1;
+  const kx=104,ky=160;kittyBank(x,kx,ky,bounce);
+  // para çizimi
+  const coin=(cx,cy,pc,sc=1)=>{if(pc.val>=500){x.fillStyle=pc.val>=1000?"#d9534f":"#7c5cff";x.beginPath();x.roundRect(cx-21*sc,cy-14*sc,42*sc,28*sc,4);x.fill();x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=1.5;x.stroke();label(x,pc.lab,cx,cy+1,13*sc,"#fff")}else{const r=(pc.val===100?19:pc.val===50?17:15)*sc;x.fillStyle=pc.val===100?"#e2b84a":"#c9d0d9";x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.strokeStyle="rgba(0,0,0,.3)";x.lineWidth=2;x.stroke();x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.arc(cx-r*.3,cy-r*.3,r*.35,0,7);x.fill();label(x,pc.lab.replace(" ",""),cx,cy+1,(pc.val===25?10:12)*sc,"#3b2f1c")}};
+  // atılan paralar: yarığa düşer
+  S._fly=S._fly.filter(fl=>{const k=(S.t-fl.t0)/18;if(k>=1)return false;const pc=f.pieces[fl.k];coin(kx,ky-112+k*k*60,pc,1-k*.7);return true});
+  // kedinin içindekiler: sağda liste
+  const tx=186,ty=48,tw=A.W-tx-10,th=156;x.save();x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(tx,ty,tw,th,14);x.fill();x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=1.5;x.stroke();x.restore();
+  label(x,"Kumbaradakiler",tx+tw/2,ty+14,13,"#fff");
+  if(!S.items.length)label(x,"Henüz para yok",tx+tw/2,ty+th/2+6,14,"rgba(255,255,255,.7)");
+  S.items.forEach((k,i)=>{if(i>=S._n-S._fly.length)return;const pc=f.pieces[k],cx=tx+26+(i%4)*44,cy=ty+46+Math.floor(i/4)*40;coin(cx,cy,pc,.9)});
+  if(S.items.length)tip(x,`Toplam: ${kTL(tot)}`,tx+tw/2,ty+th+16,tw,13)};
+
+// 6) Kesir Kulesi: hedef etiketi kesirli, bütün çizgisi görünür
+kkuleDraw=function(x,S,A,tot){const f=S.f;const H0=200,X0=A.W/2-50,Y0=A.H-40;tip(x,`Kule: ${S.items.length?S.items.map(k=>f.pieces[k].lab).join(" + "):"boş"}`,A.W/2,22,A.W,14);
+  x.setLineDash([6,4]);x.strokeStyle="#fff";x.lineWidth=2;x.strokeRect(X0,Y0-H0,100,H0);x.setLineDash([]);
+  for(let q=1;q<4;q++){x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=1;x.beginPath();x.moveTo(X0,Y0-H0*q/4);x.lineTo(X0+100,Y0-H0*q/4);x.stroke()}
+  const fr=v=>v===1?"1 bütün":v===.75?"3/4":v===.5?"1/2":v===.25?"1/4":String(v);
+  label(x,"1 bütün",X0+150,Y0-H0,14,"#fff");
+  x.strokeStyle="#ffd85c";x.lineWidth=3;x.beginPath();x.moveTo(X0-10,Y0-H0*f.target);x.lineTo(X0+110,Y0-H0*f.target);x.stroke();label(x,"hedef: "+fr(f.target),X0-48,Y0-H0*f.target-(f.target===1?-12:0),13,"#ffd85c");
+  let y=Y0;S.items.forEach((k,i)=>{const pc=f.pieces[k],h=H0*pc.val;x.fillStyle=pc.val===.5?"#ef6f4b":pc.val===.25?"#2f8fd8":"#3dbb8a";x.fillRect(X0+2,y-h,96,h-2);x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=1;x.strokeRect(X0+2,y-h,96,h-2);label(x,pc.lab,X0+50,y-h/2,14,"#fff");y-=h})};
 // ============ YENİ GÖRSEL TARZ: ortak çizim parçalarını Fluent 3D + yumuşak sahnelerle değiştir ============
 // Kural: rakam ve sayı yazılan yüzeylerde parlama yok (okunabilirlik).
 ;(function(){
