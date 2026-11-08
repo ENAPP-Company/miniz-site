@@ -4171,7 +4171,7 @@ skor1:simpleChoiceEngine((x,W,H,S)=>{const f=S.f,L=S.locked;jBoard(x,22,22,W-44,
   const ali=f.mode==="topla"?f.h1:f.mode==="cikar"?f.h1:f.b0,ayse=f.mode==="topla"?f.h2:(L?f.a:null),tot=f.mode==="topla"?(L?f.a:null):f.tot;
   const row=(y,name,n,col,hl)=>{if(hl){x.fillStyle="rgba(255,255,255,.08)";x.beginPath();x.roundRect(30,y-20,W-60,44,10);x.fill()}
     boardTxt(x,name,34+28,y,17,col);label(x,n==null?"?":n+" gol",150,y+1,19,n==null?"#7ee08a":col);x.textAlign="left";
-    if(n!=null){const k=Math.min(n,20),per=10,bs=14,sx=206;for(let i=0;i<k;i++){const bx=sx+(i%per)*15,by=y-7+Math.floor(i/per)*15;if(!(window.SPR&&SPR.d(x,"soccer",bx,by,bs))){x.fillStyle="#fff";x.beginPath();x.arc(bx,by,6,0,7);x.fill()}}}
+    if(n!=null){const k=Math.min(n,20),per=10,bs=14,sx=206;for(let i=0;i<k;i++){const bx=sx+(i%per)*15,by=y+1-(n>per?7:0)+Math.floor(i/per)*15;if(!(window.SPR&&SPR.d(x,"soccer",bx,by,bs))){x.fillStyle="#fff";x.beginPath();x.arc(bx,by,6,0,7);x.fill()}}}
   };
   row(80,"ALİ",ali,"#ffd85c",false);row(132,"AYŞE",ayse,"#ffd85c",f.mode!=="topla"&&!L);
   x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=1.5;x.beginPath();x.moveTo(34,164);x.lineTo(W-34,164);x.stroke();
@@ -4440,8 +4440,8 @@ const ENG_PLACE=sbEngine({H:330,
     {const L=kLay(S).slice(0,f.slots.length),bot=Math.max(...L.map(b=>b.y+b.h)),l=Math.min(...L.map(b=>b.x)),r=Math.max(...L.map(b=>b.x+b.w)),cx=(l+r)/2,hw=(r-l)/2+46;
      x.save();const ev=f.gen==="evin",R=900,cy=bot+R-2;x.beginPath();x.arc(A.W/2,cy,R,0,7);x.fillStyle=ev?"#7cc96a":"#8a86b8";x.fill();x.beginPath();x.arc(A.W/2,cy+6,R,0,7);x.fillStyle=ev?"#5faa52":"#77739f";x.fill();
      x.fillStyle=ev?"rgba(255,255,255,.25)":"rgba(70,64,120,.55)";[[-120,10,5],[-40,16,4],[60,12,6],[130,20,4]].forEach(([u,v,rr])=>{x.beginPath();x.ellipse(A.W/2+u,bot+v,rr*2,rr*.7,0,0,7);x.fill()});x.restore()}
-    f.slots.forEach((k,i)=>{const b=kLay(S)[i];S.filled[i]?kShape(x,k,b,PAL[i%PAL.length]):kShape(x,k,b,"",true);if(S.filled[i]&&k==="kare"){x.fillStyle="#2b2a33";if(f.gen==="robotun"){x.beginPath();x.arc(b.x+b.w*.32,b.y+b.h*.4,b.w*.08,0,7);x.arc(b.x+b.w*.68,b.y+b.h*.4,b.w*.08,0,7);x.fill();x.fillRect(b.x+b.w*.3,b.y+b.h*.66,b.w*.4,b.h*.08)}else if(f.gen==="roketin"){x.fillStyle="#bfe6ff";x.beginPath();x.arc(b.x+b.w/2,b.y+b.h/2,b.w*.22,0,7);x.fill();x.strokeStyle="#2b2a33";x.lineWidth=2;x.stroke()}else if(f.gen==="evin"){x.fillStyle="#7a4a2a";x.fillRect(b.x+b.w*.38,b.y+b.h*.5,b.w*.24,b.h*.5)}}});
-    if(S.locked&&f.fire!==false){x.font="30px serif";x.textAlign="center";x.fillText("🔥",220,262-Math.abs(Math.sin(S.t/6))*6)}
+    f.slots.forEach((k,i)=>{const b=kLay(S)[i];S.filled[i]?kShape(x,k,b,PAL[i%PAL.length]):kShape(x,k,b,"",true);});
+    if(S.locked&&f.fire!==false){const L=kLay(S),rb=L.find(b=>b.k==="dikdortgen")||L[0];const fx=rb.x+rb.w/2,fy=rb.y+rb.h;x.save();x.translate(fx,fy);const k=1+.08*Math.sin(S.t/4);x.scale(k,k);const fl=x.createLinearGradient(0,0,0,42);fl.addColorStop(0,"#fff3b0");fl.addColorStop(.45,"#ffb347");fl.addColorStop(1,"rgba(255,80,50,0)");x.fillStyle=fl;x.beginPath();x.moveTo(-18,0);x.quadraticCurveTo(-6,26,0,44+Math.random()*8);x.quadraticCurveTo(6,26,18,0);x.closePath();x.fill();x.restore()}
     S.pieces.forEach((pc,j)=>{if(pc.used||(S.drag&&S.drag.j===j))return;const b=this.tray(S,j,A);x.fillStyle="rgba(255,255,255,.9)";x.beginPath();x.roundRect(b.x-2,b.y-2,b.w+4,b.h+4,8);x.fill();{const sb=pc.i>=0?kLay(S)[pc.i]:{w:1,h:1},mw=b.w-10,mh=b.h-10,sc=Math.min(mw/sb.w,mh/sb.h),w=sb.w*sc,h=sb.h*sc;kShape(x,pc.k,{x:b.x+(b.w-w)/2,y:b.y+(b.h-h)/2,w,h},PAL[(j+2)%PAL.length])}});
     if(S.drag){const pc=S.pieces[S.drag.j];const sb=pc.i>=0?kLay(S)[pc.i]:{w:50,h:50};kShape(x,pc.k,{x:S.drag.x-sb.w/2,y:S.drag.y-sb.h/2,w:sb.w,h:sb.h},"#ffe08a")}}});
 
@@ -4514,6 +4514,26 @@ const ENG_CATCH=sbEngine({H:330,hold:true,
       else tip(x,f.pre?`Kovada ${f.pre} vardı · ${f.need} olunca Tamam'a bas`:`Tam ${f.need} meteor yakala, sayarak · sonra Tamam`,A.W/2,22,A.W,14)}
     else tip(x,`Sadece ${f.k}'${f.ek} katlarını yakala · ${S.got}/${f.need}`,A.W/2,22,A.W,14)}});
 
+
+// ---------- J2: YILDIZ KAVANOZU (verilen kadar sayma: dokun, kavanozda görünür, sayıp Tamam) ----------
+const ENG_KAVANOZ=sbEngine({H:330,
+  init(f,S,A){window._jar=S;S.got=f.pre||0;S.pop=null;S.msg=null;S.fly=[];const n=12,P=[];let g=0;while(P.length<n&&g++<400){const px=28+Math.random()*(A.W-56),py=46+Math.random()*118;if(P.every(q=>Math.hypot(q.x-px,q.y-py)>44))P.push({x:px,y:py,ph:Math.random()*6,s:.9+Math.random()*.3})}S.stars=P;
+    A.btn("Boşalt",()=>{if(S.locked)return;S.got=f.pre||0;S.fly=[];S.msg=null;S.stars.forEach(st=>st.used=false)});
+    A.btn("Tamam ✓",()=>{if(S.locked)return;if(S.fly.length)return;if(S.got===f.need)A.done();else{S.msg={t:S.t,n:S.got};A.fail();S.got=f.pre||0;S.stars.forEach(st=>st.used=false)}},"")},
+  jar(A){return{x:A.W/2-70,y:A.H-124,w:140,h:112}},
+  slot(S,A,i){const j=this.jar(A),per=4,r=Math.floor(i/per),c=i%per;return{x:j.x+22+c*32+(r%2?8:0),y:j.y+j.h-18-r*26}},
+  down(p,S,A){if(S.locked||S.got>=15)return;for(const st of S.stars){if(st.used)continue;if(Math.hypot(p.x-st.x,p.y-st.y)<30){st.used=true;const to=this.slot(S,A,S.got);S.got++;S.pop={t:S.t,n:S.got};S.fly.push({x:st.x,y:st.y,tx:to.x,ty:to.y,p:0});sfx.pop();return}}},
+  draw(x,S,A){const f=S.f,j=this.jar(A);
+    S.stars.forEach((st,i)=>{if(st.used)return;const yy=st.y+Math.sin(S.t/14+st.ph)*3;const gg=x.createRadialGradient(st.x,yy,2,st.x,yy,24);gg.addColorStop(0,"rgba(255,230,120,.45)");gg.addColorStop(1,"rgba(255,230,120,0)");x.fillStyle=gg;x.beginPath();x.arc(st.x,yy,24,0,7);x.fill();if(!(window.SPR&&SPR.d(x,"gstar",st.x,yy,40*st.s))){x.fillStyle="#ffd85c";x.beginPath();x.arc(st.x,yy,14,0,7);x.fill()}});
+    x.save();x.fillStyle="rgba(190,225,255,.22)";x.strokeStyle="rgba(230,245,255,.9)";x.lineWidth=3;x.beginPath();x.roundRect(j.x,j.y,j.w,j.h,[10,10,22,22]);x.fill();x.stroke();
+    x.fillStyle="rgba(255,255,255,.22)";x.beginPath();x.roundRect(j.x+10,j.y+14,12,j.h-34,6);x.fill();x.restore();
+    const inJar=S.got-S.fly.length;for(let i=0;i<inJar;i++){const sl=this.slot(S,A,i);if(!(window.SPR&&SPR.d(x,"gstar",sl.x,sl.y,30))){x.fillStyle="#ffd85c";x.beginPath();x.arc(sl.x,sl.y,10,0,7);x.fill()}}
+    S.fly=S.fly.filter(fl=>{fl.p+=.07;const e=fl.p<1?1-Math.pow(1-fl.p,2):1;const px=fl.x+(fl.tx-fl.x)*e,py=fl.y+(fl.ty-fl.y)*e-Math.sin(Math.min(1,fl.p)*Math.PI)*40;if(!(window.SPR&&SPR.d(x,"gstar",px,py,34))){x.fillStyle="#ffd85c";x.beginPath();x.arc(px,py,11,0,7);x.fill()}return fl.p<1});
+    x.fillStyle="#c9a26b";x.beginPath();x.roundRect(j.x-6,j.y-16,j.w+12,20,8);x.fill();x.fillStyle="#a9834f";x.fillRect(j.x-6,j.y-2,j.w+12,5);
+    if(S.pop&&S.t-S.pop.t<36){const k=(S.t-S.pop.t)/36;x.save();x.globalAlpha=1-k*k;const py=j.y-40-k*26;x.fillStyle="#ffe066";x.beginPath();x.arc(A.W/2,py,22,0,7);x.fill();label(x,String(S.pop.n),A.W/2,py+1,24,"#7a4a00");x.restore()}
+    if(S.locked)tip(x,`Doğru! Kavanozda ${f.need} yıldız var 🎉`,A.W/2,22,A.W,16);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,`Kavanozda ${S.msg.n} yıldız vardı, ${f.need} olmalı. Tekrar say!`,A.W/2,22,A.W,14);
+    else tip(x,f.pre?`Kavanozda ${f.pre} vardı · ${f.need} olunca Tamam'a bas`:`Yıldızlara dokun: tam ${f.need} tane · sonra Tamam`,A.W/2,22,A.W,14)}});
 // ---------- H: RİTİM (sinyal) ----------
 const ENG_RHY=sbEngine({H:190,
   init(f,S,A){S.k=0;S.show=0;S.on=false;const wrong=f.pool.filter(v=>!f.next.includes(v));
@@ -4603,7 +4623,7 @@ Object.assign(G,{
   utren:{id:"utren",name:"Uzay Treni",ico:"🚂",task:"Vagonları sürükle, sayıları sıraya diz"},
   tangram:{id:"tangram",name:"Şekil Yapbozu",ico:"🔺",task:"Şekilleri gölgeye yerleştir"},
   ahafiza:{id:"ahafiza",name:"Astronot Hafızası",ico:"🃏",task:"Kartları çevir, eşlerini bul"},
-  meteor:{id:"meteor",name:"Meteor Kovası",ico:"☄️",task:"Kovayı kaydır, istenen sayıda meteor yakala"},
+  meteor:{id:"meteor",name:"Yıldız Kavanozu",ico:"🫙",task:"Yıldızlara dokun, kavanoza istenen sayıda yıldız koy"},
   sinyal:{id:"sinyal",name:"Sinyal Ritmi",ico:"📡",task:"Sinyali izle, sıradaki sayıları seç"},
   rovery:{id:"rovery",name:"Rover Yüzlük Tablo",ico:"🚙",task:"Ok kartlarını diz, aracı hedefe götür"},
   ihafiza:{id:"ihafiza",name:"İşlem Hafızası",ico:"🃏",task:"İşlemi sonucuyla eşle"},
@@ -4633,9 +4653,9 @@ Object.assign(GFACT,{
  ahafiza:[(r,c)=>{const v=pickDistinct(r,c||3,1,6);return{t:"Sayı ve çokluk",pairs:v.map(n=>["dots:"+n,n]),a:"ok",q:"Noktaları sayıyla eşle",hint:"Noktaları tek tek say, aynı sayıyı bul.",ansTxt:"Hepsi eşleşti"}},
    (r,c)=>{const v=pickDistinct(r,c||4,2,10);return{t:"Sayı ve çokluk",pairs:v.map(n=>["dots:"+n,n]),a:"ok",q:"Noktaları sayıyla eşle",hint:"5'ten fazla nokta varsa önce 5'i bul, sonra devam et.",ansTxt:"Hepsi eşleşti"}},
    (r,c)=>{const v=pickDistinct(r,c||4,1,9);return{t:"Bir fazlası",pairs:v.map(n=>[`${n} + 1`,n+1]),a:"ok",q:"Sayıyı bir fazlasıyla eşle",hint:"Bir fazlası, saydığımızda hemen sonra gelen sayıdır.",ansTxt:"Hepsi eşleşti"}}],
- meteor:[r=>{const n=ri(r,3,6);return{t:"Verilen kadar sayma",mode:"say",need:n,a:"ok",q:`Kovaya tam ${n} meteor yakala, sonra Tamam'a bas`,hint:"Her yakaladığında say: 1, 2, 3… Fazla yakalarsan Boşalt.",ansTxt:`Kovaya ${n} meteor girdi`}},
-   r=>{const n=ri(r,6,10);return{t:"Verilen kadar sayma",mode:"say",need:n,a:"ok",q:`Kovaya tam ${n} meteor yakala, sonra Tamam'a bas`,hint:"Yakaladıkça sesli say. Fazla olursa Boşalt.",ansTxt:`Kovaya ${n} meteor girdi`}},
-   r=>{const n=ri(r,6,9),p=ri(r,2,4);return{t:"İleriye sayma",mode:"say",need:n,pre:p,a:"ok",q:`Kovada ${p} meteor var. ${n} olunca Tamam'a bas`,hint:`${nd(p,"dan")} sonra saymaya devam et: ${p+1}, ${p+2}…`,ansTxt:`${p} meteor vardı, ${n-p} tane daha yakalandı: ${n}`}}],
+ meteor:[r=>{const n=ri(r,3,6);return{t:"Verilen kadar sayma",mode:"say",need:n,a:"ok",q:`Kavanoza tam ${n} yıldız koy, sonra Tamam'a bas`,hint:"Her dokunuşta say: 1, 2, 3… Fazla koyarsan Boşalt.",ansTxt:`Kavanoza ${n} yıldız girdi`}},
+   r=>{const n=ri(r,6,10);return{t:"Verilen kadar sayma",mode:"say",need:n,a:"ok",q:`Kavanoza tam ${n} yıldız koy, sonra Tamam'a bas`,hint:"Koydukça sesli say. Fazla olursa Boşalt.",ansTxt:`Kavanoza ${n} yıldız girdi`}},
+   r=>{const n=ri(r,6,9),p=ri(r,2,4);return{t:"İleriye sayma",mode:"say",need:n,pre:p,a:"ok",q:`Kavanozda ${p} yıldız var. ${n} olunca Tamam'a bas`,hint:`${nd(p,"dan")} sonra saymaya devam et: ${p+1}, ${p+2}…`,ansTxt:`${p} yıldız vardı, ${n-p} tane daha kondu: ${n}`}}],
  sinyal:[r=>{const s=ri(r,1,9);const seq=[s,s+2,s+4],next=[s+6,s+8];return{t:"İkişer sayma",seq,next,pool:shuffle(r,[...next,...shuffle(r,[s+5,s+7,s+9,s+3,s+10].filter(v=>v>0&&!next.includes(v))).slice(0,3)]),a:"ok",q:"Sinyal ikişer artıyor. Sıradaki iki sayıyı aşağıdan seç",hint:`Her seferinde 2 ekle: ${nd(s+4,"dan")} sonra ${s+6} gelir.`,ansTxt:`${seq.join(", ")}, ${next.join(", ")}`}},
    r=>{const s=ri(r,0,2)*5;const seq=[s+5,s+10,s+15],next=[s+20,s+25];return{t:"Beşer sayma",seq,next,pool:[...next,s+16,s+18,s+21,s+30].slice(0,5),a:"ok",q:"Sinyal beşer artıyor. Sıradaki iki sayıyı aşağıdan seç",hint:"Her seferinde 5 ekle.",ansTxt:`${seq.join(", ")}, ${next.join(", ")}`}},
    r=>{const s=ri(r,9,20);const seq=[s,s-1,s-2],next=[s-3,s-4];return{t:"Geriye sayma",seq,next,pool:[...next,s+1,s-5,s+2].slice(0,5),a:"ok",q:"Sinyal birer azalıyor. Sıradaki iki sayıyı aşağıdan seç",hint:"Geriye say: her seferinde 1 eksilt.",ansTxt:`${seq.join(", ")}, ${next.join(", ")}`}},
@@ -4707,7 +4727,7 @@ function pdiziDraw(x,S,A,tot){const f=S.f,h=f.h,u=Math.min(8,(A.W-40)/Math.max(f
   x.setLineDash([5,4]);x.strokeStyle="#fff";x.strokeRect(X0,Y0,f.target*u,h*14);x.setLineDash([]);let px=X0;S.items.forEach(k=>{const w=f.pieces[k].val;x.fillStyle=w===10?"#2f8fd8":"#f6c445";x.fillRect(px+1,Y0+1,w*u-2,h*14-2);if(w===10)label(x,`10 × ${h}`,px+w*u/2,Y0+h*7,14,"#fff");px+=w*u})}
 
 // sırala, hafıza vb. motorlar
-Object.assign(ENGINES,{utren:ENG_SORT,tangram:ENG_PLACE,ahafiza:ENG_MEM,meteor:ENG_CATCH,sinyal:ENG_RHY,rovery:ENG_CODE,ihafiza:ENG_MEM,uterazi:ENG_BAL,mdogru:ENG_SLIDE,ykule:ENG_BUILD,gdilim:ENG_CUT,rrota:ENG_CODE,ukumbara:ENG_BUILD,shafiza:ENG_MEM,kkule:ENG_BUILD,pdizi:ENG_BUILD,ykay:ENG_SLIDE,khafiza:ENG_MEM,kyildiz:ENG_DOTS,akat:ENG_CATCH});
+Object.assign(ENGINES,{utren:ENG_SORT,tangram:ENG_PLACE,ahafiza:ENG_MEM,meteor:ENG_KAVANOZ,sinyal:ENG_RHY,rovery:ENG_CODE,ihafiza:ENG_MEM,uterazi:ENG_BAL,mdogru:ENG_SLIDE,ykule:ENG_BUILD,gdilim:ENG_CUT,rrota:ENG_CODE,ukumbara:ENG_BUILD,shafiza:ENG_MEM,kkule:ENG_BUILD,pdizi:ENG_BUILD,ykay:ENG_SLIDE,khafiza:ENG_MEM,kyildiz:ENG_DOTS,akat:ENG_CATCH});
 
 // ---- Kasım: ayda 10 oyun (müfredata göre düzeltilmiş) ----
 SETS[11]={1:["gezegen","kurbaga","ufo","balon","sekil","utren","tangram","ahafiza","meteor","sinyal"],
@@ -4758,7 +4778,7 @@ Object.assign(HOME,{
  utren:HC("Oyuncak Treni","Sayıları küçükten büyüğe sıralama","1–20 arası numara yazılmış kâğıtlar ya da kutular",["4 kâğıdı karışık dizin.","Çocuğunuz bunları küçükten büyüğe sıralayıp bir tren yapsın.","Sonra büyükten küçüğe sıralayıp treni ters çevirsin."],"Hangi sayının en başa geleceğini nasıl buldun?"),
  tangram:HC("Kâğıttan Şekil Yapbozu","Üçgen, kare, dikdörtgen","Renkli kâğıt, çocuk makası (kesmeyi yetişkin de yapabilir)",["Kâğıttan 2 üçgen, 1 kare, 1 dikdörtgen kesin.","Bunlarla bir ev, roket ya da robot yapın.","Hangi şekli kaç kez kullandığınızı sayın."],"Kare ile dikdörtgen arasındaki fark ne?"),
  ahafiza:HC("Nokta Kartları Hafızası","Çokluğu sayıyla eşleme","8 küçük kâğıt, kalem",["4 kâğıda 1–6 arası nokta çizin, 4 kâğıda aynı sayıları yazın.","Kartları ters çevirip karıştırın.","Sırayla iki kart açın; nokta sayısı ile rakam aynıysa eşi bulunur."],"Noktaları saymadan kaç tane olduğunu görebildin mi?"),
- meteor:HC("Kova Doldurma","Verilen kadar sayma, ileriye sayma","Bir kase, düğme ya da makarna",["Kasenin yanına 7 yazın.","Çocuğunuz tek tek sayarak 7 düğme koysun, 7'de dursun.","Sonra 3 düğmeyle başlayın: '3'ten devam et, 8'e kadar' deyin."],"Baştan saymadan 3'ten devam edebildin mi?"),
+ meteor:HC("Kavanoz Doldurma","Verilen kadar sayma, ileriye sayma","Bir kavanoz ya da kase, düğme ya da makarna",["Kavanozun yanına 7 yazın.","Çocuğunuz tek tek sayarak 7 düğme koysun, 7'de dursun.","Sonra 3 düğmeyle başlayın: '3'ten devam et, 8'e kadar' deyin."],"Baştan saymadan 3'ten devam edebildin mi?"),
  sinyal:HC("Alkış Ritmi","Ritmik sayma (1'er, 2'şer, 5'er) ve geriye sayma","Sadece eller",["Siz '2, 4, 6' diyerek her sayıda alkışlayın.","Çocuğunuz sıradaki iki sayıyı alkışlayarak söylesin.","Sonra 15'ten geriye birer sayın."],"2'şer sayarken hep hangi sayıları atlıyoruz?"),
  rovery:HC("Yüzlük Tablo Yolculuğu","Onluk ve birlik ile ilerleme","Kâğıda çizilmiş 1–100 tablosu, bir düğme",["Düğmeyi 23'e koyun.","'Bir aşağı' derseniz 10 eklenir (33), 'bir sağa' derseniz 1 eklenir.","Çocuğunuz 23'ten 47'ye nasıl gideceğini oklarla anlatsın."],"Aşağı inince neden sayı 10 artıyor?"),
  ihafiza:HC("İşlem Kartları","Zihinden toplama ve çıkarma","6 küçük kâğıt",["3 kâğıda işlem (30 + 4, 50 − 20 …), 3 kâğıda sonuçlarını yazın.","Ters çevirip karıştırın, sırayla açın.","İşlemi sonucuyla eşleyen kartları alır."],"30 + 4'ü hesaplamadan nasıl hemen buldun?"),
