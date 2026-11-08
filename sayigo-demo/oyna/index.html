@@ -1203,9 +1203,8 @@ top(area){
       // sayı tabelası
       x.fillStyle="#fff";x.beginPath();x.roundRect(cx-44,34,88,30,8);x.fill();label(x,String(f.lanes[i]),cx,49,18,"#2b2a33")}
     // top
-    const RX=W/2-70,RY=FL+22;let ox=RX,bx=ox+22,by=RY-6,bs=1,thrown=false;if(roll){roll.p+=reduced?1:.035;const p=Math.min(1,roll.p);const cx=laneX(roll.i);const q=Math.min(1,p*3);ox=RX+(cx-RX)*q;if(q<1){bx=ox+22;by=RY-6}else{thrown=true;const r2=(p-1/3)/(2/3);bx=cx;by=(FL-20)-((FL-20)-110)*r2;bs=1-.45*r2}if(p>=1&&!roll.done){roll.done=true;const ok=f.lanes[roll.i]===f.a;if(judge(f.lanes[roll.i])){locked=true;pins[roll.i].forEach(pn=>pn.down=.01);msgTxt="STRIKE!";msgT=90;sfx.goal();confetti(parts,cx,100,40)}else{hintLine=true;msgTxt="Oluk! 😅";msgT=60;sfx.bad();const my=game;setTimeout(()=>{if(game===my&&!locked)roll=null},900)}}}
-    // Bilge (bowlingci)
-    x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(ox,RY+22,22,5,0,0,7);x.fill();x.fillStyle="#7c5cff";x.beginPath();x.ellipse(ox,RY,18,22,0,0,7);x.fill();x.fillStyle="#b8a6ff";x.beginPath();x.ellipse(ox,RY+6,11,14,0,0,7);x.fill();x.fillStyle="#fff";x.beginPath();x.arc(ox-6,RY-8,5,0,7);x.arc(ox+6,RY-8,5,0,7);x.fill();x.fillStyle="#2b2a33";x.beginPath();x.arc(ox-5,RY-8,2.5,0,7);x.arc(ox+7,RY-8,2.5,0,7);x.fill();x.fillStyle="#f6a623";x.beginPath();x.moveTo(ox-3,RY-2);x.lineTo(ox+3,RY-2);x.lineTo(ox,RY+2);x.fill();x.fillStyle="#7c5cff";x.beginPath();x.moveTo(ox-14,RY-18);x.lineTo(ox-18,RY-30);x.lineTo(ox-6,RY-22);x.fill();x.beginPath();x.moveTo(ox+14,RY-18);x.lineTo(ox+18,RY-30);x.lineTo(ox+6,RY-22);x.fill();if(!thrown){x.strokeStyle="#7c5cff";x.lineWidth=6;x.lineCap="round";x.beginPath();x.moveTo(ox+12,RY);x.lineTo(ox+22,RY-2);x.stroke()}
+    const RX=W/2-70,RY=FL+22;let ox=RX,bx=ox+22,by=RY-6,bs=1,thrown=false;if(roll){roll.p+=reduced?1:.035;const p=Math.min(1,roll.p);const cx=laneX(roll.i);const q=Math.min(1,p*3);ox=RX+(cx-RX)*q;if(q<1){bx=ox+22;by=RY-6}else{thrown=true;const r2=(p-1/3)/(2/3);bx=cx;by=(FL-20)-((FL-20)-110)*r2;bs=1-.45*r2}if(p>=1&&!roll.done){roll.done=true;const ok=f.lanes[roll.i]===f.a;if(judge(f.lanes[roll.i])){locked=true;pins[roll.i].forEach(pn=>pn.down=.01);msgTxt="STRIKE!";msgT=90;sfx.goal();confetti(parts,cx,100,40)}else{hintLine=true;msgTxt="Kaçtı! 😅";msgT=60;sfx.bad();const my=game;setTimeout(()=>{if(game===my&&!locked)roll=null},900)}}}
+    if(!(window.oktiCanvas&&oktiCanvas(x,ox,RY-4,66,thrown?"wow":"happy"))){x.fillStyle="#7c5cff";x.beginPath();x.ellipse(ox,RY,18,22,0,0,7);x.fill()}
     x.fillStyle="rgba(0,0,0,.35)";x.beginPath();x.ellipse(bx,by+14*bs,18*bs,6*bs,0,0,7);x.fill();const g=x.createRadialGradient(bx-6*bs,by-6*bs,2,bx,by,18*bs);g.addColorStop(0,"#ff9a7a");g.addColorStop(1,"#b23b2e");x.fillStyle=g;x.beginPath();x.arc(bx,by,18*bs,0,7);x.fill();x.fillStyle="#2b2a33";[[-5,-6],[2,-8],[6,-2]].forEach(([dx,dy])=>{x.beginPath();x.arc(bx+dx*bs,by+dy*bs,2.2*bs,0,7);x.fill()});
     x.fillStyle="#fff";x.beginPath();x.roundRect(W/2+10,FL+8,110,34,10);x.fill();label(x,String(f.n),W/2+65,FL+25,22,"#2b2a33");
     if(msgT>0){msgT--;x.lineWidth=6;x.strokeStyle="#2b2a3d";x.font="700 40px Baloo2, Nunito, sans-serif";x.textAlign="center";x.textBaseline="middle";x.strokeText(msgTxt,W/2,200);label(x,msgTxt,W/2,200,40,msgTxt==="STRIKE!"?"#ffd85c":"#ff8a66")}
@@ -1615,7 +1614,7 @@ kamyon(area){
       [...ps].forEach((d,i)=>label(x,d,colX(st.col-ps.length+1+i),ry,19,ch));label(x,"−",colX(st.col-plen+1)-17,ry,17,ch);x.beginPath();x.moveTo(colX(st.col-plen+1)-11,ry+12);x.lineTo(colX(st.col)+11,ry+12);x.stroke();
       const remDone=locked||j<sj;if(remDone){const ry2=ry+RH;const last=j===S.length-1;const endCol=last?st.col:S[j+1].col;const disp=last?String(st.rem):String(st.rem)+String(f.D)[endCol];[...disp].forEach((d,i)=>label(x,d,colX(endCol-disp.length+1+i),ry2,19,(!last&&i===disp.length-1)?hi:ch));if(!last){x.fillStyle=hi;x.font="800 14px Nunito, sans-serif";x.fillText("↓",colX(endCol)+8,ry2-14)}}}
     // sağ köşe: algoritma adımları
-    const sx=bx+bw-120,sy=by+22;const stepsTxt=["1 Kaç kere?","2 Çarp","3 Çıkar","4 İndir"];stepsTxt.forEach((tx,i)=>{const act=!locked&&((sub===0&&i===0)||(sub===1&&(i===1||i===2)));x.fillStyle=act?"rgba(255,216,92,.9)":"rgba(255,255,255,.12)";x.beginPath();x.roundRect(sx,sy+i*30-11,112,24,8);x.fill();label(x,tx,sx+56,sy+i*30+1,12,act?"#2b2a33":"#dfe9e2")})}
+    const sx=bx+bw-120,sy=by+22;const cst=S[Math.min(sj,S.length-1)];const stepsTxt=[`1) ${cst.part} içinde ${f.k} kaç kere?`,`2) ${f.k} × bölüm = ?`,`3) Çıkar, kalanı bul`,`4) Sonraki rakamı indir`];stepsTxt.forEach((tx,i)=>{const act=!locked&&((sub===0&&i===0)||(sub===1&&(i===1||i===2)));x.fillStyle=act?"rgba(255,216,92,.9)":"rgba(255,255,255,.12)";x.beginPath();x.roundRect(sx-40,sy+i*30-11,152,24,8);x.fill();label(x,tx,sx+36,sy+i*30+1,11,act?"#2b2a33":"#dfe9e2")})}
   function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}x.clearRect(0,0,W,H);{const th=thKey();if(th==="uzay"){starfield(x,W,H,t);planet(x,W-30,26,12,"#7fd0f0")}else if(th==="buz")iceBg(x,W,H,t);else{x.fillStyle="#e7eef6";x.fillRect(0,0,W,H)}}
     const bol=f.mode==="bol";
     if(bol){const RY=H-44;x.fillStyle="#6b7280";x.fillRect(0,RY,W,H-RY);x.fillStyle="#f6c445";for(let i=0;i<W;i+=40)x.fillRect(i,RY+12,20,4);board();
@@ -1777,13 +1776,13 @@ kenken:[
 kafes:[r=>kafesF(r,0),r=>kafesF(r,1),r=>kafesF(r,2)],
 bant:[
   r=>{let a,b;do{a=ri(r,21,89)}while(a%10===5||a%10===0);do{b=ri(r,11,49)}while(b%10===5||b%10===0);const ra=round10(a),rb=round10(b);return{t:"Çarpma tahmini",mode:"bant",A:a,B:b,story:`Bir kolide ${a} şişe var, ${b} koli üretildi. Yaklaşık kaç şişe?`,steps:[{q:`${a} → en yakın onluk: ?`,a:ra,w:[ra-10,ra+10,a]},{q:`${b} → en yakın onluk: ?`,a:rb,w:[rb-10,rb+10,b]},{q:`${ra} × ${rb} = ?`,a:ra*rb,w:[ra*rb/10,ra*rb*10,ra*rb+ra]}],a:ra*rb,q:`${a} × ${b} ≈ ? Önce yuvarla, sonra çarp`,hint:"Birler basamağı 5 ve üstüyse yukarı, altındaysa aşağı yuvarla.",ansTxt:`≈ ${ra*rb}`}},
-  r=>{let a;do{a=ri(r,112,489)}while(Math.floor(a/10)%10===5);const b=ri(r,2,9);const ra=Math.round(a/100)*100;return{t:"Çarpma tahmini",mode:"bant",A:a,B:b,story:`Bir kamyonda ${a} kutu var, ${b} kamyon yola çıktı. Yaklaşık kaç kutu?`,steps:[{q:`${a} → en yakın yüzlük: ?`,a:ra,w:[ra-100,ra+100,round10(a)]},{q:`${ra} × ${b} = ?`,a:ra*b,w:[ra*b+ra,ra*b-ra,ra*b*10]}],a:ra*b,q:`${a} × ${b} ≈ ? Yüzlüğe yuvarla, sonra çarp`,hint:"Onlar basamağı 5 ve üstüyse yukarı yuvarla.",ansTxt:`≈ ${ra*b}`}},
+  r=>{let a;do{a=ri(r,112,489)}while(Math.floor(a/10)%10===5||a%100===0||a%10===0);const b=ri(r,2,9);const ra=Math.round(a/100)*100;return{t:"Çarpma tahmini",mode:"bant",A:a,B:b,story:`Bir kamyonda ${a} kutu var, ${b} kamyon yola çıktı. Yaklaşık kaç kutu?`,steps:[{q:`${a} → en yakın yüzlük: ?`,a:ra,w:[ra-100,ra+100,round10(a)]},{q:`${ra} × ${b} = ?`,a:ra*b,w:[ra*b+ra,ra*b-ra,ra*b*10]}],a:ra*b,q:`${a} × ${b} ≈ ? Yüzlüğe yuvarla, sonra çarp`,hint:"Onlar basamağı 5 ve üstüyse yukarı yuvarla.",ansTxt:`≈ ${ra*b}`}},
   r=>{let a;do{a=ri(r,23,97)}while(a%10===5||a%10===0);const b=ri(r,3,9);const ra=round10(a);return{t:"Çarpma tahmini",mode:"bant",A:a,B:b,story:`Bir sırada ${a} vida var, ${b} sıra doldu. Yaklaşık kaç vida?`,steps:[{q:`${a} → en yakın onluk: ?`,a:ra,w:[ra-10,ra+10,a]},{q:`${ra} × ${b} = ?`,a:ra*b,w:[ra*b+b,ra*b-ra,ra*b*10]}],a:ra*b,q:`${a} × ${b} ≈ ? Onluğa yuvarla, sonra çarp`,hint:"Birler basamağı 5 ve üstüyse yukarı yuvarla.",ansTxt:`≈ ${ra*b}`}},
 ],
 oyun24:[
-  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,2,9),ri(r,2,9)];const T=ri(r,8,30);const s=solve24(nums,T);if(s&&!nums.includes(T))return f24(nums,T,s,`3 kartla ${T} yap! Her kartı bir kez kullan`)}return f24([3,4,2],14,solve24([3,4,2],14),"3 kartla 14 yap! Her kartı bir kez kullan")},
-  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,1,9),ri(r,1,9),ri(r,1,9)];const s=solve24(nums,24);if(s)return f24(nums,24,s,"4 kartla 24 yap! Her kartı bir kez kullan")}return f24([3,4,2,1],24,solve24([3,4,2,1],24),"4 kartla 24 yap!")},
-  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,1,9),ri(r,1,9),ri(r,1,9)];const s=solve24(nums,10);if(s)return f24(nums,10,s,"4 kartla 10 yap! Her kartı bir kez kullan")}return f24([1,2,3,4],10,solve24([1,2,3,4],10),"4 kartla 10 yap!")},
+  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,2,9),ri(r,2,9)];const T=ri(r,8,30);const s=solve24(nums,T);if(s&&!nums.includes(T))return f24(nums,T,s,`Kartları işlemle birleştir, ${T} sayısına ulaş`)}return f24([3,4,2],14,solve24([3,4,2],14),"3 kartla 14 yap! Her kartı bir kez kullan")},
+  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,1,9),ri(r,1,9),ri(r,1,9)];const s=solve24(nums,24);if(s)return f24(nums,24,s,"Kartları işlemle birleştir, 24 sayısına ulaş")}return f24([3,4,2,1],24,solve24([3,4,2,1],24),"4 kartla 24 yap!")},
+  r=>{for(let g=0;g<300;g++){const nums=[ri(r,1,9),ri(r,1,9),ri(r,1,9),ri(r,1,9)];const s=solve24(nums,10);if(s)return f24(nums,10,s,"Kartları işlemle birleştir, 10 sayısına ulaş")}return f24([1,2,3,4],10,solve24([1,2,3,4],10),"4 kartla 10 yap!")},
 ],
 });
 function f24(nums,T,s,q){return{t:"Dört işlem stratejisi",mode:"h24",nums,target:T,sol:s,a:T,q,hint:`İlk adım için bir fikir: ${s[0][0]} ${s[0][1]} ${s[0][2]} = ${s[0][3]}`,ansTxt:s.map(z=>`${z[0]} ${z[1]} ${z[2]} = ${z[3]}`).join(", ")}}
@@ -2060,7 +2059,7 @@ oyun24(area){
       if(pick<0||op===null||i===pick){pick=i===pick&&op===null?-1:i;beep(600,.04,"triangle",.06);return}
       const a=cards[pick].v,b=cd.v;let r=null;if(op==="+")r=a+b;else if(op==="×")r=a*b;else if(op==="−"){if(a<b){setMsg(`${a} − ${b} olmaz: küçük sayıdan büyüğü çıkaramayız.`,"hint");return}r=a-b}else{if(b===0||a%b){setMsg(`${a} ÷ ${b} tam bölünmüyor. Başka işlem dene.`,"hint");return}r=a/b}
       hist.push(`${a} ${op} ${b} = ${r}`);const keep=cards.filter((_,k)=>k!==pick&&k!==i);const ni=Math.min(i,pick);keep.splice(ni,0,{v:r,nw:12});cards=keep;pick=-1;op=null;bar.querySelectorAll("button[data-op]").forEach(z=>z.className="ghost");sfx.pop();
-      if(cards.length===1){if(cards[0].v===f.target){locked=true;f.ansTxt=hist.join(", ");judge(f.target);sfx.goal();confetti(parts,W/2,150,40)}else{shake=20;judge(-1);setTimeout(()=>{if(!locked)reset()},900)}}}})});
+      if(r===f.target){locked=true;f.ansTxt=hist.join(", ");judge(f.target);sfx.goal();confetti(parts,W/2,150,40)}else if(cards.length===1){shake=20;judge(-1);setMsg(`Son kart ${r} oldu, hedef ${f.target}. Baştan dene!`,"hint");setTimeout(()=>{if(!locked)reset()},900)}}})});
   function card(px,py,v,selc,nw){x.fillStyle="rgba(0,0,0,.2)";x.beginPath();x.roundRect(px+3,py+4,68,86,12);x.fill();x.fillStyle=selc?"#fff3b8":"#fff";x.beginPath();x.roundRect(px,py,68,86,12);x.fill();x.strokeStyle=selc?"#e0a100":nw?"#3dbb8a":"#d6cfe6";x.lineWidth=selc||nw?3:2;x.stroke();label(x,String(v),px+34,py+44,v>=100?24:32,"#2b2a33")}
   function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#2b2a52");g.addColorStop(1,"#1c1b38");x.fillStyle=g;x.fillRect(0,0,W,H);
     const sx=shake>0?Math.sin(shake*2)*5:0;if(shake>0)shake--;
@@ -4890,8 +4889,11 @@ const ENG_KIZAKSIRA=mkSort({bg:"tepe",H:260,y:(i,n)=>150-i*(60/Math.max(1,n-1))+
 const ENG_CUVAL=mkSort({bg:"gece",H:270,y:()=>110,h:84,maxW:86,tipA:"Çuvalları hafiften ağıra sürükle",tipD:"Çuvalları ağırdan hafife sürükle",
   scene(x,S,A){x.fillStyle="#7a4b2a";x.beginPath();x.roundRect(14,196,A.W-28,14,7);x.fill();x.strokeStyle="#5a3b1f";x.lineWidth=4;x.beginPath();x.moveTo(14,214);x.lineTo(A.W-30,214);x.quadraticCurveTo(A.W-6,214,A.W-12,196);x.stroke()},
   item(x,b,v,f,i,lift){sack(x,b,["#d9b98c","#c9a678","#e2c9a0","#cfae80","#bfa070"][i%5],lift);x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(b.x+4,b.y+b.h/2-8,b.w-8,28,6);x.fill();label(x,fmtV(f,v),b.x+b.w/2,b.y+b.h/2+6,f.small?14:16,"#2b2a33")}});
-const ENG_HEDIYESIRA=mkSort({bg:"pembe",H:270,y:(i)=>96+(i%2)*28,h:76,maxW:70,tipA:"Hediyeleri küçükten büyüğe sürükle",tipD:"Hediyeleri büyükten küçüğe sürükle",
-  item(x,b,v,f,i,lift){gift(x,b.x+b.w/2,b.y+b.h/2+6,b.w-4,b.h-16,lift?"#ffe08a":["#e8574a","#2f8fd8","#3dbb8a","#8e5bd8","#ff6fa8"][i%5]);x.fillStyle="#fff";x.beginPath();x.roundRect(b.x,b.y+b.h/2-6,b.w,24,6);x.fill();x.strokeStyle="rgba(0,0,0,.2)";x.lineWidth=1;x.stroke();label(x,fmtV(f,v),b.x+b.w/2,b.y+b.h/2+6,b.w<64?14:15,"#2b2a33")}});
+const ENG_HEDIYESIRA=mkSort({bg:"pembe",H:280,y:()=>92,h:104,maxW:82,tipA:"Hediyeleri küçükten büyüğe sürükle",tipD:"Hediyeleri büyükten küçüğe sürükle",
+  scene(x,S,A){const n=S.order.length,w=Math.min(82,(A.W-20)/n-8),gx=(A.W-n*(w+8)+8)/2;for(let i=0;i<n;i++){const bx=gx+i*(w+8);x.save();x.setLineDash([5,4]);x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2;x.beginPath();x.roundRect(bx-2,88,w+4,112,12);x.stroke();x.restore();label(x,`${i+1}.`,bx+w/2,212,13,"#fff")}
+    const f=S.f;label(x,f.desc?"büyük  ⟶  küçük":"küçük  ⟶  büyük",A.W/2,232,14,"#ffd85c")},
+  item(x,b,v,f,i,lift){const col=lift?"#ffe08a":["#e8574a","#2f8fd8","#3dbb8a","#8e5bd8","#ff6fa8"][i%5];gift(x,b.x+b.w/2,b.y+32,Math.min(56,b.w-10),50,col);
+    x.fillStyle="#fff";x.beginPath();x.roundRect(b.x,b.y+b.h-30,b.w,26,7);x.fill();x.strokeStyle="rgba(0,0,0,.2)";x.lineWidth=1;x.stroke();label(x,fmtV(f,v),b.x+b.w/2,b.y+b.h-17,b.w<70?13:14,"#2b2a33")}});
 
 // ---------- E: KAYDIRICI (kızak durağı / kayak pisti) ----------
 function mkSlide(o){return aEngine({H:262,bg:typeof o.bg==="function"?o.bg:sky(o.bg),
@@ -5438,7 +5440,15 @@ Object.assign(BG,{
   deniz(x,W,H,t){aSky(x,W,H,"#1d8fc9","#0a4a7a");rays(x,W,H,t);bubs(x,W,H,t);sand(x,W,H,H-26);kelp(x,24,H-20,70,t);kelp(x,W-30,H-20,54,t,"#3fb37f")},
   derin(x,W,H,t){aSky(x,W,H,"#0b3d66","#03172b");for(let i=0;i<20;i++){x.fillStyle=`rgba(140,220,255,${.2+.2*Math.sin(t/25+i)})`;x.beginPath();x.arc((i*71)%W,(i*43)%H,1.6,0,7);x.fill()}bubs(x,W,H,t,8)},
   mercan(x,W,H,t){aSky(x,W,H,"#27a3c9","#155f8f");rays(x,W,H,t,.06);sand(x,W,H,H-24);[[30,"#ff7a8a"],[70,"#ffb347"],[W-40,"#c780ff"],[W-80,"#ff7a8a"]].forEach(([px,c],i)=>{x.fillStyle=c;for(let k=0;k<3;k++){x.beginPath();x.ellipse(px+(k-1)*9,H-30-k*6,5,16-k*3,(k-1)*.4,0,7);x.fill()}});bubs(x,W,H,t,8)},
-  batik(x,W,H,t){aSky(x,W,H,"#0f5f86","#06304d");rays(x,W,H,t,.05);sand(x,W,H,H-24);x.fillStyle="rgba(60,40,25,.55)";x.beginPath();x.moveTo(W-150,H-24);x.lineTo(W-120,H-70);x.lineTo(W-20,H-60);x.lineTo(W-10,H-24);x.fill();x.fillRect(W-90,H-120,5,52);bubs(x,W,H,t,10)}});
+  batik(x,W,H,t){aSky(x,W,H,"#0f5f86","#06304d");rays(x,W,H,t,.05);sand(x,W,H,H-24);
+  // batık gemi (sağ alt, eğik)
+  x.save();x.translate(W-92,H-26);x.rotate(-.12);x.fillStyle="#4a3524";x.beginPath();x.moveTo(-80,0);x.lineTo(-62,-34);x.lineTo(62,-30);x.lineTo(84,0);x.closePath();x.fill();x.fillStyle="#6b4b31";x.fillRect(-60,-34,122,6);x.fillStyle="#8a6a46";for(let i=0;i<4;i++){x.beginPath();x.arc(-40+i*28,-16,5,0,7);x.fill();x.fillStyle="#9fd8ff";x.beginPath();x.arc(-40+i*28,-16,3,0,7);x.fill();x.fillStyle="#8a6a46"}
+  x.fillStyle="#4a3524";x.fillRect(-6,-110,6,80);x.fillStyle="#d9d2c3";x.beginPath();x.moveTo(0,-106);x.lineTo(44,-70);x.lineTo(0,-62);x.closePath();x.fill();x.restore();
+  // çapa
+  x.strokeStyle="#aab3bd";x.lineWidth=3;x.beginPath();x.arc(40,H-40,9,0,Math.PI);x.moveTo(40,H-62);x.lineTo(40,H-31);x.moveTo(32,H-58);x.lineTo(48,H-58);x.stroke();
+  // balıklar
+  const F=[["🐠",.5,46,1],["🐟",.8,262,-1],["🐠",.65,52,-1],["🐡",.35,268,1]];F.forEach(([e,sp,y,dir],i)=>{const px=((t*sp+i*140)%(W+80))-40,fx=dir>0?px:W-px,fy=y+Math.sin(t/25+i)*6;if(window.SPR&&SPR.EMO[e])SPR.d(x,SPR.EMO[e],fx,fy,34,{flip:dir>0,alpha:.9})});
+  kelp(x,20,H-20,60,t);kelp(x,W-30,H-22,50,t,"#3fb37f");bubs(x,W,H,t,10)}});
 const bg=k=>BG[k];
 function shell(x,...a){return window.ART&&ART.call?ART.call("shell",shell__o,x,a):shell__o(x,...a)}
 function shell__o(x,cx,cy,s=1,col="#ffd1dc"){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle=col;x.beginPath();x.moveTo(0,8);x.lineTo(-10,-2);x.quadraticCurveTo(0,-14,10,-2);x.closePath();x.fill();x.strokeStyle="rgba(150,80,100,.6)";x.lineWidth=1;for(let k=-2;k<=2;k++){x.beginPath();x.moveTo(0,8);x.lineTo(k*4,-6);x.stroke()}x.restore()}
@@ -7583,6 +7593,7 @@ const ENG_ALT=AK.aEngine({H:280,bg:bgDefter,
     label(x,String(f.B),cx(0),top+42,30,"#2b2a33");label(x,"×",cx(Math.max(n,2))+4,top+42,26,"#6f6b86");
     x.strokeStyle="#2b2a33";x.lineWidth=2.5;x.beginPath();x.moveTo(cx(Math.max(n,2))-14,top+66);x.lineTo(cx(0)+cw/2,top+66);x.stroke();
     for(const k in S.res){const v=String(S.res[k]);if(v.length>1){label(x,v[1],cx(+k),top+94,30,"#3dbb8a");label(x,v[0],cx(+k+1),top+94,30,"#3dbb8a")}else label(x,v,cx(+k),top+94,30,"#3dbb8a")}
+    if(window.oktiCanvas){const car=st&&S.car[st.k];oktiCanvas(x,54,A.H-62,86,S.locked?"wow":"happy");oktiSay(x,S.locked?"Harika!":car?`Elde ${car} var!`:st&&st.k===0?"Önce birler!":"Şimdi onlar!",64,A.H-128,130,12,"left")}
     tip(x,S.locked?f.ansTxt:st?st.q:"",W/2,A.H-22,W,16)}});
 const mkA=(r,lo,hi,bl,bh)=>{const A=ri(r,lo,hi),B=ri(r,bl,bh);return{t:"Alt alta çarpma",A,B,a:A*B,q:`${A} × ${B} = ? Alt alta çarp: önce birler, sonra onlar.`,
   hint:"Birlerden başla. 10 ve üstü çıkarsa birler basamağını yaz, onluğu elde tut.",ansTxt:`${A} × ${B} = ${A*B}`}};
@@ -10750,6 +10761,37 @@ kkuleDraw=function(x,S,A,tot){const f=S.f;const H0=200,X0=A.W/2-50,Y0=A.H-40;tip
   let y=Y0;S.items.forEach((k,i)=>{const pc=f.pieces[k],h=H0*pc.val;x.fillStyle=pc.val===.5?"#ef6f4b":pc.val===.25?"#2f8fd8":"#3dbb8a";x.fillRect(X0+2,y-h,96,h-2);x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=1;x.strokeRect(X0+2,y-h,96,h-2);label(x,pc.lab,X0+50,y-h/2,14,"#fff");y-=h})};
 // 7) Nisan saat kartları (miniClock) da aynı okunur kol stilini kullansın
 if(typeof miniClock==="function")miniClock=function(x,cx,cy,R,h,m){jClock(x,cx,cy,R,h,m)};
+// ============ TELEFON TESTİ DÜZELTMELERİ (9 Kasım 2026, 3. tur) ============
+// Okti'yi tuvale çiz (SVG → Image)
+window.oktiCanvas=function(x,cx,cy,w,mood="happy",flip){const OK=window._OKIMG=window._OKIMG||{};if(!OK[mood]){const i=new Image();try{i.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(mascot(mood,[]).replace(/ class="[^"]*"/g,"").replace(/ style="[^"]*"/g,""))}catch(e){}OK[mood]=i}
+  const i=OK[mood];if(!i.complete||!i.naturalWidth)return false;const h=w*420/410;x.save();x.translate(cx,cy);if(flip)x.scale(-1,1);x.drawImage(i,-w/2,-h/2,w,h);x.restore();return true};
+// konuşma balonu
+function oktiSay(x,t,px,py,W,size=13,dir="left"){x.font=`800 ${size}px Nunito, sans-serif`;const w=Math.min(W,x.measureText(t).width+24),h=size+16;x.fillStyle="#fff";x.beginPath();x.roundRect(px-w/2,py-h/2,w,h,10);x.fill();x.fillStyle="#fff";x.beginPath();if(dir==="left"){x.moveTo(px-w/2+2,py+4);x.lineTo(px-w/2-9,py+10);x.lineTo(px-w/2+2,py+12)}else{x.moveTo(px+w/2-2,py+4);x.lineTo(px+w/2+9,py+10);x.lineTo(px+w/2-2,py+12)}x.fill();label(x,t,px,py+1,size,"#2b2a33")}
+
+// 1) Panel Dizisi: hücreli panel, her parçanın çarpımı yazılı
+pdiziDraw=function(x,S,A,tot){const f=S.f,h=f.h;const u=Math.min(13,(A.W-70)/Math.max(f.target,tot,10)),ch=Math.min(22,160/h),X0=46,Y0=64;
+  tip(x,`${tot} / ${f.target} sütun · ${h} satır`,A.W/2,22,A.W,14);
+  x.setLineDash([5,4]);x.strokeStyle="#fff";x.lineWidth=2;x.strokeRect(X0,Y0,f.target*u,h*ch);x.setLineDash([]);
+  for(let r=0;r<h;r++)label(x,String(r+1),X0-14,Y0+r*ch+ch/2,10,"rgba(255,255,255,.8)");
+  let px=X0,ones=0,ox=null;S.items.forEach(k=>{const w=f.pieces[k].val;x.fillStyle=w===10?"#2f8fd8":"#f6c445";x.fillRect(px+1,Y0+1,w*u-2,h*ch-2);x.strokeStyle="rgba(255,255,255,.45)";x.lineWidth=1;for(let r=0;r<h;r++)for(let c=0;c<w;c++)x.strokeRect(px+c*u+1,Y0+r*ch+1,u-2,ch-2);
+    if(w===10){label(x,`10 × ${h}`,px+w*u/2,Y0+h*ch/2-8,13,"#fff");label(x,`= ${10*h}`,px+w*u/2,Y0+h*ch/2+8,13,"#fff")}else{if(ox==null)ox=px;ones++}px+=w*u});
+  if(ones){label(x,`${ones} × ${h} = ${ones*h}`,Math.min(A.W-50,ox+ones*u/2),Y0+h*ch+14,13,"#ffd85c")}
+  if(S.items.length&&!S.phase&&!S.locked){const tens=S.items.filter(k=>f.pieces[k].val===10).length;tip(x,`${tot} × ${h} = ${tens?`${tens*10} × ${h}`:""}${tens&&ones?" + ":""}${ones?`${ones} × ${h}`:""}`,A.W/2,A.H-16,A.W,13)}};
+
+// 2) Asteroid Katları: kayalar daha küçük, daha seyrek
+if(typeof SPR!=="undefined"){const _sd=SPR.d;SPR.d=function(x,k,cx,cy,w,o){if(k==="rock"&&w===68)w=46;return _sd.call(this,x,k,cx,cy,w,o)}}
+
+// 3) Batık Gemi → ocak.js BG.batik · 4) Hediye Sırala → aralik.js ENG_HEDIYESIRA
+// 5) Gezegen İşlemi (islem4): basamak renkleri + Okti ipucu
+if(typeof ENGINES!=="undefined"&&ENGINES.islem4){ENGINES.islem4=simpleChoiceEngine((x,W,H,S)=>{const f=S.f;if(f.mode==="tahmin"){jPanel(x,30,40,W-60,110);label(x,`${spN(f.x1)} + ${spN(f.x2)}`,W/2,80,26,"#2b2a33");label(x,"≈ ? (yüzlüğe yuvarla)",W/2,120,16,"#6b7280");return}
+  jPanel(x,110,26,W-130,176);const R=W-44,cw=36;const n=Math.max(String(f.x1).length,String(f.x2).length,String(f.a).length);const NM=["B","O","Y","Bn","OB","YB"],CL=["#2f8fd8","#3dbb8a","#f59e0b","#8e5bd8","#ef6f4b","#0ea5e9"];
+  for(let k=0;k<n;k++){const cx=R-(k+.5)*cw;x.fillStyle=k%2?"rgba(124,92,255,.07)":"rgba(0,0,0,0)";x.fillRect(cx-cw/2,40,cw,150);label(x,NM[k],cx,46,11,CL[k])}
+  const put=(v,y)=>{const s=String(v).split("").reverse();s.forEach((d,k)=>label(x,d,R-(k+.5)*cw,y,30,"#2b2a33"))};
+  put(f.x1,78);put(f.x2,118);label(x,f.mode==="top"?"+":"−",R-(n+.6)*cw,118,30,f.mode==="top"?"#3dbb8a":"#ef6f4b");x.fillStyle="#2b2a33";x.fillRect(R-(n+.9)*cw,140,(n+.9)*cw-2,4);
+  if(S.locked)put(f.a,172);else{const k=Math.floor(S.t/40)%n;x.fillStyle="rgba(255,216,92,.6)";x.beginPath();x.roundRect(R-(k+1)*cw+3,154,cw-6,34,8);x.fill();label(x,"?",R-(k+.5)*cw,172,30,"#2b2a33")}
+  oktiCanvas(x,52,168,84,S.locked?"wow":"happy");oktiSay(x,S.locked?"Süper!":"Birlerden başla!",58,96,120,12,"left")},380,250,schoolBg)}
+
+// 6) Alt Alta Çarpma: Okti + elde balonu → duzelt.js içinde
 // ============ YENİ GÖRSEL TARZ: ortak çizim parçalarını Fluent 3D + yumuşak sahnelerle değiştir ============
 // Kural: rakam ve sayı yazılan yüzeylerde parlama yok (okunabilirlik).
 ;(function(){
