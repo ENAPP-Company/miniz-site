@@ -10748,6 +10748,8 @@ kkuleDraw=function(x,S,A,tot){const f=S.f;const H0=200,X0=A.W/2-50,Y0=A.H-40;tip
   label(x,"1 bütün",X0+150,Y0-H0,14,"#fff");
   x.strokeStyle="#ffd85c";x.lineWidth=3;x.beginPath();x.moveTo(X0-10,Y0-H0*f.target);x.lineTo(X0+110,Y0-H0*f.target);x.stroke();label(x,"hedef: "+fr(f.target),X0-48,Y0-H0*f.target-(f.target===1?-12:0),13,"#ffd85c");
   let y=Y0;S.items.forEach((k,i)=>{const pc=f.pieces[k],h=H0*pc.val;x.fillStyle=pc.val===.5?"#ef6f4b":pc.val===.25?"#2f8fd8":"#3dbb8a";x.fillRect(X0+2,y-h,96,h-2);x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=1;x.strokeRect(X0+2,y-h,96,h-2);label(x,pc.lab,X0+50,y-h/2,14,"#fff");y-=h})};
+// 7) Nisan saat kartları (miniClock) da aynı okunur kol stilini kullansın
+if(typeof miniClock==="function")miniClock=function(x,cx,cy,R,h,m){jClock(x,cx,cy,R,h,m)};
 // ============ YENİ GÖRSEL TARZ: ortak çizim parçalarını Fluent 3D + yumuşak sahnelerle değiştir ============
 // Kural: rakam ve sayı yazılan yüzeylerde parlama yok (okunabilirlik).
 ;(function(){
