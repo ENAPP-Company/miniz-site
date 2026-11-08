@@ -1824,7 +1824,7 @@ merdiven(area){
     let px,py,h=0;const s0=cxy(f.s);px=s0.x;py=s0.y-4;
     if(anim){if(f.mode==="zar"){const steps=f.a-f.s;anim.p=Math.min(steps,anim.p+(reduced?steps:.07));const k=Math.min(steps-1,Math.floor(anim.p)),fr=anim.p>=steps?1:anim.p-k;const A=cxy(f.s+k),B=cxy(f.s+k+1);px=A.x+(B.x-A.x)*fr;py=A.y-4+(B.y-A.y)*fr;h=Math.sin(fr*Math.PI)*14;if(anim.p>=steps&&!boom){boom=true;confetti(parts,B.x,B.y,30)}}
       else{anim.p=Math.min(1,anim.p+(reduced?1:.025));const B=cxy(f.a);px=s0.x+(B.x-s0.x)*anim.p;py=s0.y-4+(B.y-s0.y)*anim.p;if(anim.p>=1&&!boom){boom=true;confetti(parts,B.x,B.y,30)}}}
-    x.save();x.translate(px,py-8);x.scale(.98,.98);pawn(0,0,h);x.restore();
+    x.save();x.translate(px+12,py-16);x.scale(.72,.72);pawn(0,0,h);x.restore();
     if(f.mode==="zar")die(W-36,26,f.d);
     tip(x,f.mode==="zar"?`Piyon ${nd(f.s,"da")} · zar ${f.d}`:`Piyon ${nd(f.s,"da")} · merdiven ${f.k===2?"2 kat":"1 kat"}`,f.mode==="zar"?W/2-24:W/2,24,W-90,15);
     tip(x,"Varacağı kareye dokun",W/2,H-16,W,14);
