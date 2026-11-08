@@ -10823,6 +10823,25 @@ if(typeof ENGINES!=="undefined"&&ENGINES.islem4){ENGINES.islem4=simpleChoiceEngi
   oktiCanvas(x,52,168,84,S.locked?"wow":"happy");oktiSay(x,S.locked?"Süper!":"Birlerden başla!",58,96,120,12,"left")},380,250,schoolBg)}
 
 // 6) Alt Alta Çarpma: Okti + elde balonu → duzelt.js içinde
+// ============ TEST MODU (testmustafa listesi): ?tm=AY-SINIF-OYUN-TUR&d=TARİH ============
+;(function(){
+  const q=new URLSearchParams(location.search);const tm=q.get("tm");if(!tm)return;
+  try{localStorage.setItem("sayigo_demo_hello","1");localStorage.setItem("sayigo_demo_hello2","1")}catch(e){}
+  const [m,g,id,r]=tm.split("-");const M=+m,G=+g,R=+r||0,D=q.get("d")||`2026-${String(M).padStart(2,"0")}-12`;
+  function go(){
+    if(!store||!store.name){const s=Object.assign({},store||{},{grade:G,name:"Mustafa",days:{},badges:{},full:true,tts:store&&store.tts||"kapali"});localStorage.setItem(LS,JSON.stringify(s));location.reload();return}
+    store.grade=G;store.full=true;save();
+    const gm=setFor(M,G).find(x=>x.id===id);if(!gm){alert("Oyun bulunamadı: "+id);return}
+    document.querySelectorAll(".modal,#demo-modal").forEach(e=>e.remove());if(cleanup){cleanup();cleanup=null}startPlay(D,gm,true);
+    if(R>0){game.log=[];game.i=R;nextRound()}
+    const b=document.createElement("a");b.href="../testmustafa/index.html#"+tm;b.textContent="← Liste";b.id="tm-back";
+    b.style.cssText="position:fixed;left:8px;bottom:8px;z-index:50;background:#2b2a33;color:#fff;font-weight:800;padding:8px 12px;border-radius:12px;text-decoration:none;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.3)";
+    document.body.appendChild(b);
+    const n=document.createElement("a");n.href="../testmustafa/index.html#"+tm+"&next";n.textContent="Sonraki →";n.style.cssText=b.style.cssText+";left:auto;right:8px;background:#7c5cff";document.body.appendChild(n);
+  }
+  function wait(){if(typeof startPlay==="function"&&typeof setFor==="function"&&typeof store!=="undefined"&&!document.getElementById("boot"))go();else setTimeout(wait,120)}
+  if(document.readyState==="complete")setTimeout(wait,300);else addEventListener("load",()=>setTimeout(wait,300));
+})();
 // ============ YENİ GÖRSEL TARZ: ortak çizim parçalarını Fluent 3D + yumuşak sahnelerle değiştir ============
 // Kural: rakam ve sayı yazılan yüzeylerde parlama yok (okunabilirlik).
 ;(function(){
