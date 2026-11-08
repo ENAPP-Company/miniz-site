@@ -1813,18 +1813,18 @@ merdiven(area){
   c.addEventListener("pointerdown",e=>{if(locked||!f||anim)return;const p=c.pt(e);const col=Math.floor((p.x-X0)/CW),rr=Math.floor((p.y-Y0)/CH);const r2=rr-(5-NR);if(col<0||col>9||r2<0||r2>NR-1)return;const n=f.b+(NR-1-r2)*10+col+1;
     if(judge(n)){locked=true;anim={p:0};sfx.goal()}else{flash[n]=45;sfx.bad()}});
   function pawn(px,py,h=0){x.fillStyle="rgba(0,0,0,.2)";x.beginPath();x.ellipse(px,py+15,10,3.5,0,0,7);x.fill();x.fillStyle="#7c5cff";x.beginPath();x.moveTo(px-10,py+14-h);x.quadraticCurveTo(px,py-12-h,px+10,py+14-h);x.closePath();x.fill();ink(x,2);x.fillStyle="#b8a6ff";x.beginPath();x.arc(px,py-9-h,7,0,7);x.fill();ink(x,2)}
-  function ladder(n,k){const a=cxy(n),b=cxy(n+10*k);x.strokeStyle="#8b5a2b";x.lineCap="round";x.lineWidth=4;[-9,9].forEach(dx=>{x.beginPath();x.moveTo(a.x+dx,a.y+8);x.lineTo(b.x+dx,b.y-8);x.stroke()});x.lineWidth=3;for(let yy=a.y+2;yy>b.y-6;yy-=11){x.beginPath();x.moveTo(a.x-9,yy);x.lineTo(a.x+9,yy);x.stroke()}}
+  function ladder(n,k){const a=cxy(n),b=cxy(n+10*k);x.lineCap="round";x.strokeStyle="rgba(0,0,0,.2)";x.lineWidth=7;[-10,10].forEach(dx=>{x.beginPath();x.moveTo(a.x+dx+2,a.y+10);x.lineTo(b.x+dx+2,b.y-6);x.stroke()});x.strokeStyle="#b5783a";x.lineWidth=5;[-10,10].forEach(dx=>{x.beginPath();x.moveTo(a.x+dx,a.y+8);x.lineTo(b.x+dx,b.y-8);x.stroke()});x.strokeStyle="#e0a35c";x.lineWidth=4;for(let yy=a.y+2;yy>b.y-6;yy-=11){x.beginPath();x.moveTo(a.x-10,yy);x.lineTo(a.x+10,yy);x.stroke()}}
   function die(px,py,d){x.fillStyle="#fff";x.beginPath();x.roundRect(px-19,py-19,38,38,9);x.fill();ink(x,2);const P={1:[[0,0]],2:[[-1,-1],[1,1]],3:[[-1,-1],[0,0],[1,1]],4:[[-1,-1],[1,-1],[-1,1],[1,1]],5:[[-1,-1],[1,-1],[0,0],[-1,1],[1,1]],6:[[-1,-1],[1,-1],[-1,0],[1,0],[-1,1],[1,1]]}[d];x.fillStyle="#2b2a33";P.forEach(([a,b])=>{x.beginPath();x.arc(px+a*10,py+b*10,3.6,0,7);x.fill()})}
   function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}winterBg(x,W,H,t);
     x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.roundRect(X0-6,Y0-6+(5-NR)*CH,10*CW+12,NR*CH+12,10);x.fill();
     const rowC=["#e3effb","#fdf0dc","#e6f6e6","#fbe6ef","#ece6fd"];
-    for(let i=0;i<NR*10;i++){const n=f.b+i+1,q=cxy(n);x.fillStyle=flash[n]>0?"#ffb3a8":(n%10===0?"#ffe39a":rowC[Math.floor(i/10)]);x.beginPath();x.roundRect(q.x-CW/2+1.5,q.y-CH/2+1.5,CW-3,CH-3,5);x.fill();if(flash[n]>0)flash[n]--;label(x,String(n),q.x,q.y+12,15,n===f.s?"#5a3fd6":"#4a4660")}
+    for(let i=0;i<NR*10;i++){const n=f.b+i+1,q=cxy(n);x.fillStyle="rgba(0,0,0,.12)";x.beginPath();x.roundRect(q.x-CW/2+2.5,q.y-CH/2+4,CW-3,CH-3,6);x.fill();x.fillStyle=flash[n]>0?"#ffb3a8":(n%10===0?"#ffe39a":rowC[Math.floor(i/10)]);x.beginPath();x.roundRect(q.x-CW/2+1.5,q.y-CH/2+1.5,CW-3,CH-3,6);x.fill();x.fillStyle="rgba(255,255,255,.5)";x.beginPath();x.roundRect(q.x-CW/2+4,q.y-CH/2+4,CW-8,8,4);x.fill();if(flash[n]>0)flash[n]--;label(x,String(n),q.x,q.y+12,15,n===f.s?"#5a3fd6":"#4a4660")}
     { const q=cxy(f.s);x.strokeStyle="#7c5cff";x.lineWidth=2.5;x.beginPath();x.roundRect(q.x-CW/2+1.5,q.y-CH/2+1.5,CW-3,CH-3,5);x.stroke() }
     if(f.mode==="merdiven"){for(let j=0;j<f.k;j++)ladder(f.s+10*j,1);for(let j=1;j<=f.k;j++){const n=f.s+10*j,q=cxy(n);x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(q.x-13,q.y+3,26,17,5);x.fill();label(x,String(n),q.x,q.y+12,12,"#5f5b76")}}
     let px,py,h=0;const s0=cxy(f.s);px=s0.x;py=s0.y-4;
     if(anim){if(f.mode==="zar"){const steps=f.a-f.s;anim.p=Math.min(steps,anim.p+(reduced?steps:.07));const k=Math.min(steps-1,Math.floor(anim.p)),fr=anim.p>=steps?1:anim.p-k;const A=cxy(f.s+k),B=cxy(f.s+k+1);px=A.x+(B.x-A.x)*fr;py=A.y-4+(B.y-A.y)*fr;h=Math.sin(fr*Math.PI)*14;if(anim.p>=steps&&!boom){boom=true;confetti(parts,B.x,B.y,30)}}
       else{anim.p=Math.min(1,anim.p+(reduced?1:.025));const B=cxy(f.a);px=s0.x+(B.x-s0.x)*anim.p;py=s0.y-4+(B.y-s0.y)*anim.p;if(anim.p>=1&&!boom){boom=true;confetti(parts,B.x,B.y,30)}}}
-    x.save();x.translate(px+10,py-22);x.scale(.6,.6);pawn(0,0,h);x.restore();if(!anim&&!locked){const bl=.5+.5*Math.sin(t/8);x.save();x.globalAlpha=.55+.45*bl;x.fillStyle="#ef6f4b";x.font="900 22px Nunito, sans-serif";x.textAlign="center";x.textBaseline="middle";if(f.mode==="zar"){const q=cxy(f.s);x.fillText("→",q.x+CW/2+4+bl*4,q.y-6)}else{const q=cxy(f.s+10*f.k);x.fillText("↑",q.x,q.y-CH/2-10-bl*4)}x.restore()}
+    if(!(window.oktiCanvas&&oktiCanvas(x,px,py-8-h,25,locked?"wow":"happy"))){x.save();x.translate(px+10,py-22);x.scale(.6,.6);pawn(0,0,h);x.restore()}if(!anim&&!locked){const bl=.5+.5*Math.sin(t/8);x.save();x.globalAlpha=.55+.45*bl;x.fillStyle="#ef6f4b";x.font="900 22px Nunito, sans-serif";x.textAlign="center";x.textBaseline="middle";if(f.mode==="zar"){const q=cxy(f.s);x.font="900 26px Nunito, sans-serif";x.fillText("→",q.x+CW/2+6+bl*5,q.y-4)}else{const q=cxy(f.s+10*f.k);x.font="900 26px Nunito, sans-serif";x.fillText("↑",q.x,q.y-CH/2-12-bl*5)}x.restore()}
     if(f.mode==="zar")die(W-36,26,f.d);
     tip(x,f.mode==="zar"?`Piyon ${nd(f.s,"da")} · zar ${f.d}: sağa ${f.d} kare →`:`Piyon ${nd(f.s,"da")} · merdivenle ${f.k===2?"2 sıra":"1 sıra"} yukarı ↑`,f.mode==="zar"?W/2-24:W/2,24,W-90,14);
     tip(x,"Varacağı kareye dokun",W/2,H-16,W,14);
@@ -7481,20 +7481,24 @@ function bgRay(x,W,H,t){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0
   x.fillStyle="#8a6a4a";x.fillRect(0,192,W,6);x.fillStyle="#6b4a2b";for(let i=4;i<W;i+=22)x.fillRect(i,198,12,6)}
 const ENG_TREN=AK.aEngine({H:300,bg:bgRay,
   init(f,S,A){shuffle(f.r,Object.keys(KR)).forEach(k=>A.btn(KR[k][0],()=>{if(S.locked)return;KR[k][0]===f.a?A.done():A.fail()},""))},
-  draw(x,S,A){const f=S.f,W=A.W,N=Math.max(f.k,f.show+2),s=Math.min(30,(W-70)/N-4),gap=s+4,X0=(W-N*gap)/2+22,Y=150,RY=Y+s+12;
-    tip(x,`Küpler bu kurala göre diziliyor`,W/2,22,W,15);
-    // ray + traversler
-    x.fillStyle="#8a6a46";for(let px=6;px<W;px+=18){x.fillRect(px,RY-2,10,10)}x.fillStyle="#5b5b66";x.fillRect(0,RY,W,3);x.fillRect(0,RY+6,W,3);
-    // lokomotif (solda)
-    {const lx=X0-gap-8,ly=Y;x.fillStyle="#2b2a33";x.fillRect(lx+2,ly+s-6,s*.9,6);x.fillStyle="#e8574a";x.beginPath();x.roundRect(lx,ly+s*.35,s*.95,s*.65,[4,4,2,2]);x.fill();x.fillStyle="#3b82f6";x.beginPath();x.roundRect(lx+s*.5,ly,s*.45,s*.5,3);x.fill();x.fillStyle="#bfe3ff";x.fillRect(lx+s*.58,ly+s*.08,s*.28,s*.25);x.fillStyle="#2b2a33";x.fillRect(lx+s*.12,ly+s*.02,s*.22,s*.4);x.fillStyle="#f6c445";x.beginPath();x.arc(lx+s*.08,ly+s*.72,s*.1,0,7);x.fill();
-      x.fillStyle="#3a3a48";[s*.3,s*.72].forEach(dx=>{x.beginPath();x.arc(lx+dx,RY-2,4.5,0,7);x.fill()});
-      if(!S.locked){const ph=(S.t/6)%3;x.fillStyle="rgba(255,255,255,.7)";for(let k=0;k<3;k++){const q=((ph+k)%3)/3;x.beginPath();x.arc(lx+s*.22+q*8,ly-6-q*22,4+q*5,0,7);x.fill()}}}
-    for(let i=0;i<N;i++){const X=X0+i*gap;const known=i<f.show||(S.locked&&i<f.k);const c=known?KR[f.pat[i%f.pat.length]]:null;
-      x.strokeStyle="#5b5b66";x.lineWidth=2;x.beginPath();x.moveTo(X-4,Y+s-5);x.lineTo(X,Y+s-5);x.stroke();
-      cube(x,X,Y,s,c,S.locked&&i===f.k-1);
-      if(!known&&i===f.k-1)label(x,"?",X+s/2,Y+s/2+1,18,"#4b2b8a");
-      x.fillStyle="#3a3a48";x.beginPath();x.arc(X+s*.25,RY-2,4,0,7);x.arc(X+s*.75,RY-2,4,0,7);x.fill();x.fillStyle="#9aa0ad";x.beginPath();x.arc(X+s*.25,RY-2,1.5,0,7);x.arc(X+s*.75,RY-2,1.5,0,7);x.fill();
-      label(x,String(i+1),X+s/2,Y-16,13,i===f.k-1?"#7c3aed":"#6f6b86")}
+  draw(x,S,A){const f=S.f,W=A.W,N=Math.max(f.k,f.show+2),LW=70,s=Math.min(44,(W-LW-16)/N-6),gap=s+6,X0=LW+8+(W-LW-8-N*gap+6)/2,Y=166,RY=Y+s+10;
+    tip(x,`Vagonlar bu kurala göre diziliyor`,W/2,22,W,15);
+    // zemin + ray
+    x.fillStyle="rgba(255,255,255,.35)";x.fillRect(0,RY+8,W,A.H-RY-8);
+    x.fillStyle="#9a7b57";for(let px=4;px<W;px+=16){x.fillRect(px,RY-3,9,12)}x.fillStyle="#5b5b66";x.fillRect(0,RY-1,W,4);x.fillRect(0,RY+6,W,3);
+    // lokomotif (Fluent) sola bakıyor, vagonları çekiyor
+    const lx=X0-gap/2-20;if(!(window.SPR&&SPR.d(x,"locomotive",lx,RY+2,66,{bottom:true,flip:true}))){x.fillStyle="#e8574a";x.beginPath();x.roundRect(lx-26,Y+s*.3,52,s*.7,6);x.fill()}
+    if(!S.locked){const ph=(S.t/7)%3;x.fillStyle="rgba(255,255,255,.75)";for(let k=0;k<3;k++){const q=((ph+k)%3)/3;x.beginPath();x.arc(lx-10+q*10,Y-14-q*26,4+q*6,0,7);x.fill()}}
+    for(let i=0;i<N;i++){const X=X0+i*gap;const known=i<f.show||(S.locked&&i<f.k);const c=known?KR[f.pat[i%f.pat.length]]:null;const ask=i===f.k-1;
+      // bağlantı
+      x.strokeStyle="#5b5b66";x.lineWidth=3;x.beginPath();x.moveTo(X-6,Y+s*.75);x.lineTo(X,Y+s*.75);x.stroke();
+      // vagon gövdesi
+      x.save();x.fillStyle="rgba(0,0,0,.18)";x.beginPath();x.roundRect(X+2,Y+4,s,s,7);x.fill();
+      if(c){x.fillStyle=c[1];x.beginPath();x.roundRect(X,Y,s,s,7);x.fill();x.fillStyle=c[2];x.fillRect(X,Y+s*.72,s,s*.28);x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.roundRect(X+5,Y+5,s*.45,s*.3,4);x.fill()}
+      else{x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.roundRect(X,Y,s,s,7);x.fill();x.setLineDash([5,4]);x.strokeStyle=ask?"#7c3aed":"#8a8aa0";x.lineWidth=2.5;x.stroke();x.setLineDash([]);if(ask)label(x,"?",X+s/2,Y+s/2+1,22,"#7c3aed")}
+      if(S.locked&&ask){x.strokeStyle="#ffd85c";x.lineWidth=4;x.beginPath();x.roundRect(X-3,Y-3,s+6,s+6,9);x.stroke()}
+      x.fillStyle="#3a3a48";[s*.25,s*.75].forEach(dx=>{x.beginPath();x.arc(X+dx,RY,5.5,0,7);x.fill()});x.fillStyle="#b9bfcc";[s*.25,s*.75].forEach(dx=>{x.beginPath();x.arc(X+dx,RY,2,0,7);x.fill()});x.restore();
+      x.fillStyle=ask?"#7c3aed":"rgba(255,255,255,.9)";x.beginPath();x.roundRect(X+s/2-12,Y-26,24,18,6);x.fill();label(x,String(i+1),X+s/2,Y-17,12,ask?"#fff":"#4a4660")}
     x.fillStyle="rgba(255,255,255,.75)";x.beginPath();x.roundRect(14,48,W-28,64,12);x.fill();
     label(x,f.inv?`Hangi renk küp ${f.k}. sırada?`:`${f.k}. küp hangi renk?`,W/2,80,22,"#4b2b8a");
     tip(x,S.locked?f.ansTxt:"Kuralı bul: hangi renkler tekrar ediyor?",W/2,A.H-24,W,13)}});
