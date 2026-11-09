@@ -10843,6 +10843,170 @@ if(typeof ENGINES!=="undefined"&&ENGINES.islem4){ENGINES.islem4=simpleChoiceEngi
   function wait(){if(typeof startPlay==="function"&&typeof setFor==="function"&&typeof store!=="undefined"&&!document.getElementById("boot"))go();else setTimeout(wait,120)}
   if(document.readyState==="complete")setTimeout(wait,300);else addEventListener("load",()=>setTimeout(wait,300));
 })();
+// ============ AYDA 15 OYUN · Olkun kitaplarından yeni mekanikler (Kasım 2026) ============
+// 1. sınıf Kasım: Yıldız Tahtası (çivi-lastik), Gizli Kapsül (kapalı kutu), Meteor Boyama (boya), Sıra Podyumu (sürükle), Gezegen Sudoku (mini sudoku)
+;(function(){
+const Y15={};window.Y15=Y15;
+const sp=(x,k,cx,cy,w,o)=>window.SPR&&SPR.d(x,k,cx,cy,w,o);
+const emo=k=>window.SPR&&SPR.EMO&&SPR.EMO[k];
+const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+const sayStep=(s,from,to)=>{const o=[];for(let v=from;v<=to;v+=s)o.push(v);return o};
+
+// ---------- 1) YILDIZ TAHTASI · çivi-lastik ----------
+const ENG_YTAHTA=sbEngine({H:330,
+  init(f,S,A){S.sel=[];S.cols=5;S.rows=4;S.msg=null;if(f.pre){for(let i=0;i<f.pre;i++)S.sel.push(i)}
+    A.btn("Lastiği çıkar",()=>{if(S.locked)return;S.sel=[];sfx.pop()});
+    A.btn("Tamam ✓",()=>{if(S.locked)return;if(S.sel.length===f.need)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,n:S.sel.length}}},"")},
+  peg(S,A,i){const c=i%S.cols,r=Math.floor(i/S.cols);return{x:62+c*(A.W-124)/(S.cols-1),y:92+r*54}},
+  down(p,S,A){if(S.locked)return;let hit=-1,bd=26;for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i);const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;hit=i}}if(hit<0)return;
+    const k=S.sel.indexOf(hit);if(k>=0){S.sel.splice(k,1);sfx.pop()}else{S.sel.push(hit);sfx.pop()}},
+  draw(x,S,A){const f=S.f;
+    // tahta
+    x.fillStyle="rgba(255,255,255,.08)";x.beginPath();x.roundRect(24,60,A.W-48,230,18);x.fill();x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=2;x.stroke();
+    // lastik
+    if(S.sel.length>1){const P=S.sel.map(i=>this.peg(S,A,i)).sort((a,b)=>a.x-b.x||a.y-b.y);const cr=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);const lo=[],up=[];for(const q of P){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q)}for(const q of P.slice().reverse()){while(up.length>1&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q)}const H=lo.slice(0,-1).concat(up.slice(0,-1));x.save();x.strokeStyle="#ff7a3d";x.lineWidth=6;x.lineJoin="round";x.lineCap="round";x.shadowColor="rgba(255,122,61,.6)";x.shadowBlur=10;x.beginPath();H.forEach((q,k)=>k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));if(H.length>2)x.closePath();x.stroke();x.fillStyle="rgba(255,122,61,.12)";x.fill();x.restore()}
+    for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i),on=S.sel.includes(i);
+      if(!sp(x,on?"gstar":"star",q.x,q.y,on?34:24)){x.fillStyle=on?"#ffd85c":"#9aa3c7";x.beginPath();x.arc(q.x,q.y,on?12:8,0,7);x.fill()}
+      if(on)label(x,String(S.sel.indexOf(i)+1),q.x,q.y-24,13,"#ffd85c")}
+    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,`Lastik ${S.msg.n} yıldızdan geçiyor, ${f.need} olmalı`,A.W/2,22,A.W,14);
+    else tip(x,`Lastik ${S.sel.length} yıldızdan geçiyor · hedef ${f.need}`,A.W/2,22,A.W,15);
+    tip(x,f.pre?"Yıldıza dokununca lastikten çıkar":"Yıldıza dokun, lastik gerilsin",A.W/2,A.H-18,A.W,13)}});
+
+// ---------- 2) GİZLİ KAPSÜL · kapalı kutu ----------
+const ENG_KAPSUL=sbEngine({H:300,
+  init(f,S,A){S.k=1;S.t1=S.t;S.msg=null;S.open=false;
+    f.cands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.a){S.open=true;A.done()}else{A.fail();if(!window._otoDry)S.msg={t:S.t,v}}}));
+    A.btn("İpucu ➕",()=>{if(S.locked)return;if(S.k<f.clues.length){S.k++;sfx.pop()}},"")},
+  draw(x,S,A){const f=S.f;
+    // ipuçları zamanla açılır
+    if(!S.locked&&S.t-S.t1>160*S.k&&S.k<f.clues.length)S.k++;
+    // kapsül
+    const cx=A.W/2,cy=182;x.save();x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(cx,cy+58,70,10,0,0,7);x.fill();
+    const g=x.createLinearGradient(cx-60,0,cx+60,0);g.addColorStop(0,"#8f9bb3");g.addColorStop(.5,"#e9eef7");g.addColorStop(1,"#8f9bb3");x.fillStyle=g;x.beginPath();x.roundRect(cx-60,cy-56,120,112,34);x.fill();
+    x.fillStyle=S.open?"#bff5d6":"#1b2340";x.beginPath();x.roundRect(cx-36,cy-30,72,48,12);x.fill();x.strokeStyle="#5f6a85";x.lineWidth=3;x.stroke();
+    if(S.open){label(x,String(f.a),cx,cy-6,30,"#1b7a4a")}else{const bl=.5+.5*Math.sin(S.t/9);x.fillStyle=`rgba(124,92,255,${.4+.6*bl})`;label(x,"?",cx,cy-6,30,`rgba(255,216,92,${.5+.5*bl})`)}
+    x.fillStyle="#ef6f4b";[-24,0,24].forEach(dx=>{x.beginPath();x.arc(cx+dx,cy+34,5,0,7);x.fill()});x.restore();
+    // ipucu kartları (sol-sağ)
+    f.clues.forEach((c,i)=>{const open=i<S.k;const bx=i%2?A.W-150:12,by=72+Math.floor(i/2)*58;x.save();x.fillStyle=open?"#fff":"rgba(255,255,255,.15)";x.beginPath();x.roundRect(bx,by,138,46,12);x.fill();if(!open){x.setLineDash([5,4]);x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=2;x.stroke()}x.restore();
+      if(open){x.font="800 13px Nunito, sans-serif";x.fillStyle="#2b2a33";x.textAlign="center";x.textBaseline="middle";const w=x.measureText(c).width;if(w>126){const parts=c.split(" "),mid=Math.ceil(parts.length/2);x.fillText(parts.slice(0,mid).join(" "),bx+69,by+15);x.fillText(parts.slice(mid).join(" "),bx+69,by+31)}else x.fillText(c,bx+69,by+23)}
+      else label(x,`${i+1}. ipucu`,bx+69,by+23,13,"rgba(255,255,255,.7)")});
+    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,`${S.msg.v} değil — ipuçlarını yeniden oku`,A.W/2,22,A.W,14);
+    else tip(x,S.k<f.clues.length?`Kapsüldeki sayı hangisi? ${f.clues.length-S.k} ipucu daha gelecek`:"Kapsüldeki sayı hangisi? Aşağıdan seç",A.W/2,22,A.W,14)}});
+
+// ---------- 3) METEOR BOYAMA · boya ----------
+const ENG_MBOYA=sbEngine({H:330,
+  init(f,S,A){S.on=new Set();S.msg=null;A.btn("Temizle",()=>{if(S.locked)return;S.on.clear();sfx.pop()});
+    A.btn("Tamam ✓",()=>{if(S.locked)return;const want=new Set(f.set);const ok=S.on.size===want.size&&[...S.on].every(v=>want.has(v));if(ok)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t}}},"")},
+  cell(A,n){const c=(n-1)%5,r=Math.floor((n-1)/5);const w=(A.W-40)/5;return{x:20+c*w,y:62+r*54,w:w-6,h:48}},
+  down(p,S,A){if(S.locked)return;for(let n=1;n<=20;n++){const b=this.cell(A,n);if(kHit(p,b)){if(S.on.has(n))S.on.delete(n);else S.on.add(n);sfx.pop();return}}},
+  draw(x,S,A){const f=S.f;
+    for(let n=1;n<=20;n++){const b=this.cell(A,n),on=S.on.has(n),want=S.locked&&f.set.includes(n);
+      x.save();x.fillStyle="rgba(0,0,0,.22)";x.beginPath();x.roundRect(b.x+2,b.y+4,b.w,b.h,10);x.fill();
+      x.fillStyle=on?"#ff8a4b":"#e9edf7";x.beginPath();x.roundRect(b.x,b.y,b.w,b.h,10);x.fill();if(want){x.strokeStyle="#3dbb8a";x.lineWidth=3;x.stroke()}
+      if(on){x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.arc(b.x+b.w*.3,b.y+b.h*.35,7,0,7);x.fill();x.beginPath();x.arc(b.x+b.w*.65,b.y+b.h*.6,5,0,7);x.fill()}
+      x.restore();label(x,String(n),b.x+b.w/2,b.y+b.h/2+1,18,on?"#fff":"#2b2a33")}
+    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,"Boyadıkların kurala uymuyor, yeniden say",A.W/2,22,A.W,14);
+    else tip(x,f.ask,A.W/2,22,A.W,15);
+    tip(x,`${S.on.size} meteor boyalı · bitince Tamam`,A.W/2,A.H-18,A.W,13)}});
+
+// ---------- 4) SIRA PODYUMU · sürükle-yerleştir (sıra sayıları) ----------
+const ENG_PODYUM=sbEngine({H:350,
+  init(f,S,A){S.flags=f.labels.map((l,i)=>({l,i,x:70+i*120,y:296,home:[70+i*120,296],on:null,drag:false}));S.msg=null;
+    A.btn("Tamam ✓",()=>{if(S.locked)return;const ok=S.flags.every(fl=>fl.on===f.pos[fl.i]);if(ok)A.done();else{A.fail();if(!window._otoDry){S.msg={t:S.t};S.flags.forEach(fl=>{fl.on=null;fl.x=fl.home[0];fl.y=fl.home[1]})}}},"")},
+  rx(S,A,i){const n=S.f.n;return 28+i*(A.W-56)/(n-1)},
+  down(p,S,A){if(S.locked)return;const fl=S.flags.find(fl=>Math.hypot(fl.x-p.x,fl.y-p.y)<34);if(fl){fl.drag=true;fl.on=null;S.dr=fl;sfx.pop();return}
+    // dokunarak da: bayrak seçili değilse en yakın roketi işaretle (tek bayrak)
+    if(S.flags.length===1){const n=S.f.n;let best=-1,bd=40;for(let i=0;i<n;i++){const d=Math.hypot(this.rx(S,A,i)-p.x,180-p.y);if(d<bd){bd=d;best=i}}if(best>=0){S.flags[0].on=best;S.flags[0].x=this.rx(S,A,best);S.flags[0].y=118;sfx.pop()}}},
+  move(p,S,A){if(S.dr){S.dr.x=p.x;S.dr.y=p.y}},
+  up(p,S,A){const fl=S.dr;if(!fl)return;S.dr=null;fl.drag=false;const n=S.f.n;let best=-1,bd=44;for(let i=0;i<n;i++){const d=Math.hypot(this.rx(S,A,i)-p.x,170-p.y);if(d<bd){bd=d;best=i}}
+    if(best>=0&&!S.flags.some(o=>o!==fl&&o.on===best)){fl.on=best;fl.x=this.rx(S,A,best);fl.y=118;sfx.pop()}else{fl.on=null;fl.x=fl.home[0];fl.y=fl.home[1]}},
+  draw(x,S,A){const f=S.f,n=f.n,Y=180;
+    // zemin + yön oku
+    x.fillStyle="rgba(255,255,255,.1)";x.fillRect(0,Y+30,A.W,4);
+    x.save();x.fillStyle="#ffd85c";x.font="900 14px Nunito, sans-serif";x.textAlign="left";x.textBaseline="middle";x.fillText(f.fromRight?"← buradan say":"buradan say →",f.fromRight?A.W-118:12,Y+72);x.restore();
+    for(let i=0;i<n;i++){const px=this.rx(S,A,i);if(!sp(x,"rocket",px,Y+24,Math.min(46,(A.W-56)/n),{bottom:true})){x.fillStyle="#9aa3c7";x.beginPath();x.roundRect(px-10,Y-20,20,44,6);x.fill()}
+      const k=f.fromRight?n-i:i+1;label(x,String(k),px,Y+44,12,"rgba(255,255,255,.75)")}
+    // bayraklar
+    S.flags.forEach(fl=>{x.save();if(fl.on!=null&&!fl.drag){x.strokeStyle="#ffd85c";x.lineWidth=3;x.beginPath();x.moveTo(fl.x,fl.y+16);x.lineTo(fl.x,Y-18);x.stroke()}
+      x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(fl.x-32+2,fl.y-16+4,64,32,8);x.fill();x.fillStyle=fl.on!=null?"#3dbb8a":"#ef6f4b";x.beginPath();x.roundRect(fl.x-32,fl.y-16,64,32,8);x.fill();x.restore();label(x,fl.l,fl.x,fl.y+1,15,"#fff")});
+    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,"Yanlış roket — oku takip ederek yeniden say",A.W/2,22,A.W,14);
+    else tip(x,f.ask,A.W/2,22,A.W,15);
+    if(!S.locked)tip(x,"Bayrağı rokete sürükle, sonra Tamam",A.W/2,A.H-14,A.W,13)}});
+
+// ---------- 5) GEZEGEN SUDOKU · mini sudoku 4×4 ----------
+const SUD_SYM=[["planet","🪐"],["sun","☀️"],["moon","🌙"],["gstar","⭐"]];
+const ENG_GSUDOKU=sbEngine({H:340,
+  init(f,S,A){S.g=f.grid.map(r=>r.slice());S.msg=null;S.selc=null;A.btn("Temizle",()=>{if(S.locked)return;S.g=f.grid.map(r=>r.slice());sfx.pop()});
+    A.btn("Tamam ✓",()=>{if(S.locked)return;const ok=S.g.every((row,i)=>row.every((v,j)=>v===f.sol[i][j]));if(ok)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t}}},"")},
+  cell(A,i,j){const s=58,X0=A.W/2-2*s,Y0=56;return{x:X0+j*s,y:Y0+i*s,w:s,h:s}},
+  down(p,S,A){if(S.locked)return;const f=S.f;for(let i=0;i<4;i++)for(let j=0;j<4;j++){if(f.grid[i][j]!=null)continue;const b=this.cell(A,i,j);if(kHit(p,b)){const v=S.g[i][j];S.g[i][j]=v==null?0:(v===3?null:v+1);sfx.pop();return}}},
+  draw(x,S,A){const f=S.f;
+    for(let i=0;i<4;i++)for(let j=0;j<4;j++){const b=this.cell(A,i,j),fixed=f.grid[i][j]!=null,v=S.g[i][j];
+      x.fillStyle=fixed?"rgba(255,255,255,.14)":"rgba(255,255,255,.9)";x.beginPath();x.roundRect(b.x+2,b.y+2,b.w-4,b.h-4,10);x.fill();
+      if(!fixed&&v==null){x.strokeStyle="rgba(124,92,255,.6)";x.lineWidth=2;x.setLineDash([5,4]);x.stroke();x.setLineDash([])}
+      if(v!=null){const [k,e]=SUD_SYM[v];if(!sp(x,k,b.x+b.w/2,b.y+b.h/2,36)){label(x,e,b.x+b.w/2,b.y+b.h/2,26)}}
+      if(S.locked&&!fixed){x.strokeStyle="#3dbb8a";x.lineWidth=3;x.beginPath();x.roundRect(b.x+2,b.y+2,b.w-4,b.h-4,10);x.stroke()}}
+    // kalın bölge çizgileri
+    const b0=this.cell(A,0,0),s=b0.w;x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=3;x.beginPath();x.moveTo(b0.x+2*s,b0.y);x.lineTo(b0.x+2*s,b0.y+4*s);x.moveTo(b0.x,b0.y+2*s);x.lineTo(b0.x+4*s,b0.y+2*s);x.stroke();
+    // sembol açıklaması
+    SUD_SYM.forEach(([k,e],i)=>{const px=A.W/2-84+i*56;if(!sp(x,k,px,A.H-28,24))label(x,e,px,A.H-28,18)});
+    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,"Bir satır ya da sütunda aynı gezegen iki kez var",A.W/2,22,A.W,14);
+    else tip(x,"Her satır ve sütunda 4 gezegen birer kez · boşa dokun, değişsin",A.W/2,22,A.W,14)}});
+
+function latin(r){const base=[[0,1,2,3],[1,0,3,2],[2,3,0,1],[3,2,1,0]];const pr=shuffle(r,[0,1,2,3]),pc=shuffle(r,[0,1,2,3]),ps=shuffle(r,[0,1,2,3]);return pr.map(i=>pc.map(j=>ps[base[i][j]]))}
+function sudFact(r,blanks,t){const sol=latin(r);const grid=sol.map(x=>x.slice());const cells=shuffle(r,[...Array(16).keys()]).slice(0,blanks);cells.forEach(c=>{grid[Math.floor(c/4)][c%4]=null});return{t,sol,grid,a:"ok",q:`${blanks} boş kutuyu doldur: her satır ve sütunda her gezegen bir kez`,hint:"Önce tek boşluğu olan satıra ya da sütuna bak.",ansTxt:"Sudoku tamamlandı"}}
+
+// ---------- tanımlar ----------
+Object.assign(G,{
+  ytahta:{id:"ytahta",name:"Yıldız Tahtası",ico:"⭐",task:"Yıldızlara dokun, lastik istenen sayıda yıldızdan geçsin"},
+  kapsul:{id:"kapsul",name:"Gizli Kapsül",ico:"🛰️",task:"İpuçlarını oku, kapsüldeki sayıyı bul"},
+  mboya:{id:"mboya",name:"Meteor Boyama",ico:"☄️",task:"Ritmik sayarken söylediğin meteorları boya"},
+  podyum:{id:"podyum",name:"Sıra Podyumu",ico:"🚩",task:"Bayrağı doğru sıradaki rokete dik"},
+  gsudoku:{id:"gsudoku",name:"Gezegen Sudoku",ico:"🪐",task:"Her satır ve sütunda her gezegen bir kez"}});
+
+Object.assign(GFACT,{
+ ytahta:[r=>{const n=ri(r,3,5);return{t:"Verilen kadar sayma",need:n,a:"ok",q:`Lastik tam ${n} yıldızdan geçsin, sonra Tamam'a bas`,hint:"Her dokunuşta say: 1, 2, 3…",ansTxt:`Lastik ${n} yıldızdan geçti`}},
+   r=>{const n=ri(r,6,10);return{t:"Verilen kadar sayma",need:n,a:"ok",q:`Lastik tam ${n} yıldızdan geçsin, sonra Tamam'a bas`,hint:"Sayarak dokun; fazla olursa yıldıza tekrar dokun, çıkar.",ansTxt:`Lastik ${n} yıldızdan geçti`}},
+   r=>{const p=ri(r,7,10),d=ri(r,2,3);return{t:"Geriye sayma",need:p-d,pre:p,a:"ok",q:`Lastik ${p} yıldızdan geçiyor. ${d} yıldızı çıkar; ${p-d} kalınca Tamam'a bas`,hint:`${p}'den geriye say: ${p-1}, ${p-2}…`,ansTxt:`${p} yıldızdan ${d} çıktı, ${p-d} kaldı`}}],
+ kapsul:[r=>{const a=ri(r,2,10);const cands=shuffle(r,[a,...pickDistinct(r,3,1,10).filter(v=>v!==a)].slice(0,4));if(!cands.includes(a))cands[0]=a;const clues=[a>5?"5'ten büyük":"5'ten küçük",`${a-1}'den büyük, ${a+1}'den küçük`];return{t:"Sayı karşılaştırma",a,cands,clues,q:"Kapsüldeki sayıyı ipuçlarıyla bul",hint:"İpucu her birkaç saniyede bir açılır; erken bilen kazanır.",ansTxt:`Kapsüldeki sayı ${a}`}},
+   r=>{const a=ri(r,11,19);const cands=[a,a-1,a+1,ri(r,2,9)];const clues=["10'dan büyük",`Onluğu 1, birliği ${a-10}`,a%2?"2'şer sayarken 1'den başlarsan söylenir":"2'şer sayarken söylenir"];return{t:"Sayı çözümleme",a,cands:shuffle(r,cands),clues,q:"Kapsüldeki sayıyı ipuçlarıyla bul",hint:"Onluk ve birlik ipucu sayıyı tam söyler.",ansTxt:`Kapsüldeki sayı ${a}: 10 ve ${a-10}`}},
+   r=>{const a=pick(r,[5,10,15,20]);const cands=shuffle(r,[a,a+1,a-1,pick(r,[5,10,15,20].filter(v=>v!==a)),ri(r,2,9),ri(r,11,19)].slice(0,6));const clues=[a>10?"10'dan büyük":"10'dan büyük değil","5'er sayarken söylenir",`${a-2}'den büyük, ${a+2}'den küçük`];return{t:"Ritmik sayma ipuçları",a,cands,clues,q:"Kapsüldeki sayıyı ipuçlarıyla bul (6 aday)",hint:"5'er sayarken: 5, 10, 15, 20.",ansTxt:`Kapsüldeki sayı ${a}`}}],
+ mboya:[r=>{const s=pick(r,[5,10]);const set=sayStep(s,s,20);return{t:"Ritmik sayma",set,a:"ok",ask:`${s}'er sayarken söylediğin meteorları boya`,q:`${s}'er say, söylediğin sayıları boya`,hint:`${s}, ${2*s}… diye say.`,ansTxt:`${s}'er sayarken: ${set.join(", ")}`}},
+   r=>{const set=sayStep(2,2,20);return{t:"İkişer sayma",set,a:"ok",ask:"2'şer sayarken söylediğin meteorları boya",q:"2'şer say, söylediğin sayıları boya",hint:"2, 4, 6… bir atla bir boya.",ansTxt:`2'şer: ${set.join(", ")}`}},
+   r=>{const from=pick(r,[1,3]);const set=sayStep(2,from,20);return{t:"İkişer sayma (farklı başlangıç)",set,a:"ok",ask:`${from}'den başla, 2'şer say: söylediklerini boya`,q:`${from}'den başlayıp 2'şer say, söylediğin sayıları boya`,hint:`${from}, ${from+2}, ${from+4}…`,ansTxt:`${from}'den 2'şer: ${set.join(", ")}`}}],
+ podyum:[r=>{const n=5,k=ri(r,1,5);const ords=["birinci","ikinci","üçüncü","dördüncü","beşinci","altıncı","yedinci","sekizinci","dokuzuncu","onuncu"];return{t:"Sıra sayıları",n,labels:[`${k}.`],pos:[k-1],a:"ok",ask:`Bayrağı ${ords[k-1]} rokete dik`,q:`${n} roket var. Bayrağı ${ords[k-1]} rokete dik`,hint:"Oku takip et, sayarak git.",ansTxt:`${ords[k-1]} roket bayrağı aldı`}},
+   r=>{const n=8,k=ri(r,2,8);const ords=["birinci","ikinci","üçüncü","dördüncü","beşinci","altıncı","yedinci","sekizinci","dokuzuncu","onuncu"];const fr=r()<.5;return{t:"Sıra sayıları (yön)",n,fromRight:fr,labels:[`${k}.`],pos:[fr?n-k:k-1],a:"ok",ask:`${fr?"Sağdan":"Soldan"} ${ords[k-1]} rokete bayrak dik`,q:`${n} roket var. Bayrağı ${fr?"sağdan":"soldan"} ${ords[k-1]} rokete dik`,hint:"Okun gösterdiği uçtan saymaya başla.",ansTxt:`${fr?"Sağdan":"Soldan"} ${ords[k-1]} roket`}},
+   r=>{const n=10;let a=ri(r,1,10),b=ri(r,1,10);while(b===a||(n-b)===(a-1))b=ri(r,1,10);const ords=["birinci","ikinci","üçüncü","dördüncü","beşinci","altıncı","yedinci","sekizinci","dokuzuncu","onuncu"];return{t:"İki bayrak (sol ve sağ)",n,labels:[`${a}.`,`sağdan ${b}.`],pos:[a-1,n-b],a:"ok",ask:`Soldan ${ords[a-1]} ve sağdan ${ords[b-1]} rokete bayrak dik`,q:`${n} roket var. Soldan ${ords[a-1]} ve sağdan ${ords[b-1]} roketlere bayrak dik`,hint:"İkinci bayrak için sağ uçtan say.",ansTxt:`Soldan ${a}. ve sağdan ${b}. roket`}}],
+ gsudoku:[r=>sudFact(r,ri(r,1,2),"Mini sudoku (kolay)"),r=>sudFact(r,4,"Mini sudoku"),r=>sudFact(r,6,"Mini sudoku (zor)")]});
+
+Object.assign(KTIER,{ytahta:{E:[[0]],N:[[1]],F:[[2]]},kapsul:{E:[[0]],N:[[1]],F:[[2]]},mboya:{E:[[0]],N:[[1]],F:[[2]]},podyum:{E:[[0]],N:[[1]],F:[[2]]},gsudoku:{E:[[0]],N:[[1]],F:[[2]]}});
+Object.assign(ENGINES,{ytahta:ENG_YTAHTA,kapsul:ENG_KAPSUL,mboya:ENG_MBOYA,podyum:ENG_PODYUM,gsudoku:ENG_GSUDOKU});
+["ytahta","kapsul","mboya","podyum","gsudoku"].forEach(id=>{if(!SETS[11][1].includes(id))SETS[11][1].push(id)});
+
+// ---------- Evde dene kartları ----------
+Object.assign(HOME,{
+ ytahta:HC("Lastik Tahtası","Verilen kadar sayma, geriye sayma","Mantar pano ya da köpük, 12 raptiye, bir lastik (ya da kâğıda çizili noktalar ve ip)",["Raptiyeleri 4 sıra 3'lü dizin.","'Lastik 7 raptiyeden geçsin' deyin; çocuğunuz sayarak lastiği gersin.","Sonra '2 raptiyeyi çıkar, kaç kaldı?' diye sorun."],"Çıkarınca kaç kaldığını saymadan söyleyebildin mi?"),
+ kapsul:HC("Gizli Sayı","Sayı karşılaştırma ve onluk-birlik ipuçları","Bir kutu, 1–20 arası sayı kartları",["Bir kartı kutuya saklayın.","İpuçları verin: '10'dan büyük', 'onluğu 1, birliği 4'.","Çocuğunuz her ipucundan sonra tahmin etsin; sonra rolleri değişin."],"Hangi ipucu sayıyı hemen söyledi?"),
+ mboya:HC("Boyama Tablosu","Ritmik sayma (2'şer, 5'er, 10'ar)","Kâğıda çizili 1–20 tablosu, boya kalemi",["Çocuğunuz 2'şer sayarken söylediği sayıları boyasın.","Boyalı kutulara bakın: nasıl bir desen çıktı?","5'er sayarak başka renkle tekrar yapın."],"2'şer sayarken hangi sayılar hiç boyanmadı?"),
+ podyum:HC("Sıra Yarışı","Sıra sayıları (birinci, ikinci…), sağdan-soldan sayma","6–8 oyuncak ya da ayakkabı, bir kâğıt bayrak",["Oyuncakları bir sıraya dizin.","'Bayrağı soldan dördüncüye koy' deyin.","Sonra 'sağdan ikinci hangisi?' diye sorun."],"Sağdan sayınca sıra numarası neden değişti?"),
+ gsudoku:HC("Mutfak Sudoku","Satır ve sütunda tekrar etmeme (mantık)","4 çeşit nesneden 4'er tane (kaşık, çatal, kapak, düğme), kâğıda çizili 4×4 tablo",["Birkaç kutuyu siz yerleştirin.","Çocuğunuz kalan kutuları her satır ve sütunda her nesne bir kez olacak şekilde doldursun.","Birlikte kontrol edin."],"Hangi kutuyu ilk doldurdun, neden?")});
+
+// ---------- Evde dene görselleri ----------
+const V={};
+const svg=(w,h,b)=>`<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" style="display:block;max-width:${w*1.35}px;margin:0 auto">${b}</svg>`;
+const T=(x,y,t,s=14,c="#22314d")=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="${s}" fill="${c}">${t}</text>`;
+V.ytahta=()=>{let o=`<rect x="20" y="16" width="320" height="170" rx="14" fill="#f4e8d2" stroke="#d9c9a3"/>`;const P=[];for(let r=0;r<3;r++)for(let c=0;c<4;c++)P.push([60+c*80,50+r*52]);const sel=[0,1,2,6,9,8,4];o+=`<polygon points="${sel.map(i=>P[i].join(",")).join(" ")}" fill="rgba(255,122,61,.15)" stroke="#ff7a3d" stroke-width="5" stroke-linejoin="round"/>`;P.forEach(([x,y],i)=>{o+=`<circle cx="${x}" cy="${y}" r="7" fill="${sel.includes(i)?"#ffd75e":"#8f8f9a"}" stroke="#555" stroke-width="2"/>`;if(sel.includes(i))o+=T(x,y-14,String(sel.indexOf(i)+1),12,"#b35a1a")});o+=T(180,215,"Lastik 7 raptiyeden geçiyor",15);return{svg:svg(360,230,o),cap:"Sayarak ger, sayarak çıkar."}};
+V.kapsul=()=>{let o=`<rect x="130" y="40" width="100" height="120" rx="18" fill="#dfe6f3" stroke="#9aa6bd" stroke-width="2"/><rect x="150" y="70" width="60" height="44" rx="8" fill="#1b2340"/>${T(180,100,"?",28,"#ffd75e")}`;o+=`<rect x="14" y="40" width="104" height="40" rx="10" fill="#fff" stroke="#d9c9a3"/>${T(66,65,"10'dan büyük",13)}<rect x="242" y="40" width="104" height="40" rx="10" fill="#fff" stroke="#d9c9a3"/>${T(294,58,"onluğu 1",13)}${T(294,74,"birliği 4",13)}`;o+=T(180,200,"Cevap: 14",16,"#1b7a4a");return{svg:svg(360,230,o),cap:"Her ipucundan sonra tahmin et."}};
+V.mboya=()=>{let o="";for(let n=1;n<=20;n++){const c=(n-1)%5,r=Math.floor((n-1)/5);const on=n%2===0;o+=`<rect x="${30+c*62}" y="${20+r*46}" width="56" height="40" rx="8" fill="${on?"#ff8a4b":"#f3f0e8"}" stroke="#d9c9a3"/>${T(58+c*62,46+r*46,String(n),15,on?"#fff":"#22314d")}`}o+=T(180,220,"2'şer sayınca her ikinci kutu boyanır",14);return{svg:svg(360,230,o),cap:"Desen: boya, boş, boya, boş…"}};
+V.podyum=()=>{let o="";const n=6;for(let i=0;i<n;i++){const x=40+i*56;o+=`<rect x="${x-14}" y="110" width="28" height="50" rx="8" fill="${i===3?"#3dbb8a":"#c9d0dc"}"/>${T(x,185,String(i+1)+".",13)}`}o+=`<path d="M208 60 L208 110" stroke="#ffd75e" stroke-width="3"/><rect x="208" y="52" width="40" height="22" fill="#ef6f4b"/>${T(228,67,"4.",12,"#fff")}`;o+=T(180,215,"soldan dördüncü  →  buradan say",14,"#8a6420");return{svg:svg(360,230,o),cap:"Oku takip et, sayarak git."}};
+V.gsudoku=()=>{const E=["🥄","🍴","🔘","🧢"],sol=[[0,1,2,3],[2,3,0,1],[1,0,3,2],[3,2,1,0]],blank=[[0,2],[1,1],[2,3],[3,0]];let o="";for(let i=0;i<4;i++)for(let j=0;j<4;j++){const b=blank.some(([a,c])=>a===i&&c===j);o+=`<rect x="${86+j*48}" y="${16+i*48}" width="44" height="44" rx="8" fill="${b?"#fff":"#f3f0e8"}" stroke="${b?"#7c5cff":"#d9c9a3"}" stroke-dasharray="${b?"4 3":"0"}"/>`;if(!b)o+=`<text x="${108+j*48}" y="${46+i*48}" text-anchor="middle" font-size="24">${E[sol[i][j]]}</text>`}o+=T(180,222,"Her satır ve sütunda her nesne bir kez",14);return{svg:svg(360,230,o),cap:"Boş kutuya ne gelmeli?"}};
+if(window.homeVis){const _hv=homeVis;window.homeVis=function(hid){const k=String(hid).split("@")[0];if(V[k]){let r;try{r=V[k]()}catch(e){return ""}return `<div class="uz-vis">${r.svg}<div class="uz-cap"><span></span><i>${r.cap}</i><span></span></div></div>`}return _hv(hid)}}
+})();
 // ============ YENİ GÖRSEL TARZ: ortak çizim parçalarını Fluent 3D + yumuşak sahnelerle değiştir ============
 // Kural: rakam ve sayı yazılan yüzeylerde parlama yok (okunabilirlik).
 ;(function(){
