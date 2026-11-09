@@ -11787,15 +11787,27 @@ function astronautSVG(cx,bottom,h){const s=h/60;return`<defs><radialGradient id=
   <circle cx="0" cy="-48" r="13.5" fill="url(#asW)"/><circle cx="0" cy="-48" r="10" fill="url(#asV)"/><ellipse cx="-3.5" cy="-51" rx="3" ry="2" fill="rgba(255,255,255,.55)"/>
   <circle cx="-3.5" cy="-47" r="1.6" fill="#fff"/><circle cx="3.5" cy="-47" r="1.6" fill="#fff"/><path d="M-3 -43 Q0 -41 3 -43" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
   </g>`}
+function kidSVG(cx,bottom,h,coat,hat,flip,throwing){const sc=h/60,id="kd"+coat.slice(1);return`<defs><radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="${coat}"/><stop offset="1" stop-color="${coat}"/></radialGradient></defs><g transform="translate(${cx},${bottom}) scale(${flip?-sc:sc},${sc})">
+  <ellipse cx="0" cy="0" rx="13" ry="2.5" fill="rgba(0,0,0,.12)"/>
+  <rect x="-9" y="-9" width="7" height="9" rx="3" fill="#4a5a8a"/><rect x="2" y="-9" width="7" height="9" rx="3" fill="#4a5a8a"/>
+  <rect x="-10" y="-2" width="9" height="4" rx="2" fill="#2b2a33"/><rect x="1" y="-2" width="9" height="4" rx="2" fill="#2b2a33"/>
+  <rect x="-12" y="-34" width="24" height="27" rx="9" fill="url(#${id})"/>
+  ${throwing?`<rect x="9" y="-56" width="7" height="26" rx="3.5" fill="${coat}"/><circle cx="12.5" cy="-58" r="3" fill="#e8574a"/><circle cx="13" cy="-64" r="4.2" fill="#fff" stroke="#cfd8ea" stroke-width=".8"/>`:`<rect x="10" y="-33" width="7" height="17" rx="3.5" fill="${coat}" transform="rotate(-50 12 -31)"/><circle cx="22" cy="-21" r="3" fill="#e8574a"/>`}
+  <rect x="-17" y="-33" width="7" height="17" rx="3.5" fill="${coat}" transform="rotate(45 -12 -31)"/><circle cx="-21" cy="-19" r="3" fill="#e8574a"/>
+  <rect x="-13" y="-37" width="26" height="6" rx="3" fill="${hat}"/>
+  <circle cx="0" cy="-45" r="11" fill="#ffd9b8"/><circle cx="-4" cy="-45" r="1.5" fill="#2b2a33"/><circle cx="4" cy="-45" r="1.5" fill="#2b2a33"/><path d="M-3 -40.5 q3 2.5 6 0" stroke="#b35a4a" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="-7" cy="-41" r="2" fill="#ffb3a0" opacity=".7"/><circle cx="7" cy="-41" r="2" fill="#ffb3a0" opacity=".7"/>
+  <path d="M-11.5 -53 Q0 -67 11.5 -53 Z" fill="${hat}"/><rect x="-12.5" y="-56" width="25" height="5" rx="2.5" fill="${hat}"/><circle cx="0" cy="-66" r="3.5" fill="#fff"/>
+  </g>`}
+function smokeSVG(x,y){return [0,1,2,3].map(i=>`<circle cx="${x-i*5-i*i*0.6}" cy="${y-6-i*8}" r="${3+i*1.6}" fill="#fff" opacity="${.85-i*.18}"/>`).join("")}
 const IMB=(k,cx,bottom,w)=>IMG(k,cx-w/2,bottom-w,w,w); // alt-orta hizalı
 function picSpace2(){const stars=Array.from({length:40},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%130}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
   const im=window.SPR&&SPR.IM;const rocket=im&&im.rocket&&im.rocket.src?`<image href="${im.rocket.src}" x="-50" y="-50" width="100" height="100" transform="translate(92,112) rotate(-42)"/>`:"";
   const astro=im&&im.astronaut&&im.astronaut.src?`<image href="${im.astronaut.src}" x="-14" y="-15" width="28" height="28"/>`:"";
-  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient><clipPath id="ksw"><circle cx="0" cy="0" r="13.5"/></clipPath></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient><clipPath id="ksw"><circle cx="0" cy="0" r="13.5"/></clipPath><radialGradient id="kscab" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#ffffff" stop-opacity=".6"/><stop offset="1" stop-color="#9fb4e6" stop-opacity=".9"/></radialGradient></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
   ${IMG("planet",222,14,62,62)}${IMG("moon",24,18,32,32)}${IMG("comet",150,16,30,30)}${IMG("ufo",190,58,44,44)}${IMG("satellite",258,96,30,30)}${IMG("gstar",18,104,12,12)}${IMG("gstar",140,96,12,12)}
   <path d="M0 150 Q150 128 300 150 V200 H0Z" fill="#6f62c4"/><path d="M0 172 Q150 158 300 172 V200 H0Z" fill="#8e7fd6"/>
   <ellipse cx="92" cy="166" rx="40" ry="7" fill="#5a4fae"/>${rocket}
-  <g transform="translate(89.5,91.5)"><circle r="15" fill="#9aa3c7"/><circle r="13.5" fill="#1b2a5a"/><g clip-path="url(#ksw)">${astro}</g><circle r="13.5" fill="none" stroke="#e9edf7" stroke-width="2"/></g>
+  <g transform="translate(89.5,91.5)"><circle r="15" fill="#9aa3c7"/><circle r="13.5" fill="#dfe9ff"/><circle r="13.5" fill="url(#kscab)"/><g clip-path="url(#ksw)">${astro}</g><circle r="13.5" fill="none" stroke="#e9edf7" stroke-width="2"/></g>
   ${IMB("telescope",196,166,46)}${IMB("gstar",262,172,12)}${IMB("gstar",22,172,12)}</svg>`}
 function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%120}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
   return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}<circle cx="252" cy="34" r="22" fill="rgba(255,255,255,.18)"/><circle cx="252" cy="34" r="15" fill="#f3f6ff"/><circle cx="247" cy="30" r="2.5" fill="#dfe5f5"/><circle cx="256" cy="38" r="1.8" fill="#dfe5f5"/>
@@ -11807,13 +11819,13 @@ function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${
   <rect x="210" y="79" width="12.5" height="4" rx="2" fill="#ffffff"/>
   <ellipse cx="34.8" cy="92" rx="3.4" ry="2.4" fill="#fff"/>
   ${IMB("evergreen_tree",286,164,70)}<ellipse cx="284.3" cy="107.5" rx="3" ry="2.2" fill="#fff"/>
-  ${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",176,173,40)}<path d="M167 149.5 q12 -2 24 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>${IMB("wrapped_gift",204,171,16)}${IMB("snowflake",168,118,16)}</svg>`}
+  ${smokeSVG(216,79)}${IMB("e_26f7",96,137,24)}${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",262,172,28)}<path d="M256 151 q6 -1.5 12 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>${kidSVG(166,171,36,"#e8574a","#2f8fd8",false,true)}${kidSVG(222,172,34,"#3dbb8a","#f6c445",true,false)}<circle cx="196" cy="140" r="3.2" fill="#fff" stroke="#cfd8ea" stroke-width=".8"/><circle cx="204" cy="150" r="2.6" fill="#fff" opacity=".8"/>${IMB("snowflake",168,118,16)}</svg>`}
 if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
 
 // ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
 const F="Fredoka, Nunito, 'Segoe UI', Arial, sans-serif";
 const T=(x,y,t,s,c="#2b2a33",a="middle",w=800)=>`<text x="${x}" y="${y}" font-family="${F}" font-weight="${w}" font-size="${s}" fill="${c}" text-anchor="${a}">${esc(t)}</text>`;
-function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|kwg|ksw)"/g,'id="$1f"').replace(/url\(#(ksg|kwg|ksw)\)/g,"url(#$1f)");
+function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|kwg|ksw|kscab)"/g,'id="$1f"').replace(/url\(#(ksg|kwg|ksw|kscab)\)/g,"url(#$1f)");
   return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1050" width="1480" height="1050"><rect width="1480" height="1050" fill="#fff"/><svg viewBox="0 0 300 200" x="0" y="0" width="1480" height="1050" preserveAspectRatio="xMidYMid slice">${pic}</svg>
   <rect x="40" y="40" width="${(o.month.length+15)*21+40}" height="74" rx="37" fill="rgba(255,255,255,.92)"/>${T(60,92,`✦ Sayıgo · ${o.month} ${o.year}`,38,"#5b3fd0","start")}
   <rect x="40" y="918" width="1400" height="98" rx="30" fill="rgba(255,255,255,.94)"/>
