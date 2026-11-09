@@ -11903,42 +11903,40 @@ const barn=(x,bottom,w)=>{const h=w*.8;return`<rect x="${x}" y="${bottom-h*.55}"
 const fence=(x0,x1,y)=>{let o=`<rect x="${x0}" y="${y-9}" width="${x1-x0}" height="2.5" fill="#d9b382"/><rect x="${x0}" y="${y-4}" width="${x1-x0}" height="2.5" fill="#d9b382"/>`;for(let x=x0;x<=x1;x+=14)o+=`<rect x="${x}" y="${y-13}" width="3" height="13" rx="1" fill="#c9a06a"/>`;return o};
 
 // 9 EYLÜL · Okul Zamanı: okula giden çocuklar, servis, okul binası
-function picSchool(){return SVG(grad("ksky9","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#ksky9)"/>${sunCloud()}${birds()}
-  ${hills("#9fdc8a","#7ccf6a",138,166)}
-  <rect x="0" y="166" width="300" height="34" fill="#8a94a6"/><path d="M0 184 H300" stroke="#fff" stroke-width="2" stroke-dasharray="12 10"/>
-  ${IMB("tree",38,160,66)}${IMB("school",205,160,96)}${IMB("bus",72,170,56)}
-  ${IMB("backpack",124,157,14)}${kidSVG(134,168,34,"#2f8fd8","hair:#5a3a1e",false,false)}${IMB("backpack",151,158,13)}${kidSVG(160,169,32,"#e8574a","hair:#2b2a33",false,false)}
-  ${IMB("red_apple",256,170,12)}`)}
+function picSchool(){return SVG(grad("ksky9","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#ksky9)"/>${sunCloud()}
+  ${hills("#9fdc8a","#7ccf6a",136,164)}
+  <path d="M0 160 Q150 154 300 160 V176 Q150 170 0 176 Z" fill="#d9c9a3"/>
+  ${IMB("tree",34,156,66)}${IMB("school",214,156,96)}${IMB("bus",84,172,56)}
+  ${IMB("backpack",133,160,13)}${kidSVG(142,171,34,"#2f8fd8","hair:#5a3a1e",false,false)}${IMB("backpack",160,161,12)}${kidSVG(168,172,32,"#e8574a","hair:#2b2a33",false,false)}`)}
 // 10 EKİM · Sonbahar Ormanı: yaprak toplayan çocuk, dökülen yapraklar, orman hayvanları
-function picAutumn2(){const fall=[[70,40,"e_1f341",12],[120,70,"leaf",10],[190,34,"e_1f341",10],[240,80,"leaf",11],[150,110,"e_1f341",9]].map(([x,y,k,w])=>IMG(k,x,y,w,w)).join("");
-  return SVG(grad("ksky10","#ffd9a8","#fff1dc"),`<rect width="300" height="200" fill="url(#ksky10)"/>${IMG("sun",236,12,36,36)}
+function picAutumn2(){const fall=[[70,40,"e_1f341",12],[120,70,"leaf",10],[190,34,"e_1f341",10],[240,80,"leaf",11]].map(([x,y,k,w])=>IMG(k,x,y,w,w)).join("");
+  const im=window.SPR&&SPR.IM,t=im&&im.tree&&im.tree.src;let tc=0;const T=(cx,bottom,w,f)=>{if(!t)return"";const id="ktr"+(tc++);return`<clipPath id="${id}"><rect x="${cx-w/2}" y="${bottom-w*.22}" width="${w}" height="${w*.22}"/></clipPath><image href="${t}" x="${cx-w/2}" y="${bottom-w}" width="${w}" height="${w}" filter="url(#${f})"/><image href="${t}" x="${cx-w/2}" y="${bottom-w}" width="${w}" height="${w}" clip-path="url(#${id})"/>`};
+  return SVG(grad("ksky10","#ffd9a8","#fff1dc")+`<filter id="kaut1"><feColorMatrix type="hueRotate" values="-95"/><feColorMatrix type="saturate" values="2.2"/><feComponentTransfer><feFuncR type="linear" slope="1.25"/><feFuncG type="linear" slope="0.95"/></feComponentTransfer></filter><filter id="kaut2"><feColorMatrix type="hueRotate" values="-70"/><feColorMatrix type="saturate" values="2"/><feComponentTransfer><feFuncR type="linear" slope="1.25"/><feFuncG type="linear" slope="1.05"/></feComponentTransfer></filter>`,`<rect width="300" height="200" fill="url(#ksky10)"/>${IMG("sun",236,12,36,36)}
   ${hills("#d9b36a","#c49a52",142,168)}
-  ${autumnTree(40,164,1.1,"#f08a2c","#e0552f")}${autumnTree(150,160,1.3,"#f6c445","#f08a2c")}${autumnTree(262,166,1.0,"#e0552f","#c9412a")}
-  ${IMG("e_1f989",140,76,20,20)}${fall}
-  ${IMB("mushroom",96,172,18)}${IMB("hedgehog",118,174,24)}${IMB("chipmunk",268,174,22)}${IMB("chestnut",236,176,10)}
-  ${kidSVG(196,176,36,"#8e5bd8","hair:#5a3a1e",false,false)}${IMG("e_1f341",206,142,12,12)}
-  ${IMB("leaf",60,178,10)}${IMB("e_1f341",160,180,10)}`)}
+  ${T(40,166,84,"kaut1")}${T(150,160,96,"kaut2")}${T(262,166,80,"kaut1")}${fall}
+  ${IMB("mushroom",96,172,18)}${IMB("hedgehog",118,172,24)}${IMB("chipmunk",236,172,22)}${IMB("chestnut",256,172,10)}
+  ${kidSVG(196,172,36,"#8e5bd8","hair:#5a3a1e",false,false)}${IMG("e_1f341",203,155,11,11)}`)}
 // 1 OCAK · Deniz Altı: su yüzeyinde kayık, altta balıklar, deniz tabanı
-function picSea2(){const bub=[[60,120,3],[70,100,2],[200,90,2.5],[210,70,2],[250,130,3],[130,60,2]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1" opacity=".7"/>`).join("");
+function picSea2(){const bub=[[40,120,3],[48,104,2],[200,80,2.5],[206,66,2],[270,150,3],[150,56,2]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1" opacity=".7"/>`).join("");
   return SVG(grad("ksea","#5fc3f0","#0f4c6e"),`<rect width="300" height="200" fill="url(#ksea)"/>
-  <path d="M0 36 Q20 30 40 36 T80 36 T120 36 T160 36 T200 36 T240 36 T280 36 T320 36 V0 H0Z" fill="#bfe9ff"/>${IMB("e_1f6a3",226,38,44)}${IMB("sailboat",150,38,36)}
+  <path d="M0 36 Q20 30 40 36 T80 36 T120 36 T160 36 T200 36 T240 36 T280 36 T320 36 V0 H0Z" fill="#bfe9ff"/>${IMB("e_1f6a3",226,46,44)}${IMB("sailboat",150,46,36)}
   <path d="M30 38 L10 130 L60 130 Z" fill="#fff" opacity=".08"/><path d="M160 38 L130 150 L200 150 Z" fill="#fff" opacity=".07"/>
   <path d="M0 176 Q150 160 300 176 V200 H0Z" fill="#e8d8a8"/><path d="M0 188 Q150 178 300 188 V200 H0Z" fill="#d6c48e"/>
   <path d="M40 176 q-6 -14 2 -26 q-8 -10 0 -22" stroke="#2fa36b" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M52 178 q6 -12 -2 -24 q8 -10 2 -20" stroke="#3dbb8a" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M262 178 q-6 -14 2 -26 q-8 -10 0 -22" stroke="#2fa36b" stroke-width="4" fill="none" stroke-linecap="round"/>
   ${IMG("e_1f42c",86,56,44,44)}${IMG("tropical_fish",180,96,34,34)}${IMG("fish",120,120,28,28)}${IMG("fish",230,110,22,22,'transform="scale(-1,1) translate(-482,0)"')}${IMG("tropical_fish",60,86,22,22)}
-  ${IMB("e_1f422",150,180,34)}${IMB("e_1f419",216,182,40)}${IMB("crab",90,184,24)}${IMB("spiral_shell",270,186,16)}${bub}`)}
+  ${IMB("e_1f422",150,176,34)}${IMB("e_1f419",216,176,40)}${IMB("crab",90,176,24)}${IMB("spiral_shell",276,174,16)}${bub}`)}
 // 2 ŞUBAT · Dinozor Vadisi: yanardağ, anne-yavru dinozorlar, yumurta
 function picDino(){return SVG(grad("kdsky","#a8dcc9","#e6f5e1"),`<rect width="300" height="200" fill="url(#kdsky)"/>${IMG("sun",238,12,36,36)}${IMG("cloud",30,24,36,36)}
-  ${IMB("e_1f30b",230,150,110)}${smokeSVG(236,96)}
+  ${IMB("e_1f30b",230,150,110)}
   ${hills("#9fcf7a","#7ab85a",146,170)}
-  ${IMB("tree",40,160,62)}${IMB("herb",92,170,26)}${IMB("herb",282,172,24)}
-  ${IMB("dino_g",70,174,60)}${IMB("dino_o",160,174,54)}${IMB("dino_b",206,176,30)}
-  ${IMB("nest",248,178,30)}${IMB("egg",266,174,12)}`)}
+  ${IMB("tree",40,160,62)}${IMB("herb",104,172,22)}${IMB("herb",284,172,22)}
+  ${IMB("dino_g",70,172,60)}${IMB("dino_o",160,172,54)}${IMB("dino_b",206,172,30)}
+  ${IMB("nest",252,172,30)}`)}
 // 3 MART · Çiftlik Baharı: ahır, çit, traktör, hayvanlar
 function picFarm(){return SVG(grad("kfsky","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#kfsky)"/>${sunCloud()}
   ${hills("#9fdc8a","#7ccf6a",140,168)}
-  ${fence(12,170,152)}${IMB("rooster",124,140,20)}${barn(178,158,78)}
-  ${IMB("tractor",54,172,58)}${IMB("e_1f404",118,172,42)}${IMB("e_1f437",160,172,28)}${IMB("chick",190,172,14)}${IMB("ewe",258,172,32)}
+  ${fence(12,170,152)}${barn(178,158,78)}${IMB("rooster",154,140,20)}
+  ${IMB("tractor",54,172,58)}${IMB("e_1f404",112,172,42)}${IMB("e_1f437",168,172,28)}${IMB("chick",198,172,14)}${IMB("ewe",262,172,32)}
   ${IMB("e_1f337",284,170,14)}${IMB("e_1f337",14,170,14)}${IMB("seedling",104,170,12)}`)}
 // 4 NİSAN · Çiçek Bahçesi: gökkuşağı, çiçekler, çiçek sulayan çocuk, kelebek ve arı
 function picGarden(){const rb=["#ff6b6b","#ffb347","#ffe66d","#8ed87a","#6ec1ff","#b39ddb"].map((c,i)=>`<path d="M20 150 A130 130 0 0 1 280 150" fill="none" stroke="${c}" stroke-width="5" transform="translate(0,${-i*5})" opacity=".85"/>`).join("");
@@ -11960,14 +11958,14 @@ function picBeach(){return SVG(grad("kbsky","#8fd3ff","#e3f6ff")+grad("kbsea","#
   <rect x="0" y="96" width="300" height="56" fill="url(#kbsea)"/><path d="M0 100 Q15 95 30 100 T60 100 T90 100 T120 100 T150 100 T180 100 T210 100 T240 100 T270 100 T300 100" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>
   ${IMB("sailboat",236,100,34)}${IMG("e_1f42c",150,98,30,30)}${IMB("e_1f3ca",80,126,36)}
   <path d="M0 150 Q150 142 300 150 V200 H0Z" fill="#f3dba0"/><path d="M0 170 Q150 162 300 170 V200 H0Z" fill="#e8ce8e"/>
-  ${IMB("e_26f1",236,170,60)}${IMB("e_1f3c3",110,172,44)}${IMB("e_1f3d0",146,170,18)}${IMB("crab",40,172,20)}${IMB("spiral_shell",186,172,14)}${IMB("e_1f366",200,160,16)}`)}
+  ${IMB("e_26f1",236,170,60)}${IMB("e_1f3c3",110,172,44)}${IMB("e_1f3d0",146,170,18)}${IMB("crab",40,172,20)}${IMB("spiral_shell",186,172,14)}`)}
 // 7 TEMMUZ · Yaz Ligi: saha, kale, basketbol ve koşu, bayraklar
 function picLeague(){const bunt=Array.from({length:12},(_,i)=>`<path d="M${12+i*24} 14 L${24+i*24} 14 L${18+i*24} 26 Z" fill="${["#ff6b6b","#ffe66d","#6ec1ff","#8ed87a"][i%4]}"/>`).join("");
-  return SVG(grad("klsky","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#klsky)"/><path d="M0 14 Q150 20 300 14" stroke="#555" stroke-width="1" fill="none"/>${bunt}${IMG("sun",254,24,34,34)}
+  return SVG(grad("klsky","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#klsky)"/><path d="M0 34 Q150 40 300 34" stroke="#555" stroke-width="1" fill="none"/>${bunt.replace(/ 14 L/g," 34 L").replace(/ 26 Z/g," 46 Z")}${IMG("sun",254,24,34,34)}
   ${IMG("cloud",40,40,36,36)}${IMG("cloud",150,54,28,28)}<rect x="0" y="104" width="300" height="96" fill="#6cc55a"/><rect x="0" y="104" width="300" height="10" fill="#4fa84a"/>
   <path d="M0 150 H300 M150 114 V200" stroke="#fff" stroke-width="2" opacity=".8"/><ellipse cx="150" cy="150" rx="26" ry="12" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>
-  <rect x="12" y="118" width="34" height="36" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M12 127 H46 M12 136 H46 M12 145 H46 M21 118 V154 M30 118 V154 M39 118 V154" stroke="#fff" stroke-width="1" opacity=".55"/>
-  ${IMB("e_26f9",96,170,48)}${IMB("e_1f3c3",214,170,46)}${IMB("soccer",60,170,18)}${IMB("trophy",268,170,28)}`)}
+  
+  ${IMB("e_26f9",96,170,48)}${IMB("e_1f3c3",214,170,46)}${IMB("soccer",60,170,18)}`)}
 // 8 AĞUSTOS · Yaz Ligi Final: kürsü, kupa, kutlama yapan çocuklar, konfeti
 function picFinal(){const conf=Array.from({length:40},(_,i)=>`<rect x="${(i*61+13)%300}" y="${(i*37+9)%120}" width="4" height="7" rx="1" fill="${["#ff6b6b","#ffe66d","#6ec1ff","#8ed87a","#b39ddb"][i%5]}" transform="rotate(${(i*47)%360} ${(i*61+13)%300} ${(i*37+9)%120})"/>`).join("");
   return SVG(grad("kasky","#ffe3a8","#fff6e6"),`<rect width="300" height="200" fill="url(#kasky)"/>${conf}${IMG("sun",250,8,36,36)}
@@ -11975,7 +11973,7 @@ function picFinal(){const conf=Array.from({length:40},(_,i)=>`<rect x="${(i*61+1
   <rect x="106" y="128" width="40" height="46" rx="3" fill="#ffd75e"/><rect x="66" y="144" width="40" height="30" rx="3" fill="#cfd8ea"/><rect x="146" y="152" width="40" height="22" rx="3" fill="#e0a86a"/>
   <text x="126" y="156" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="16" fill="#8a6420">1</text><text x="86" y="164" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="13" fill="#5f6a85">2</text><text x="166" y="168" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="12" fill="#7a4a1e">3</text>
   ${IMB("trophy",126,128,34)}${IMB("e_1f947",86,144,16)}${IMB("medal",166,152,14)}
-  ${IMB("e_1f938",40,170,48)}${IMB("e_1f3c3",226,170,44)}${IMB("e_1f389",268,166,30)}${IMG("balloon",14,80,22,22)}${IMG("balloon",266,70,22,22)}${IMB("e_1f349",200,170,18)}`)}
+  ${IMB("e_1f938",30,170,44)}${IMB("e_1f3c3",222,170,44)}${IMB("e_1f389",272,168,28)}${IMG("balloon",14,80,22,22)}${IMG("balloon",266,70,22,22)}`)}
 if(typeof THEMES!=="undefined"){const M={9:picSchool,10:picAutumn2,1:picSea2,2:picDino,3:picFarm,4:picGarden,5:picCity,6:picBeach,7:picLeague,8:picFinal};for(const k in M)if(THEMES[k])THEMES[k].pic=M[k]}
 Object.assign(window.SAYIGO_KART,{picSchool,picAutumn2,picSea2,picDino,picFarm,picGarden,picCity,picBeach,picLeague,picFinal});
 })();
