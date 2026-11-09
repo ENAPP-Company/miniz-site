@@ -11776,16 +11776,27 @@ P.fillText=function(t,x0,y0,mw){if(window.SPR&&SPR.EMO&&typeof t==="string"&&t.l
 const IMG=(k,x,y,w,h,extra="")=>{const im=window.SPR&&SPR.IM[k];return im&&im.src?`<image href="${im.src}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`:""};
 const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 // ---------- daha zengin ay resimleri (Fluent 3D) ----------
+function astronautSVG(cx,bottom,h){const s=h/60;return`<defs><radialGradient id="asW" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c9d0e0"/></radialGradient><radialGradient id="asV" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#3b5aa8"/><stop offset="1" stop-color="#101a3e"/></radialGradient><linearGradient id="asG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8c0d8"/><stop offset="1" stop-color="#7d869f"/></linearGradient></defs><g transform="translate(${cx},${bottom}) scale(${s})">
+  <rect x="-13" y="-38" width="26" height="22" rx="6" fill="url(#asG)"/>
+  <rect x="-10" y="-6" width="8" height="8" rx="3" fill="url(#asW)"/><rect x="2" y="-6" width="8" height="8" rx="3" fill="url(#asW)"/>
+  <rect x="-11" y="-1" width="10" height="4" rx="2" fill="#6b7390"/><rect x="1" y="-1" width="10" height="4" rx="2" fill="#6b7390"/>
+  <rect x="-12" y="-40" width="24" height="36" rx="10" fill="url(#asW)"/>
+  <rect x="-19" y="-36" width="8" height="18" rx="4" fill="url(#asW)" transform="rotate(14 -15 -27)"/><rect x="11" y="-36" width="8" height="18" rx="4" fill="url(#asW)" transform="rotate(-14 15 -27)"/>
+  <circle cx="-16" cy="-17" r="3.6" fill="#e0e4ee"/><circle cx="16" cy="-17" r="3.6" fill="#e0e4ee"/>
+  <rect x="-7" y="-30" width="6" height="4" rx="1.5" fill="#ef6f4b"/><rect x="1" y="-30" width="6" height="4" rx="1.5" fill="#2f8fd8"/>
+  <circle cx="0" cy="-48" r="13.5" fill="url(#asW)"/><circle cx="0" cy="-48" r="10" fill="url(#asV)"/><ellipse cx="-3.5" cy="-51" rx="3" ry="2" fill="rgba(255,255,255,.55)"/>
+  <circle cx="-3.5" cy="-47" r="1.6" fill="#fff"/><circle cx="3.5" cy="-47" r="1.6" fill="#fff"/><path d="M-3 -43 Q0 -41 3 -43" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  </g>`}
 const IMB=(k,cx,bottom,w)=>IMG(k,cx-w/2,bottom-w,w,w); // alt-orta hizalı
 function picSpace2(){const stars=Array.from({length:40},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%130}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
   return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
   ${IMG("planet",214,16,64,64)}${IMG("moon",28,22,34,34)}${IMG("comet",118,18,30,30)}${IMG("ufo",148,54,46,46)}${IMG("gstar",92,70,14,14)}${IMG("gstar",258,96,12,12)}
   <path d="M0 150 Q150 128 300 150 V200 H0Z" fill="#6f62c4"/><path d="M0 172 Q150 158 300 172 V200 H0Z" fill="#8e7fd6"/>
-  ${IMB("rocket",96,162,76)}${IMB("telescope",172,164,52)}${IMB("satellite",236,162,44)}${IMB("gstar",40,170,16)}${IMB("gstar",278,172,14)}</svg>`}
+  ${IMB("rocket",86,162,70)}${astronautSVG(160,163,58)}${IMB("telescope",220,164,46)}${IMB("satellite",270,150,34)}${IMB("gstar",40,170,16)}${IMB("gstar",278,172,14)}</svg>`}
 function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%120}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
   return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}${IMG("moon",240,14,30,30)}
   <path d="M0 138 Q150 118 300 138 V200 H0Z" fill="#e9f3fb"/><path d="M0 168 Q150 152 300 168 V200 H0Z" fill="#f7fbff"/>
-  ${IMB("evergreen_tree",30,160,60)}${IMB("house",244,158,64)}${IMB("evergreen_tree",282,162,52)}${IMB("snowman",128,170,74)}${IMB("penguin",70,172,36)}${IMB("sled",184,172,46)}${IMB("wrapped_gift",214,170,20)}${IMB("snowflake",168,118,16)}</svg>`}
+  ${IMB("evergreen_tree",34,160,84)}${IMB("house",236,158,92)}${IMB("evergreen_tree",286,164,70)}${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",176,173,40)}${IMB("wrapped_gift",204,171,16)}${IMB("snowflake",168,118,16)}</svg>`}
 if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
 
 // ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
