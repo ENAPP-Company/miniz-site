@@ -11771,6 +11771,89 @@ P.fillText=function(t,x0,y0,mw){if(window.SPR&&SPR.EMO&&typeof t==="string"&&t.l
   if(k&&SPR.ok(k)){const m=/(\d+(?:\.\d+)?)px/.exec(this.font);const w=(m?+m[1]:16)*1.12,im=SPR.IM[k],h=w*im.naturalHeight/im.naturalWidth;let cx=x0,cy=y0;const al=this.textAlign,bl=this.textBaseline;
     if(al==="left"||al==="start")cx+=w/2;else if(al==="right"||al==="end")cx-=w/2;if(bl==="top"||bl==="hanging")cy+=h/2;else if(bl!=="middle")cy-=h*.38;
     this.drawImage(im,cx-w/2,cy-h/2,w,h);return}}return _ft.call(this,t,x0,y0,mw)}})();
+// ============ AYIN KARTPOSTALI: ay resmi tamamlanınca yazdırılabilir kartpostal (ön: resim, arka: hikâye + adres) ============
+;(function(){
+const IMG=(k,x,y,w,h,extra="")=>{const im=window.SPR&&SPR.IM[k];return im&&im.src?`<image href="${im.src}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`:""};
+const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+// ---------- daha zengin ay resimleri (Fluent 3D) ----------
+function picSpace2(){const stars=Array.from({length:46},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%200}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient><radialGradient id="ksn" cx="30%" cy="35%" r="45%"><stop offset="0" stop-color="rgba(124,92,255,.35)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/></radialGradient></defs><rect width="300" height="200" fill="url(#ksg)"/><rect width="300" height="200" fill="url(#ksn)"/>${stars}
+  ${IMG("planet",196,14,86,86)}${IMG("moon",22,16,40,40)}${IMG("comet",228,118,46,46)}${IMG("satellite",120,20,34,34)}${IMG("rocket",104,78,72,72)}${IMG("astronaut",40,96,54,54)}${IMG("alien",230,160,30,30)}${IMG("gstar",76,54,18,18)}${IMG("gstar",176,150,14,14)}
+  <path d="M0 176 Q60 150 120 178 T240 176 T300 170 V200 H0Z" fill="#6f62c4"/><path d="M0 188 Q80 170 160 190 T300 184 V200 H0Z" fill="#8e7fd6"/></svg>`}
+function picWinter2(){const flakes=Array.from({length:34},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%150}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}${IMG("moon",236,14,34,34)}
+  <path d="M0 132 Q80 100 160 134 T300 122 V200 H0Z" fill="#e9f3fb"/><path d="M0 164 Q100 142 200 166 T300 158 V200 H0Z" fill="#f7fbff"/>
+  ${IMG("evergreen_tree",14,78,58,58)}${IMG("evergreen_tree",236,86,52,52)}${IMG("house",196,72,54,54)}${IMG("snowman",100,70,84,84)}${IMG("penguin",62,124,40,40)}${IMG("sled",176,138,52,52)}${IMG("wrapped_gift",150,160,26,26)}${IMG("snowflake",258,152,22,22)}${IMG("snowflake",30,36,16,16)}</svg>`}
+if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
+
+// ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
+const F="Fredoka, Nunito, 'Segoe UI', Arial, sans-serif";
+const T=(x,y,t,s,c="#2b2a33",a="middle",w=800)=>`<text x="${x}" y="${y}" font-family="${F}" font-weight="${w}" font-size="${s}" fill="${c}" text-anchor="${a}">${esc(t)}</text>`;
+function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|ksn|kwg)"/g,'id="$1f"').replace(/url\(#(ksg|ksn|kwg)\)/g,"url(#$1f)");
+  return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1050" width="1480" height="1050"><rect width="1480" height="1050" fill="#fff"/><svg viewBox="0 0 300 200" x="0" y="0" width="1480" height="1050" preserveAspectRatio="xMidYMid slice">${pic}</svg>
+  <rect x="40" y="40" width="${(o.month.length+15)*21+40}" height="74" rx="37" fill="rgba(255,255,255,.92)"/>${T(60,92,`✦ Sayıgo · ${o.month} ${o.year}`,38,"#5b3fd0","start")}
+  <rect x="40" y="846" width="1400" height="164" rx="34" fill="rgba(255,255,255,.94)"/>
+  ${T(76,918,o.name?`${o.name}'${o.suffix} ${o.month} resmi`:`${o.month} resmi`,54,"#2b2a33","start")}
+  ${T(76,980,`${o.grade}. sınıf · ${o.done} / ${o.dim} gün · ${o.complete?"Ayı tamamladım!":"Devam ediyor"}`,34,"#6f6b86","start",700)}
+  <circle cx="1340" cy="928" r="58" fill="${o.complete?"#ffd75e":"#e8e4f6"}"/>${T(1340,948,o.complete?"★":"…",56,o.complete?"#8a6420":"#9a94b5")}
+  </svg>`}
+function backSVG(o){const lines=[];const draw=o.grade===1;
+  const x0=90,x1=820;let y=250;
+  if(draw){lines.push(`<rect x="${x0}" y="${y-20}" width="${x1-x0}" height="330" rx="22" fill="none" stroke="#b9a8f5" stroke-width="4" stroke-dasharray="14 10"/>`,T((x0+x1)/2,y+150,"Resmimin hikâyesini çiz",34,"#b9a8f5"));y+=360;for(let i=0;i<4;i++){lines.push(`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#cfc8e6" stroke-width="3"/>`);y+=88}}
+  else{for(let i=0;i<8;i++){lines.push(`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#cfc8e6" stroke-width="3"/>`);y+=86}}
+  const okti=IMG("e_1f419",1232,86,96,96);
+  return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1050" width="1480" height="1050"><rect width="1480" height="1050" fill="#fff"/>
+  ${T(x0,150,"Resmimin hikâyesi",56,"#5b3fd0","start")}${T(x0,200,draw?"Resimde ne oluyor? Çiz, istersen yaz.":"Resimde kim var, ne yapıyor, sonra ne oldu?",28,"#6f6b86","start",700)}
+  ${lines.join("")}
+  <line x1="900" y1="90" x2="900" y2="960" stroke="#e3dff2" stroke-width="4"/>
+  <rect x="1180" y="60" width="220" height="260" rx="14" fill="none" stroke="#9a94b5" stroke-width="4" stroke-dasharray="12 8"/>${okti||T(1290,150,"✦",70,"#b9a8f5")}${T(1290,246,"PUL",34,"#9a94b5")}${T(1290,290,"Sayıgo",26,"#b9a8f5")}
+  ${T(960,430,"Kime:",40,"#2b2a33","start")}
+  ${[520,610,700,790].map(yy=>`<line x1="960" y1="${yy}" x2="1400" y2="${yy}" stroke="#cfc8e6" stroke-width="3"/>`).join("")}
+  ${T(960,870,"Bu kartı Sayıgo'da bir ayı bitirip",22,"#9a94b5","start",700)}${T(960,902,`resmi tamamlayan ${o.name||"bir öğrenci"} hazırladı`,22,"#9a94b5","start",700)}${T(960,934,`${o.month} ${o.year}`,22,"#9a94b5","start",700)}
+  ${T(x0,990,"Sayıgo · ENAPP · enapp.tr/sayigo",24,"#b9a8f5","start",700)}
+  </svg>`}
+function suffix(n){const v=(n||"").toLocaleLowerCase("tr").replace(/[^a-zçğıöşü]/g,"");const last=[...v].reverse().find(ch=>"aeıioöuü".includes(ch))||"i";const k="aı".includes(last)?"ın":"ei".includes(last)?"in":"oü".includes(last)?"un":"ün";return v&&"aeıioöuü".includes(v[v.length-1])?"n"+k:k}
+function kartData(mk){const m=+mk.slice(5,7),yr=+mk.slice(0,4);const th=THEMES[m];const dim=new Date(yr,m,0).getDate();const done=myDays().filter(([k])=>k.startsWith(mk)).length;
+  return{mk,month:MONTHS[m-1],year:yr,grade:store.grade,name:store.name||"",suffix:suffix(store.name),dim,done,complete:done>=dim,pic:th.pic()}}
+const canPreview=()=>!!(window.SAYIGO_DEMO||/[?&]tm=/.test(location.search)||store.full);
+window.kartOpen=function(mk){const o=kartData(mk);if(!o.complete&&!canPreview()){alert(`Kartpostal, ${o.month} resmi tamamlanınca açılır (${o.done}/${o.dim}).`);return}
+  const fr=frontSVG(o),bk=backSVG(o);const src=s=>"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);
+  let md=document.getElementById("kart-modal");if(md)md.remove();md=document.createElement("div");md.id="kart-modal";
+  md.innerHTML=`<div class="km-in"><div class="km-top"><b>🖼️ ${o.month} kartpostalı</b><button class="ghost km-x">Kapat</button></div>
+    <p class="muted" style="font-size:.85rem;margin:0">${o.complete?"Resmini tamamladın! Yazdır, arkasına hikâyeni yaz, duvara as ya da postala.":"Önizleme: resim henüz tamamlanmadı ("+o.done+"/"+o.dim+")."}</p>
+    <div class="km-face"><span class="km-lbl">Ön yüz</span><img src="${src(fr)}" alt="Kartpostal ön yüz"></div>
+    <div class="km-face"><span class="km-lbl">Arka yüz</span><img src="${src(bk)}" alt="Kartpostal arka yüz"></div>
+    <div class="row" style="justify-content:center;gap:8px;flex-wrap:wrap"><button id="km-print">🖨️ Yazdır / PDF</button><button class="ghost" id="km-share">📤 Resim olarak paylaş</button></div>
+    <p class="muted" style="font-size:.78rem;text-align:center;margin:0">A6 kartpostal boyutu (148 × 105 mm). Yazıcıda "çift taraflı · kısa kenar" seçersen ön-arka aynı kâğıda basılır.</p></div>`;
+  document.body.appendChild(md);md.querySelector(".km-x").onclick=()=>md.remove();md.addEventListener("click",e=>{if(e.target===md)md.remove()});
+  md.querySelector("#km-print").onclick=()=>{let pr=document.getElementById("kart-print");if(pr)pr.remove();pr=document.createElement("div");pr.id="kart-print";pr.innerHTML=`<div class="kp-page">${fr}</div><div class="kp-page">${bk}</div>`;document.body.appendChild(pr);document.body.classList.add("kart-printing");setTimeout(()=>{window.print();setTimeout(()=>{document.body.classList.remove("kart-printing");pr.remove()},800)},80)};
+  md.querySelector("#km-share").onclick=async()=>{try{const blobs=[];for(const [s,n] of [[fr,"on"],[bk,"arka"]]){const im=new Image();await new Promise((res,rej)=>{im.onload=res;im.onerror=rej;im.src=src(s)});const c=document.createElement("canvas");c.width=1748;c.height=1240;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,"image/png"));blobs.push(new File([b],`sayigo-kartpostal-${o.month.toLocaleLowerCase("tr")}-${n}.png`,{type:"image/png"}))}
+      if(navigator.canShare&&navigator.canShare({files:blobs})){await navigator.share({files:blobs,title:`Sayıgo ${o.month} kartpostalı`})}else{blobs.forEach(f=>{const a=document.createElement("a");a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();a.remove()})}}catch(e){if(e&&e.name!=="AbortError")alert("Paylaşım olmadı: "+(e.message||e))}}};
+// ---------- stil ----------
+const st=document.createElement("style");st.textContent=`
+#kart-modal{position:fixed;inset:0;z-index:95;background:rgba(20,16,40,.6);overflow:auto;padding:16px;display:flex;align-items:flex-start;justify-content:center}
+#kart-modal .km-in{background:var(--card,#fff);border-radius:20px;padding:14px;max-width:520px;width:100%;display:flex;flex-direction:column;gap:10px;margin:auto}
+#kart-modal .km-top{display:flex;justify-content:space-between;align-items:center}
+#kart-modal .km-face{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.18);background:#fff}
+#kart-modal .km-face img{display:block;width:100%;aspect-ratio:148/105}
+#kart-modal .km-lbl{position:absolute;right:8px;top:8px;background:rgba(43,42,51,.75);color:#fff;font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:999px}
+#kart-print{display:none}
+.kart-row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:8px}
+.kart-row .muted{font-size:.8rem}
+#btn-kart.ready{background:linear-gradient(135deg,#7c5cff,#f2709c);animation:kartpulse 1.6s ease-in-out infinite}
+@keyframes kartpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@media print{body.kart-printing>*:not(#kart-print){display:none!important}body.kart-printing{background:#fff;margin:0;padding:0}body.kart-printing #kart-print{display:block}
+ #kart-print .kp-page{width:148mm;height:105mm;overflow:hidden;page-break-after:always;break-after:page}#kart-print .kp-page:last-child{page-break-after:auto;break-after:auto}#kart-print svg{width:148mm;height:105mm;display:block}
+}
+@page{size:148mm 105mm;margin:0}`;document.head.appendChild(st);
+// ---------- düğmeler: ana sayfa + albüm ----------
+function homeBtn(){const pic=document.getElementById("pic");if(!pic)return;const mk=`${todayStr.slice(0,4)}-${String(typeof curMonth!=="undefined"?curMonth:+todayStr.slice(5,7)).padStart(2,"0")}`;const o=kartData(mk);let row=document.getElementById("kart-row");if(!row){row=document.createElement("div");row.className="kart-row";row.id="kart-row";pic.parentNode.appendChild(row)}
+  row.innerHTML=`<span class="muted">${o.complete?"🎉 Resim tamamlandı! Kartpostalını yazdır, hikâyeni yaz.":`Her gün bir parça açılır · ${o.dim-o.done} parça kaldı`}</span><button id="btn-kart" class="${o.complete?"ready":"ghost"}">🖼️ Kartpostal${!o.complete&&canPreview()?" (önizleme)":""}</button>`;
+  document.getElementById("btn-kart").onclick=()=>kartOpen(mk)}
+if(typeof renderHome==="function"){const _rh=renderHome;window.renderHome=function(){_rh.apply(this,arguments);try{homeBtn()}catch(e){console.warn("kart",e)}}}
+if(typeof renderAlbum==="function"){const _ra=renderAlbum;window.renderAlbum=function(){_ra.apply(this,arguments);try{const al=document.getElementById("album");if(!al)return;const months={};myDays().forEach(([k])=>{const mk=k.slice(0,7);months[mk]=1});const keys=Object.keys(months).sort().reverse();[...al.children].forEach((el,i)=>{const mk=keys[i];if(!mk||!el.querySelector(".cap"))return;const o=kartData(mk);const b=document.createElement("button");b.className="ghost";b.style.cssText="margin-top:6px;padding:8px 12px;font-size:.85rem";b.textContent=o.complete?"🖼️ Kartpostal":"🔒 Kartpostal";b.onclick=()=>kartOpen(mk);el.appendChild(b)})}catch(e){console.warn("kart",e)}}}
+window.SAYIGO_KART={frontSVG,backSVG,kartData,picSpace2,picWinter2};
+})();
 // ===== Genel Türkçe ek düzeltici: sayı / kesir / saat / birim + kesme işareti + ek =====
 (function(){
 const ON=["sıfır","bir","iki","üç","dört","beş","altı","yedi","sekiz","dokuz"],TEN=["","on","yirmi","otuz","kırk","elli","altmış","yetmiş","seksen","doksan"];
