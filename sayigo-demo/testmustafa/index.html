@@ -12,7 +12,7 @@ header h1{margin:0;font-size:18px} .bar{height:8px;background:rgba(255,255,255,.
 .m{grid-column:1/-1;display:flex;gap:6px;align-items:center} .m button{border:1.5px solid #d6cfe6;background:#fff;border-radius:8px;padding:4px 10px;font-weight:800;font-size:13px}
 .m button.on1{background:#3dbb8a;color:#fff;border-color:#3dbb8a} .m button.on2{background:#ef6f4b;color:#fff;border-color:#ef6f4b}
 .m input{flex:1;border:1.5px solid #d6cfe6;border-radius:8px;padding:4px 8px;font:inherit;font-size:13px;min-width:0}
-.hide{display:none} .num{color:#9a94b5;font-size:12px}
+.fw{grid-column:1/-1} .fw iframe{width:100%;height:640px;border:0;border-radius:10px;background:#fff} .hide{display:none} .num{color:#9a94b5;font-size:12px}
 </style></head><body>
 <header><h1>🧪 Sayıgo test listesi <span id="pr"></span></h1><div class="bar"><i id="bar"></i></div>
 <div class="f"><button data-g="0" class="on">Hepsi</button><button data-g="1">1. sınıf</button><button data-g="2">2. sınıf</button><button data-g="3">3. sınıf</button><button data-g="4">4. sınıf</button> <button data-m="11" class="on">Kasım</button><button data-m="12" class="on">Aralık</button> <button id="und">Sadece yapılmayanlar</button></div></header>
@@ -28,8 +28,9 @@ function render(){const L=document.getElementById("list");L.innerHTML="";let las
     const h=`${MN[r.m]} · ${r.g}. sınıf`;if(h!==last){last=h;const d=document.createElement("div");d.className="gh";d.textContent=h;L.appendChild(d)}
     const el=document.createElement("div");el.className="r "+(mk.s||"");el.dataset.key=r.key;
     el.innerHTML=`<div><div class="t">${r.first?r.ico+" <b>"+r.name+"</b> · ":""}${r.t} <span class="num">#${r.n}</span></div><div class="q">${r.q}</div></div>
-      <a href="../oyna/index.html?tm=${r.key}&d=${r.d}">Oyna ▶</a>
+      <a href="#" class="play">Oyna ▶</a>
       <div class="m"><button class="b1 ${mk.s==="ok"?"on1":""}">✔ Tamam</button><button class="b2 ${mk.s==="bad"?"on2":""}">⚠ Sorun</button><input placeholder="not…" value="${(mk.n||"").replace(/"/g,"&quot;")}"></div>`;
+    el.querySelector(".play").onclick=e=>{e.preventDefault();openGame(el,r)};
     el.querySelector(".b1").onclick=()=>{marks[r.key]=Object.assign({},mk,{s:mk.s==="ok"?"":"ok"});sv();render()};
     el.querySelector(".b2").onclick=()=>{marks[r.key]=Object.assign({},mk,{s:mk.s==="bad"?"":"bad"});sv();render()};
     el.querySelector("input").onchange=e=>{marks[r.key]=Object.assign({},marks[r.key]||{},{n:e.target.value});sv()};
@@ -38,7 +39,10 @@ function render(){const L=document.getElementById("list");L.innerHTML="";let las
 document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{fg=+b.dataset.g;document.querySelectorAll("[data-g]").forEach(z=>z.classList.toggle("on",z===b));render()});
 document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{fm[b.dataset.m]=!fm[b.dataset.m];b.classList.toggle("on",fm[b.dataset.m]);render()});
 document.getElementById("und").onclick=e=>{und=!und;e.target.classList.toggle("on",und);render()};
+let fr=null,frw=null;
+function openGame(el,r){if(frw&&frw.parentNode===el){frw.remove();fr=null;frw=null;el.querySelector(".play").textContent="Oyna ▶";return}
+  if(frw){frw.parentNode.querySelector(".play").textContent="Oyna ▶";frw.remove()}
+  frw=document.createElement("div");frw.className="fw";frw.innerHTML=`<iframe src="../oyna/index.html?tm=${r.key}&d=${r.d}&embed=1"></iframe>`;el.appendChild(frw);fr=frw.firstChild;
+  el.querySelector(".play").textContent="Kapat ✕";setTimeout(()=>el.scrollIntoView({block:"start",behavior:"smooth"}),50)}
 render();
-// oyundan dönüş: #key → o satıra kaydır; &next → sonraki satırı aç
-const hs=location.hash.slice(1);if(hs){const [k,nx]=hs.split("&");const i=R.findIndex(r=>r.key===k);if(nx==="next"&&i>=0&&R[i+1]){const r=R[i+1];location.replace(`../oyna/index.html?tm=${r.key}&d=${r.d}`)}else{const el=document.querySelector(`[data-key="${k}"]`);if(el){el.scrollIntoView({block:"center"});el.style.boxShadow="0 0 0 3px #ffd85c"}}}
 </script></body></html>
