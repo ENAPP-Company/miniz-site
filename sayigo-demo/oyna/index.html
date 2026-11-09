@@ -10707,8 +10707,8 @@ jClock=function(x,cx,cy,R,h,m){x.save();x.fillStyle="#fff";x.beginPath();x.arc(c
   for(let i=0;i<60;i++){if(small&&i%5)continue;const a=i*Math.PI/30;x.fillStyle="#2b2a33";const rr=i%5?1:R*.045;x.beginPath();x.arc(cx+Math.cos(a)*(R-R*.1),cy+Math.sin(a)*(R-R*.1),rr,0,7);x.fill()}
   const ha=((h%12)+m/60)*Math.PI/6-Math.PI/2,ma=m*Math.PI/30-Math.PI/2;x.lineCap="round";
   // yelkovan: uzun, ince, kırmızı — önce çizilir
-  x.strokeStyle="#fff";x.lineWidth=R*.16;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.72,cy+Math.sin(ma)*R*.72);x.stroke();
-  x.strokeStyle="#ef4b4b";x.lineWidth=R*.08;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.72,cy+Math.sin(ma)*R*.72);x.stroke();
+  x.strokeStyle="#fff";x.lineWidth=R*.16;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.6,cy+Math.sin(ma)*R*.6);x.stroke();
+  x.strokeStyle="#ef4b4b";x.lineWidth=R*.08;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ma)*R*.6,cy+Math.sin(ma)*R*.6);x.stroke();
   // akrep: kısa, kalın, lacivert — beyaz kenarlıkla ayrılır
   x.strokeStyle="#fff";x.lineWidth=R*.26;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ha)*R*.42,cy+Math.sin(ha)*R*.42);x.stroke();
   x.strokeStyle="#2b3a8a";x.lineWidth=R*.16;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ha)*R*.42,cy+Math.sin(ha)*R*.42);x.stroke();
