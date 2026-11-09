@@ -11787,12 +11787,12 @@ function astronautSVG(cx,bottom,h){const s=h/60;return`<defs><radialGradient id=
   <circle cx="0" cy="-48" r="13.5" fill="url(#asW)"/><circle cx="0" cy="-48" r="10" fill="url(#asV)"/><ellipse cx="-3.5" cy="-51" rx="3" ry="2" fill="rgba(255,255,255,.55)"/>
   <circle cx="-3.5" cy="-47" r="1.6" fill="#fff"/><circle cx="3.5" cy="-47" r="1.6" fill="#fff"/><path d="M-3 -43 Q0 -41 3 -43" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
   </g>`}
-function kidSVG(cx,bottom,h,coat,hat,flip,throwing){const sc=h/60,id="kd"+coat.slice(1);return`<defs><radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="${coat}"/><stop offset="1" stop-color="${coat}"/></radialGradient></defs><g transform="translate(${cx},${bottom}) scale(${flip?-sc:sc},${sc})">
+function kidSVG(cx,bottom,h,coat,hat,flip,throwing,opt={}){const sc=h/60,id="kd"+coat.slice(1);const pack=opt.pack?`<rect x="-9" y="-33" width="18" height="20" rx="6" fill="${opt.pack}" transform="translate(${flip?6:-6},0)"/><rect x="-11" y="-36" width="22" height="5" rx="2.5" fill="${opt.pack}" opacity=".9"/>`:"";const ball=opt.ball||"#fff";return`<defs><radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="${coat}"/><stop offset="1" stop-color="${coat}"/></radialGradient></defs><g transform="translate(${cx},${bottom}) scale(${flip?-sc:sc},${sc})">
   <ellipse cx="0" cy="0" rx="13" ry="2.5" fill="rgba(0,0,0,.12)"/>
   <rect x="-9" y="-9" width="7" height="9" rx="3" fill="#4a5a8a"/><rect x="2" y="-9" width="7" height="9" rx="3" fill="#4a5a8a"/>
   <rect x="-10" y="-2" width="9" height="4" rx="2" fill="#2b2a33"/><rect x="1" y="-2" width="9" height="4" rx="2" fill="#2b2a33"/>
-  <rect x="-12" y="-34" width="24" height="27" rx="9" fill="url(#${id})"/>
-  ${throwing?`<rect x="9" y="-56" width="7" height="26" rx="3.5" fill="${coat}"/><circle cx="12.5" cy="-58" r="3" fill="#e8574a"/><circle cx="13" cy="-64" r="4.2" fill="#fff" stroke="#cfd8ea" stroke-width=".8"/>`:`<rect x="10" y="-33" width="7" height="17" rx="3.5" fill="${coat}" transform="rotate(-50 12 -31)"/><circle cx="22" cy="-21" r="3" fill="#e8574a"/>`}
+  ${pack}<rect x="-12" y="-34" width="24" height="27" rx="9" fill="url(#${id})"/>
+  ${throwing?`<rect x="9" y="-56" width="7" height="26" rx="3.5" fill="${coat}"/><circle cx="12.5" cy="-58" r="3" fill="#e8574a"/>${opt.noball?"":`<circle cx="13" cy="-64" r="4.2" fill="${ball}" stroke="#cfd8ea" stroke-width=".8"/>`}`:`<rect x="10" y="-33" width="7" height="17" rx="3.5" fill="${coat}" transform="rotate(-50 12 -31)"/><circle cx="22" cy="-21" r="3" fill="#e8574a"/>`}
   <rect x="-17" y="-33" width="7" height="17" rx="3.5" fill="${coat}" transform="rotate(45 -12 -31)"/><circle cx="-21" cy="-19" r="3" fill="#e8574a"/>
   ${hat.startsWith("hair:")?"":`<rect x="-13" y="-37" width="26" height="6" rx="3" fill="${hat}"/>`}
   <circle cx="0" cy="-45" r="11" fill="#ffd9b8"/><circle cx="-4" cy="-45" r="1.5" fill="#2b2a33"/><circle cx="4" cy="-45" r="1.5" fill="#2b2a33"/><path d="M-3 -40.5 q3 2.5 6 0" stroke="#b35a4a" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="-7" cy="-41" r="2" fill="#ffb3a0" opacity=".7"/><circle cx="7" cy="-41" r="2" fill="#ffb3a0" opacity=".7"/>
@@ -11907,7 +11907,7 @@ function picSchool(){return SVG(grad("ksky9","#8fd3ff","#e9f7ff"),`<rect width="
   ${hills("#9fdc8a","#7ccf6a",136,164)}
   <path d="M0 160 Q150 154 300 160 V176 Q150 170 0 176 Z" fill="#d9c9a3"/>
   ${IMB("tree",34,156,66)}${IMB("school",214,156,96)}${IMB("bus",84,172,56)}
-  ${IMB("backpack",133,160,13)}${kidSVG(142,171,34,"#2f8fd8","hair:#5a3a1e",false,false)}${IMB("backpack",160,161,12)}${kidSVG(168,172,32,"#e8574a","hair:#2b2a33",false,false)}`)}
+  ${kidSVG(140,171,34,"#2f8fd8","hair:#5a3a1e",false,false,{pack:"#e8574a"})}${kidSVG(168,172,32,"#e8574a","hair:#2b2a33",false,false,{pack:"#2f8fd8"})}${kidSVG(118,172,30,"#3dbb8a","hair:#7a4a1e",true,false,{pack:"#ffd75e"})}`)}
 // 10 EKİM · Sonbahar Ormanı: yaprak toplayan çocuk, dökülen yapraklar, orman hayvanları
 function picAutumn2(){const fall=[[70,40,"e_1f341",12],[120,70,"leaf",10],[190,34,"e_1f341",10],[240,80,"leaf",11]].map(([x,y,k,w])=>IMG(k,x,y,w,w)).join("");
   const im=window.SPR&&SPR.IM,t=im&&im.tree&&im.tree.src;let tc=0;const T=(cx,bottom,w,f)=>{if(!t)return"";const id="ktr"+(tc++);return`<clipPath id="${id}"><rect x="${cx-w/2}" y="${bottom-w*.22}" width="${w}" height="${w*.22}"/></clipPath><image href="${t}" x="${cx-w/2}" y="${bottom-w}" width="${w}" height="${w}" filter="url(#${f})"/><image href="${t}" x="${cx-w/2}" y="${bottom-w}" width="${w}" height="${w}" clip-path="url(#${id})"/>`};
@@ -11915,7 +11915,7 @@ function picAutumn2(){const fall=[[70,40,"e_1f341",12],[120,70,"leaf",10],[190,3
   ${hills("#d9b36a","#c49a52",142,168)}
   ${T(40,166,84,"kaut1")}${T(150,160,96,"kaut2")}${T(262,166,80,"kaut1")}${fall}
   ${IMB("mushroom",96,172,18)}${IMB("hedgehog",118,172,24)}${IMB("chipmunk",236,172,22)}${IMB("chestnut",256,172,10)}
-  ${kidSVG(196,172,36,"#8e5bd8","hair:#5a3a1e",false,false)}${IMG("e_1f341",203,155,11,11)}`)}
+  ${kidSVG(186,172,36,"#8e5bd8","hair:#5a3a1e",false,false)}${IMG("e_1f341",193,155,11,11)}${kidSVG(214,172,34,"#2f8fd8","hair:#2b2a33",true,true,{noball:true})}${IMG("e_1f341",200,130,11,11)}${IMG("leaf",208,120,9,9)}`)}
 // 1 OCAK · Deniz Altı: su yüzeyinde kayık, altta balıklar, deniz tabanı
 function picSea2(){const bub=[[40,120,3],[48,104,2],[200,80,2.5],[206,66,2],[270,150,3],[150,56,2]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1" opacity=".7"/>`).join("");
   return SVG(grad("ksea","#5fc3f0","#0f4c6e"),`<rect width="300" height="200" fill="url(#ksea)"/>
@@ -11927,7 +11927,7 @@ function picSea2(){const bub=[[40,120,3],[48,104,2],[200,80,2.5],[206,66,2],[270
   ${IMB("e_1f422",150,176,34)}${IMB("e_1f419",216,176,40)}${IMB("crab",90,176,24)}${IMB("spiral_shell",276,174,16)}${bub}`)}
 // 2 ŞUBAT · Dinozor Vadisi: yanardağ, anne-yavru dinozorlar, yumurta
 function picDino(){return SVG(grad("kdsky","#a8dcc9","#e6f5e1"),`<rect width="300" height="200" fill="url(#kdsky)"/>${IMG("sun",238,12,36,36)}${IMG("cloud",30,24,36,36)}
-  ${IMB("e_1f30b",230,150,110)}
+  <path d="M176 150 L222 70 Q230 62 238 70 L284 150 Z" fill="#5b4a7a"/><path d="M196 150 L226 86 L236 86 L268 150 Z" fill="#6f5e92" opacity=".6"/><path d="M222 72 Q230 66 238 72 L244 84 Q230 92 216 84 Z" fill="#ff7a3d"/><path d="M226 78 Q229 100 224 118 Q222 128 228 136" stroke="#ff7a3d" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M236 80 Q240 96 238 110" stroke="#ffb347" stroke-width="4" fill="none" stroke-linecap="round"/>${[0,1,2,3].map(i=>`<circle cx="${230-i*4}" cy="${58-i*9}" r="${5+i*2.2}" fill="#b9bfd0" opacity="${.9-i*.15}"/>`).join("")}
   ${hills("#9fcf7a","#7ab85a",146,170)}
   ${IMB("tree",40,160,62)}${IMB("herb",104,172,22)}${IMB("herb",284,172,22)}
   ${IMB("dino_g",70,172,60)}${IMB("dino_o",160,172,54)}${IMB("dino_b",206,172,30)}
@@ -11936,7 +11936,7 @@ function picDino(){return SVG(grad("kdsky","#a8dcc9","#e6f5e1"),`<rect width="30
 function picFarm(){return SVG(grad("kfsky","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#kfsky)"/>${sunCloud()}
   ${hills("#9fdc8a","#7ccf6a",140,168)}
   ${fence(12,170,152)}${barn(178,158,78)}${IMB("rooster",154,140,20)}
-  ${IMB("tractor",54,172,58)}${IMB("e_1f404",112,172,42)}${IMB("e_1f437",168,172,28)}${IMB("chick",198,172,14)}${IMB("ewe",262,172,32)}
+  ${IMB("tractor",54,172,58)}${IMB("e_1f404",112,172,42)}${IMB("e_1f410",168,172,30)}${IMB("e_1f986",200,172,18)}${IMB("ewe",262,172,32)}
   ${IMB("e_1f337",284,170,14)}${IMB("e_1f337",14,170,14)}${IMB("seedling",104,170,12)}`)}
 // 4 NİSAN · Çiçek Bahçesi: gökkuşağı, çiçekler, çiçek sulayan çocuk, kelebek ve arı
 function picGarden(){const rb=["#ff6b6b","#ffb347","#ffe66d","#8ed87a","#6ec1ff","#b39ddb"].map((c,i)=>`<path d="M20 150 A130 130 0 0 1 280 150" fill="none" stroke="${c}" stroke-width="5" transform="translate(0,${-i*5})" opacity=".85"/>`).join("");
@@ -11944,8 +11944,8 @@ function picGarden(){const rb=["#ff6b6b","#ffb347","#ffe66d","#8ed87a","#6ec1ff"
   ${hills("#a8e08a","#7ccf6a",144,170)}
   ${IMB("tree",40,162,66)}
   ${IMB("e_1f337",96,172,18)}${IMB("flower",118,172,20)}${IMB("sunflower",146,172,26)}${IMB("e_1f338",172,172,18)}${IMB("e_1f337",250,172,18)}${IMB("flower",274,172,20)}
-  ${IMG("butterfly",120,112,22,22)}${IMG("honeybee",196,118,16,16)}${IMB("ladybug",66,172,10)}
-  ${kidSVG(214,172,36,"#2f8fd8","hair:#7a4a1e",true,false)}${IMG("e_1f337",192,146,12,12)}`)}
+  ${IMG("butterfly",124,116,14,14)}${IMG("honeybee",196,124,12,12)}${IMB("ladybug",90,172,9)}
+  ${kidSVG(214,172,36,"#2f8fd8","hair:#7a4a1e",true,false)}${IMG("e_1f337",192,146,12,12)}${kidSVG(60,172,34,"#f2709c","hair:#2b2a33",false,false)}<rect x="68" y="150" width="8" height="12" rx="2" fill="#4aa3ff"/><path d="M76 152 l6 -4" stroke="#4aa3ff" stroke-width="2.5" stroke-linecap="round"/>`)}
 // 5 MAYIS · Şehir & İnşaat: vinç, yapılan bina, kamyon, yol
 function picCity(){const bld=[[10,60,36,"#9fb3c8"],[50,40,30,"#b8c7d9"],[84,70,26,"#9fb3c8"],[250,46,40,"#b8c7d9"],[286,66,20,"#9fb3c8"]].map(([x,y,w,c])=>{let o=`<rect x="${x}" y="${y}" width="${w}" height="${160-y}" fill="${c}"/>`;for(let yy=y+8;yy<152;yy+=12)for(let xx=x+5;xx<x+w-6;xx+=10)o+=`<rect x="${xx}" y="${yy}" width="5" height="6" fill="#ffe9a8"/>`;return o}).join("");
   const frame=`<rect x="128" y="104" width="64" height="56" fill="#e3c99a" stroke="#a07a4a" stroke-width="2"/><path d="M128 123 H192 M128 142 H192 M149 104 V160 M171 104 V160" stroke="#a07a4a" stroke-width="2"/>`;
@@ -11956,9 +11956,9 @@ function picCity(){const bld=[[10,60,36,"#9fb3c8"],[50,40,30,"#b8c7d9"],[84,70,2
 // 6 HAZİRAN · Plaj Günleri: deniz, yüzen çocuk, yelkenli, şemsiye, top oynayan çocuk
 function picBeach(){return SVG(grad("kbsky","#8fd3ff","#e3f6ff")+grad("kbsea","#4fb6ee","#1f8ed6"),`<rect width="300" height="200" fill="url(#kbsky)"/>${IMG("sun",238,10,38,38)}${IMG("cloud",50,16,36,36)}
   <rect x="0" y="96" width="300" height="56" fill="url(#kbsea)"/><path d="M0 100 Q15 95 30 100 T60 100 T90 100 T120 100 T150 100 T180 100 T210 100 T240 100 T270 100 T300 100" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>
-  ${IMB("sailboat",236,100,34)}${IMG("e_1f42c",150,98,30,30)}${IMB("e_1f3ca",80,126,36)}
+  ${IMB("sailboat",236,100,34)}${IMG("e_1f42c",150,98,30,30)}
   <path d="M0 150 Q150 142 300 150 V200 H0Z" fill="#f3dba0"/><path d="M0 170 Q150 162 300 170 V200 H0Z" fill="#e8ce8e"/>
-  ${IMB("e_26f1",236,170,60)}${IMB("e_1f3c3",110,172,44)}${IMB("e_1f3d0",146,170,18)}${IMB("crab",40,172,20)}${IMB("spiral_shell",186,172,14)}`)}
+  ${IMB("e_26f1",236,170,60)}${kidSVG(112,172,34,"#ffd75e","hair:#2b2a33",false,true,{ball:"#f2f2f2"})}${kidSVG(160,172,32,"#3dbb8a","hair:#7a4a1e",true,false)}${IMB("e_1f3d0",138,170,14)}${IMB("crab",40,172,20)}${IMB("spiral_shell",186,172,14)}`)}
 // 7 TEMMUZ · Yaz Ligi: saha, kale, basketbol ve koşu, bayraklar
 function picLeague(){const bunt=Array.from({length:12},(_,i)=>`<path d="M${12+i*24} 14 L${24+i*24} 14 L${18+i*24} 26 Z" fill="${["#ff6b6b","#ffe66d","#6ec1ff","#8ed87a"][i%4]}"/>`).join("");
   return SVG(grad("klsky","#8fd3ff","#e9f7ff"),`<rect width="300" height="200" fill="url(#klsky)"/><path d="M0 34 Q150 40 300 34" stroke="#555" stroke-width="1" fill="none"/>${bunt.replace(/ 14 L/g," 34 L").replace(/ 26 Z/g," 46 Z")}${IMG("sun",254,24,34,34)}
