@@ -11776,26 +11776,28 @@ P.fillText=function(t,x0,y0,mw){if(window.SPR&&SPR.EMO&&typeof t==="string"&&t.l
 const IMG=(k,x,y,w,h,extra="")=>{const im=window.SPR&&SPR.IM[k];return im&&im.src?`<image href="${im.src}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`:""};
 const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 // ---------- daha zengin ay resimleri (Fluent 3D) ----------
-function picSpace2(){const stars=Array.from({length:46},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%200}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
-  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient><radialGradient id="ksn" cx="30%" cy="35%" r="45%"><stop offset="0" stop-color="rgba(124,92,255,.35)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/></radialGradient></defs><rect width="300" height="200" fill="url(#ksg)"/><rect width="300" height="200" fill="url(#ksn)"/>${stars}
-  ${IMG("planet",196,14,86,86)}${IMG("moon",22,16,40,40)}${IMG("comet",228,118,46,46)}${IMG("satellite",120,20,34,34)}${IMG("rocket",104,78,72,72)}${IMG("astronaut",40,96,54,54)}${IMG("alien",230,160,30,30)}${IMG("gstar",76,54,18,18)}${IMG("gstar",176,150,14,14)}
-  <path d="M0 176 Q60 150 120 178 T240 176 T300 170 V200 H0Z" fill="#6f62c4"/><path d="M0 188 Q80 170 160 190 T300 184 V200 H0Z" fill="#8e7fd6"/></svg>`}
-function picWinter2(){const flakes=Array.from({length:34},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%150}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
-  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}${IMG("moon",236,14,34,34)}
-  <path d="M0 132 Q80 100 160 134 T300 122 V200 H0Z" fill="#e9f3fb"/><path d="M0 164 Q100 142 200 166 T300 158 V200 H0Z" fill="#f7fbff"/>
-  ${IMG("evergreen_tree",14,78,58,58)}${IMG("evergreen_tree",236,86,52,52)}${IMG("house",196,72,54,54)}${IMG("snowman",100,70,84,84)}${IMG("penguin",62,124,40,40)}${IMG("sled",176,138,52,52)}${IMG("wrapped_gift",150,160,26,26)}${IMG("snowflake",258,152,22,22)}${IMG("snowflake",30,36,16,16)}</svg>`}
+const IMB=(k,cx,bottom,w)=>IMG(k,cx-w/2,bottom-w,w,w); // alt-orta hizalı
+function picSpace2(){const stars=Array.from({length:40},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%130}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
+  ${IMG("planet",214,16,64,64)}${IMG("moon",28,22,34,34)}${IMG("comet",118,18,30,30)}${IMG("ufo",148,54,46,46)}${IMG("gstar",92,70,14,14)}${IMG("gstar",258,96,12,12)}
+  <path d="M0 150 Q150 128 300 150 V200 H0Z" fill="#6f62c4"/><path d="M0 172 Q150 158 300 172 V200 H0Z" fill="#8e7fd6"/>
+  ${IMB("rocket",96,162,76)}${IMB("telescope",172,164,52)}${IMB("satellite",236,162,44)}${IMB("gstar",40,170,16)}${IMB("gstar",278,172,14)}</svg>`}
+function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%120}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}${IMG("moon",240,14,30,30)}
+  <path d="M0 138 Q150 118 300 138 V200 H0Z" fill="#e9f3fb"/><path d="M0 168 Q150 152 300 168 V200 H0Z" fill="#f7fbff"/>
+  ${IMB("evergreen_tree",30,160,60)}${IMB("house",244,158,64)}${IMB("evergreen_tree",282,162,52)}${IMB("snowman",128,170,74)}${IMB("penguin",70,172,36)}${IMB("sled",184,172,46)}${IMB("wrapped_gift",214,170,20)}${IMB("snowflake",168,118,16)}</svg>`}
 if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
 
 // ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
 const F="Fredoka, Nunito, 'Segoe UI', Arial, sans-serif";
 const T=(x,y,t,s,c="#2b2a33",a="middle",w=800)=>`<text x="${x}" y="${y}" font-family="${F}" font-weight="${w}" font-size="${s}" fill="${c}" text-anchor="${a}">${esc(t)}</text>`;
-function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|ksn|kwg)"/g,'id="$1f"').replace(/url\(#(ksg|ksn|kwg)\)/g,"url(#$1f)");
+function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|kwg)"/g,'id="$1f"').replace(/url\(#(ksg|kwg)\)/g,"url(#$1f)");
   return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1050" width="1480" height="1050"><rect width="1480" height="1050" fill="#fff"/><svg viewBox="0 0 300 200" x="0" y="0" width="1480" height="1050" preserveAspectRatio="xMidYMid slice">${pic}</svg>
   <rect x="40" y="40" width="${(o.month.length+15)*21+40}" height="74" rx="37" fill="rgba(255,255,255,.92)"/>${T(60,92,`✦ Sayıgo · ${o.month} ${o.year}`,38,"#5b3fd0","start")}
-  <rect x="40" y="846" width="1400" height="164" rx="34" fill="rgba(255,255,255,.94)"/>
-  ${T(76,918,o.name?`${o.name}'${o.suffix} ${o.month} resmi`:`${o.month} resmi`,54,"#2b2a33","start")}
-  ${T(76,980,`${o.grade}. sınıf · ${o.done} / ${o.dim} gün · ${o.complete?"Ayı tamamladım!":"Devam ediyor"}`,34,"#6f6b86","start",700)}
-  <circle cx="1340" cy="928" r="58" fill="${o.complete?"#ffd75e":"#e8e4f6"}"/>${T(1340,948,o.complete?"★":"…",56,o.complete?"#8a6420":"#9a94b5")}
+  <rect x="40" y="918" width="1400" height="98" rx="30" fill="rgba(255,255,255,.94)"/>
+  ${T(76,960,o.name?`${o.name}'${o.suffix} ${o.month} resmi`:`${o.month} resmi`,40,"#2b2a33","start")}
+  ${T(76,998,`${o.grade}. sınıf · ${o.done} / ${o.dim} gün · ${o.complete?"Ayı tamamladım!":"Devam ediyor"}`,26,"#6f6b86","start",700)}
+  <circle cx="1380" cy="967" r="36" fill="${o.complete?"#ffd75e":"#e8e4f6"}"/>${T(1380,980,o.complete?"★":"…",36,o.complete?"#8a6420":"#9a94b5")}
   </svg>`}
 function backSVG(o){const lines=[];const draw=o.grade===1;
   const x0=90,x1=820;let y=250;
