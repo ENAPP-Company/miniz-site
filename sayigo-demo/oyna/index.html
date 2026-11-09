@@ -11789,12 +11789,17 @@ function astronautSVG(cx,bottom,h){const s=h/60;return`<defs><radialGradient id=
   </g>`}
 const IMB=(k,cx,bottom,w)=>IMG(k,cx-w/2,bottom-w,w,w); // alt-orta hizalı
 function picSpace2(){const stars=Array.from({length:40},(_,i)=>`<circle cx="${(i*73+9)%300}" cy="${(i*41+5)%130}" r="${.8+(i%3)*.6}" fill="#fff" opacity="${.45+(i%2)*.45}"/>`).join("");
-  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
-  ${IMG("planet",214,16,64,64)}${IMG("moon",28,22,34,34)}${IMG("comet",118,18,30,30)}${IMG("ufo",148,54,46,46)}${IMG("gstar",92,70,14,14)}${IMG("gstar",258,96,12,12)}
+  const im=window.SPR&&SPR.IM;const rocket=im&&im.rocket&&im.rocket.src?`<image href="${im.rocket.src}" x="-34" y="-34" width="68" height="68" transform="translate(66,126) rotate(-42)"/>`:"";
+  const astro=im&&im.astronaut&&im.astronaut.src?`<image href="${im.astronaut.src}" x="-19" y="-20" width="38" height="38"/>`:"";
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ksg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset=".6" stop-color="#2b2470"/><stop offset="1" stop-color="#4a3a96"/></linearGradient><clipPath id="ksw"><circle cx="0" cy="0" r="19"/></clipPath></defs><rect width="300" height="200" fill="url(#ksg)"/>${stars}
+  ${IMG("planet",222,14,62,62)}${IMG("moon",24,18,32,32)}${IMG("comet",120,16,30,30)}${IMG("ufo",150,56,44,44)}${IMG("satellite",96,52,30,30)}${IMG("gstar",18,104,12,12)}${IMG("gstar",266,96,12,12)}
   <path d="M0 150 Q150 128 300 150 V200 H0Z" fill="#6f62c4"/><path d="M0 172 Q150 158 300 172 V200 H0Z" fill="#8e7fd6"/>
-  ${IMB("rocket",86,162,70)}${astronautSVG(160,163,58)}${IMB("telescope",220,164,46)}${IMB("satellite",270,150,34)}${IMB("gstar",40,170,16)}${IMB("gstar",278,172,14)}</svg>`}
+  <ellipse cx="66" cy="164" rx="30" ry="6" fill="#5a4fae"/>${rocket}
+  <path d="M190 164 A46 46 0 0 1 282 164 Z" fill="#dfe4f3"/><path d="M190 164 A46 46 0 0 1 282 164 Z" fill="url(#ksg)" opacity=".12"/><rect x="186" y="160" width="100" height="7" rx="3" fill="#b9c0d8"/>
+  <g transform="translate(236,136)"><circle r="22" fill="#9aa3c7"/><circle r="19" fill="#1b2a5a"/><g clip-path="url(#ksw)">${astro}</g><circle r="19" fill="none" stroke="#e9edf7" stroke-width="2.5"/></g>
+  ${IMB("telescope",150,166,44)}${IMB("gstar",22,170,14)}${IMB("gstar",290,174,12)}</svg>`}
 function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%120}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
-  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}${IMG("moon",240,14,30,30)}
+  return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}<circle cx="252" cy="34" r="22" fill="rgba(255,255,255,.18)"/><circle cx="252" cy="34" r="15" fill="#f3f6ff"/><circle cx="247" cy="30" r="2.5" fill="#dfe5f5"/><circle cx="256" cy="38" r="1.8" fill="#dfe5f5"/>
   <path d="M0 138 Q150 118 300 138 V200 H0Z" fill="#e9f3fb"/><path d="M0 168 Q150 152 300 168 V200 H0Z" fill="#f7fbff"/>
   ${IMB("evergreen_tree",34,160,84)}${IMB("house",236,158,92)}${IMB("evergreen_tree",286,164,70)}${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",176,173,40)}${IMB("wrapped_gift",204,171,16)}${IMB("snowflake",168,118,16)}</svg>`}
 if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
@@ -11802,7 +11807,7 @@ if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES
 // ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
 const F="Fredoka, Nunito, 'Segoe UI', Arial, sans-serif";
 const T=(x,y,t,s,c="#2b2a33",a="middle",w=800)=>`<text x="${x}" y="${y}" font-family="${F}" font-weight="${w}" font-size="${s}" fill="${c}" text-anchor="${a}">${esc(t)}</text>`;
-function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|kwg)"/g,'id="$1f"').replace(/url\(#(ksg|kwg)\)/g,"url(#$1f)");
+function frontSVG(o){const pic=o.pic.replace(/<svg[^>]*>/,"").replace("</svg>","").replace(/id="(ksg|kwg|ksw)"/g,'id="$1f"').replace(/url\(#(ksg|kwg|ksw)\)/g,"url(#$1f)");
   return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1050" width="1480" height="1050"><rect width="1480" height="1050" fill="#fff"/><svg viewBox="0 0 300 200" x="0" y="0" width="1480" height="1050" preserveAspectRatio="xMidYMid slice">${pic}</svg>
   <rect x="40" y="40" width="${(o.month.length+15)*21+40}" height="74" rx="37" fill="rgba(255,255,255,.92)"/>${T(60,92,`✦ Sayıgo · ${o.month} ${o.year}`,38,"#5b3fd0","start")}
   <rect x="40" y="918" width="1400" height="98" rx="30" fill="rgba(255,255,255,.94)"/>
