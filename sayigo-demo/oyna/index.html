@@ -11800,7 +11800,14 @@ function picSpace2(){const stars=Array.from({length:40},(_,i)=>`<circle cx="${(i
 function picWinter2(){const flakes=Array.from({length:30},(_,i)=>`<circle cx="${(i*67+11)%300}" cy="${(i*37+7)%120}" r="${1.4+(i%3)*.7}" fill="#fff" opacity=".9"/>`).join("");
   return`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3f73"/><stop offset="1" stop-color="#8fb8e8"/></linearGradient></defs><rect width="300" height="200" fill="url(#kwg)"/>${flakes}<circle cx="252" cy="34" r="22" fill="rgba(255,255,255,.18)"/><circle cx="252" cy="34" r="15" fill="#f3f6ff"/><circle cx="247" cy="30" r="2.5" fill="#dfe5f5"/><circle cx="256" cy="38" r="1.8" fill="#dfe5f5"/>
   <path d="M0 138 Q150 118 300 138 V200 H0Z" fill="#e9f3fb"/><path d="M0 168 Q150 152 300 168 V200 H0Z" fill="#f7fbff"/>
-  ${IMB("evergreen_tree",34,160,84)}${IMB("house",236,158,92)}${IMB("evergreen_tree",286,164,70)}${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",176,173,40)}${IMB("wrapped_gift",204,171,16)}${IMB("snowflake",168,118,16)}</svg>`}
+  ${IMB("evergreen_tree",34,160,84)}${IMB("house",236,158,92)}
+  <ellipse cx="232" cy="149.5" rx="45" ry="5.5" fill="#f7fbff"/>
+  <path d="M199.5 117 L240.5 75 L275.7 117" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M210 107 q2.5 4 0 7 M226 91 q2.5 4 0 7 M256 91 q2.5 4 0 7 M267 104 q2.5 4 0 7" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+  <rect x="210" y="79" width="12.5" height="4" rx="2" fill="#ffffff"/>
+  <ellipse cx="34.8" cy="92" rx="3.4" ry="2.4" fill="#fff"/>
+  ${IMB("evergreen_tree",286,164,70)}<ellipse cx="284.3" cy="107.5" rx="3" ry="2.2" fill="#fff"/>
+  ${IMB("snowman",126,170,54)}${IMB("penguin",76,172,26)}${IMB("sled",176,173,40)}<path d="M167 149.5 q12 -2 24 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>${IMB("wrapped_gift",204,171,16)}${IMB("snowflake",168,118,16)}</svg>`}
 if(typeof THEMES!=="undefined"){if(THEMES[11])THEMES[11].pic=picSpace2;if(THEMES[12])THEMES[12].pic=picWinter2}
 
 // ---------- kart yüzleri (1480×1050 = 148×105 mm) ----------
