@@ -719,7 +719,7 @@ function nextRound(){game.tries=0;game.r0=Date.now();$("#progress").innerHTML=ga
 function answerText(f){if(f.stepTxt)return f.stepTxt;if(f.ansTxt)return f.ansTxt;const gid=game&&game.g?game.g.id:"";
   if(gid==="elma"&&f.mode==="ekle")return`sepette ${f.a} elma`;if(gid==="mangala"&&f.mode==="toplam")return`${f.a} taş`;if(gid==="bozuk")return f.mode==="cevir"?f.a+" kr":krTxt(f.a);if(gid==="kargo"&&f.mode==="cevir")return f.a+" g";if(gid==="tank")return f.a+" L";if(f.mode){if((f.mode==="ayarla"||f.mode==="ekle")&&gid==="gece")return`${f.th>12?f.th-12:f.th}.${pad(f.tm)}`;if(f.mode==="tur")return{dar:"dar açı",dik:"dik açı",genis:"geniş açı"}[f.a];if(f.mode==="pay")return f.a+" yendi";if(f.mode==="derece"||f.mode==="tahmin")return f.a+"°";if(f.mode==="ye")return`${f.a}/${f.den}`;if(f.mode==="bol"&&game.g.id==="pizza")return f.a+" dilim";if(f.mode==="yakala"||f.mode==="renk")return`${f.need} tane yakaladın`;if(f.mode==="zipla")return`yaprak ${f.a}`;if(f.mode==="topla")return`sepette ${f.a} elma`;if(f.mode==="secim")return BAKKAL[f.a].n;if(f.mode==="kiyas")return f.a?"sağdaki":"soldaki";if(f.mode==="toplam"||f.mode==="ustu")return f.a+" ₺";if(f.mode==="cevre"&&game.g.id==="cit")return f.a+" m";if(f.mode==="boya"||f.mode==="oku")return`${f.a}/${f.den}`;if(f.mode==="birlestir")return"yıldızları sırayla birleştir: "+(f.seq||[]).join(", ");if(f.mode==="sec")return(game.g.id==="istasyon"?(["mor","turuncu","yeşil"][f.a]||"doğru")+" modül":"doğru ada")+(f.mods&&f.mods[f.a]?` (${f.mods[f.a][0]} × ${f.mods[f.a][1]})`:"");if(f.mode==="yap")return String(f.a);return String(f.a)}return/=/.test(f.q)?f.q.replace("?",f.a):String(f.a)}
 function judge(v){const f=game.facts[game.i];game.tries++;
-  if(v===f.a){const st=$(".stage");st.classList.remove("good","bad");void st.offsetWidth;st.classList.add("good");if(game.tries===1){game.score++;$("#score").textContent="⭐ "+game.score}game.log.push({t:f.t,tries:game.tries,sec:Math.round((Date.now()-game.r0)/1000)});{const at=String(answerText(f));setMsg((game.tries===1?"Süper! ":"Buldun! ")+at.charAt(0).toLocaleUpperCase("tr")+at.slice(1),"good")}
+  if(v===f.a){const st=$(".stage");st.classList.remove("good","bad");void st.offsetWidth;st.classList.add("good");if(game.tries===1){game.score++;$("#score").textContent="⭐ "+game.score+(game.bonus?"  🌟 "+game.bonus:"")}game.log.push({t:f.t,tries:game.tries,sec:Math.round((Date.now()-game.r0)/1000)});{const at=String(answerText(f));setMsg((game.tries===1?"Süper! ":"Buldun! ")+at.charAt(0).toLocaleUpperCase("tr")+at.slice(1),"good")}
     const my=game;setTimeout(()=>{if(game!==my)return;my.i++;my.i<5?nextRound():finish()},reduced?400:1800);return true}
   sfx.bad();{const st=$(".stage");st.classList.remove("good","bad");void st.offsetWidth;st.classList.add("bad")}const n=game.tries;
   if(n<=4){const pre=["💡 İpucu: ","🔎 Bir daha bak: ","🧠 Yavaş yavaş: ","🤝 Son bir deneme: "][n-1];setMsg(pre+f.hint+(n>=3?" Sayarak kontrol et.":""),"hint")}
@@ -727,10 +727,10 @@ function judge(v){const f=game.facts[game.i];game.tries++;
   return false}
 function finish(){if(cleanup){cleanup();cleanup=null}
   let earned=[];
-  if(!game.preview){store.days[game.date]={grade:store.grade,score:game.score,game:game.g.name,topics:[...new Set(game.log.map(l=>l.t))],sec:Math.round((Date.now()-game.t0)/1000),rounds:game.log.map(l=>({t:l.t,tries:l.tries,sec:l.sec})),t:Date.now()};save();earned=checkBadges(game)}
+  if(!game.preview){store.days[game.date]={grade:store.grade,score:game.score,game:game.g.name,topics:[...new Set(game.log.map(l=>l.t))],sec:Math.round((Date.now()-game.t0)/1000),rounds:game.log.map(l=>({t:l.t,tries:l.tries,sec:l.sec})),bonus:game.bonus||0,t:Date.now()};save();earned=checkBadges(game)}
   {const sk=streak();$("#pill-streak").textContent=sk?`🔥 ${sk} gün seri`:"Seri başlasın"}
   renderMascots("wow");
-  $("#done-score").textContent=`${game.score} / 5`;
+  $("#done-score").textContent=`${game.score} / 5`;{let bx=$("#done-bonus");if(!bx){bx=document.createElement("p");bx.id="done-bonus";bx.className="muted";bx.style.fontWeight="800";$("#done-score").after(bx)}bx.textContent=game.bonus?`İpucusuz bildiğin soru: ${game.bonus} 🌟`:"";bx.style.display=game.bonus?"":"none"}
   $("#done-title").textContent=game.score===5?"Hepsi ilk denemede! 🏆":game.score>=3?"Güzel oyun! 👏":"Bugün de oynadın, bu önemli. 💪";
   const d=new Date(game.date+"T12:00:00");$("#done-sub").textContent=game.preview?"Deneme oyunuydu, takvime işlenmedi.":`${d.getDate()} ${MONTHS[d.getMonth()]} haritada yıldız oldu, resimden bir parça daha açıldı.`;
   $("#done-badges").innerHTML=earned.map(b=>`<span class="earned">${b.ico} Yeni rozet: ${b.n}</span>`).join("");
@@ -999,16 +999,23 @@ pizza(area){
 sekil(area){
   const W=380,H=340;const{c,x}=makeCanvas(area,W,H);let f=null,items=[],parts=[],locked=false,t=0,caught=0;
   const SH=["ucgen","kare","cember","dikdortgen"],COL={kırmızı:"#e53935",mavi:"#2f8fd8",sarı:"#f6c445"};
-  function spawn(){const r=Math.random;let k=SH[Math.floor(r()*4)],cn=["kırmızı","mavi","sarı"][Math.floor(r()*3)];if(f&&(r()<.4||!items.some(it=>it.y>-10&&it.y<H-60&&isTarget(it)))){if(f.mode==="renk"){k="kare";cn=f.color}else k=f.shape}if(f&&f.shape==="dikdortgen"&&k==="kare")k="ucgen";items.push({k,cn,v:Math.floor(r()*3),x:30+r()*(W-60),y:-40,vy:.45+r()*.4,rot:r()*6,vr:(r()-.5)*.04,s:20+r()*8})}
-  game.round=ff=>{f=ff;locked=false;items=[];parts=[];caught=0;for(let i=0;i<5;i++){spawn();items[i].y=70+i*48;items[i].x=40+((i*97)%300)}const it0=items[1];if(f.mode==="renk"){it0.k="kare";it0.cn=f.color}else it0.k=f.shape};game.round._hold=true;
+  /* karışık gelsin: ekranda hep hem hedef hem yanıltıcı şekil olsun; hedef oranı ~%35; hız turla artar */
+  const BAD={ucgen:["kare","cember","dikdortgen","baklava"],kare:["dikdortgen","baklava","cember","ucgen"],cember:["kare","ucgen","dikdortgen","baklava"],dikdortgen:["kare","baklava","ucgen","cember"]};
+  function spawn(want){const r=Math.random,CN=["kırmızı","mavi","sarı"];let k,cn=CN[Math.floor(r()*3)];
+    const nT=items.filter(it=>!it.fade&&isTarget(it)).length;const tgt=want!==undefined?want:nT<1?true:nT>=2?false:r()<.35;
+    if(f.mode==="renk"){if(tgt){k="kare";cn=f.color}else if(r()<.5){k="kare";cn=CN.filter(c=>c!==f.color)[Math.floor(r()*2)]}else{const o=["ucgen","cember","dikdortgen","baklava"];k=o[Math.floor(r()*4)];cn=f.color}}
+    else{if(tgt)k=f.shape;else{const o=BAD[f.shape]||SH;k=o[Math.floor(r()*o.length)]}}
+    const sp=1.25*(1+.1*caught);items.push({k,cn,v:Math.floor(r()*3),x:34+r()*(W-68),y:-40,vy:(.45+r()*.4)*sp,rot:r()*6,vr:(r()-.5)*.04,s:20+r()*8})}
+  game.round=ff=>{f=ff;locked=false;items=[];parts=[];caught=0;[true,false,false,true,false,false].forEach((w,i)=>{spawn(w);items[i].y=70+i*40;items[i].x=40+((i*97)%300)})};game.round._hold=true;
+  game.dbg={items:()=>items,isT:it=>isTarget(it)};
   function isTarget(it){return f.mode==="renk"?(it.k==="kare"&&it.cn===f.color):it.k===f.shape}
-  c.addEventListener("pointerdown",e=>{if(locked||!f)return;const p=c.pt(e);for(let i=items.length-1;i>=0;i--){const it=items[i];if(Math.hypot(p.x-it.x,p.y-it.y)<it.s+10){items.splice(i,1);if(isTarget(it)){caught++;sfx.pop();confetti(parts,it.x,it.y,14);if(caught>=f.need){locked=true;judge(f.a);confetti(parts,W/2,H/2,40)}}else{judge(-1);for(let k=0;k<6;k++)parts.push({x:it.x,y:it.y,vx:(Math.random()-.5)*4,vy:-1,c:"#999",life:25,s:3})}return}}});
-  function drawShape(it){x.save();x.translate(it.x,it.y);x.rotate(it.rot);x.fillStyle=COL[it.cn];x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=2;x.beginPath();const s=it.s;
+  c.addEventListener("pointerdown",e=>{if(locked||!f)return;const p=c.pt(e);for(let i=items.length-1;i>=0;i--){const it=items[i];if(!it.fade&&Math.hypot(p.x-it.x,p.y-it.y)<it.s+10){items.splice(i,1);if(isTarget(it)){caught++;sfx.pop();confetti(parts,it.x,it.y,14);if(caught>=f.need){locked=true;judge(f.a);confetti(parts,W/2,H/2,40)}}else{judge(-1);for(let k=0;k<6;k++)parts.push({x:it.x,y:it.y,vx:(Math.random()-.5)*4,vy:-1,c:"#999",life:25,s:3})}return}}});
+  function drawShape(it){x.save();x.globalAlpha=it.fade?Math.max(0,1-it.fade/24):1;x.translate(it.x,it.y);x.rotate(it.rot);x.fillStyle=COL[it.cn];x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=2;x.beginPath();const s=it.s;
     if(it.k==="cember"){x.arc(0,0,s*.85,0,7);x.lineWidth=7;x.strokeStyle=COL[it.cn];x.stroke();x.lineWidth=1.5;x.strokeStyle="rgba(0,0,0,.25)";x.beginPath();x.arc(0,0,s*.85+3.5,0,7);x.stroke();x.beginPath();x.arc(0,0,s*.85-3.5,0,7);x.stroke();x.restore();return}
-    if(it.k==="ucgen"){if(it.v===1){x.moveTo(-s,-s);x.lineTo(s,s*.8);x.lineTo(-s,s*.8)}else if(it.v===2){x.moveTo(0,-s*1.15);x.lineTo(s*.45,s*.8);x.lineTo(-s*.45,s*.8)}else{x.moveTo(0,-s);x.lineTo(s,s*.8);x.lineTo(-s,s*.8)}x.closePath()}else if(it.k==="kare")x.rect(-s*.8,-s*.8,s*1.6,s*1.6);else if(it.k==="dikdortgen"){if(it.v===1)x.rect(-s*1.35,-s*.42,s*2.7,s*.84);else x.rect(-s*1.2,-s*.6,s*2.4,s*1.2)}x.fill();x.stroke();x.restore()}
+    if(it.k==="ucgen"){if(it.v===1){x.moveTo(-s,-s);x.lineTo(s,s*.8);x.lineTo(-s,s*.8)}else if(it.v===2){x.moveTo(0,-s*1.15);x.lineTo(s*.45,s*.8);x.lineTo(-s*.45,s*.8)}else{x.moveTo(0,-s);x.lineTo(s,s*.8);x.lineTo(-s,s*.8)}x.closePath()}else if(it.k==="kare")x.rect(-s*.8,-s*.8,s*1.6,s*1.6);else if(it.k==="baklava"){x.moveTo(0,-s*1.05);x.lineTo(s*.62,0);x.lineTo(0,s*1.05);x.lineTo(-s*.62,0);x.closePath()}else if(it.k==="dikdortgen"){if(it.v===1)x.rect(-s*1.35,-s*.42,s*2.7,s*.84);else x.rect(-s*1.2,-s*.6,s*2.4,s*1.2)}x.fill();x.stroke();x.restore()}
   function loop(){t++;if(!f){raf=requestAnimationFrame(loop);return}x.clearRect(0,0,W,H);const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#ffe9c2");g.addColorStop(1,"#ffd2a0");x.fillStyle=g;x.fillRect(0,0,W,H);sun(x,330,48,20);clouds(x,W,t,40,2);hills(x,W,H-120,"#ffc48a","#ffb26b");
     x.fillStyle="#f0c27a";x.fillRect(0,H-30,W,30);
-    if(!locked&&!(window.HOLD&&HOLD.on)){const sp=window.HOLD?HOLD.sp():1;for(const it of items){it.y+=it.vy*sp*(reduced?0:1);it.rot+=it.vr}items=items.filter(it=>it.y<H+40);if(items.length<5&&t%Math.round(70/sp)===0)spawn()}
+    if(!locked&&!(window.HOLD&&HOLD.on)){const sp=window.HOLD?HOLD.sp():1;for(const it of items){if(it.fade){it.fade++;continue}it.y+=it.vy*sp*(reduced?0:1);it.rot+=it.vr;if(it.y+it.s*1.1>=H-30)it.fade=1}items=items.filter(it=>!it.fade||it.fade<24);if(items.filter(it=>!it.fade).length<6&&t%Math.round(55/sp)===0)spawn()}
     items.forEach(drawShape);
     x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(10,8,20+f.need*26,24,10);x.fill();for(let i=0;i<f.need;i++){x.fillStyle=i<caught?"#3dbb8a":"rgba(0,0,0,.15)";x.beginPath();x.arc(24+i*26,20,8,0,7);x.fill();if(i<caught)label(x,"✓",24+i*26,20,10,"#fff")}
     drawParts(x,parts);raf=requestAnimationFrame(loop)}
@@ -10945,11 +10952,10 @@ const ENG_YTAHTA=sbEngine({H:330,
 // ---------- 2) GİZLİ KAPSÜL · kapalı kutu ----------
 const mkKapsul=(o={})=>sbEngine({H:322,bg:o.bg,
   init(f,S,A){S.k=1;S.t1=S.t;S.msg=null;S.open=false;
-    f.cands.forEach(v=>A.btn(f.fmt?f.fmt(v):String(v),()=>{if(S.locked)return;if(v===f.a){S.open=true;A.done()}else{A.fail();if(!window._otoDry)S.msg={t:S.t,v:f.fmt?f.fmt(v):v}}}));
+    f.cands.forEach(v=>A.btn(f.fmt?f.fmt(v):String(v),()=>{if(S.locked)return;if(v===f.a){const nb=S.k===1&&f.clues.length>1&&game.tries===0;S.open=true;A.done();if(nb&&S.locked){game.bonus=(game.bonus||0)+1;S.bonusT=S.t;try{$("#score").textContent="⭐ "+game.score+"  🌟 "+game.bonus}catch(e){}}}else{A.fail();if(!window._otoDry)S.msg={t:S.t,v:f.fmt?f.fmt(v):v}}}));
     A.btn("İpucu ➕",()=>{if(S.locked)return;if(S.k<f.clues.length){S.k++;sfx.pop()}},"")},
   draw(x,S,A){const f=S.f;
-    // ipuçları zamanla açılır
-    if(!S.locked&&S.t-S.t1>160*S.k&&S.k<f.clues.length)S.k++;
+    // ipuçları zamanla açılmaz: 1. ipucu hemen açık, diğerleri "İpucu ➕" ile
     const look=o.look||"ufo",cx=A.W/2,bob=Math.sin(S.t/22)*3;
     const screen=(sx,sy,w,h)=>{x.fillStyle=S.open?"#dff7ea":"#1b2340";x.beginPath();x.roundRect(sx-w/2,sy-h/2,w,h,9);x.fill();x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2;x.stroke();if(S.open)label(x,f.fmt?f.fmt(f.a):String(f.a),sx,sy+1,f.fmt?14:24,"#1b7a4a");else{const bl=.5+.5*Math.sin(S.t/9);label(x,"?",sx,sy+1,24,`rgba(255,216,92,${.55+.45*bl})`)}};
     const blink=(pts,r)=>pts.forEach(([lx,ly],k)=>{const on=(Math.floor(S.t/8)+k)%3===0;const c=["#ffe66d","#7cf0ff","#ff8fb1"][k%3];x.save();x.fillStyle=on?c:"rgba(255,220,140,.55)";if(on){x.shadowColor=c;x.shadowBlur=12}x.beginPath();x.arc(lx,ly,on?r+.8:r,0,7);x.fill();x.restore()});
@@ -10960,7 +10966,6 @@ const mkKapsul=(o={})=>sbEngine({H:322,bg:o.bg,
     const dg=x.createRadialGradient(cx-14,cy-40,4,cx,cy-20,52);dg.addColorStop(0,"#e6fbff");dg.addColorStop(.5,"#7fd3f7");dg.addColorStop(1,"#2f8fd8");x.fillStyle=dg;x.beginPath();x.ellipse(cx,cy-2,46,46,0,Math.PI,0);x.closePath();x.fill();
     // ekran
     screen(cx,cy-22,64,32);
-    x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.ellipse(cx-24,cy-34,6,10,-.5,0,7);x.fill();
     // gövde
     const sg=x.createLinearGradient(0,cy-6,0,cy+26);sg.addColorStop(0,"#f4f6fb");sg.addColorStop(.55,"#b9c2d8");sg.addColorStop(1,"#7d87a3");x.fillStyle=sg;x.beginPath();x.ellipse(cx,cy+8,86,22,0,0,7);x.fill();
     x.fillStyle="#6b7592";x.beginPath();x.ellipse(cx,cy+18,54,9,0,0,7);x.fill();x.fillStyle="#ffe68a";x.globalAlpha=.85;x.beginPath();x.ellipse(cx,cy+20,30,5,0,0,7);x.fill();x.globalAlpha=1;
@@ -11006,9 +11011,10 @@ const mkKapsul=(o={})=>sbEngine({H:322,bg:o.bg,
     f.clues.forEach((c,i)=>{const open=i<S.k;const bx=i%2?A.W-150:12,by=64+Math.floor(i/2)*60;x.save();x.fillStyle=open?"#fff":"rgba(255,255,255,.15)";x.beginPath();x.roundRect(bx,by,138,52,12);x.fill();if(!open){x.setLineDash([5,4]);x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=2;x.stroke()}x.restore();
       if(open){x.fillStyle="#2b2a33";x.textAlign="center";x.textBaseline="middle";let fs=13,lines;for(;;){x.font=`800 ${fs}px Nunito, sans-serif`;lines=[];let cur="";c.split(" ").forEach(w=>{const t=cur?cur+" "+w:w;if(x.measureText(t).width>128&&cur){lines.push(cur);cur=w}else cur=t});lines.push(cur);if(lines.length<=3||fs<=10)break;fs--}const lh=fs+2,y0=by+26-(lines.length-1)*lh/2;lines.forEach((l,k)=>x.fillText(l,bx+69,y0+k*lh))}
       else label(x,`${i+1}. ipucu`,bx+69,by+26,13,"rgba(255,255,255,.7)")});
-    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
+    if(S.locked&&S.bonusT!=null)tip(x,"İpucusuz bildin! Bonus 🌟",A.W/2,22,A.W,15);
+    else if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,`${S.msg.v} değil — ipuçlarını yeniden oku`,A.W/2,22,A.W,14);
-    else tip(x,S.k<f.clues.length?`${o.what||"UFO'daki sayı"} hangisi? ${f.clues.length-S.k} ipucu daha gelecek`:`${o.what||"UFO'daki sayı"} hangisi? Aşağıdan seç`,A.W/2,22,A.W,14)}});
+    else tip(x,S.k<f.clues.length?(S.k===1?"İpucusuz bilirsen bonus 🌟":`${o.what||"UFO'daki sayı"} hangisi? ${f.clues.length-S.k} ipucu daha var`):`${o.what||"UFO'daki sayı"} hangisi? Aşağıdan seç`,A.W/2,22,A.W,14)}});
 const ENG_KAPSUL=mkKapsul();
 
 // ---------- 3) METEOR BOYAMA · boya ----------
@@ -11102,7 +11108,7 @@ Object.assign(GFACT,{
  ytahta:[r=>{const n=ri(r,3,5);return{t:"Verilen kadar sayma",need:n,a:"ok",q:`Lastik tam ${n} yıldızdan geçsin, sonra Tamam'a bas`,hint:"Her dokunuşta say: 1, 2, 3…",ansTxt:`Lastik ${n} yıldızdan geçti`}},
    r=>{const n=ri(r,6,10);return{t:"Verilen kadar sayma",need:n,a:"ok",q:`Lastik tam ${n} yıldızdan geçsin, sonra Tamam'a bas`,hint:"Sayarak dokun; fazla olursa yıldıza tekrar dokun, çıkar.",ansTxt:`Lastik ${n} yıldızdan geçti`}},
    r=>{const p=ri(r,7,10),d=ri(r,2,3);return{t:"Geriye sayma",need:p-d,pre:p,a:"ok",q:`Lastik ${p} yıldızdan geçiyor. ${d} yıldızı çıkar; ${p-d} kalınca Tamam'a bas`,hint:`${p}'den geriye say: ${p-1}, ${p-2}…`,ansTxt:`${p} yıldızdan ${d} çıktı, ${p-d} kaldı`}}],
- kapsul:[r=>{const a=ri(r,2,10);const cands=shuffle(r,[a,...pickDistinct(r,3,1,10).filter(v=>v!==a)].slice(0,4));if(!cands.includes(a))cands[0]=a;const clues=[a>5?"5'ten büyük":"5'ten küçük",`${a-1}'den büyük, ${a+1}'den küçük`];return{t:"Sayı karşılaştırma",a,cands,clues,q:"UFO'daki sayıyı ipuçlarıyla bul",hint:"İpucu her birkaç saniyede bir açılır; erken bilen kazanır.",ansTxt:`UFO'daki sayı ${a}`}},
+ kapsul:[r=>{const a=pick(r,[2,3,4,6,7,8,9]),big=a>5;const same=(big?[6,7,8,9]:[1,2,3,4]).filter(v=>v!==a),oth=big?[1,2,3,4]:[6,7,8,9];const cands=shuffle(r,[a,pick(r,same),...pickDistinct(r,2,Math.min(...oth),Math.max(...oth))]);const clues=[big?"5'ten büyük":"5'ten küçük",`${a-1}'den büyük, ${a+1}'den küçük`];return{t:"Sayı karşılaştırma",a,cands,clues,q:"UFO'daki sayıyı ipuçlarıyla bul",hint:"Her ipucunda uymayan sayıları ele. Emin değilsen İpucu ➕'ya bas.",ansTxt:`UFO'daki sayı ${a}`}},
    r=>{const a=ri(r,11,19);const cands=[a,a-1,a+1,ri(r,2,9)];const clues=["10'dan büyük",`Onluğu 1, birliği ${a-10}`,a%2?"2'şer sayarken 1'den başlarsan söylenir":"2'şer sayarken söylenir"];return{t:"Sayı çözümleme",a,cands:shuffle(r,cands),clues,q:"UFO'daki sayıyı ipuçlarıyla bul",hint:"Onluk ve birlik ipucu sayıyı tam söyler.",ansTxt:`UFO'daki sayı ${a}: 10 ve ${a-10}`}},
    r=>{const a=pick(r,[5,10,15,20]);const cands=shuffle(r,[a,a+1,a-1,pick(r,[5,10,15,20].filter(v=>v!==a)),ri(r,2,9),ri(r,11,19)].slice(0,6));const clues=[a>10?"10'dan büyük":"10'dan büyük değil","5'er sayarken söylenir",`${a-2}'den büyük, ${a+2}'den küçük`];return{t:"Ritmik sayma ipuçları",a,cands,clues,q:"UFO'daki sayıyı ipuçlarıyla bul (6 aday)",hint:"5'er sayarken: 5, 10, 15, 20.",ansTxt:`UFO'daki sayı ${a}`}}],
  mboya:[r=>{const s=pick(r,[5,10]);const set=sayStep(s,s,20);return{t:"Ritmik sayma",set,a:"ok",ask:`${s}'er sayarken söylediğin sayıları boya`,q:`${s}'er say, söylediğin sayıları boya`,hint:`${s}, ${2*s}… diye say.`,ansTxt:`${s}'er sayarken: ${set.join(", ")}`}},
@@ -12473,13 +12479,24 @@ if(window.simpleChoiceEngine&&typeof ENGINES!=="undefined"){
       if(o){const so=Math.min(30,(W-80)/o),ox=W/2-(o-1)*so/2;for(let k=0;k<o;k++)coin(x,ox+k*so,FL+20,12,true);label(x,"tek altınlar",W/2,FL+4,12,"#ffe9b0")}
       return}
     if(f.mode==="kupa"){f.N.forEach((v,i)=>{const cx=56+i*89,cy=FL-60;x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(cx,FL-14,30,6,0,0,7);x.fill();if(!SP(x,"e_1f4b0",cx,FL-12,78,{bottom:true})&&!SP(x,EM("💰"),cx,FL-12,78,{bottom:true})){x.fillStyle="#c98a52";x.beginPath();x.arc(cx,cy,30,0,7);x.fill()}pill(x,String(v),cx,FL-44,{size:20,minW:52,bg:L&&v===f.a?"#dff7ea":"#fff",line:L&&v===f.a?"#3dbb8a":"#e2b13c",col:"#5a3a00"})});return}
-    // on: 10 fazlası / eksiği
-    const n=f.n;const cx1=W*.18,cx2=W*.5,cx3=W*.82,cy=FL-70;
-    pill(x,String(n),cx1,cy,{size:28,minW:76,bg:"#fff",line:"#e2b13c",col:"#5a3a00"});
-    coinTower(x,cx2,FL-10,10,14);pill(x,f.plus?"10 altın daha":"10 altın eksik",cx2,FL-112,{size:14,bg:f.plus?"#dff7ea":"#ffe3e0",col:f.plus?"#1b7a4a":"#b23a3a"});
-    pill(x,L?String(f.a):"?",cx3,cy,{size:28,minW:76,bg:L?"#dff7ea":"#fff",line:L?"#3dbb8a":"#7c5cff",col:L?"#1b7a4a":"#7c5cff"});
-    label(x,"→",(cx1+cx2)/2+14,cy,26,"#ffe9b0");label(x,"=",(cx2+cx3)/2-10,cy,28,"#ffe9b0");
-    if(!L)sparkle(x,cx2+20,FL-96,6,t)
+    // on: 10 fazlası / eksiği — sayı onluk kule + tek altın olarak görünür; 10 eksiğinde bir kule uçup gider, 10 fazlasında yeni kule gelir
+    const n=f.n,P=f.plus,tn=Math.floor(n/10),on=n%10,slots=tn+(P?1:0);
+    if(L&&f._lt==null)f._lt=t;const k=L?Math.min(1,(t-f._lt)/45):0,ez=k*k*(3-2*k);
+    pill(x,P?`${n} altının var. 10 altın daha geldi.`:`${n} altının var. 10 altını harcadın.`,W/2,30,{size:15,bg:"rgba(255,246,214,.96)",col:"#7a4a00"});
+    pill(x,L?(P?`Şimdi ${f.a} altının var`:`${f.a} altının kaldı`):(P?"Şimdi kaç altının var?":"Kaç altının kaldı?"),W/2,64,{size:20,minW:150,bg:L?"#dff7ea":"#fff",line:L?"#3dbb8a":"#7c5cff",col:L?"#1b7a4a":"#4a3a8a"});
+    const rows=on>5?2:1,per=Math.ceil(on/rows)||0,gap=on?18:0,sp0=30,so0=22;
+    let sc=Math.min(1,(W-104)/(slots*sp0+gap+per*so0));const sp=sp0*sc,so=so0*sc,r=12*sc,ro=10*sc;
+    const tw=slots*sp,ow=per*so,X0=W/2-(tw+gap+ow)/2+sp/2,base=FL-8;
+    for(let i=0;i<tn;i++){const cx=X0+i*sp;const go=!P&&i===tn-1;
+      if(go){x.save();x.globalAlpha=1-ez;coinTower(x,cx,base-ez*120,10,r);x.restore();
+        x.save();x.setLineDash([5,4]);x.strokeStyle=L?"rgba(255,255,255,.45)":"#ff6b6b";x.lineWidth=2.5;x.beginPath();x.roundRect(cx-r-5,base-84-r,2*r+10,92+r,8);x.stroke();x.restore();
+        if(!L)pill(x,"harcanan 10",cx,base-108,{size:13,pad:9,bg:"#ffe3e0",col:"#b23a3a"});else if(k>.6)label(x,"gitti",cx,base-40,12,"rgba(255,255,255,.7)")}
+      else coinTower(x,cx,base,10,r)}
+    if(P){const cx=X0+tn*sp,lift=(1-ez)*18;coinTower(x,cx,base-lift,10,r);x.save();x.setLineDash(L?[]:[5,4]);x.strokeStyle="#3dbb8a";x.lineWidth=2.5;x.beginPath();x.roundRect(cx-r-5,base-lift-84-r,2*r+10,92+r,8);x.stroke();x.restore();
+      if(!L){pill(x,"gelen 10",cx,base-lift-108,{size:13,pad:9,bg:"#dff7ea",col:"#1b7a4a"});label(x,"↓",cx,base-lift+16,16,"#bff0d6")}}
+    if(on){const ox=X0+tw-sp/2+gap+so/2;for(let q=0;q<on;q++){const rr=Math.floor(q/per),cc=q%per;coin(x,ox+cc*so,base-6-rr*(ro*1.6),ro,true)}}
+    if(!L)label(x,on?`${tn} kule (${tn*10}) + ${on} tek altın`:`${tn} kule (${tn*10})`,W/2,FL+10,12,"#ffe9b0");
+    if(!L)sparkle(x,X0+(P?tn:tn-1)*sp+r+8,base-96,6,t)
   },380,270,stageBg);
 }
 if(typeof G!=="undefined"&&G.kupa1)Object.assign(G.kupa1,{name:"Altın Kuleler",ico:"🪙",task:"Onluk, birlik ve 10 fazlası"});
