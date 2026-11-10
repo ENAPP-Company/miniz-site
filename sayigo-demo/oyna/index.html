@@ -12531,24 +12531,24 @@ function palm(x,px,base,s){x.save();x.translate(px,base);x.scale(s,s);x.strokeSt
   x.fillStyle="#7a4a24";[[-8,-80],[0,-79],[-4,-76]].forEach(([a,b])=>{x.beginPath();x.arc(a,b,4,0,7);x.fill()});x.restore()}
 function fern(x,px,base,s){x.save();x.translate(px,base);x.scale(s,s);[-1.1,-.6,-.15,.3,.8].forEach((a,i)=>{x.save();x.rotate(a);const L=30+(i%2)*8;x.strokeStyle="#3f8a3a";x.lineWidth=2.4;x.beginPath();x.moveTo(0,0);x.quadraticCurveTo(4,-L/2,0,-L);x.stroke();x.fillStyle=i%2?"#5fb84a":"#4ea43f";for(let k=4;k<L;k+=5){x.beginPath();x.ellipse(-4,-k,5,2,-.5,0,7);x.ellipse(4,-k,5,2,.5,0,7);x.fill()}x.restore()});x.restore()}
 const EGGC=[["#e9e2c4","#c8bb8a","#8a7a52"],["#cfe3d6","#9fbfaa","#5f7d6a"],["#e6d4bd","#c4a784","#7a5e3e"]];
-function dinoEgg(x,px,py,i){const c=EGGC[i%3],rx=10.5,ry=14.5,cy=py-ry+1;x.save();x.fillStyle="rgba(50,30,10,.22)";x.beginPath();x.ellipse(px+1,py,rx+1,3.5,0,0,7);x.fill();
+function dinoEgg(x,px,py,i,sc=1){const c=EGGC[i%3],rx=10.5*sc,ry=14.5*sc,cy=py-ry+1;x.save();x.fillStyle="rgba(50,30,10,.22)";x.beginPath();x.ellipse(px+1,py,rx+1,3.5*sc,0,0,7);x.fill();
   const g=x.createRadialGradient(px-rx*.4,cy-ry*.45,1,px,cy,ry*1.2);g.addColorStop(0,"#fffdf4");g.addColorStop(.45,c[0]);g.addColorStop(1,c[1]);x.fillStyle=g;
   x.beginPath();x.moveTo(px,cy-ry);x.bezierCurveTo(px+rx*.9,cy-ry,px+rx*1.05,cy+ry*.35,px+rx*.95,cy+ry*.55);x.bezierCurveTo(px+rx*.8,cy+ry,px-rx*.8,cy+ry,px-rx*.95,cy+ry*.55);x.bezierCurveTo(px-rx*1.05,cy+ry*.35,px-rx*.9,cy-ry,px,cy-ry);x.fill();
-  x.clip();x.fillStyle=c[2];const R=k=>{const v=Math.sin((i*7+k)*12.9898)*43758.5453;return v-Math.floor(v)};for(let k=0;k<14;k++){x.globalAlpha=.35+R(k+50)*.4;x.beginPath();x.ellipse(px+(R(k)-.5)*rx*1.8,cy+(R(k+20)-.5)*ry*1.8,.8+R(k+40)*2.2,.6+R(k+60)*1.6,R(k+80)*3,0,7);x.fill()}
-  x.globalAlpha=1;x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.ellipse(px-rx*.38,cy-ry*.45,2.6,5,-.4,0,7);x.fill();x.restore()}
+  x.clip();x.fillStyle=c[2];const R=k=>{const v=Math.sin((i*7+k)*12.9898)*43758.5453;return v-Math.floor(v)};for(let k=0;k<14;k++){x.globalAlpha=.35+R(k+50)*.4;x.beginPath();x.ellipse(px+(R(k)-.5)*rx*1.8,cy+(R(k+20)-.5)*ry*1.8,(.8+R(k+40)*2.2)*sc,(.6+R(k+60)*1.6)*sc,R(k+80)*3,0,7);x.fill()}
+  x.globalAlpha=1;x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.ellipse(px-rx*.38,cy-ry*.45,2.6*sc,5*sc,-.4,0,7);x.fill();x.restore()}
 const _DI={};function dinoDraw(x,cx,base,w,pi,flip,al){let im=_DI[pi];if(!im){im=_DI[pi]=new Image();im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(dinoSVG(DINO_PAL[pi]))}if(!im.complete||!im.naturalWidth)return false;const h=w*.8;x.save();if(al!=null)x.globalAlpha*=al;x.translate(cx,base);if(flip)x.scale(-1,1);x.drawImage(im,-w/2,-h*.95,w,h);x.restore();return true}
 for(let i=0;i<6;i++){try{dinoDraw(document.createElement("canvas").getContext("2d"),0,0,10,i)}catch(e){}}
-const DINO={H:320,
+const DINO={H:400,
   init(f,S,A){A.c.noTheme=true;S.t0=S.t;S.shown=false;if(f.mode==="fazla")this.show(S,A)},
   show(S,A){if(S.shown)return;S.shown=true;const f=S.f;choices(A.bar,f.r,f.a,f.wrong,v=>{if(S.locked)return null;if(judge(v)){S.locked=true;sfx.goal();confetti(S.parts,A.W/2,150,30);return true}return false},f.fmt||(v=>String(v)))},
-  slot(A,i,tot){const per=6,rows=Math.ceil(tot/per),row=Math.floor(i/per),inRow=Math.min(per,tot-row*per),c=i%per;return{x:A.W/2+58+(c-(inRow-1)/2)*31+(row%2?8:-8),y:A.H-64-(rows-1-row)*22}},
+  slot(A,i,tot){const per=5,rows=Math.ceil(tot/per),row=Math.floor(i/per),inRow=Math.min(per,tot-row*per),c=i%per;const sp=62;return{x:A.W/2+(c-(inRow-1)/2)*sp+(row%2?sp/4:-sp/4),y:A.H-106+(row-(rows-1)/2)*34}},
   scene(x,A,t){const W=A.W,H=A.H;const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#ffd9a8");g.addColorStop(.55,"#ffeccc");g.addColorStop(1,"#d8efb4");x.fillStyle=g;x.fillRect(0,0,W,H);
     // uzakta yanardağ + duman
-    volcano(x,W*.72,H*.66,t);
+    volcano(x,W*.8,H*.5,t);
     // tepeler + zemin
     x.fillStyle="#a7d17f";x.beginPath();x.moveTo(0,H*.62);x.quadraticCurveTo(W*.3,H*.5,W*.6,H*.6);x.quadraticCurveTo(W*.85,H*.66,W,H*.58);x.lineTo(W,H);x.lineTo(0,H);x.fill();
     const gg=x.createLinearGradient(0,H*.66,0,H);gg.addColorStop(0,"#8cc35f");gg.addColorStop(1,"#6aa843");x.fillStyle=gg;x.fillRect(0,H*.7,W,H*.3);
-    palm(x,W-34,H*.74,.9);fern(x,18,H-6,1);fern(x,W-26,H-4,.85)},
+    palm(x,W-22,H*.5,.85);fern(x,18,H-6,1);fern(x,W-26,H-4,.85)},
   nest(x,cx,cy,rx,ry,front){const R=(k)=>{const v=Math.sin(k*12.9898+78.233)*43758.5453;return v-Math.floor(v)};const irx=rx-26,iry=ry-16,T=26;
     const twig=(px,py,ang,len,col,lw)=>{x.strokeStyle=col;x.lineWidth=lw;x.beginPath();x.moveTo(px-Math.cos(ang)*len/2,py-Math.sin(ang)*len/2);x.quadraticCurveTo(px+Math.sin(ang)*3,py-Math.cos(ang)*3,px+Math.cos(ang)*len/2,py+Math.sin(ang)*len/2);x.stroke()};
     const SH=["#5e3a1a","#7a4e26","#9a6a38","#b98a52","#d4a86a","#e6c48a"];
@@ -12567,12 +12567,12 @@ const DINO={H:320,
       x.strokeStyle="rgba(255,236,190,.55)";x.lineWidth=3;x.beginPath();x.ellipse(cx,cy+2,irx+3,iry+2,0,.15,Math.PI-.15,false);x.stroke();
       for(let k=0;k<9;k++){const a=.2+k*(Math.PI-.4)/8,px=cx+Math.cos(a)*rx,py=cy+Math.sin(a)*(ry+T*.6);twig(px+(R(k)-.5)*10,py,(R(k+50)-.5)*1.2+(a>Math.PI/2?2.6:.5),26+R(k+60)*14,SH[1+Math.floor(R(k+70)*2)],2.4)}}
     x.restore()},
-  baby(x,px,py,i,flip,al){x.fillStyle="rgba(0,0,0,.18)";x.beginPath();x.ellipse(px,py+1,17,4,0,0,7);x.fill();if(!dinoDraw(x,px,py+2,42,(i*2)%5,flip,al))SP(x,"dino",px,py+2,42,{bottom:true,flip:!flip,alpha:al})},
+  baby(x,px,py,i,flip,al){x.fillStyle="rgba(0,0,0,.18)";x.beginPath();x.ellipse(px,py+1,24,5,0,0,7);x.fill();if(!dinoDraw(x,px,py+2,60,(i*2)%5,flip,al))SP(x,"dino",px,py+2,60,{bottom:true,flip:!flip,alpha:al})},
   draw(x,S,A){const f=S.f,W=A.W,H=A.H,t=S.t,e=t-S.t0;this.scene(x,A,t);
-    const NX=W/2+62,NY=H-80,NRX=128,NRY=46;
+    const NX=W/2,NY=H-118,NRX=186,NRY=92;
     // anne dinozor yuvanın yanında
-    x.fillStyle="rgba(0,0,0,.15)";x.beginPath();x.ellipse(60,H-32,52,8,0,0,7);x.fill();dinoDraw(x,62,H-30,128,5,false)||SP(x,"dino",62,H-40,128,{bottom:true,flip:true});
-    if(f.mode==="fazla"){this.nest(x,NX,NY,NRX,NRY,false);const n=f.n0,k=f.k,tot=n+k,per=7;for(let i=0;i<tot;i++){const row=Math.floor(i/per),c=i%per,inRow=Math.min(per,tot-row*per);const px=NX+(c-(inRow-1)/2)*30,py=NY+6+row*16-(Math.ceil(tot/per)-1)*16;const ap=i<n||e>30+(i-n)*10;if(!ap)continue;if(i>=n){x.fillStyle="rgba(255,214,90,.55)";x.beginPath();x.arc(px,py-16,20,0,7);x.fill()}dinoEgg(x,px,py,i)}this.nest(x,NX,NY,NRX,NRY,true);
+    x.fillStyle="rgba(0,0,0,.15)";x.beginPath();x.ellipse(84,H*.5+2,66,9,0,0,7);x.fill();dinoDraw(x,86,H*.5+4,180,5,false)||SP(x,"dino",86,H*.5,170,{bottom:true,flip:true});
+    if(f.mode==="fazla"){this.nest(x,NX,NY,NRX,NRY,false);const n=f.n0,k=f.k,tot=n+k,per=6;for(let i=0;i<tot;i++){const row=Math.floor(i/per),c=i%per,inRow=Math.min(per,tot-row*per);const px=NX+(c-(inRow-1)/2)*48,py=NY+14+(row-(Math.ceil(tot/per)-1)/2)*42;const ap=i<n||e>30+(i-n)*10;if(!ap)continue;if(i>=n){x.fillStyle="rgba(255,214,90,.55)";x.beginPath();x.arc(px,py-22,26,0,7);x.fill()}dinoEgg(x,px,py,i,1.45)}this.nest(x,NX,NY,NRX,NRY,true);
       pill(x,`${n} yumurta vardı`,W/2+10,34,{size:15});if(e>30)pill(x,`${k} yeni yumurta geldi (${k>1?"parlayanlar":"parlayan"})`,W/2+10,68,{size:13,bg:"#fff3c4",col:"#6a4a00"});return}
     const n0=f.n0,k=f.k,total=f.up?n0+k:n0;this.nest(x,NX,NY,NRX,NRY,false);
     const B=[];for(let i=0;i<total;i++){const p=this.slot(A,i,f.up?n0+k:n0);let px=p.x,py=p.y,show=true,flip=false,hop=0;
