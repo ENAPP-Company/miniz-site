@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://enapp.tr/sitemap.xml
+
+User-agent: *
+Disallow: /sayigo-ocak-test-7k2m/
