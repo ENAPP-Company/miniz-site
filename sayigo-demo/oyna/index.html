@@ -11120,26 +11120,31 @@ const SPEC_KTERAZI=({H:320,
     A.btn("Boşalt",()=>{if(S.locked)return;S.right=[];sfx.pop()});
     A.btn("Tamam ✓",()=>{if(S.locked)return;const sum=this.sum(S.right);if(Math.abs(sum-f.left)<1e-9&&(!f.only||S.right.every(k=>k===f.only)))A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,m:sum>f.left?"Sağ kefe daha ağır":sum<f.left?"Sağ kefe daha hafif":"Sadece istenen parçayı kullan"}}},"")},
   sum(arr){return arr.reduce((a,k)=>a+FR[k][0]/FR[k][1],0)},
-  pan(x,cx,cy,w){x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(cx,cy+6,w/2+4,8,0,0,7);x.fill();x.fillStyle="#cfd8ea";x.beginPath();x.roundRect(cx-w/2,cy-6,w,12,6);x.fill()},
-  block(x,cx,cy,k,w){const d=FR[k][1];x.fillStyle=FR[k][3];x.beginPath();x.roundRect(cx-w/2,cy-14,w,28,6);x.fill();x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=1;x.stroke();label(x,FR[k][2],cx,cy+1,13,"#fff")},
-  draw(x,S,A){const f=S.f,sum=this.sum(S.right),diff=Math.max(-1,Math.min(1,(sum-f.left)*2));const cx=A.W/2,top=70,beam=122,GY=A.H-34;
-    if(window.ART&&ART.moon)ART.moon(x,A.W,GY);
-    // direk + kiriş (yere basar)
-    x.fillStyle="#8a94ad";x.fillRect(cx-6,top,12,GY-top);x.beginPath();x.moveTo(cx-40,GY+4);x.lineTo(cx+40,GY+4);x.lineTo(cx+30,GY-10);x.lineTo(cx-30,GY-10);x.fill();
-    x.save();x.translate(cx,top+10);x.rotate(diff*.22);x.fillStyle="#5f6a85";x.fillRect(-beam,-5,beam*2,10);
-    const ly=0,ry=0;[-beam+10,beam-10].forEach((dx,i)=>{x.strokeStyle="#9aa3c7";x.lineWidth=2;x.beginPath();x.moveTo(dx,0);x.lineTo(dx,70);x.stroke()});x.restore();
-    // kefeler (kirişin uçları dönmüş halde)
-    const ang=diff*.22,lx=cx-Math.cos(ang)*(beam-10),lyy=top+10-Math.sin(ang)*(beam-10)+70,rx=cx+Math.cos(ang)*(beam-10),ryy=top+10+Math.sin(ang)*(beam-10)+70;
-    this.pan(x,lx,lyy,104);this.pan(x,rx,ryy,104);
-    // sol: hedef blok(lar)
-    const L=f.leftBlocks;L.forEach((k,i)=>this.block(x,lx,lyy-24-i*30,k,Math.min(98,100*FR[k][0]/FR[k][1]*2)));
-    label(x,f.leftTxt,lx,lyy+22,14,"#ffd85c");
-    // sağ: eklenenler
-    S.right.forEach((k,i)=>this.block(x,rx+((i%2)?26:-26)*(S.right.length>1?1:0),ryy-24-Math.floor(i/2)*30,k,Math.min(48,Math.max(44,100*FR[k][0]/FR[k][1]*2))));
-    label(x,S.right.length?S.right.map(k=>FR[k][2]).join(" + "):"boş",rx,ryy+22,13,"#fff");
-    if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
-    else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,A.W/2,22,A.W,14);
-    else tip(x,f.ask,A.W/2,22,A.W,14)}});
+  cap(f){const all=[...f.leftBlocks,...f.pieces];return all.some(k=>FR[k][1]%3===0)?1/3:1/2},
+  // parçaları "yarım" (ya da "üçte bir") uzunluğundaki raflara dizer: kesir şeridi gibi
+  pack(arr,cap){const rows=[];arr.forEach(k=>{const v=FR[k][0]/FR[k][1];let r=rows.find(r=>r.u+v<=cap+1e-9);if(!r){r={u:0,it:[]};rows.push(r)}r.it.push(k);r.u+=v});return rows},
+  stack(x,cx,base,arr,cap){const RW=108,BH=26;this.pack(arr,cap).forEach((r,ri)=>{let px=cx-RW/2;const y=base-BH-ri*(BH+2);r.it.forEach(k=>{const w=RW*(FR[k][0]/FR[k][1])/cap;x.fillStyle="rgba(0,0,0,.18)";x.beginPath();x.roundRect(px+1,y+3,w-2,BH,5);x.fill();const g=x.createLinearGradient(0,y,0,y+BH);g.addColorStop(0,"#ffffff55");g.addColorStop(.35,FR[k][3]);g.addColorStop(1,FR[k][3]);x.fillStyle=FR[k][3];x.beginPath();x.roundRect(px+1,y,w-2,BH,5);x.fill();x.fillStyle=g;x.fill();x.strokeStyle="rgba(0,0,0,.22)";x.lineWidth=1;x.stroke();label(x,FR[k][2],px+w/2,y+BH/2+1,w<30?11:14,"#fff");px+=w})})},
+  draw(x,S,A){const f=S.f,cap=this.cap(f),sum=this.sum(S.right),df=sum-f.left,tgt=Math.abs(df)<1e-9?0:Math.sign(df)*Math.min(.2,.1+Math.abs(df)*.25);S.tilt=(S.tilt||0)+(tgt-(S.tilt||0))*.12;
+    const W=A.W,cx=W/2,GY=A.H-30,PY=96,half=114,drop=78,PW=124;
+    if(window.ART&&ART.moon)ART.moon(x,W,GY);
+    // ayak ve direk: yere basar
+    x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(cx,GY+3,58,7,0,0,7);x.fill();
+    const mg=x.createLinearGradient(cx-9,0,cx+9,0);mg.addColorStop(0,"#7c869e");mg.addColorStop(.5,"#d9deea");mg.addColorStop(1,"#6f7a94");x.fillStyle=mg;x.fillRect(cx-7,PY,14,GY-PY-8);
+    x.fillStyle="#5f6a85";x.beginPath();x.moveTo(cx-52,GY+2);x.lineTo(cx+52,GY+2);x.lineTo(cx+36,GY-12);x.lineTo(cx-36,GY-12);x.closePath();x.fill();
+    // kiriş
+    x.save();x.translate(cx,PY);x.rotate(S.tilt);const bg=x.createLinearGradient(0,-6,0,6);bg.addColorStop(0,"#c7cee0");bg.addColorStop(1,"#7d88a3");x.fillStyle=bg;x.beginPath();x.roundRect(-half-6,-6,half*2+12,12,6);x.fill();x.restore();
+    x.fillStyle="#f6c445";x.beginPath();x.arc(cx,PY,9,0,7);x.fill();x.strokeStyle="#b7791f";x.lineWidth=2;x.stroke();
+    // ibre: denge göstergesi
+    x.save();x.translate(cx,PY);x.rotate(S.tilt);x.fillStyle="#e8574a";x.beginPath();x.moveTo(-4,-8);x.lineTo(4,-8);x.lineTo(0,-34);x.closePath();x.fill();x.restore();
+    const ends=[-1,1].map(sg=>({x:cx+sg*Math.cos(S.tilt)*half,y:PY+sg*Math.sin(S.tilt)*half}));
+    ends.forEach((e,i)=>{const py=e.y+drop;x.strokeStyle="#e6ebf5";x.lineWidth=2;x.beginPath();x.moveTo(e.x,e.y);x.lineTo(e.x-PW/2+6,py);x.moveTo(e.x,e.y);x.lineTo(e.x+PW/2-6,py);x.stroke();x.fillStyle="#9aa6c2";x.beginPath();x.arc(e.x,e.y,4,0,7);x.fill();
+      // kefe: sığ çanak
+      const pg=x.createLinearGradient(0,py,0,py+16);pg.addColorStop(0,"#eef2fa");pg.addColorStop(1,"#a9b4cc");x.fillStyle=pg;x.beginPath();x.moveTo(e.x-PW/2,py);x.lineTo(e.x+PW/2,py);x.quadraticCurveTo(e.x+PW/2-6,py+16,e.x,py+16);x.quadraticCurveTo(e.x-PW/2+6,py+16,e.x-PW/2,py);x.fill();x.strokeStyle="#7d88a3";x.lineWidth=1.5;x.stroke();
+      this.stack(x,e.x,py+1,i?S.right:f.leftBlocks,cap)});
+    const ry=ends[1].y+drop+30;{const t=S.right.length?"Sağ: "+S.right.map(k=>FR[k][2]).join(" + "):"Sağ kefe boş";x.font="800 13px Nunito, sans-serif";const w=Math.min(W-20,x.measureText(t).width+16);x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(Math.min(W-10-w,Math.max(10,ends[1].x-w/2)),ry-11,w,22,8);x.fill();label(x,t,Math.min(W-10-w/2,Math.max(10+w/2,ends[1].x)),ry+1,13,"#2b2a33")}
+    if(S.locked)tip(x,f.ansTxt,W/2,22,W,15);
+    else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,W/2,22,W,14);
+    else tip(x,"Düğmeyle sağ kefeye parça koy",W/2,22,W,14)}});
 const ENG_KTERAZI=sbEngine(SPEC_KTERAZI);const mkKterazi=o=>mkW(SPEC_KTERAZI,o);
 
 // ---------- SAATİ KUR · döndür ----------
@@ -11284,7 +11289,7 @@ GFACT.ykume=[r=>{const n=pick(r,[20,30]);return{t:"10'arlı gruplayarak tahmin",
 
 // ---------- 3. sınıf ----------
 GFACT.kterazi=[r=>{return{t:"Yarım = iki çeyrek",left:.5,leftBlocks:[0],leftTxt:"1/2",pieces:[1],a:"ok",ask:"Sol kefede 1/2 var. Sağa çeyrekler koy, dengele",q:"1/2'yi çeyrek (1/4) bloklarla dengele",hint:"İki çeyrek bir yarım eder.",ansTxt:"1/2 = 1/4 + 1/4"}},
-  r=>{const k=pick(r,[[1,[2],"1/4","1/4 = 1/8 + 1/8"],[0,[2],"1/2","1/2 = dört 1/8"]]);return{t:"Sekizde birlerle dengele",left:k[0]===0?.5:.25,leftBlocks:[k[0]],leftTxt:k[2],pieces:k[1],a:"ok",ask:`Sol kefede ${k[2]} var. Sağa 1/8'ler koy, dengele`,q:`${k[2]}'i sekizde bir bloklarla dengele`,hint:"1/8'ler küçüktür; kaç tane gerektiğini say.",ansTxt:k[3]}},
+  r=>{const k=pick(r,[[1,[2],"1/4","1/4 = 1/8 + 1/8","1/4'ü"],[0,[2],"1/2","1/2 = dört 1/8","1/2'yi"]]);return{t:"Sekizde birlerle dengele",left:k[0]===0?.5:.25,leftBlocks:[k[0]],leftTxt:k[2],pieces:k[1],a:"ok",ask:`Sol kefede ${k[2]} var. Sağa 1/8'ler koy, dengele`,q:`${k[4]} sekizde bir (1/8) bloklarla dengele`,hint:"1/8'ler küçüktür; kaç tane gerektiğini say.",ansTxt:k[3]}},
   r=>{return{t:"Karışık parçalarla dengele",left:.75,leftBlocks:[0,1],leftTxt:"1/2 + 1/4",pieces:[1,2],a:"ok",ask:"Sol kefede 1/2 ve 1/4 var. Sağa 1/4 ve 1/8'lerle aynı ağırlığı kur",q:"3/4'ü (1/2 + 1/4) çeyrek ve sekizde birlerle dengele",hint:"3/4 = 3 çeyrek = 6 tane 1/8.",ansTxt:"3/4 = 3 × 1/4 = 6 × 1/8"}}];
 GFACT.saatkur=[r=>{const h=ri(r,1,12);return{t:"Tam saat",h,m:0,h0:(h+5)%12||12,a:"ok",ask:`Saati ${h}'e kur`,q:`Saat ${h}: akrebi ${h}'e, yelkovanı 12'ye getir`,hint:"Tam saatte yelkovan hep 12'de.",ansTxt:`Saat ${h}:00`}},
   r=>{const h=ri(r,1,12),m=pick(r,[30,15,45]);const nm=m===30?`${h} buçuk`:m===15?`${h}'i çeyrek geçe`:`${(h%12)+1}'e çeyrek kala`;return{t:"Yarım ve çeyrek saat",h,m,h0:(h+3)%12||12,a:"ok",ask:`Saati ${nm} (${h}:${m}) kur`,q:`Saat ${nm} — akrep ve yelkovanı ayarla`,hint:"Yelkovan 6'da ise buçuk, 3'te ise çeyrek geçe, 9'da ise çeyrek kala.",ansTxt:`${h}:${m} = ${nm}`}},
@@ -12085,15 +12090,24 @@ function picLeague(){const bunt=Array.from({length:12},(_,i)=>`<path d="M${12+i*
   ${IMG("cloud",40,40,36,36)}${IMG("cloud",150,54,28,28)}<rect x="0" y="104" width="300" height="96" fill="#6cc55a"/><rect x="0" y="104" width="300" height="10" fill="#4fa84a"/>
   <path d="M0 150 H300 M150 114 V200" stroke="#fff" stroke-width="2" opacity=".8"/><ellipse cx="150" cy="150" rx="26" ry="12" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>
   
-  ${IMB("e_26f9",96,170,48)}${IMB("e_1f3c3",214,170,46)}${IMB("soccer",60,170,18)}`)}
+  ${goalSVG(16,150,true)}${goalSVG(284,150,false)}
+  ${kidSVG(268,152,30,"#2f8fd8","hair:#2b2a33",true,true,{summer:true,noball:true,pants:"#1f3b66"})}
+  ${kidSVG(118,164,38,"#e8574a","hair:#5a3a1e",false,false,{summer:true,pants:"#fff"})}${IMB("soccer",142,165,15)}
+  ${kidSVG(198,160,36,"#2f8fd8","hair:#7a4a1e",true,false,{summer:true,girl:true,pants:"#1f3b66"})}
+  ${kidSVG(62,156,34,"#e8574a","hair:#2b2a33",false,false,{summer:true,girl:true,pants:"#fff"})}`)}
+function goalSVG(x,base,left){const d=left?1:-1,w=22,h=30;const net=Array.from({length:6},(_,i)=>`<path d="M${x} ${base-h+i*5} L${x+d*w} ${base-h+6+i*4.6}" stroke="#fff" stroke-width=".6" opacity=".7"/>`).join("")+Array.from({length:5},(_,i)=>`<path d="M${x+d*i*5} ${base-h+i*1.2} V${base}" stroke="#fff" stroke-width=".6" opacity=".7"/>`).join("");return`<path d="M${x+d*w} ${base} V${base-h+6} L${x} ${base-h} V${base}" fill="rgba(255,255,255,.18)"/>${net}<path d="M${x+d*w} ${base} V${base-h+6} L${x} ${base-h} V${base}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/>`}
+function medalSVG(cx,cy,c){return`<path d="M${cx-4} ${cy-9} L${cx} ${cy-1} L${cx+4} ${cy-9}" stroke="#e8574a" stroke-width="2.4" fill="none"/><circle cx="${cx}" cy="${cy+1.5}" r="3.6" fill="${c}" stroke="rgba(0,0,0,.2)" stroke-width=".6"/>`}
 // 8 AĞUSTOS · Yaz Ligi Final: kürsü, kupa, kutlama yapan çocuklar, konfeti
 function picFinal(){const conf=Array.from({length:40},(_,i)=>`<rect x="${(i*61+13)%300}" y="${(i*37+9)%120}" width="4" height="7" rx="1" fill="${["#ff6b6b","#ffe66d","#6ec1ff","#8ed87a","#b39ddb"][i%5]}" transform="rotate(${(i*47)%360} ${(i*61+13)%300} ${(i*37+9)%120})"/>`).join("");
   return SVG(grad("kasky","#ffe3a8","#fff6e6"),`<rect width="300" height="200" fill="url(#kasky)"/>${conf}${IMG("sun",250,8,36,36)}
   ${hills("#9fdc8a","#7ccf6a",146,172)}
   <rect x="106" y="128" width="40" height="46" rx="3" fill="#ffd75e"/><rect x="66" y="144" width="40" height="30" rx="3" fill="#cfd8ea"/><rect x="146" y="152" width="40" height="22" rx="3" fill="#e0a86a"/>
   <text x="126" y="156" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="16" fill="#8a6420">1</text><text x="86" y="164" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="13" fill="#5f6a85">2</text><text x="166" y="168" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="12" fill="#7a4a1e">3</text>
-  ${IMB("trophy",126,128,34)}${IMB("e_1f947",86,144,16)}${IMB("medal",166,152,14)}
-  ${IMB("e_1f938",30,170,44)}${IMB("e_1f3c3",222,170,44)}${IMB("e_1f389",272,168,28)}${IMG("balloon",14,80,22,22)}${IMG("balloon",266,70,22,22)}`)}
+  ${kidSVG(126,129,38,"#ffb020","hair:#5a3a1e",false,true,{summer:true,noball:true,pants:"#2f5aa8"})}${IMB("trophy",137,102,22)}${medalSVG(126,116,"#ffd75e")}
+  ${kidSVG(86,145,34,"#2f8fd8","hair:#2b2a33",false,false,{summer:true,girl:true,pants:"#1f3b66"})}${medalSVG(86,134,"#dfe4ee")}
+  ${kidSVG(166,153,32,"#3dbb8a","hair:#7a4a1e",true,false,{summer:true,pants:"#2f5aa8"})}${medalSVG(166,143,"#d08a4a")}
+  ${kidSVG(34,164,34,"#e8574a","hair:#2b2a33",false,true,{summer:true,girl:true,noball:true,pants:"#7a3fa0"})}${kidSVG(252,164,34,"#8e5bd8","hair:#5a3a1e",true,true,{summer:true,noball:true,pants:"#3b3f5c"})}
+  ${IMG("balloon",14,80,22,22)}${IMG("balloon",266,70,22,22)}`)}
 if(typeof THEMES!=="undefined"){const M={9:picSchool,10:picAutumn2,1:picSea2,2:picDino,3:picFarm,4:picGarden,5:picCity,6:picBeach,7:picLeague,8:picFinal};for(const k in M)if(THEMES[k])THEMES[k].pic=M[k]}
 Object.assign(window.SAYIGO_KART,{picSchool,picAutumn2,picSea2,picDino,picFarm,picGarden,picCity,picBeach,picLeague,picFinal});
 })();
