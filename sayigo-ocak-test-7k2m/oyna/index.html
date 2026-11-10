@@ -10917,9 +10917,12 @@ const sayStep=(s,from,to)=>{const o=[];for(let v=from;v<=to;v+=s)o.push(v);retur
 
 // ---------- 1) YILDIZ TAHTASI · çivi-lastik ----------
 const ENG_YTAHTA=sbEngine({H:330,
-  init(f,S,A){S.sel=[];S.cols=5;S.rows=4;S.msg=null;if(f.pre){for(let i=0;i<f.pre;i++)S.sel.push(i)}
+  init(f,S,A){S.sel=[];S.cols=5;S.rows=4;S.msg=null;if(f.pre){const a=Math.min(f.pre,S.cols);for(let i=0;i<a;i++)S.sel.push(i);for(let i=f.pre-1;i>=a;i--)S.sel.push(i)}
     A.btn("Lastiği çıkar",()=>{if(S.locked)return;S.sel=[];sfx.pop()});
-    A.btn("Tamam ✓",()=>{if(S.locked)return;if(S.sel.length===f.need)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,n:S.sel.length}}},"")},
+    A.btn("Tamam ✓",()=>{if(S.locked)return;const n=S.sel.length;if(n===f.need)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,n}}},"")},
+  /* lastik dokunulan sırayla yalnız dokunulan yıldızlardan geçer; araya denk gelen dokunulmamış yıldızın etrafından kıvrılır (değmez) */
+  segs(S){const n=S.sel.length,o=[];for(let k=0;k<(n>2?n:n-1);k++)o.push([S.sel[k],S.sel[(k+1)%n]]);return o},
+  between(S,a,b){const ca=a%S.cols,ra=Math.floor(a/S.cols),cb=b%S.cols,rb=Math.floor(b/S.cols),o=[];for(let i=0;i<S.cols*S.rows;i++){if(i===a||i===b||S.sel.includes(i))continue;const c=i%S.cols,r=Math.floor(i/S.cols);if((c-ca)*(rb-ra)-(r-ra)*(cb-ca)!==0)continue;if(c<Math.min(ca,cb)||c>Math.max(ca,cb)||r<Math.min(ra,rb)||r>Math.max(ra,rb))continue;o.push([i,Math.hypot(c-ca,r-ra)])}return o.sort((p,q)=>p[1]-q[1]).map(p=>p[0])},
   peg(S,A,i){const c=i%S.cols,r=Math.floor(i/S.cols);return{x:62+c*(A.W-124)/(S.cols-1),y:92+r*54}},
   down(p,S,A){if(S.locked)return;let hit=-1,bd=26;for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i);const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;hit=i}}if(hit<0)return;
     const k=S.sel.indexOf(hit);if(k>=0){S.sel.splice(k,1);sfx.pop()}else{S.sel.push(hit);sfx.pop()}},
@@ -10927,7 +10930,10 @@ const ENG_YTAHTA=sbEngine({H:330,
     // tahta
     x.fillStyle="rgba(255,255,255,.08)";x.beginPath();x.roundRect(24,60,A.W-48,230,18);x.fill();x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=2;x.stroke();
     // lastik
-    if(S.sel.length>1){const P=S.sel.map(i=>this.peg(S,A,i)).sort((a,b)=>a.x-b.x||a.y-b.y);const cr=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);const lo=[],up=[];for(const q of P){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q)}for(const q of P.slice().reverse()){while(up.length>1&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q)}const H=lo.slice(0,-1).concat(up.slice(0,-1));x.save();x.strokeStyle="#ff7a3d";x.lineWidth=6;x.lineJoin="round";x.lineCap="round";x.shadowColor="rgba(255,122,61,.6)";x.shadowBlur=10;x.beginPath();H.forEach((q,k)=>k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));if(H.length>2)x.closePath();x.stroke();x.fillStyle="rgba(255,122,61,.12)";x.fill();x.restore()}
+    if(S.sel.length>1){x.save();x.strokeStyle="#ff7a3d";x.lineWidth=6;x.lineJoin="round";x.lineCap="round";x.shadowColor="rgba(255,122,61,.6)";x.shadowBlur=10;x.beginPath();const p0=this.peg(S,A,S.sel[0]);x.moveTo(p0.x,p0.y);
+      this.segs(S).forEach(([a,b])=>{const P=this.peg(S,A,a),Q=this.peg(S,A,b),L=Math.hypot(Q.x-P.x,Q.y-P.y),ux=(Q.x-P.x)/L,uy=(Q.y-P.y)/L,nx=uy,ny=-ux;
+        this.between(S,a,b).forEach(i=>{const m=this.peg(S,A,i);x.lineTo(m.x-ux*22,m.y-uy*22);x.quadraticCurveTo(m.x+nx*30,m.y+ny*30,m.x+ux*22,m.y+uy*22)});x.lineTo(Q.x,Q.y)});
+      if(S.sel.length>2)x.closePath();x.stroke();x.fillStyle="rgba(255,122,61,.12)";x.fill();x.restore()}
     for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i),on=S.sel.includes(i);
       if(!sp(x,on?"gstar":"star",q.x,q.y,on?34:24)){x.fillStyle=on?"#ffd85c":"#9aa3c7";x.beginPath();x.arc(q.x,q.y,on?12:8,0,7);x.fill()}
       if(on)label(x,String(S.sel.indexOf(i)+1),q.x,q.y-24,13,"#ffd85c")}
@@ -11243,22 +11249,25 @@ const ENG_SAAT=sbEngine(SPEC_SAAT);const mkSaat=o=>mkW(SPEC_SAAT,o);
 // ---------- CETVEL ÇİVİSİ / ALAN ÇİVİSİ · çivi-lastik ----------
 const SPEC_CETVEL=({H:350,
   init(f,S,A){S.sel=[];S.msg=null;S.cols=9;S.rows=5;A.btn("Lastiği çıkar",()=>{if(S.locked)return;S.sel=[];sfx.pop()});
-    A.btn("Tamam ✓",()=>{if(S.locked)return;const m=this.measure(S,A);let ok=false;if(f.mode==="len")ok=S.sel.length>=2&&m.len===f.target&&!m.diag;else if(f.mode==="cevre")ok=m.rect&&m.len===f.target;else if(f.mode==="alan")ok=m.rect&&m.area===f.target;
-      if(ok)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,m:m.diag?"Çizgiler düz olsun (yatay ya da dikey)":f.mode==="len"?`Uzunluk ${m.len} cm, ${f.target} olmalı`:f.mode==="cevre"?(m.rect?`Çevre ${m.len} cm, ${f.target} olmalı`:"4 çiviyle kapalı dikdörtgen kur"):(m.rect?`Alan ${m.area} kare, ${f.target} olmalı`:"4 çiviyle dikdörtgen kur")}}},"")},
+    A.btn("Tamam ✓",()=>{if(S.locked)return;const m=this.measure(S,A);let ok=false;if(f.mode==="len")ok=S.sel.length>=2&&m.len===f.target&&!m.diag&&!m.back&&!(f.t==="cm uzunluk"&&m.turn);else if(f.mode==="cevre")ok=m.rect&&m.len===f.target;else if(f.mode==="alan")ok=m.rect&&m.area===f.target;
+      if(ok)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,m:m.back?"Lastik geri dönmesin, hep ileri ger":f.t==="cm uzunluk"&&m.turn&&!m.diag?"Tek düz çizgi olsun, köşe yapma":m.diag?"Çizgiler düz olsun (yatay ya da dikey)":f.mode==="len"?`Uzunluk ${m.len} cm, ${f.target} olmalı`:f.mode==="cevre"?(m.rect?`Çevre ${m.len} cm, ${f.target} olmalı`:"4 çiviyle kapalı dikdörtgen kur"):(m.rect?`Alan ${m.area} kare, ${f.target} olmalı`:"4 çiviyle dikdörtgen kur")}}},"")},
   peg(S,A,i){const c=i%S.cols,r=Math.floor(i/S.cols);return{x:34+c*(A.W-68)/(S.cols-1),y:76+r*44,c,r}},
-  measure(S,A){const P=S.sel.map(i=>this.peg(S,A,i));let len=0,diag=false;for(let k=1;k<P.length;k++){const a=P[k-1],b=P[k];if(a.c!==b.c&&a.r!==b.r)diag=true;len+=Math.abs(a.c-b.c)+Math.abs(a.r-b.r)}
-    let rect=false,area=0;if(P.length===4){const cs=new Set(P.map(p=>p.c)),rs=new Set(P.map(p=>p.r));if(cs.size===2&&rs.size===2&&P.every((p,k)=>{const q=P[(k+1)%4];return p.c===q.c||p.r===q.r})){rect=true;const [c1,c2]=[...cs],[r1,r2]=[...rs];area=Math.abs(c1-c2)*Math.abs(r1-r2);len=2*(Math.abs(c1-c2)+Math.abs(r1-r2))}}
-    return{len,diag,rect,area}},
+  /* çevre/alan: 4 köşe hangi sırayla seçilirse seçilsin dikdörtgen sayılır ve lastik köşeleri sırayla dolaşır; uzunluk modunda lastik açık kalır, kendi üstüne geri dönemez */
+  measure(S,A){let P=S.sel.map(i=>this.peg(S,A,i));let len=0,diag=false,back=false,rect=false,area=0;const closed=S.f&&S.f.mode!=="len";
+    if(closed&&P.length===4){const cs=[...new Set(P.map(p=>p.c))].sort((a,b)=>a-b),rs=[...new Set(P.map(p=>p.r))].sort((a,b)=>a-b);if(cs.length===2&&rs.length===2){rect=true;area=(cs[1]-cs[0])*(rs[1]-rs[0]);len=2*((cs[1]-cs[0])+(rs[1]-rs[0]));const g=(c,r)=>P.find(p=>p.c===c&&p.r===r);P=[g(cs[0],rs[0]),g(cs[1],rs[0]),g(cs[1],rs[1]),g(cs[0],rs[1])]}}
+    if(!rect)for(let k=1;k<P.length;k++){const a=P[k-1],b=P[k];if(a.c!==b.c&&a.r!==b.r)diag=true;len+=Math.abs(a.c-b.c)+Math.abs(a.r-b.r);if(k>1){const z=P[k-2],dx1=Math.sign(a.c-z.c),dy1=Math.sign(a.r-z.r),dx2=Math.sign(b.c-a.c),dy2=Math.sign(b.r-a.r);if(dx1===-dx2&&dy1===-dy2)back=true}}
+    const turn=P.length>1&&!(P.every(p=>p.r===P[0].r)||P.every(p=>p.c===P[0].c));
+    return{len,diag,back,turn,rect,area,P}},
   down(p,S,A){if(S.locked)return;let hit=-1,bd=20;for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i);const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;hit=i}}if(hit<0)return;const k=S.sel.indexOf(hit);if(k>=0)S.sel.splice(k,1);else if(S.sel.length<4)S.sel.push(hit);sfx.pop()},
   draw(x,S,A){const f=S.f,m=this.measure(S,A);
     x.fillStyle="rgba(255,255,255,.08)";x.beginPath();x.roundRect(14,50,A.W-28,228,14);x.fill();
     // cm cetveli (üstte)
     if(f.mode!=="alan"){for(let c=0;c<S.cols;c++){const q=this.peg(S,A,c);label(x,String(c),q.x,58,11,"rgba(255,255,255,.7)")}label(x,"cm",A.W-20,58,11,"rgba(255,255,255,.7)")}
     // lastik
-    const P=S.sel.map(i=>this.peg(S,A,i));if(P.length>1){x.save();x.strokeStyle="#ff7a3d";x.lineWidth=5;x.lineJoin="round";x.lineCap="round";x.beginPath();P.forEach((q,k)=>k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));if(m.rect)x.closePath();x.stroke();if(m.rect){x.fillStyle="rgba(255,122,61,.18)";x.fill()}x.restore();
+    const P=m.P;if(P.length>1){x.save();x.strokeStyle=m.back||m.diag?"#ff5470":"#ff7a3d";x.lineWidth=5;x.lineJoin="round";x.lineCap="round";x.beginPath();P.forEach((q,k)=>k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));if(m.rect)x.closePath();x.stroke();if(m.rect){x.fillStyle="rgba(255,122,61,.18)";x.fill()}x.restore();
       if(f.mode==="alan"&&m.rect){const cs=[...new Set(P.map(p=>p.c))].sort((a,b)=>a-b),rs=[...new Set(P.map(p=>p.r))].sort((a,b)=>a-b);for(let c=cs[0];c<cs[1];c++)for(let r=rs[0];r<rs[1];r++){const a=this.peg(S,A,r*S.cols+c),b=this.peg(S,A,(r+1)*S.cols+c+1);x.strokeStyle="rgba(255,255,255,.5)";x.lineWidth=1;x.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y)}}}
     for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i),on=S.sel.includes(i);x.fillStyle=on?"#ffd85c":"#9aa3c7";x.beginPath();x.arc(q.x,q.y,on?7:4.5,0,7);x.fill()}
-    const info=f.mode==="alan"?(m.rect?`Alan: ${m.area} kare`:"4 çivi seç"):`Uzunluk: ${m.len} cm`;label(x,info,A.W/2,296,14,"#ffd85c");
+    const info=m.back?"Lastik geri dönmesin":m.diag?"Çizgi yatay ya da dikey olsun":f.mode==="alan"?(m.rect?`Alan: ${m.area} kare`:"4 çivi seç"):`Uzunluk: ${m.len} cm`;label(x,info,A.W/2,296,14,"#ffd85c");
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,A.W/2,22,A.W,14);
     else tip(x,f.ask,A.W/2,22,A.W,14);
