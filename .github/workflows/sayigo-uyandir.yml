@@ -1,0 +1,20 @@
+name: Sayigo veritabani uyandirma
+# Supabase ucretsiz planda 7 gun kullanilmayan projeyi duraklatir.
+# Bu gorev 3 gunde bir salt-okuma bir sorgu atar. Yalnizca acik (publishable) anahtar kullanir.
+on:
+  schedule:
+    - cron: "17 5 */3 * *"
+  workflow_dispatch:
+jobs:
+  uyandir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Salt-okuma sorgu
+        run: |
+          kod=$(curl -sS -m 30 -o /tmp/yanit.txt -w "%{http_code}" \
+            -X POST "https://qnqatbaactsamurotxml.supabase.co/rest/v1/rpc/yedek_getir" \
+            -H "apikey: sb_publishable_diFvP6xx0vDiJlqi5ckU9w_oE4SEJ0Q" \
+            -H "Content-Type: application/json" \
+            -d '{"p_kod":"UYANDIRMA"}')
+          echo "HTTP $kod"; head -c 300 /tmp/yanit.txt; echo
+          test "$kod" = "200"
