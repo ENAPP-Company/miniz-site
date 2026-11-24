@@ -4909,7 +4909,7 @@ const ENG_CUVAL=mkSort({bg:"gece",H:270,y:()=>110,h:84,maxW:86,tipA:"Çuvalları
   item(x,b,v,f,i,lift){sack(x,b,["#d9b98c","#c9a678","#e2c9a0","#cfae80","#bfa070"][i%5],lift);x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(b.x+4,b.y+b.h/2-8,b.w-8,28,6);x.fill();label(x,fmtV(f,v),b.x+b.w/2,b.y+b.h/2+6,f.small?14:16,"#2b2a33")}});
 const ENG_HEDIYESIRA=mkSort({bg:"pembe",H:280,y:()=>92,h:104,maxW:82,tipA:"Hediyeleri küçükten büyüğe sürükle",tipD:"Hediyeleri büyükten küçüğe sürükle",
   scene(x,S,A){const n=S.order.length,w=Math.min(82,(A.W-20)/n-8),gx=(A.W-n*(w+8)+8)/2;for(let i=0;i<n;i++){const bx=gx+i*(w+8);x.save();x.setLineDash([5,4]);x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2;x.beginPath();x.roundRect(bx-2,88,w+4,112,12);x.stroke();x.restore();label(x,`${i+1}.`,bx+w/2,212,13,"#fff")}
-    const f=S.f;label(x,f.desc?"büyük  ⟶  küçük":"küçük  ⟶  büyük",A.W/2,232,14,"#ffd85c")},
+    },
   item(x,b,v,f,i,lift){const col=lift?"#ffe08a":["#e8574a","#2f8fd8","#3dbb8a","#8e5bd8","#ff6fa8"][i%5];gift(x,b.x+b.w/2,b.y+32,Math.min(56,b.w-10),50,col);
     x.fillStyle="#fff";x.beginPath();x.roundRect(b.x,b.y+b.h-30,b.w,26,7);x.fill();x.strokeStyle="rgba(0,0,0,.2)";x.lineWidth=1;x.stroke();label(x,fmtV(f,v),b.x+b.w/2,b.y+b.h-17,b.w<70?13:14,"#2b2a33")}});
 
@@ -5043,7 +5043,7 @@ const ENG_PYOLU=aEngine({H:300,bg:sky("buz"),
   go(S,A,d){const f=S.f;if(S.pos+d>f.goal){S.bad={t:S.t,n:S.pos+d};A.fail();return}S.run={from:S.pos,d,p:0};S.steps.push(d);sfx.pop()},
   down(p,S,A){if(S.locked||S.run)return;const f=S.f;let hit=-1,bd=24;for(let k=1;k<=f.goal;k++){const d=Math.hypot(this.sx(S,A,k)-p.x,164-p.y);if(d<bd){bd=d;hit=k}}if(hit<0)return;const d=hit-S.pos;if(d<=0)return;if(!f.cards.includes(d)){S.bad={t:S.t,n:hit,msg:`Tek seferde ${f.cards.join(" ya da ")} adım atlayabilirsin`};sfx.bad();return}this.go(S,A,d)},
   draw(x,S,A){const f=S.f,Y=150;
-    for(let k=0;k<=f.goal;k++){const px=this.sx(S,A,k);const reach=!S.run&&!S.locked&&k>S.pos&&f.cards.includes(k-S.pos);x.fillStyle=k===f.goal?"#ffe08a":reach?"#d7f2ff":"#e9f6ff";x.beginPath();x.ellipse(px,Y+14,Math.min(16,(A.W-52)/f.goal/2-1),7,0,0,7);x.fill();x.strokeStyle=reach?"#39a0e0":"#8cc2e8";x.lineWidth=reach?2.5:1.5;x.stroke();if(k%(f.goal>12?5:1)===0||k===f.goal)label(x,String(k),px,Y+34,14,"#fff")}
+    for(let k=0;k<=f.goal;k++){const px=this.sx(S,A,k);const reach=!S.run&&!S.locked&&k>S.pos&&f.cards.includes(k-S.pos);x.fillStyle=k===f.goal?"#ffe08a":reach?"#d7f2ff":"#e9f6ff";x.beginPath();x.ellipse(px,Y+14,Math.min(16,(A.W-80)/f.goal/2-3.5),f.goal>12?5.5:7,0,0,7);x.fill();x.strokeStyle=reach?"#39a0e0":"#8cc2e8";x.lineWidth=reach?2.5:1.5;x.stroke();if(k%(f.goal>12?5:1)===0||k===f.goal)label(x,String(k),px,Y+34,14,"#fff")}
     fish(x,this.sx(S,A,f.goal),Y-14+Math.sin(S.t/8)*2,1.7);
     let pos=S.pos;if(S.run){const r=S.run;r.p+=.05;pos=r.from+r.d*Math.min(1,r.p);if(r.p>=1){S.pos=r.from+r.d;S.run=null;pos=S.pos;if(S.pos===f.goal)A.done()}}else if(S.locked)pos=f.goal;
     const px=this.sx(S,A,pos),hop=S.run?Math.abs(Math.sin(S.run.p*Math.PI*S.run.d))*18:0;penguin(x,px,Y-10-hop,1.4);
@@ -7738,7 +7738,7 @@ window.factScore=function(f){if(!f)return 0;let s=txtScore(f.q);
   if(typeof f.a==="number")s=Math.max(s,Math.log10(Math.abs(f.a)+1)*10);
   if(f.S)s+=f.S.length*6;if(f.after)s+=5;return s};
 // KTIER: varyantları ölçülen zorluğa göre E < N < F diz (islem4 elle ayarlı)
-const KEEP={islem4:1,altalta:1,kusbalon:1,masadiz:1,kuptren:1,citustasi:1,adim100:1};const OVR={binayir:[2,0,1],tahmin4:[2,1,0],metrecm:[2,0,1],alantf:[2,0,1],inektf:[2,1,0],oruntu:[0,2,1],sekilciz:[2,0,1],ucgenhata:[2,0,1]};const KAS={utren:1,tangram:1,ahafiza:1,meteor:1,sinyal:1,rovery:1,ihafiza:1,uterazi:1,mdogru:1,ykule:1,gdilim:1,rrota:1,ukumbara:1,shafiza:1,kkule:1,pdizi:1,ykay:1,khafiza:1,kyildiz:1,akat:1};
+const KEEP={islem4:1,altalta:1,kusbalon:1,masadiz:1,kuptren:1,citustasi:1,adim100:1};const OVR={fhata:[0,1,2],binayir:[2,0,1],tahmin4:[2,1,0],metrecm:[2,0,1],alantf:[2,0,1],inektf:[2,1,0],oruntu:[0,2,1],sekilciz:[2,0,1],ucgenhata:[2,0,1]};const KAS={utren:1,tangram:1,ahafiza:1,meteor:1,sinyal:1,rovery:1,ihafiza:1,uterazi:1,mdogru:1,ykule:1,gdilim:1,rrota:1,ukumbara:1,shafiza:1,kkule:1,pdizi:1,ykay:1,khafiza:1,kyildiz:1,akat:1};
 window._tierFix=function(){const out={};for(const id in KTIER){if(KEEP[id]||(window._YAZ&&_YAZ[id])||!GFACT[id])continue;const T=KTIER[id];const vs=[...new Set([].concat(T.E,T.N,T.F).map(e=>e[0]))];if(vs.length<2)continue;
   const sc={};vs.forEach(v=>{const r=rng(seedOf("tier|"+id+"|"+v));let t=0,n=0;for(let k=0;k<8;k++){try{const c=(T.E.concat(T.N,T.F).find(e=>e[0]===v)||[])[1];t+=factScore(GFACT[id][v](r,c));n++}catch(e){}}sc[v]=n?t/n:0});
   const fb=(KAS[id]?[].concat(T.E,T.N,T.F):[].concat(T.E,T.F,T.N)).map(e=>e[0]).filter((v,i,A)=>A.indexOf(v)===i);const pos=v=>fb.indexOf(v);
@@ -11171,7 +11171,7 @@ const SPEC_YARAT=({H:330,
     if(f.rule){x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(A.W/2-100,232,200,44,12);x.fill();label(x,"Kural:",A.W/2-74,254,13,"#fff");f.rule.forEach((v,i)=>bead(x,A.W/2-36+i*34,254,11,KOL[v][1]))}
     else{label(x,`Kuralı sen koy: 2, 3 ya da 4 ${(this._o&&this._o.word)||"boncuk"} tekrar etsin`,A.W/2,254,13,"#ffd85c")}
     // Okti yorumu
-    if(S.locked&&window.oktiCanvas){oktiCanvas(x,46,A.H-54,70,"wow");const say=f.rule?"Kural tam tuttu!":`Kuralın: ${S.found?S.found.length+" boncuk tekrar":"tekrar"}`;oktiSay(x,say,A.W/2+30,A.H-64,A.W-120,13,"left")}
+    if(S.locked&&window.oktiCanvas){oktiCanvas(x,46,A.H-54,70,"wow");const say=f.rule?"Kural tam tuttu!":`Kuralın: ${S.found?S.found.length+" boncuk tekrar":"tekrar"}`;oktiSay(x,say,150,A.H-28,A.W-120,13,"left")}
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,A.W/2,22,A.W,14);
     else tip(x,`${S.chain.length} / ${n} ${(this._o&&this._o.word)||"boncuk"} · seçili: ${KOL[S.pal][2]}`,A.W/2,22,A.W,14);
@@ -11529,7 +11529,7 @@ const SPEC_TARTI=({H:330,bg:W("gece"),
       else{itemB(x,f.item.k,P.lx,P.ly,f.item.sz||58);tag(x,f.item.n,P.lx,P.ly+30);for(let k=0;k<S.right;k++){const row=Math.floor(k/4),inr=Math.min(4,S.right-row*4);sph(x,P.rx+((k%4)-(inr-1)/2)*20,P.ry-10-row*18,10)}tag(x,`${S.right} kar topu`,P.rx,P.ry+30)}
       okti(x,40,A.H-46,62,S.locked?"wow":"happy")}
     else{// sırala: iki küçük terazi + üç nesne
-      const pairs=f.tpairs||f.pairs;pairs.forEach(([a,b],k)=>{const cx=k?A.W*.74:A.W*.26;const wa=f.items[a].w,wb=f.items[b].w;const P=this.beam(x,cx,70,150,Math.sign(wb-wa)*.24,wa,wb,false);itemB(x,f.items[a].k,P.lx,P.ly,(f.items[a].sz||58)*.62);itemB(x,f.items[b].k,P.rx,P.ry,(f.items[b].sz||58)*.62)});
+      const pairs=f.tpairs||f.pairs;pairs.forEach(([a,b],k)=>{const cx=k?A.W*.74:A.W*.26;const wa=f.items[a].w,wb=f.items[b].w;const P=this.beam(x,cx,88,104,Math.sign(wb-wa)*.24,wa,wb,false);itemB(x,f.items[a].k,P.lx,P.ly,(f.items[a].sz||58)*.62);itemB(x,f.items[b].k,P.rx,P.ry,(f.items[b].sz||58)*.62)});
       f.items.forEach((it,i)=>{const b=this.slot(A,i),k=S.order.indexOf(i);kCard(x,b,"",{bg:k>=0?"#dff7ea":"#fff",line:k>=0?"#3dbb8a":"#b9a8f5"});item(x,it.k,b.x+30,b.y+31,42);label(x,it.n,b.x+66,b.y+31,12);if(k>=0)label(x,String(k+1),b.x+b.w-12,b.y+12,13,"#1b7a4a")})}
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,A.W/2,22,A.W,14);
@@ -11610,7 +11610,7 @@ const SPEC_YARIS=({H:300,bg:W("tepe"),
     const p=trk(S.px);const wob=S.wob>0?Math.sin(S.wob--)*3:0;const VO=this._o||{};if(VO.veh){x.save();x.translate(p.x,p.y+6+wob);if(VO.mirror)x.scale(-1,1);sp(x,VO.veh,0,0,66,{bottom:true});x.restore()}else{if(!sp(x,"sled",p.x,p.y-4+wob,58,{bottom:true})){x.fillStyle="#b5542b";x.fillRect(p.x-24,p.y-16,48,10)}okti(x,p.x-2,p.y-44+wob,40,S.locked?"wow":"happy")}
     const qq=f.qs[Math.min(S.i,n-1)];
     x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(A.W/2-110,54,220,52,14);x.fill();label(x,S.locked?"Bitiş!":qq.q,A.W/2,80,24,"#2b2a33");
-    x.fillStyle="rgba(27,35,64,.75)";x.beginPath();x.roundRect(A.W-96,A.H-30,84,22,11);x.fill();label(x,`${S.i} / ${n} bayrak`,A.W-54,A.H-19,12,"#fff");
+    x.fillStyle="rgba(27,35,64,.75)";x.beginPath();x.roundRect(A.W-106,A.H-30,96,22,11);x.fill();label(x,`${S.i} / ${n} bayrak`,A.W-58,A.H-19,12,"#fff");
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<110)tip(x,S.msg.m,A.W/2,22,A.W,14);
     else tip(x,f.ask,A.W/2,22,A.W,14)}});
@@ -11694,8 +11694,8 @@ const SPEC_PAYLAS=({H:330,bg:W("gece"),
     A.btn("Tamam ✓",()=>{if(S.locked)return;const k=S.k;if(k==null){S.msg={t:S.t,m:"Önce penguen sayısı seç"};return}const kalan=f.n-k*S.per;const ok=f.mode==="k"?(kalan===0&&k===f.a):(kalan>=0&&kalan<k);if(ok)A.done();else{A.fail();if(!window._otoDry)S.msg={t:S.t,m:f.mode==="k"?`${k} penguene eşit dağılmadı, ${kalan} kaldı`:kalan>=k?"Daha dağıtılabilir: her birine bir tane daha ver":"Kar topu yetmez"}}},"")},
   draw(x,S,A){const f=S.f,k=S.k||f.k||f.opts[0],per=S.k==null?0:S.per;const kalan=f.n-k*per;
     const gx=A.W/2-(k*58)/2;for(let i=0;i<k;i++){const cx=gx+i*58+29;if(!sp(x,"penguin",cx,196,44,{bottom:true})){x.fillStyle="#22252e";x.beginPath();x.ellipse(cx,176,12,17,0,0,7);x.fill()}for(let b=0;b<per;b++)sph(x,cx-18+(b%4)*12,212+Math.floor(b/4)*12,5);label(x,String(per),cx,250,14,"#fff")}
-    const pile=Math.max(0,kalan);x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(14,62,A.W-28,56,12);x.fill();for(let b=0;b<Math.min(pile,42);b++)sph(x,28+(b%14)*17,78+Math.floor(b/14)*18,6);x.fillStyle="rgba(27,35,64,.8)";x.beginPath();x.roundRect(A.W-92,66,74,20,10);x.fill();label(x,`${pile} kar topu`,A.W-55,76,11,"#fff");
-    label(x,S.k==null?`${f.n} kar topu · penguen sayısını seç`:per===0?"Her penguene kar topu ver":`${f.n} = ${k} × ${per}${kalan>0?` + ${kalan} kalan`:""}`,A.W/2,A.H-40,16,"#ffd85c");
+    const pile=Math.max(0,kalan);x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(14,62,A.W-28,56,12);x.fill();for(let b=0;b<Math.min(pile,42);b++)sph(x,28+(b%14)*17,78+Math.floor(b/14)*18,6);x.fillStyle="rgba(27,35,64,.8)";x.beginPath();x.roundRect(A.W-110,66,94,20,10);x.fill();label(x,`${pile} kar topu`,A.W-63,76,11,"#fff");
+    label(x,S.k==null?`${f.n} kar topu · penguen sayısını seç`:per===0?"Her penguene kar topu ver":`${f.n} = ${k} × ${per}${kalan>0?` + ${kalan} kalan`:""}`,A.W/2-24,A.H-40,15,"#ffd85c");
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,S.msg.m,A.W/2,22,A.W,14);
     else tip(x,f.ask,A.W/2,22,A.W,14)}});
@@ -11763,7 +11763,7 @@ GFACT.kyaris=[r=>yFact(r,"10'a tamamla",r=>{const a=ri(r,1,9);return yq(`${a} + 
   r=>yFact(r,"Zihinden toplama-çıkarma",r=>{const k=ri(r,0,2);if(k===0){const a=ri(r,2,7)*10+ri(r,1,4),b=ri(r,1,2)*10+ri(r,1,5);return yq(`${a} + ${b}`,a+b,[a+b+10,a+b-1,a+b+1])}if(k===1){const a=ri(r,5,9)*10+ri(r,3,9),b=ri(r,1,3)*10+ri(r,1,3);return yq(`${a} − ${b}`,a-b,[a-b+10,a-b-1,a-b+1])}const a=ri(r,3,8)*10+ri(r,5,8),b=ri(r,4,8);return yq(`${a} + ${b}`,a+b,[a+b-10,a+b-1,a+b+1])},"Zihinden hesapla: doğru sonuca dokun")];
 function kopruFact(r,parts,a,tiles,t,hint,ansTxt){tiles=[...new Set(tiles)];let g=1;while(tiles.length<4&&g<50){const v=a+g*(g%2?1:-1);if(v>0&&!tiles.includes(v))tiles.push(v);g++}return{t,parts,a,tiles:shuffle(r,tiles),ask:"Köprüdeki boşluğa hangi sayı gelmeli?",q:parts.join(" ").replace("?","?"),hint,ansTxt}}
 GFACT.bkopru=[r=>{const a=ri(r,1,5)*10,b=ri(r,1,4)*10;return kopruFact(r,[String(a),"+","?","=",String(a+b)],b,[b,b+10,a,a+b],"Eksik toplanan","Toplamdan bilineni çıkar.",`${a} + ${b} = ${a+b}`)},
-  r=>{const b=ri(r,1,4)*10,c=ri(r,11,59);return kopruFact(r,["?","−",String(b),"=",String(c)],b+c,[b+c,c-b,b+c+10,c+10],"Eksik eksilen","Sonuç ile çıkanı topla.",`${b+c} − ${b} = ${c}`)},
+  r=>{const b=ri(r,1,4)*10,c=ri(r,11,59);return kopruFact(r,["?","−",String(b),"=",String(c)],b+c,[b+c,Math.abs(c-b)||c+1,b+c+10,c+10],"Eksik eksilen","Sonuç ile çıkanı topla.",`${b+c} − ${b} = ${c}`)},
   r=>{const a=ri(r,2,6)*10+5,b=ri(r,1,3)*10+5;const k=r()<.5;return k?kopruFact(r,[String(a),"+","?","=",String(a+b)],b,[b,b+10,b-10,a+b-b+5],"Eksik toplanan (5'li)","Toplamdan bilineni çıkar.",`${a} + ${b} = ${a+b}`):kopruFact(r,[String(a+b),"−","?","=",String(a)],b,[b,b+10,a,b+5],"Eksik çıkan","Büyük sayıdan sonucu çıkar.",`${a+b} − ${b} = ${a}`)}];
 function hataRows(r,n,nbad,mk,ico){const rows=[];const badIdx=new Set();while(badIdx.size<nbad)badIdx.add(ri(r,0,n-1));for(let i=0;i<n;i++){rows.push({t:mk(r,badIdx.has(i)),ico})}return{rows,bad:[...badIdx].sort((a,b)=>a-b)}}
 GFACT.fhata=[r=>{const {rows,bad}=hataRows(r,5,1,(r,bad)=>{const a=ri(r,2,9),b=ri(r,2,9);return `${a} + ${b} = ${a+b+(bad?pick(r,[1,-1,10]):0)}`},Y15.emo("🏮"));return{t:"Bir hatalı toplama",rows,bad,a:"ok",ask:"Hangi fenerin işlemi yanlış?",q:"Toplama cümlelerindeki hatayı bul",hint:"Her toplamayı zihinden yeniden yap.",ansTxt:"Hata bulundu"}},
@@ -11777,7 +11777,7 @@ GFACT.ktahmin=[r=>{let a,b;do{a=ri(r,120,480);b=ri(r,120,480)}while(Math.abs(rnd
   r=>{let a,b;do{a=ri(r,120,480);b=ri(r,120,480)}while(Math.abs(rnd(a)+rnd(b)-(a+b))>45);const est=rnd(a)+rnd(b),ex=a+b;return{t:"Tahmin et, sonra tam hesapla",expr:`${a} + ${b}`,a:est,opts:shuffle(r,[est,est-100,est+100]),exact:{a:ex,opts:shuffle(r,[ex,ex+10,ex-10,ex+100])},ask:"Önce tahmin, sonra tam sonuç",q:`${a} + ${b}: tahmin et, sonra tam sonucu bul`,hint:"Tam sonuç tahmine yakın olmalı.",ansTxt:`Tahmin ${est}, tam ${ex}`}}];
 GFACT.bsudoku=[r=>sudFact(r,ri(r,2,3),"Yüzlük sudoku (kolay)",true),r=>sudFact(r,5,"Yüzlük sudoku",true),r=>sudFact(r,7,"Yüzlük sudoku (zor)",true)];
 GFACT.kaile=[r=>aileAdd(r,ri(r,1,4)*100+ri(r,1,4)*10,ri(r,1,4)*100+ri(r,1,5)*10,"Yüzlüklerle aile"),r=>aileAdd(r,ri(r,124,458),ri(r,115,399),"Üç basamaklı aile"),r=>aileAdd(r,ri(r,124,458),ri(r,115,399),"Eksik kartı hesapla",true)];
-function pistFact(r,start,step,gaps,t){const seq=[],sol=[];for(let i=0;i<5;i++){const v=start+i*step;sol.push(v);seq.push(gaps.includes(i)?null:v)}const miss=gaps.map(i=>sol[i]);const ds=[miss[0]+2*step,miss[0]+10,miss[miss.length-1]-10,miss[0]-2*step,miss[0]+step+5].filter(v=>!sol.includes(v)&&v>0&&Number.isInteger(v));const opts=shuffle(r,[...new Set([...miss,...ds])].slice(0,4));return{t,seq,sol,opts,a:"ok",ask:step>0?`Örüntü ${step}'er artıyor: boşlukları doldur`:`Örüntü ${-step}'er azalıyor: boşlukları doldur`,q:"Buz pistindeki sayı örüntüsünü tamamla",hint:"İki komşu sayının farkı adımı verir.",ansTxt:sol.join(", ")}}
+function pistFact(r,start,step,gaps,t){const seq=[],sol=[];for(let i=0;i<5;i++){const v=start+i*step;sol.push(v);seq.push(gaps.includes(i)?null:v)}const miss=gaps.map(i=>sol[i]);const ds=[miss[0]+2*step,miss[0]+10,miss[miss.length-1]-10,miss[0]-2*step,miss[0]+step+5].filter(v=>!sol.includes(v)&&v>0&&Number.isInteger(v));const opts=shuffle(r,[...new Set([...miss,...ds])].slice(0,4));return{t,seq,sol,opts,a:"ok",ask:"Örüntünün kuralını bul, boşlukları doldur",q:"Buz pistindeki sayı örüntüsünü tamamla",hint:"İki komşu sayının farkı adımı verir.",ansTxt:sol.join(", ")}}
 GFACT.bpist=[r=>pistFact(r,ri(r,1,4)*100,pick(r,[25,50]),[4],"Son buz"),r=>pistFact(r,ri(r,1,3)*100+pick(r,[0,50]),pick(r,[50,100]),[1,3],"İki boş buz"),r=>pistFact(r,ri(r,6,9)*100,-pick(r,[25,50]),[2,4],"Azalan örüntü")];
 function cozFact(r,n,t,mode){const y=Math.floor(n/100),o=Math.floor(n/10)%10,b=n%10;let sol,tiles,join=" + ",hintFail;
   if(mode==="word"){sol=[`${y} yüzlük`,...(o?[`${o} onluk`]:[]),...(b?[`${b} birlik`]:[])];tiles=shuffle(r,[...sol,`${o||y} yüzlük`,`${b||y} onluk`,`${y} birlik`].filter((v,i,a)=>a.indexOf(v)===i)).slice(0,6)}
@@ -12407,7 +12407,7 @@ const ORD={masadiz:f=>f.inv?100:f.n,kuptren:f=>f.k*10+f.pat.length,citustasi:f=>
 function reorder(out,key){const ks=out.map((f,i)=>[key(f),i]);const sorted=[...ks].sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(sorted.every((x,i)=>x[1]===i))return;
   const copies=out.map(f=>Object.assign({},f));const keep=out.map(f=>({lvl:f.lvl,fin:f.fin,alt:f.alt}));
   out.forEach((f,i)=>{Object.keys(f).forEach(k=>delete f[k]);Object.assign(f,copies[sorted[i][1]],keep[i]);["lvl","fin","alt"].forEach(k=>{if(f[k]===undefined)delete f[k]})})}
-function finalFix(out){const sc=out.map(hardScore);const pre=sc.slice(0,4);const mx=Math.max(...pre);if(sc[4]>=mx-4)return;const j=pre.indexOf(mx);
+function finalFix(out){/* satır listeli oyunlarda (hata avı) metinden zorluk ölçülemez: kademe sırası korunur */if(out.some(f=>Array.isArray(f.rows)))return;const sc=out.map(hardScore);const pre=sc.slice(0,4);const mx=Math.max(...pre);if(sc[4]>=mx-4)return;const j=pre.indexOf(mx);
   const A=out[j],F=out[4];const ka={lvl:A.lvl,fin:A.fin,alt:A.alt},kf={lvl:F.lvl,fin:F.fin,alt:F.alt};const ca=Object.assign({},A),cf=Object.assign({},F);
   Object.keys(A).forEach(k=>delete A[k]);Object.keys(F).forEach(k=>delete F[k]);Object.assign(A,cf,ka);Object.assign(F,ca,kf);
   ["lvl","fin","alt"].forEach(k=>{if(A[k]===undefined)delete A[k];if(F[k]===undefined)delete F[k]})}
@@ -12786,7 +12786,7 @@ const tr=v=>String(v).replace(/\B(?=(\d{3})+(?!\d))/g," ");
 function yq(q,a,ws){return{q,a,opts:[a,...ws]}}
 function yFact(r,t,gen,ask){const qs=[];let g=0;while(qs.length<5&&g++<80){const q=gen(r);q.opts=[...new Set(q.opts)].filter(v=>v>=0);if(qs.some(z=>z.q===q.q)||q.opts.length<3)continue;q.opts=shuffle(r,q.opts).slice(0,3);if(!q.opts.includes(q.a))q.opts[0]=q.a;qs.push(q)}return{t,qs,a:"ok",ask,q:`${t}: 5 soruyu çöz, yunus bitişe ulaşsın`,hint:"Zihinden hesapla, doğru sayıya dokun.",ansTxt:"5 bayrak tamam!"}}
 function hRows(r,n,nbad,mk,ico){const rows=[];const bad=new Set();while(bad.size<nbad)bad.add(ri(r,0,n-1));for(let i=0;i<n;i++)rows.push({t:mk(r,bad.has(i)),ico});return{rows,bad:[...bad].sort((a,b)=>a-b)}}
-function pistF(r,start,step,gaps,t){const seq=[],sol=[];for(let i=0;i<5;i++){const v=start+i*step;sol.push(v);seq.push(gaps.includes(i)?null:v)}const miss=gaps.map(i=>sol[i]);const ds=[miss[0]+1,miss[0]-1,miss[0]+step*2,miss[0]+10].filter(v=>!sol.includes(v)&&v>0);const opts=shuffle(r,[...new Set([...miss,...ds])].slice(0,4));return{t,seq,sol,opts,a:"ok",ask:step>0?`Örüntü ${nd(step,"er")} artıyor: boşlukları doldur`:`Örüntü ${nd(-step,"er")} azalıyor: boşlukları doldur`,q:"Dalgalardaki sayı örüntüsünü tamamla",hint:"İki komşu sayının farkı adımı verir.",ansTxt:sol.join(", ")}}
+function pistF(r,start,step,gaps,t){const seq=[],sol=[];for(let i=0;i<5;i++){const v=start+i*step;sol.push(v);seq.push(gaps.includes(i)?null:v)}const miss=gaps.map(i=>sol[i]);const ds=[miss[0]+1,miss[0]-1,miss[0]+step*2,miss[0]+10].filter(v=>!sol.includes(v)&&v>0);const opts=shuffle(r,[...new Set([...miss,...ds])].slice(0,4));return{t,seq,sol,opts,a:"ok",ask:"Örüntünün kuralını bul, boşlukları doldur",q:"Dalgalardaki sayı örüntüsünü tamamla",hint:"İki komşu sayının farkı adımı verir.",ansTxt:sol.join(", ")}}
 function cozF(r,n,t){const y=Math.floor(n/100),o=Math.floor(n/10)%10,b=n%10;const sol=[String(y*100),...(o?[String(o*10)]:[]),...(b?[String(b)]:[])];const ds=[String(y*10),String(o*100||(y+1)*100),String(b*10||(y+2)*10),String(o||b),String(y)].filter(v=>!sol.includes(v)&&v!=="0");const tiles=shuffle(r,[...new Set([...sol,...ds])].slice(0,6));return{t,target:String(n),tiles,sol,a:"ok",ask:`${n} sayısını parçalara ayır: doğru parçalara dokun`,q:`${n} sayısını yüzlük, onluk ve birliklerine ayır`,hint:"Her rakamın basamak değerini yaz.",ansTxt:`${n} = ${sol.join(" + ")}`}}
 function cozF4(r,n,t){const d=String(n).split("").map(Number),L=d.length;const sol=[];d.forEach((v,i)=>{if(v)sol.push(tr(v*10**(L-1-i)))});const pool=[];d.forEach((v,i)=>{if(v){if(i>0)pool.push(tr(v*10**(L-i)));if(i<L-1)pool.push(tr(v*10**(L-2-i)))}});const ds=[...new Set(pool)].filter(v=>!sol.includes(v));const tiles=shuffle(r,[...sol,...shuffle(r,ds)].slice(0,Math.max(6,sol.length+2)).slice(0,9));return{t,target:tr(n),tiles,sol,a:"ok",ask:`${tr(n)} sayısını basamak değerlerine ayır`,q:`${tr(n)} sayısını basamak değerlerinin toplamı olarak yaz`,hint:"Her rakamı, bulunduğu basamağın değeriyle düşün.",ansTxt:`${tr(n)} = ${sol.join(" + ")}`}}
 const r10=v=>Math.round(v/10)*10,r100=v=>Math.round(v/100)*100;
