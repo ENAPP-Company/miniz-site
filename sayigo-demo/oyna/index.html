@@ -5255,6 +5255,7 @@ Object.assign(KTIER,{
   kizaksira:{E:[[0]],N:[[2]],F:[[1]]}, kurekure:{E:[[0]],N:[[1]],F:[[2]]}, hediye:{E:[[0]],N:[[1]],F:[[2]]}, can:{E:[[3],[1]],N:[[0]],F:[[2]]}, kizakizi:{E:[[0]],N:[[2]],F:[[1]]},
   kizakyuk:{E:[[0]],N:[[1]],F:[[2]]}, kuzey:{E:[[0]],N:[[1]],F:[[2]]}, kizakdog:{E:[[0]],N:[[1]],F:[[2]]}, karyakala:{E:[[0]],N:[[1]],F:[[2]]}, fis:{E:[[1]],N:[[0]],F:[[2]]},
   hediyesira:{E:[[2]],N:[[0]],F:[[1]]}, buztah:{E:[[0]],N:[[1]],F:[[2]]}, buzkale:{E:[[1]],N:[[0]],F:[[2]]}, hataavci:{E:[[1]],N:[[0]],F:[[2]]}, kurdele:{E:[[0]],N:[[2]],F:[[1]]}});
+window.KBG={BG,aSnowGround,aSky,aGrove};
 })();
 // ============ EVDE DENE · Aralık'ın 20 yeni oyunu (her biri benzersiz) ============
 ;(function(){const C=(t,konu,mat,s,q,kesif,dikkat)=>Object.assign(HC(t,konu,mat,s,q),{kesif,dikkat});
@@ -13033,26 +13034,26 @@ const SPEC_ASANS={H:330,
     if(f.btns.length>=4)A.bar.classList.add("pm2","k30");
     f.btns.forEach(b=>A.btn(b.lab,()=>{if(S.locked)return;const np=S.pos+b.d;if(np<f.min||np>f.max){msg(S,np>f.max?"Daha yukarıda kat yok":"Daha aşağıda kat yok");return}S.pos=np;if(b.stair)S.stairs+=Math.abs(b.d);else S.stops++;sfx.pop()}));
     A.btn("↩ Baştan",()=>{if(S.locked)return;S.pos=f.start;S.stops=0;S.stairs=0});
-    A.btn("Tamam",()=>{if(S.locked)return;const ok=S.pos===f.a&&(f.needStairs==null||S.stairs===f.needStairs);if(ok&&f.stopCands){S.phase2=true;A.bar.innerHTML="";A.bar.classList.remove("pm2","k30");f.stopCands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.nStops)A.done();else{A.fail();msg(S,`Her durak ${f.k} kat: ${f.k}'şer sayarak ${f.a}'e kadar say`)}}));return}if(ok)A.done();else{A.fail();msg(S,S.pos!==f.a?"Asansör doğru katta değil":"Daha az merdivenle çıkılabilir")}},"")},
+    A.btn("Tamam",()=>{if(S.locked)return;const ok=S.pos===f.a&&(f.needStairs==null||S.stairs===f.needStairs);if(ok&&f.stopCands){S.phase2=true;A.bar.innerHTML="";A.bar.classList.remove("pm2","k30");f.stopCands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.nStops)A.done();else{A.fail();msg(S,f.p2fail||`Her durak ${f.k} kat: ${f.k}'şer sayarak ${f.a}'e kadar say`)}}));return}if(ok)A.done();else{A.fail();msg(S,S.pos!==f.a?"Asansör doğru katta değil":"Daha az merdivenle çıkılabilir")}},"")},
   draw(x,S,A){const f=S.f,W=A.W,H=A.H;S.vis+=(S.pos-S.vis)*.14;
-    const FH=30,cx=W/2+30,base=H-58,span=7;const y=v=>base-(v-S.vis+ (span-1)/2 -1)*FH+ (span-1)/2*FH - (span-1)/2*FH;
+    const FH=30,cx=W/2+30,base=H-58,st=f.fs||1;const y=v=>base-((v-S.vis)/st+2)*FH;
     // kule gövdesi
     const tg=x.createLinearGradient(cx-70,0,cx+70,0);tg.addColorStop(0,"#56608a");tg.addColorStop(.5,"#aab4d8");tg.addColorStop(1,"#4a5480");x.fillStyle="rgba(0,0,0,.3)";x.fillRect(cx-66,44,140,H-44);x.fillStyle=tg;x.fillRect(cx-70,40,140,H-40);
     x.save();x.beginPath();x.rect(0,40,W,H-40);x.clip();
-    const lo=Math.floor(S.vis)-4,hi=Math.ceil(S.vis)+5;
-    for(let v=lo;v<=hi;v++){if(v<f.min||v>f.max)continue;const fy=y(v);x.fillStyle="rgba(20,26,60,.55)";x.fillRect(cx-70,fy+FH/2-2,140,3);
-      x.fillStyle=v%2?"rgba(255,224,130,.85)":"rgba(160,220,255,.85)";[-52,34].forEach(dx=>{x.beginPath();x.roundRect(cx+dx,fy-8,18,13,3);x.fill()});
-      const cur=Math.round(S.vis)===v;x.fillStyle=cur?"#ffd85c":"rgba(255,255,255,.92)";x.beginPath();x.roundRect(cx-128,fy-11,46,22,8);x.fill();label(x,String(v),cx-105,fy+1,14,"#22314d")}
+    const lo=Math.floor(S.vis/st)*st-4*st,hi=Math.ceil(S.vis/st)*st+5*st;
+    for(let v=lo;v<=hi;v+=st){if(v<f.min||v>f.max)continue;const fy=y(v);x.fillStyle="rgba(20,26,60,.55)";x.fillRect(cx-70,fy+FH/2-2,140,3);
+      x.fillStyle=(v/st)%2?"rgba(255,224,130,.85)":"rgba(160,220,255,.85)";[-52,34].forEach(dx=>{x.beginPath();x.roundRect(cx+dx,fy-8,18,13,3);x.fill()});
+      const cur=Math.round(S.vis/st)*st===v;x.fillStyle=cur?"#ffd85c":"rgba(255,255,255,.92)";x.beginPath();x.roundRect(cx-128,fy-11,46,22,8);x.fill();label(x,String(v),cx-105,fy+1,14,"#22314d")}
     // şaft + kabin
     x.fillStyle="#1a2147";x.fillRect(cx-22,40,44,H-40);x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=1.5;x.beginPath();x.moveTo(cx,40);x.lineTo(cx,H);x.stroke();
     const cy=y(S.vis);gBlock(x,cx-21,cy-14,42,28,"#ef6f4b",7);x.fillStyle="#cfeaff";x.beginPath();x.roundRect(cx-14,cy-9,28,16,4);x.fill();okti(x,cx,cy+1,20,S.locked?"wow":"happy");
     x.restore();
     // zemin + gösterge
-    if(typeof gMoonGround==="function"&&S.vis<f.min+4)gMoonGround(x,W,H,Math.max(H-22,y(f.min)+FH/2+2));
-    gBlock(x,W-98,52,86,f.needStairs!=null?92:f.showStops?74:50,"#22305e",10);label(x,"Kat",W-55,66,12,"#b8c6f5");label(x,String(S.pos),W-55,86,22,"#ffd85c");
+    if(S.vis<f.min+4){const gy=Math.max(H-22,y(f.min)+FH/2+2);if(f.th==="kis"&&window.KBG)KBG.aSnowGround(x,W,H,gy);else if(typeof gMoonGround==="function")gMoonGround(x,W,H,gy)}
+    gBlock(x,W-98,52,86,f.needStairs!=null?92:f.showStops?74:50,"#22305e",10);label(x,f.lab||"Kat",W-55,66,12,"#b8c6f5");label(x,String(S.pos),W-55,86,22,"#ffd85c");
     if(f.showStops||f.needStairs!=null)label(x,`Durak: ${S.stops}`,W-55,112,13,"#fff");if(f.needStairs!=null)label(x,`Merdiven: ${S.stairs}`,W-55,130,12,"#ffd85c");
     const fg=x.createLinearGradient(0,H-40,0,H);fg.addColorStop(0,'rgba(18,20,56,0)');fg.addColorStop(1,'rgba(18,20,56,.95)');if(S.vis>=f.min+4){x.fillStyle=fg;x.fillRect(0,H-40,W,40)}
-    topTip(x,S,A,f,S.phase2?"Kaç durakta geldin?":false)}};
+    topTip(x,S,A,f,S.phase2?(f.p2q||"Kaç durakta geldin?"):false)}};
 
 // ---------------------------------------------------------------- 2) YAKIT KARIŞIMI (ölçekli tüp)
 // f: {tubes:[{max,step,major,fix,need,col,cap}],fmt:"n"|"ml"|"q",unit,...}  değerler "adım" cinsinden tutulur
@@ -13061,25 +13062,60 @@ const FMT={n:v=>NF(v),ml:v=>v>=1000&&v%1000===0?(v/1000)+" L":v+" mL",
 const SPEC_TUP={H:330,
   init(f,S,A){A.c.noTheme=true;S.v=f.tubes.map(t=>t.fix!=null?t.fix:0);S.drag=-1;S.msg=null;S.touched=false;
     A.btn("Tamam",()=>{if(S.locked)return;if(!S.touched){msg(S,"Önce tüpü doldur: tüpe dokun ve sürükle");return}if(f.tubes.every((t,i)=>t.fix!=null||S.v[i]===t.need))A.done();else{A.fail();msg(S,"Çizgileri say, yeniden ayarla")}},"")},
-  geo(S,A,i){const n=S.f.tubes.length,w=n>=3?58:70,gap=n>=3?108:140,x=A.W/2+(i-(n-1)/2)*gap-w/2;return{x,y:64,w,h:206}},
+  geo(S,A,i){const n=S.f.tubes.length;if(S.f.mug){const w=92,x=i?A.W-128:72;return{x,y:116,w,h:136}}const w=n>=3?58:70,gap=n>=3?108:140,x=A.W/2+(i-(n-1)/2)*gap-w/2;return{x,y:64,w,h:206}},
   set(p,S,A){const f=S.f,i=S.drag;if(i<0)return;const g=this.geo(S,A,i),t=f.tubes[i];const n=t.max/t.step;let k=Math.round((g.y+g.h-p.y)/(g.h/n));k=Math.max(0,Math.min(n,k));const nv=k*t.step;if(nv!==S.v[i]){S.v[i]=nv;S.touched=true}},
   down(p,S,A){if(S.locked)return;S.drag=-1;S.f.tubes.forEach((t,i)=>{const g=this.geo(S,A,i);if(t.fix==null&&p.x>g.x-22&&p.x<g.x+g.w+22&&p.y>g.y-16&&p.y<g.y+g.h+16)S.drag=i});this.set(p,S,A)},
   move(p,S,A){if(!S.locked)this.set(p,S,A)},up(p,S,A){S.drag=-1},
-  draw(x,S,A){const f=S.f,F=FMT[f.fmt||"n"];if(typeof gMoonGround==="function")gMoonGround(x,A.W,A.H,A.H-40);
+  draw(x,S,A){const f=S.f,F=FMT[f.fmt||"n"];if(f.th==="kis"){const tg=x.createLinearGradient(0,A.H-40,0,A.H);tg.addColorStop(0,"#b27a4a");tg.addColorStop(1,"#7a4a26");x.fillStyle=tg;x.fillRect(0,A.H-40,A.W,40);x.fillStyle="rgba(255,255,255,.18)";x.fillRect(0,A.H-40,A.W,3)}else if(typeof gMoonGround==="function")gMoonGround(x,A.W,A.H,A.H-40);
     f.tubes.forEach((t,i)=>{const g=this.geo(S,A,i),n=t.max/t.step,ph=g.h/n;
       // cam tüp
-      x.fillStyle="rgba(0,0,0,.28)";x.beginPath();x.ellipse(g.x+g.w/2,g.y+g.h+6,g.w*.62,7,0,0,7);x.fill();
+if(f.mug){const L=g.x,T=g.y-18,Wd=g.w,Hh=g.h+18,bt=Wd*.08,lv=S.v[i]/t.step*ph;
+        const body=()=>{x.beginPath();x.moveTo(L,T);x.lineTo(L+Wd,T);x.lineTo(L+Wd-bt,T+Hh-14);x.quadraticCurveTo(L+Wd-bt,T+Hh,L+Wd-bt-14,T+Hh);x.lineTo(L+bt+14,T+Hh);x.quadraticCurveTo(L+bt,T+Hh,L+bt,T+Hh-14);x.closePath()};
+        x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.ellipse(L+Wd/2,T+Hh+5,Wd*.5,8,0,0,7);x.fill();
+        x.lineCap="round";const hx=L+Wd-bt*.5,hy=T+Hh*.47,hr=Hh*.19;x.strokeStyle="rgba(40,50,80,.35)";x.lineWidth=17;x.beginPath();x.arc(hx,hy,hr,-Math.PI*.42,Math.PI*.42);x.stroke();x.strokeStyle="#eef5ff";x.lineWidth=12;x.stroke();x.strokeStyle="rgba(160,190,225,.9)";x.lineWidth=4;x.beginPath();x.arc(hx,hy,hr,-Math.PI*.38,Math.PI*.38);x.stroke();
+        body();x.fillStyle="rgba(225,238,255,.30)";x.fill();
+        if(lv>0){x.save();body();x.clip();const lg=x.createLinearGradient(L,0,L+Wd,0);lg.addColorStop(0,gShade(t.col,-.28));lg.addColorStop(.42,gShade(t.col,.25));lg.addColorStop(1,gShade(t.col,-.32));x.fillStyle=lg;x.fillRect(L,T+Hh-lv,Wd,lv+2);x.restore();
+          const tw=Wd-2*bt*(lv/Hh);x.fillStyle="#f3dcc2";x.beginPath();x.ellipse(L+Wd/2,T+Hh-lv+1,Math.max(10,tw/2-4),5,0,0,7);x.fill();
+          x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=3;x.lineCap="round";for(let k=0;k<3;k++){const sx=L+Wd*(.32+k*.18);x.beginPath();for(let q=0;q<=12;q++){const yy=T-12-q*2,xx=sx+Math.sin(q/2.2+S.t/14+k*2)*3.5;q?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke()}}
+        // ölçek: kalın çizgiler kupanın üstünde, sayılar kupanın solunda (dışarıda)
+        for(let k=0;k<=n;k++){const ty=T+Hh-k*ph,v=k*t.step,mj=v%t.major===0,md=t.mid&&v%t.mid===0,wx=L+bt*(1-(Hh-(ty-T))/Hh),lx0=wx+3,len=mj?26:md?17:10;
+          if(k===0)continue;
+          x.strokeStyle="rgba(20,24,48,.55)";x.lineWidth=(mj?4:md?3:2.2)+2;x.beginPath();x.moveTo(lx0,ty);x.lineTo(lx0+len,ty);x.stroke();
+          x.strokeStyle="#ffffff";x.lineWidth=mj?4:md?3:2.2;x.beginPath();x.moveTo(lx0,ty);x.lineTo(lx0+len,ty);x.stroke()}
+        for(let k=0;k<=n;k++){const v=k*t.step;if(v%t.major!==0)continue;const many=t.max/t.major>4,ty=T+Hh-k*ph-(k===0?2:0),tx=F(v),w=tx.length*(many?7.4:8)+12,rx=L-4;
+          x.strokeStyle="rgba(255,255,255,.75)";x.lineWidth=2;x.beginPath();x.moveTo(rx-2,ty);x.lineTo(L+bt*.6+4,ty);x.stroke();
+          const ph2=many?18:22;x.fillStyle="#1d2350";x.beginPath();x.roundRect(rx-w,ty-ph2/2,w,ph2,8);x.fill();x.strokeStyle="rgba(255,255,255,.6)";x.lineWidth=1.5;x.stroke();label(x,tx,rx-w/2,ty+1,many?13:14,"#fff")}
+        body();x.strokeStyle="rgba(245,250,255,.95)";x.lineWidth=3.5;x.stroke();x.fillStyle="rgba(255,255,255,.32)";x.fillRect(L+Wd-bt-16,T+10,6,Hh-40);
+        x.strokeStyle="#f5f9ff";x.lineWidth=3;x.beginPath();x.ellipse(L+Wd/2,T,Wd/2,7,0,0,7);x.stroke()}
+      else{      x.fillStyle="rgba(0,0,0,.28)";x.beginPath();x.ellipse(g.x+g.w/2,g.y+g.h+6,g.w*.62,7,0,0,7);x.fill();
       x.fillStyle="rgba(210,230,255,.16)";x.beginPath();x.roundRect(g.x,g.y-8,g.w,g.h+8,[8,8,16,16]);x.fill();
       const lv=S.v[i]/t.step*ph;if(lv>0){const lg=x.createLinearGradient(g.x,0,g.x+g.w,0);lg.addColorStop(0,gShade(t.col,-.25));lg.addColorStop(.4,gShade(t.col,.3));lg.addColorStop(1,gShade(t.col,-.3));x.fillStyle=lg;x.beginPath();x.roundRect(g.x+3,g.y+g.h-lv,g.w-6,lv,[3,3,14,14]);x.fill();x.fillStyle="rgba(255,255,255,.45)";x.fillRect(g.x+3,g.y+g.h-lv,g.w-6,3);
         for(let b=0;b<3;b++){const by=g.y+g.h-((S.t*1.2+b*37+i*11)%Math.max(8,lv));x.fillStyle="rgba(255,255,255,.4)";x.beginPath();x.arc(g.x+14+b*((g.w-28)/2),by,2.2,0,7);x.fill()}}
-      x.strokeStyle="rgba(235,245,255,.9)";x.lineWidth=2.5;x.beginPath();x.roundRect(g.x,g.y-8,g.w,g.h+8,[8,8,16,16]);x.stroke();x.fillStyle="rgba(255,255,255,.28)";x.fillRect(g.x+6,g.y,5,g.h-12);
+      x.strokeStyle="rgba(235,245,255,.9)";x.lineWidth=2.5;x.beginPath();x.roundRect(g.x,g.y-8,g.w,g.h+8,[8,8,16,16]);x.stroke();x.fillStyle="rgba(255,255,255,.28)";x.fillRect(g.x+6,g.y,5,g.h-12);}
       // ölçek
-      for(let k=0;k<=n;k++){const ty=g.y+g.h-k*ph,v=k*t.step,mj=v%t.major===0,md=t.mid&&v%t.mid===0;x.strokeStyle="#fff";x.lineWidth=mj?2.4:1.3;x.beginPath();x.moveTo(g.x+g.w,ty);x.lineTo(g.x+g.w+(mj?13:md?10:6),ty);x.stroke();if(mj)label(x,F(v).replace(" L","").replace(" mL",""),g.x+g.w+(String(v).length>=5?41:String(v).length>=4?35:String(v).length===3?31:27),ty+1,12,"#fff")}
-      if(t.fix==null&&!S.locked){const ay=g.y+g.h-lv;x.fillStyle="#ffd85c";x.beginPath();x.moveTo(g.x-4,ay);x.lineTo(g.x-16,ay-8);x.lineTo(g.x-16,ay+8);x.closePath();x.fill()}
+      if(!f.mug)for(let k=0;k<=n;k++){const ty=g.y+g.h-k*ph,v=k*t.step,mj=v%t.major===0,md=t.mid&&v%t.mid===0;x.strokeStyle="#fff";x.lineWidth=mj?2.4:1.3;x.beginPath();x.moveTo(g.x+g.w,ty);x.lineTo(g.x+g.w+(mj?13:md?10:6),ty);x.stroke();if(mj)label(x,F(v).replace(" L","").replace(" mL",""),g.x+g.w+(String(v).length>=5?41:String(v).length>=4?35:String(v).length===3?31:27),ty+1,12,"#fff")}
+      if(t.fix==null&&!S.locked){const lv2=S.v[i]/t.step*ph,ay=g.y+g.h-lv2;if(f.mug){const cx=g.x+g.w/2+8,cy=ay-(lv2>0?0:10);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.arc(cx+1,cy+2,13,0,7);x.fill();x.fillStyle="#ffd85c";x.beginPath();x.arc(cx,cy,13,0,7);x.fill();x.strokeStyle="#c98a12";x.lineWidth=2;x.stroke();x.fillStyle="#7a4d00";x.beginPath();x.moveTo(cx,cy-8);x.lineTo(cx+5,cy-2);x.lineTo(cx-5,cy-2);x.closePath();x.fill();x.beginPath();x.moveTo(cx,cy+8);x.lineTo(cx+5,cy+2);x.lineTo(cx-5,cy+2);x.closePath();x.fill()}else{const ox=g.x-4;x.fillStyle="#ffd85c";x.beginPath();x.moveTo(ox,ay);x.lineTo(ox-12,ay-8);x.lineTo(ox-12,ay+8);x.closePath();x.fill()}}
       gBlock(x,g.x-8,g.y+g.h+12,g.w+16,22,t.fix!=null?"#3a4a86":"#e8574a",8);label(x,t.cap,g.x+g.w/2,g.y+g.h+23,12,"#fff")});
     if(f.unit)label(x,f.unit,A.W-26,52,12,"#b8c6f5");
     topTip(x,S,A,f,f.tubes.length>1?undefined:false)}};
 
+function torch(x,lx,ly,R,W,H){const right=lx>W-118,low=ly>H-104;const th=low?(right?-3*Math.PI/4:-Math.PI/4):(right?3*Math.PI/4:Math.PI/4);
+  const d=R+40,tx=lx+Math.cos(th)*d,ty=ly+Math.sin(th)*d,a=th+Math.PI,pa=a+Math.PI/2;
+  const hx=tx+Math.cos(a)*22,hy=ty+Math.sin(a)*22,c=Math.cos(pa),s=Math.sin(pa);
+  const bg=x.createLinearGradient(hx,hy,lx,ly);bg.addColorStop(0,"rgba(255,245,205,.5)");bg.addColorStop(1,"rgba(255,245,205,.03)");
+  x.fillStyle=bg;x.beginPath();x.moveTo(hx+c*10,hy+s*10);x.lineTo(lx+c*R*.9,ly+s*R*.9);x.lineTo(lx-c*R*.9,ly-s*R*.9);x.lineTo(hx-c*10,hy-s*10);x.closePath();x.fill();
+  x.save();x.translate(tx,ty);x.rotate(a);
+  x.fillStyle="rgba(0,0,0,.35)";x.beginPath();x.roundRect(-38,-5,62,16,6);x.fill();
+  const mg=x.createLinearGradient(0,-8,0,8);mg.addColorStop(0,"#4a5266");mg.addColorStop(.32,"#d8dfec");mg.addColorStop(.6,"#8a94ab");mg.addColorStop(1,"#30374a");
+  x.fillStyle=mg;x.beginPath();x.roundRect(-36,-7,42,14,4);x.fill();
+  x.fillStyle="rgba(28,32,44,.55)";for(let k=0;k<5;k++)x.fillRect(-30+k*5.5,-7,2.2,14);
+  x.fillStyle="#e8574a";x.beginPath();x.roundRect(-6,-10.5,9,4,2);x.fill();
+  const hg=x.createLinearGradient(0,-13,0,13);hg.addColorStop(0,"#3c4457");hg.addColorStop(.3,"#e6ebf4");hg.addColorStop(.62,"#8f99b0");hg.addColorStop(1,"#2c3243");
+  x.fillStyle=hg;x.beginPath();x.moveTo(4,-8);x.lineTo(17,-13);x.lineTo(23,-13);x.lineTo(23,13);x.lineTo(17,13);x.lineTo(4,8);x.closePath();x.fill();
+  const lg=x.createRadialGradient(25,0,1,25,0,16);lg.addColorStop(0,"rgba(255,250,220,.95)");lg.addColorStop(1,"rgba(255,240,180,0)");x.fillStyle=lg;x.beginPath();x.arc(25,0,16,0,7);x.fill();
+  x.fillStyle="#fffbe2";x.beginPath();x.ellipse(23,0,2.6,11.5,0,0,7);x.fill();
+  x.fillStyle="#262b3a";x.beginPath();x.roundRect(-40,-6,5,12,2);x.fill();
+  x.restore()}
 // ---------------------------------------------------------------- 3) KRATER FENERİ (karanlıkta say)
 // f: {items:[{x,y,k,s}],a,cands,ask,...}
 const SPEC_KRATER={H:320,
@@ -13088,13 +13124,13 @@ const SPEC_KRATER={H:320,
   down(p,S,A){if(S.locked)return;S.lx=p.x;S.ly=Math.max(54,p.y);S.moved++},move(p,S,A){if(S.locked)return;S.lx=p.x;S.ly=Math.max(54,p.y);S.moved++},
   draw(x,S,A){const f=S.f,W=A.W,H=A.H;
     // krater zemini
-    const g=x.createLinearGradient(0,40,0,H);g.addColorStop(0,"#4b4a78");g.addColorStop(1,"#2b2a52");x.fillStyle=g;x.fillRect(0,40,W,H-40);
-    x.fillStyle="rgba(20,18,50,.35)";[[60,90,26],[300,120,34],[150,250,30],[330,270,22],[40,220,18]].forEach(([a,b,r])=>{x.beginPath();x.ellipse(a,b,r,r*.45,0,0,7);x.fill()});
+    const g=x.createLinearGradient(0,40,0,H);if(f.th==="kis"){g.addColorStop(0,"#9fd4ee");g.addColorStop(1,"#4f8fb8")}else{g.addColorStop(0,"#4b4a78");g.addColorStop(1,"#2b2a52")}x.fillStyle=g;x.fillRect(0,40,W,H-40);
+    if(f.th==="kis"){x.strokeStyle="rgba(255,255,255,.45)";x.lineWidth=1.5;[[30,80,90,120],[90,120,70,170],[250,70,310,140],[310,140,370,150],[180,230,260,290]].forEach(([a,b,c,d])=>{x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke()})}else{x.fillStyle="rgba(20,18,50,.35)";[[60,90,26],[300,120,34],[150,250,30],[330,270,22],[40,220,18]].forEach(([a,b,r])=>{x.beginPath();x.ellipse(a,b,r,r*.45,0,0,7);x.fill()})}
     f.items.forEach(it=>{if(it.box){x.fillStyle="rgba(255,255,255,.10)";x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=1.5;x.beginPath();x.roundRect(it.x,it.y,it.w,it.h,8);x.fill();x.stroke()}else{const bob=Math.sin(S.t/22+it.x)*1.5;if(!sp(x,it.k,it.x,it.y+bob,it.s)){x.fillStyle="#7be08a";x.beginPath();x.arc(it.x,it.y,it.s/2.4,0,7);x.fill()}}});
     if(!S.locked){const R=f.R||62;x.save();x.fillStyle="rgba(6,7,24,.992)";x.beginPath();x.rect(0,40,W,H-40);x.arc(S.lx,S.ly,R,0,Math.PI*2,true);x.fill("evenodd");
       const rg=x.createRadialGradient(S.lx,S.ly,R*.55,S.lx,S.ly,R);rg.addColorStop(0,"rgba(6,7,24,0)");rg.addColorStop(1,"rgba(6,7,24,.9)");x.fillStyle=rg;x.beginPath();x.arc(S.lx,S.ly,R,0,7);x.fill();
-      x.strokeStyle="rgba(255,236,150,.55)";x.lineWidth=2;x.beginPath();x.arc(S.lx,S.ly,R,0,7);x.stroke();x.restore();
-      sp(x,"e_1f526",S.lx+R*.72,S.ly+R*.72,30,{rot:-.6});
+      const wg=x.createRadialGradient(S.lx,S.ly,0,S.lx,S.ly,R);wg.addColorStop(0,"rgba(255,244,200,.22)");wg.addColorStop(1,"rgba(255,244,200,0)");x.fillStyle=wg;x.beginPath();x.arc(S.lx,S.ly,R,0,7);x.fill();x.restore();
+      torch(x,S.lx,S.ly,R,W,H);
       if(S.moved<12&&Math.floor(S.t/30)%2===0)label(x,"Feneri sürükle",W/2,H-16,14,"#ffe9a8")}
     topTip(x,S,A,f)}};
 
@@ -13103,19 +13139,19 @@ const SPEC_KRATER={H:320,
 const SPEC_MOTOR={H:404,
   init(f,S,A){A.c.noTheme=true;S.on=new Set();S.fire=0;S.fired=[];S.msg=null;
     A.btn("↩ Temizle",()=>{if(!S.locked&&!S.fire)S.on.clear()});
-    A.btn("🔥 Ateşle",()=>{if(S.locked||S.fire)return;if(!S.on.size){msg(S,"Önce düğme seç");return}S.fired=[...S.on].map(k=>this.map(f,k));S.fire=50;const ok=S.fired.length===f.need.length&&f.need.every(v=>S.fired.includes(v));S.ok=ok;sfx.pop()},"")},
+    A.btn(f.fireLab||"🔥 Ateşle",()=>{if(S.locked||S.fire)return;if(!S.on.size){msg(S,"Önce düğme seç");return}S.fired=[...S.on].map(k=>this.map(f,k));S.fire=50;const ok=S.fired.length===f.need.length&&f.need.every(v=>S.fired.includes(v));S.ok=ok;sfx.pop()},"")},
   // panel düğmesi k -> motor indeksi (panel rot kadar çeyrek tur sağa dönmüş)
   map(f,k){let r=Math.floor(k/f.C),c=k%f.C,R=f.R,C=f.C;for(let i=0;i<(f.rot||0);i++){const nr=C-1-c,nc=r;r=nr;c=nc;[R,C]=[C,R]}return r*f.C+c},
   mot(f,A,i){const s=f.C>=4?40:f.C===3?48:58,r=Math.floor(i/f.C),c=i%f.C;return{x:A.W/2+(c-(f.C-1)/2)*s,y:104+r*(f.R>=4?33:f.R===3?37:44),s}},
   knob(f,A,k){const s=f.C>=4?44:f.C===3?52:62,r=Math.floor(k/f.C),c=k%f.C;return{x:A.W/2+(c-(f.C-1)/2)*s,y:A.H-38-(f.R-1-r)*(f.R>=4?34:f.R===3?40:48),s}},
   down(p,S,A){const f=S.f;if(S.locked||S.fire)return;for(let k=0;k<f.R*f.C;k++){const q=this.knob(f,A,k);if(Math.hypot(p.x-q.x,p.y-q.y)<q.s*.48){S.on.has(k)?S.on.delete(k):S.on.add(k);sfx.pop();return}}},
   draw(x,S,A){const f=S.f,W=A.W,H=A.H,n=f.R*f.C;
-    if(S.fire>0){S.fire--;if(S.fire===0){if(S.ok)A.done();else{A.fail();msg(S,"Yanlış motor yandı. Düğmelerin yerine yeniden bak");S.fired=[]}}}
+    if(S.fire>0){S.fire--;if(S.fire===0){if(S.ok)A.done();else{A.fail();msg(S,f.failMsg||"Yanlış motor yandı. Düğmelerin yerine yeniden bak");S.fired=[]}}}
     // roket gövdesi (üst) ve motor ızgarası
     const m0=this.mot(f,A,0),m1=this.mot(f,A,n-1),bx=m0.x-m0.s*.7,bw=m1.x-m0.x+m0.s*1.4,by=m0.y-24,bh=m1.y-m0.y+48;
-    gBlock(x,bx,by,bw,bh,"#c9d3ea",14);x.fillStyle="#ef4444";x.fillRect(bx+8,by,bw-16,5);label(x,"MOTORLAR",W/2,by-10,11,"#b8c6f5");
+    if(f.th==="kis"){gBlock(x,bx,by,bw,bh,"#8a5a3a",8);x.fillStyle="#f4f9ff";x.beginPath();x.moveTo(bx-14,by+4);x.lineTo(W/2,by-30);x.lineTo(bx+bw+14,by+4);x.closePath();x.fill();x.fillStyle="#cfe2f5";x.fillRect(bx-10,by,bw+20,6);label(x,f.topLab||"PENCERELER",W/2,by-6,11,"#2b4a6e")}else{gBlock(x,bx,by,bw,bh,"#c9d3ea",14);x.fillStyle="#ef4444";x.fillRect(bx+8,by,bw-16,5);label(x,"MOTORLAR",W/2,by-10,11,"#b8c6f5")}
     for(let i=0;i<n;i++){const q=this.mot(f,A,i),lit=S.locked?f.need.includes(i):(S.fire>0&&S.fired.includes(i));const r=q.s*.3;
-      x.fillStyle="#3b4468";x.beginPath();x.arc(q.x,q.y,r+3,0,7);x.fill();const mg=x.createRadialGradient(q.x-r*.3,q.y-r*.3,1,q.x,q.y,r);mg.addColorStop(0,lit?"#fff7c2":"#9aa6c8");mg.addColorStop(1,lit?"#ff8a2b":"#566089");x.fillStyle=mg;x.beginPath();x.arc(q.x,q.y,r,0,7);x.fill();
+      if(f.th==="kis"){const h=r*1.15;x.fillStyle="#4a2e18";x.fillRect(q.x-h-3,q.y-h-3,2*h+6,2*h+6);x.fillStyle=lit?"#ffe27a":"#2a3a5e";x.fillRect(q.x-h,q.y-h,2*h,2*h);if(lit){x.fillStyle="rgba(255,226,122,.35)";x.beginPath();x.arc(q.x,q.y,h+8+Math.sin(S.t/3)*2,0,7);x.fill()}x.strokeStyle="#4a2e18";x.lineWidth=2;x.beginPath();x.moveTo(q.x,q.y-h);x.lineTo(q.x,q.y+h);x.moveTo(q.x-h,q.y);x.lineTo(q.x+h,q.y);x.stroke();continue}x.fillStyle="#3b4468";x.beginPath();x.arc(q.x,q.y,r+3,0,7);x.fill();const mg=x.createRadialGradient(q.x-r*.3,q.y-r*.3,1,q.x,q.y,r);mg.addColorStop(0,lit?"#fff7c2":"#9aa6c8");mg.addColorStop(1,lit?"#ff8a2b":"#566089");x.fillStyle=mg;x.beginPath();x.arc(q.x,q.y,r,0,7);x.fill();
       if(lit){x.fillStyle="rgba(255,170,60,.35)";x.beginPath();x.arc(q.x,q.y,r+7+Math.sin(S.t/3)*2,0,7);x.fill();sp(x,"e_1f525",q.x,q.y,r*1.5)}}
     if(f.rc){for(let r=0;r<f.R;r++){const q=this.mot(f,A,r*f.C);label(x,(r+1)+". sıra",bx-28,q.y,11,"#dbe4ff")}}
     // kumanda paneli
@@ -13258,8 +13294,30 @@ const wrap2=(t,n)=>{if(t.length<=n)return[t];const w=t.split(" ");let a="",i=0;w
 // ---------------------------------------------------------------- 6) UZAY MEKİĞİ (binen-inen)
 // f:{start,rows:[{txt,d,n}],a,cands,spr}
 const SPEC_MEKIK={H:310,
-  init(f,S,A){A.c.noTheme=true;S.msg=null;f.cands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.a)A.done();else{A.fail();msg(S,"Durakları sırayla oku: binenleri ekle, inenleri çıkar")}}))},
-  draw(x,S,A){const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(58,Math.floor((A.H-62)/n)),Y0=50+Math.max(12,(A.H-50-n*rh)/2),yer=f.yer||"Mekikte";
+  drawKz(x,S,A){const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(104,Math.floor((A.H-58)/n)),Y0=48+Math.max(6,(A.H-48-n*rh)/2),nn=f.noun||"penguen";
+    const szOf=c=>Math.min(52,Math.floor((rh-46)*1.25),Math.floor(270/(Math.max(c,1)*.56)));
+    const peng=(cnt,x0,yb,sz)=>{for(let k=0;k<cnt;k++)sp(x,f.rowSpr,x0+k*sz*.56,yb,sz,{bottom:true})};
+    const sled=(x0,x1,yb)=>{x.lineCap="round";x.strokeStyle="#6b4020";x.lineWidth=4;for(let px=x0+4;px<=x1;px+=Math.max(26,(x1-x0)/4)){x.beginPath();x.moveTo(px,yb+5);x.lineTo(px,yb+12);x.stroke()}
+      x.strokeStyle="#e8eef8";x.lineWidth=5;x.beginPath();x.moveTo(x0-10,yb+13);x.lineTo(x1+6,yb+13);x.quadraticCurveTo(x1+26,yb+13,x1+22,yb-8);x.stroke();x.strokeStyle="#9fb0cc";x.lineWidth=2;x.stroke();
+      const wg=x.createLinearGradient(0,yb-4,0,yb+7);wg.addColorStop(0,"#f2b06e");wg.addColorStop(1,"#a8612c");x.fillStyle=wg;x.beginPath();x.roundRect(x0-12,yb-4,x1-x0+28,11,4);x.fill();x.strokeStyle="rgba(70,35,10,.7)";x.lineWidth=1.5;x.stroke();
+      x.strokeStyle="rgba(120,60,20,.5)";x.lineWidth=1;for(let px=x0;px<x1+12;px+=14){x.beginPath();x.moveTo(px,yb-3);x.lineTo(px,yb+6);x.stroke()}
+      x.strokeStyle="#c0392b";x.lineWidth=2;x.beginPath();x.moveTo(x1+22,yb-8);x.quadraticCurveTo(x1+34,yb-2,x1+30,yb+10);x.stroke()};
+    const badge=(cx,cy,up)=>{x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.arc(cx+1,cy+2,17,0,7);x.fill();x.fillStyle=up?"#2fb36b":"#e5484d";x.beginPath();x.arc(cx,cy,17,0,7);x.fill();x.strokeStyle="#fff";x.lineWidth=2;x.stroke();x.fillStyle="#fff";x.beginPath();if(up){x.moveTo(cx,cy-10);x.lineTo(cx+9,cy+1);x.lineTo(cx+4,cy+1);x.lineTo(cx+4,cy+9);x.lineTo(cx-4,cy+9);x.lineTo(cx-4,cy+1);x.lineTo(cx-9,cy+1)}else{x.moveTo(cx,cy+10);x.lineTo(cx+9,cy-1);x.lineTo(cx+4,cy-1);x.lineTo(cx+4,cy-9);x.lineTo(cx-4,cy-9);x.lineTo(cx-4,cy-1);x.lineTo(cx-9,cy-1)}x.closePath();x.fill()};
+    x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=3;x.setLineDash([2,7]);x.beginPath();x.moveTo(28,Y0+rh/2);x.lineTo(28,Y0+rh*(n-1)+rh/2);x.stroke();x.setLineDash([]);
+    for(let i=0;i<n;i++){const y=Y0+i*rh,first=i===0,last=i===n-1,row=f.rows[i-1],bx=48,bw=W-56,cy=y+rh/2;
+      x.fillStyle=first||last?"#ffd85c":"#dfe7fb";x.beginPath();x.arc(28,cy,first||last?13:11,0,7);x.fill();if(!first&&!last)label(x,String(i),28,cy+1,13,"#22314d");else sp(x,"sled",28,cy,20);
+      if(first||last){const cnt=first?f.start:f.endN;gBlock(x,bx,y+3,bw,rh-6,first?"#2c3a78":"#3a2c78",12);
+        label(x,`${f.yer||"Kızakta"} ${first?"":"şimdi "}${NF(cnt)} ${nn} var`,bx+bw/2,y+17,15,last?"#ffd85c":"#fff");
+        const yb=y+rh-22,show=cnt<=20?cnt:5,sz=szOf(show),x0=bx+30,x1=x0+(show-1)*sz*.56+sz*.3+(cnt>20?24:0);sled(x0-8,x1,yb);peng(show,x0,yb-3,sz);if(cnt>20)label(x,"…",x1-8,yb-14,22,"#fff")}
+      else{const up=row.d>0,unk=row.unk&&!S.locked,rtxt=S.locked&&row.solved?row.solved:row.txt;gBlock(x,bx,y+3,bw,rh-6,up?"#1d4a3a":"#4a1f2a",12);
+        if(unk){x.strokeStyle="#ffd85c";x.lineWidth=2.5;x.setLineDash([6,5]);x.beginPath();x.roundRect(bx+2,y+5,bw-4,rh-10,10);x.stroke();x.setLineDash([])}
+        badge(bx+24,cy+4,up);label(x,rtxt,bx+bw/2+16,y+17,15,unk?"#ffd85c":"#fff");
+        const yb=y+rh-12;
+        if(unk){const qx=bx+bw/2+16,qy=yb-14;x.fillStyle="rgba(255,216,92,.18)";x.beginPath();x.arc(qx,qy,15,0,7);x.fill();x.strokeStyle="#ffd85c";x.lineWidth=2.5;x.beginPath();x.arc(qx,qy,15,0,7);x.stroke();label(x,"?",qx,qy+1,22,"#ffd85c")}
+        else{const show=row.n<=20?row.n:5,sz=Math.min(44,szOf(show)),x0=bx+60;peng(show,x0,yb,sz);if(row.n>20)label(x,"…",x0+show*sz*.56+8,yb-12,22,"#fff")}}}
+    topTip(x,S,A,f,false)},
+  init(f,S,A){A.c.noTheme=true;S.msg=null;f.cands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.a)A.done();else{A.fail();msg(S,f.failMsg||"Durakları sırayla oku: binenleri ekle, inenleri çıkar")}}))},
+  draw(x,S,A){if(S.f.kz)return this.drawKz(x,S,A);const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(58,Math.floor((A.H-62)/n)),Y0=50+Math.max(12,(A.H-50-n*rh)/2),yer=f.yer||"Mekikte";
     x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=3;x.setLineDash([2,7]);x.beginPath();x.moveTo(40,Y0+rh/2);x.lineTo(40,Y0+rh*(n-1)+rh/2);x.stroke();x.setLineDash([]);
     for(let i=0;i<n;i++){const y=Y0+i*rh,first=i===0,last=i===n-1,row=f.rows[i-1];
       gBlock(x,66,y+3,W-82,rh-8,first?"#2c3a78":last?"#3a2c78":"#22305e",10);
@@ -13276,7 +13334,7 @@ const SPEC_MEKIK={H:310,
 const SPEC_KOL={H:330,
   init(f,S,A){A.c.noTheme=true;S.sel=[];S.msg=null;
     A.btn("↩ Temizle",()=>{if(!S.locked)S.sel=[]});
-    A.btn("Tamam",()=>{if(S.locked)return;if(S.sel.length<f.k){msg(S,`${f.k} kart seçmelisin`);return}const v=S.sel.map(i=>f.cards[i]);const r=f.mode==="prod"?v.reduce((a,b)=>a*b,1):v.reduce((a,b)=>a+b,0);if(r===f.target)A.done();else{A.fail();msg(S,f.mode==="prod"?`Seçtiğin kartların çarpımı ${NF(r)}`:`Seçtiğin kartlar birlikte ${NF(r)} ediyor`)}},"")},
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.sel.length<f.k){msg(S,`${f.k} kart seçmelisin`);return}const v=S.sel.map(i=>f.cards[i]);const r=f.mode==="prod"?v.reduce((a,b)=>a*b,1):f.mode==="diff"?Math.abs(v[0]-v[1]):v.reduce((a,b)=>a+b,0);if(r===f.target)A.done();else{A.fail();msg(S,f.mode==="prod"?`Seçtiğin kartların çarpımı ${NF(r)}`:f.mode==="diff"?`Seçtiğin kartların farkı ${NF(r)}`:`Seçtiğin kartlar birlikte ${NF(r)} ediyor`)}},"")},
   pos(A,i){const a=-Math.PI/2+i*Math.PI/4+Math.PI/8;return{x:A.W/2+Math.cos(a)*(A.W/2-46),y:186+Math.sin(a)*112,r:27}},
   down(p,S,A){const f=S.f;if(S.locked)return;for(let i=0;i<8;i++){const q=this.pos(A,i);if(Math.hypot(p.x-q.x,p.y-q.y)<q.r+5){const k=S.sel.indexOf(i);if(k>=0)S.sel.splice(k,1);else if(S.sel.length>=f.k)msg(S,`En çok ${f.k} kart seçebilirsin`);else S.sel.push(i);sfx.pop();return}}},
   draw(x,S,A){const f=S.f,W=A.W,cx=W/2,cy=186;
@@ -13289,16 +13347,16 @@ const SPEC_KOL={H:330,
 // f:{lines:[txt],items:[{k,name,need,dig}],mode:"say"|"cark"}
 const SPEC_KANTIN={H:322,
   init(f,S,A){A.c.noTheme=true;S.msg=null;S.v=f.items.map(()=>0);S.touched=false;
-    A.btn("Tamam",()=>{if(S.locked)return;if(!S.touched){msg(S,"Önce tepsiyi doldur");return}if(f.items.every((it,i)=>S.v[i]===it.need))A.done();else{A.fail();msg(S,"Fişi yeniden oku, tepsiyi düzelt")}},"")},
+    A.btn("Tamam",()=>{if(S.locked)return;if(!S.touched){msg(S,f.emptyMsg||"Önce tepsiyi doldur");return}if(f.items.every((it,i)=>S.v[i]===it.need))A.done();else{A.fail();msg(S,f.failMsg||"Fişi yeniden oku, tepsiyi düzelt")}},"")},
   top(f){return 54+f.lines.reduce((s,l)=>s+wrap2(l,40).length,0)*18+38},
   row(f,A,i){const y0=this.top(f),n=f.items.length;if(f.mode==="say"){const rh=Math.min(84,Math.floor((A.H-y0-6)/n));return{y:y0+i*rh,h:rh}}const rh=Math.min(130,Math.floor((A.H-y0-4)/n));return{y:y0+i*rh,h:rh}},
   hits(f,A){const o=[];f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2;if(f.mode==="say"){o.push({i,d:-1,x:14,y:cy-20,w:40,h:40});o.push({i,d:1,x:A.W-54,y:cy-20,w:40,h:40})}else{for(let d=0;d<it.dig;d++){const p=Math.pow(10,it.dig-1-d),bx=A.W/2+30+(d-(it.dig-1)/2)*50-20;o.push({i,d:p,dg:d,x:bx,y:cy-45,w:40,h:24});o.push({i,d:-p,dg:d,x:bx,y:cy+21,w:40,h:24})}}});return o},
   down(p,S,A){const f=S.f;if(S.locked)return;for(const h of this.hits(f,A)){if(kHit(p,{x:h.x-3,y:h.y-3,w:h.w+6,h:h.h+6})){const it=f.items[h.i];if(f.mode==="say"){const nv=S.v[h.i]+h.d;if(nv<0||nv>20)return;S.v[h.i]=nv}else{const p10=Math.abs(h.d),dg=Math.floor(S.v[h.i]/p10)%10,nd=(dg+(h.d>0?1:9))%10;S.v[h.i]+=(nd-dg)*p10}S.touched=true;sfx.pop();return}}},
   draw(x,S,A){const f=S.f,W=A.W;const y0=this.top(f);
     // fiş
-    const nl=f.lines.reduce((s,l)=>s+wrap2(l,40).length,0);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(22,48,W-40,nl*18+36,6);x.fill();x.fillStyle="#fffdf2";x.beginPath();x.roundRect(18,44,W-36,nl*18+36,6);x.fill();label(x,"SİPARİŞ FİŞİ",W/2,57,11,"#9a8f6a");x.strokeStyle="#d9d2b8";x.setLineDash([4,4]);x.lineWidth=1;x.beginPath();x.moveTo(30,67);x.lineTo(W-30,67);x.stroke();x.setLineDash([]);
+    const nl=f.lines.reduce((s,l)=>s+wrap2(l,40).length,0);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(22,48,W-40,nl*18+36,6);x.fill();x.fillStyle="#fffdf2";x.beginPath();x.roundRect(18,44,W-36,nl*18+36,6);x.fill();label(x,f.fisLab||"SİPARİŞ FİŞİ",W/2,57,11,"#9a8f6a");x.strokeStyle="#d9d2b8";x.setLineDash([4,4]);x.lineWidth=1;x.beginPath();x.moveTo(30,67);x.lineTo(W-30,67);x.stroke();x.setLineDash([]);
     let ly=44+38;f.lines.forEach(l=>wrap2(l,40).forEach(t=>{label(x,t,W/2,ly,14,"#22314d");ly+=18}));
-    f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2;gBlock(x,8,r.y+2,W-16,r.h-5,"#22305e",10);
+    f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2+(it.tag&&f.mode==="say"?6:0);gBlock(x,8,r.y+2,W-16,r.h-5,it.bg||"#22305e",10);if(it.tag&&f.mode==="say"){x.fillStyle="rgba(255,255,255,.9)";x.beginPath();x.roundRect(60,r.y+4,it.tag.length*7+12,14,6);x.fill();label(x,it.tag,66+it.tag.length*3.5,r.y+11,11,"#22314d")}
       if(f.mode==="say"){const v=S.v[i];for(let k=0;k<v;k++){const col=k%10,rw=Math.floor(k/10),two=v>10;sp(x,it.k,72+col*25.5,cy+(two?(rw?11:-11):0),two?20:23)}if(!v){sp(x,it.k,W/2-44,cy,24,{alpha:.45});label(x,it.name,W/2+14,cy+1,14,"#8fa0d8")}}
       else{sp(x,it.k,52,cy-6,40);label(x,it.name,52,cy+26,12,"#dbe4ff");for(let d=0;d<it.dig;d++){const bx=W/2+30+(d-(it.dig-1)/2)*50-20,p10=Math.pow(10,it.dig-1-d),dg=Math.floor(S.v[i]/p10)%10;x.fillStyle="#fff";x.beginPath();x.roundRect(bx,cy-17,40,34,7);x.fill();label(x,String(dg),bx+20,cy+1,22,"#22314d")}}});
     this.hits(f,A).forEach(h=>{if(S.locked)return;gBlock(x,h.x,h.y,h.w,h.h,"#6c5ce7",f.mode==="say"?12:7);if(f.mode==="say")label(x,h.d>0?"+":"−",h.x+h.w/2,h.y+h.h/2+1,24,"#fff");else{x.fillStyle="#fff";x.beginPath();const mx=h.x+h.w/2,my=h.y+h.h/2;if(h.d>0){x.moveTo(mx,my-6);x.lineTo(mx+8,my+5);x.lineTo(mx-8,my+5)}else{x.moveTo(mx,my+6);x.lineTo(mx+8,my-5);x.lineTo(mx-8,my-5)}x.closePath();x.fill()}});
@@ -13309,16 +13367,16 @@ const HEXN=(R,C,i)=>{const r=Math.floor(i/C),c=i%C,o=r%2?[[0,-1],[0,1],[-1,0],[-
 const SPEC_ROTA={H:324,
   init(f,S,A){A.c.noTheme=true;S.sel=[f.path[0]];S.msg=null;
     A.btn("↩ Geri al",()=>{if(!S.locked&&S.sel.length>1)S.sel.pop()});
-    A.btn("Tamam",()=>{if(S.locked)return;if(S.sel.length<2){msg(S,"Rokete komşu bir yıldıza dokun");return}if(S.sel.length===f.path.length&&S.sel.every((v,i)=>v===f.path[i]))A.done();else{A.fail();msg(S,S.sel[S.sel.length-1]!==f.path[f.path.length-1]?"Rota gezegene ulaşmadı":"Sayma sırasına yeniden bak")}},"")},
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.sel.length<2){msg(S,"Rokete komşu bir yıldıza dokun");return}const goal=f.path[f.path.length-1],end=S.sel[S.sel.length-1];const ok=f.mode==="sira"?(end===goal&&S.sel.every((c,i)=>i===0||(f.desc?f.vals[c]<f.vals[S.sel[i-1]]:f.vals[c]>f.vals[S.sel[i-1]]))):(S.sel.length===f.path.length&&S.sel.every((v,i)=>v===f.path[i]));if(ok){if(f.mode==="sira")f.ansTxt=S.sel.map(c=>NF(f.vals[c])).join(f.desc?" > ":" < ");A.done()}else{A.fail();msg(S,end!==goal?(f.goalMsg||"Rota gezegene ulaşmadı"):(f.mode==="sira"?(f.desc?"Her adımda daha küçük bir sayıya gitmelisin":"Her adımda daha büyük bir sayıya gitmelisin"):"Sayma sırasına yeniden bak"))}},"")},
   cen(f,A,i){const R=Math.min(f.C<=5?38:31,(A.W-16)/((f.C+.5)*1.732)),w=R*1.732,r=Math.floor(i/f.C),c=i%f.C,x0=(A.W-(f.C*w+w/2))/2+w/2;return{x:x0+c*w+(r%2?w/2:0),y:(f.C<=5?92:88)+r*R*1.5,R}},
   down(p,S,A){const f=S.f;if(S.locked)return;for(let i=0;i<f.R*f.C;i++){const q=this.cen(f,A,i);if(Math.hypot(p.x-q.x,p.y-q.y)<q.R*.86){const last=S.sel[S.sel.length-1];if(i===last&&S.sel.length>1){S.sel.pop();sfx.pop()}else if(S.sel.includes(i))msg(S,"Bu yıldızdan zaten geçtin");else if(!HEXN(f.R,f.C,last).includes(i))msg(S,"Yalnız komşu yıldıza geçebilirsin");else{S.sel.push(i);sfx.pop()}return}}},
   hex(x,q,r){x.beginPath();for(let k=0;k<6;k++){const a=Math.PI/6+k*Math.PI/3;x[k?"lineTo":"moveTo"](q.x+Math.cos(a)*r,q.y+Math.sin(a)*r)}x.closePath()},
   draw(x,S,A){const f=S.f,n=f.R*f.C,goal=f.path[f.path.length-1];const show=S.locked?f.path:S.sel;
     for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),isG=i===goal,isS=i===f.path[0];
-      this.hex(x,{x:q.x+1,y:q.y+3},q.R-2);x.fillStyle="rgba(0,0,0,.3)";x.fill();this.hex(x,q,q.R-2);const g=x.createLinearGradient(0,q.y-q.R,0,q.y+q.R);if(on){g.addColorStop(0,S.locked?"#b9f5cd":"#ffe89a");g.addColorStop(1,S.locked?"#5fcf8c":"#f5b93a")}else{g.addColorStop(0,"#4a5aa8");g.addColorStop(1,"#2a3470")}x.fillStyle=g;x.fill();x.strokeStyle=isG?"#ff8a5c":isS?"#7be08a":"rgba(255,255,255,.35)";x.lineWidth=isG||isS?3.5:1.5;x.stroke()}
+      this.hex(x,{x:q.x+1,y:q.y+3},q.R-2);x.fillStyle="rgba(0,0,0,.3)";x.fill();this.hex(x,q,q.R-2);const g=x.createLinearGradient(0,q.y-q.R,0,q.y+q.R);if(on){g.addColorStop(0,S.locked?"#b9f5cd":"#ffe89a");g.addColorStop(1,S.locked?"#5fcf8c":"#f5b93a")}else{if(f.th==="kis"){g.addColorStop(0,"#7fb6e0");g.addColorStop(1,"#3d6fa3")}else{g.addColorStop(0,"#4a5aa8");g.addColorStop(1,"#2a3470")}}x.fillStyle=g;x.fill();x.strokeStyle=isG?"#ff8a5c":isS?"#7be08a":"rgba(255,255,255,.35)";x.lineWidth=isG||isS?3.5:1.5;x.stroke()}
     if(show.length>1){x.strokeStyle="rgba(120,70,0,.55)";x.lineWidth=4;x.lineCap="round";x.setLineDash([1,8]);x.beginPath();show.forEach((i,k)=>{const q=this.cen(f,A,i);x[k?"lineTo":"moveTo"](q.x,q.y+q.R*.5)});x.stroke();x.setLineDash([])}
-    for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),t=NF(f.vals[i]);label(x,t,q.x,q.y+1,t.length>=6?13:t.length>=4?14:17,on?"#22314d":"#fff");if(i===goal)sp(x,"planet",q.x+17,q.y-19,22)}
-    const cur=this.cen(f,A,show[show.length-1]);sp(x,"rocket",cur.x-17,cur.y-19+Math.sin(S.t/14)*1.5,24);
+    for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),t=NF(f.vals[i]);label(x,t,q.x,q.y+1,t.length>=6?13:t.length>=4?14:17,on?"#22314d":"#fff");if(i===goal)sp(x,f.goalSpr||"planet",q.x+17,q.y-19,22)}
+    const cur=this.cen(f,A,show[show.length-1]);sp(x,f.curSpr||"rocket",cur.x-17,cur.y-19+Math.sin(S.t/14)*1.5,24);
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 10) KABLO BAĞLA (gösterim eşleme)
 // f:{L:[{t}|{dots}|{tally}|{two:[a,b]}],Rt:[txt],map:[j]}
@@ -13483,14 +13541,14 @@ const SPEC_BULUT={H:318,
   draw(x,S,A){const f=S.f,W=A.W;
     gBlock(x,W/2-104,48,208,40,"#22305e",12);label(x,f.plate,W/2,69,16,"#ffd85c");
     const lx=W*.27,ly=176;
-    if(f.kind==="obj"){for(let k=0;k<f.v;k++){const col=k%5,row=Math.floor(k/5);sp(x,"alien",lx-56+col*28,ly-34+row*30+Math.sin(S.t/20+k)*1.5,26)}}
-    else{b10(x,f.c,W*.26,ly,Math.min(1,(W*.5-8)/b10size(f.c)));b10legend(x,f.c,W/2,300)}
+    if(f.kind==="obj"){for(let k=0;k<f.v;k++){const col=k%5,row=Math.floor(k/5);sp(x,f.objSpr||"alien",lx-56+col*28,ly-34+row*30+Math.sin(S.t/20+k)*1.5,f.objSpr?30:26)}}
+    else{b10(x,f.c,W*.26,ly,Math.min(1,(W*.5-8)/b10size(f.c)));if(f.th==="kis"){x.fillStyle="rgba(20,34,70,.85)";x.beginPath();x.roundRect(30,288,W-60,24,10);x.fill()}b10legend(x,f.c,W/2,300)}
     // nebula bulutu
     const bx=W*.74,by=ly;const g=x.createRadialGradient(bx,by,8,bx,by,84);g.addColorStop(0,"#c9b6ff");g.addColorStop(.6,"#8f76e8");g.addColorStop(1,"rgba(110,84,210,0)");
-    [[0,0,64],[-42,14,44],[44,12,46],[-18,-30,44],[26,-28,42],[0,32,48]].forEach(([dx,dy,r],i)=>{x.fillStyle=i?"#8f76e8":"#a48cf5";x.beginPath();x.arc(bx+dx+Math.sin(S.t/40+i)*2,by+dy,r,0,7);x.fill()});
+    [[0,0,64],[-42,14,44],[44,12,46],[-18,-30,44],[26,-28,42],[0,32,48]].forEach(([dx,dy,r],i)=>{x.fillStyle=f.th==="kis"?(i?"#dbe9f7":"#f4f9ff"):(i?"#8f76e8":"#a48cf5");x.beginPath();x.arc(bx+dx+Math.sin(S.t/40+i)*2,by+dy,r,0,7);x.fill()});
     x.fillStyle="rgba(255,255,255,.18)";x.beginPath();x.arc(bx-16,by-22,30,0,7);x.fill();
-    label(x,S.locked?NF(f.a):"?",bx,by+2,S.locked?(String(f.a).length>=4?24:30):40,"#fff");
-    label(x,"görünen",lx,272,12,"#b8c6f5");label(x,"saklanan",bx,272,12,"#b8c6f5");
+    {const hv=f.hid!=null?f.hid:f.a;label(x,S.locked?NF(hv):"?",bx,by+2,S.locked?(String(hv).length>=4?24:30):40,f.th==="kis"?"#2b4a6e":"#fff")}
+    {const lc=f.th==="kis"?"#2b4a6e":"#b8c6f5";label(x,"görünen",lx,272,13,lc);label(x,"saklanan",bx,272,13,lc)}
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 13) AYNA İSTASYON (yansıma)
 // f:{R,C,pat:[R*C renk 0..k],axis:"h"|"v",k}
@@ -13498,8 +13556,8 @@ const ACOL=["","#ffd85c","#4ad0ff"];
 const SPEC_AYNA={H:336,
   init(f,S,A){A.c.noTheme=true;S.msg=null;S.v=Array(f.R*f.C).fill(0);
     A.btn("↩ Temizle",()=>{if(!S.locked)S.v.fill(0)});
-    A.btn("Tamam",()=>{if(S.locked)return;if(!S.v.some(v=>v)){msg(S,"Yansımadaki pencerelere dokun");return}const t=this.target(f);if(S.v.every((v,i)=>v===t[i]))A.done();else{A.fail();msg(S,f.axis==="h"?"Aynaya yakın olan pencere, yansımada da aynaya yakındır":"Aynaya yakın olan pencere, yansımada da aynaya yakındır")}},"")},
-  target(f){const t=Array(f.R*f.C).fill(0);for(let r=0;r<f.R;r++)for(let c=0;c<f.C;c++){const mr=f.axis==="h"?f.R-1-r:r,mc=f.axis==="h"?c:f.C-1-c;t[mr*f.C+mc]=f.pat[r*f.C+c]}return t},
+    A.btn("Tamam",()=>{if(S.locked)return;if(!S.v.some(v=>v)){msg(S,"Yansımadaki pencerelere dokun");return}const t=this.target(f);if(S.v.every((v,i)=>v===t[i]))A.done();else{A.fail();msg(S,f.failMsg||"Aynaya yakın olan pencere, yansımada da aynaya yakındır")}},"")},
+  target(f){const t=Array(f.R*f.C).fill(0);for(let r=0;r<f.R;r++)for(let c=0;c<f.C;c++){const mr=f.r180||f.axis==="h"?f.R-1-r:r,mc=f.r180?f.C-1-c:f.axis==="h"?c:f.C-1-c;t[mr*f.C+mc]=f.pat[r*f.C+c]}return t},
   geo(f,A,side,i){const r=Math.floor(i/f.C),c=i%f.C;if(f.axis==="h"){const s=Math.min(46,(A.W-60)/f.C,124/f.R),x0=A.W/2-f.C*s/2,y0=side?196:186-f.R*s;return{x:x0+c*s,y:y0+r*s,s}}const s=Math.min(42,(A.W-64)/(2*f.C),230/f.R),y0=176-f.R*s/2+12,x0=side?A.W/2+10:A.W/2-10-f.C*s;return{x:x0+c*s,y:y0+r*s,s}},
   down(p,S,A){const f=S.f;if(S.locked)return;for(let i=0;i<f.R*f.C;i++){const g=this.geo(f,A,1,i);if(p.x>=g.x&&p.x<g.x+g.s&&p.y>=g.y&&p.y<g.y+g.s){S.v[i]=(S.v[i]+1)%(f.k+1);sfx.pop();return}}},
   draw(x,S,A){const f=S.f,W=A.W,n=f.R*f.C,t=this.target(f);
@@ -13507,7 +13565,7 @@ const SPEC_AYNA={H:336,
       for(let i=0;i<n;i++){const g=this.geo(f,A,side,i),v=side?(S.locked?t[i]:S.v[i]):f.pat[i];x.fillStyle=v?ACOL[v]:(side?"#1b2350":"#39446e");x.beginPath();x.roundRect(g.x+3,g.y+3,g.s-6,g.s-6,6);x.fill();if(v){x.fillStyle="rgba(255,255,255,.45)";x.beginPath();x.roundRect(g.x+6,g.y+6,g.s*.3,g.s*.18,3);x.fill()}else if(side&&!S.locked){x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=1;x.setLineDash([3,3]);x.beginPath();x.roundRect(g.x+3,g.y+3,g.s-6,g.s-6,6);x.stroke();x.setLineDash([])}}});
     // ayna çizgisi
     x.strokeStyle="#7fe3ff";x.lineWidth=3;x.setLineDash([8,6]);x.beginPath();if(f.axis==="h"){x.moveTo(24,191);x.lineTo(W-24,191)}else{const a=this.geo(f,A,0,0),b=this.geo(f,A,0,n-1);x.moveTo(W/2,a.y-14);x.lineTo(W/2,b.y+b.s+14)}x.stroke();x.setLineDash([]);
-    if(f.axis==="h"){label(x,"AYNA",W-44,180,11,"#7fe3ff")}else{const a=this.geo(f,A,0,0);label(x,"AYNA",W/2,a.y-22,11,"#7fe3ff")}
+    if(f.r180){label(x,"↻ BAŞ AŞAĞI",W-62,180,11,"#7fe3ff")}else if(f.axis==="h"){label(x,"AYNA",W-44,180,11,"#7fe3ff")}else{const a=this.geo(f,A,0,0);label(x,"AYNA",W/2,a.y-22,11,"#7fe3ff")}
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 14) DÖNEN UYDU (döndürülmüş paneli bul)
 // f:{n,target:[],opts:[[],[],[]],ai}
@@ -13515,11 +13573,11 @@ const rot90=(p,n)=>{const o=Array(n*n);for(let r=0;r<n;r++)for(let c=0;c<n;c++)o
 const rots=(p,n)=>{const a=[p];for(let i=0;i<3;i++)a.push(rot90(a[a.length-1],n));return a};
 const DCOL=["#2a3470","#ffd85c","#ff7a59","#4ad0ff"];
 const SPEC_DONEN={H:322,
-  init(f,S,A){A.c.noTheme=true;S.sel=-1;S.msg=null;A.btn("Tamam",()=>{if(S.locked)return;if(S.sel<0){msg(S,"Önce bir panel seç");return}if(S.sel===f.ai)A.done();else{A.fail();msg(S,"Bir köşedeki renge bak: döndürünce nereye gider?");S.sel=-1}},"")},
+  init(f,S,A){A.c.noTheme=true;S.sel=-1;S.msg=null;A.btn("Tamam",()=>{if(S.locked)return;if(S.sel<0){msg(S,"Önce bir panel seç");return}if(S.sel===f.ai)A.done();else{A.fail();msg(S,f.failMsg||"Bir köşedeki renge bak: döndürünce nereye gider?");S.sel=-1}},"")},
   tile(x,p,n,cx,cy,sz,hl){const s=sz/n;gBlock(x,cx-sz/2-7,cy-sz/2-7,sz+14,sz+14,hl===2?"#9be7b4":hl?"#ffd85c":"#c9d3ea",10);for(let i=0;i<n*n;i++){const X=cx-sz/2+(i%n)*s,Y=cy-sz/2+Math.floor(i/n)*s;x.fillStyle=DCOL[p[i]];x.beginPath();x.roundRect(X+1.5,Y+1.5,s-3,s-3,4);x.fill()}},
-  opt(A,k){const w=(A.W-32)/3;return{cx:16+w*k+w/2,cy:246,sz:Math.min(88,w-26)}},
-  down(p,S,A){if(S.locked)return;for(let k=0;k<3;k++){const o=this.opt(A,k);if(Math.abs(p.x-o.cx)<o.sz/2+10&&Math.abs(p.y-o.cy)<o.sz/2+10){S.sel=S.sel===k?-1:k;sfx.pop();return}}},
-  draw(x,S,A){const f=S.f,W=A.W;label(x,"ÖRNEK",W/2,58,11,"#b8c6f5");this.tile(x,f.target,f.n,W/2,116,84,0);
+  opt(A,k,f){const w=(A.W-32)/3;if(f&&f.odd)return{cx:16+w*k+w/2,cy:178,sz:Math.min(100,w-18)};return{cx:16+w*k+w/2,cy:246,sz:Math.min(88,w-26)}},
+  down(p,S,A){if(S.locked)return;for(let k=0;k<3;k++){const o=this.opt(A,k,S.f);if(Math.abs(p.x-o.cx)<o.sz/2+10&&Math.abs(p.y-o.cy)<o.sz/2+10){S.sel=S.sel===k?-1:k;sfx.pop();return}}},
+  draw(x,S,A){const f=S.f,W=A.W;if(f.odd){for(let k=0;k<3;k++){const o=this.opt(A,k,f);this.tile(x,f.opts[k],f.n,o.cx,o.cy,o.sz,S.locked&&k===f.ai?2:S.sel===k?1:0)}label(x,"İki panel aynı, biri farklı",W/2,270,13,"#dbe4ff");topTip(x,S,A,f,false);return}label(x,"ÖRNEK",W/2,58,11,"#b8c6f5");this.tile(x,f.target,f.n,W/2,116,84,0);
     x.strokeStyle="#7fe3ff";x.lineWidth=2.5;x.beginPath();x.arc(W/2+78,116,16,-2.3,1.6);x.stroke();x.fillStyle="#7fe3ff";x.beginPath();const ax=W/2+78+Math.cos(1.6)*16,ay=116+Math.sin(1.6)*16;x.moveTo(ax-9,ay-2);x.lineTo(ax+3,ay-7);x.lineTo(ax+2,ay+6);x.closePath();x.fill();
     for(let k=0;k<3;k++){const o=this.opt(A,k);this.tile(x,f.opts[k],f.n,o.cx,o.cy,o.sz,S.locked&&k===f.ai?2:S.sel===k?1:0)}
     topTip(x,S,A,f,false)}};
@@ -13529,14 +13587,14 @@ const SPEC_AYIR={H:340,
   init(f,S,A){A.c.noTheme=true;S.msg=null;S.pick=-1;S.at=f.cards.map(()=>-1);
     A.btn("↩ Temizle",()=>{if(!S.locked){S.at.fill(-1);S.pick=-1}});
     A.btn("Tamam",()=>{if(S.locked)return;if(S.at.some(v=>v<0)){msg(S,"Bütün kartları kutulara koy");return}if(f.cards.every((c,i)=>S.at[i]===c.b))A.done();else{A.fail();const w=f.cards.filter((c,i)=>S.at[i]!==c.b).length;msg(S,`${w} kart yanlış kutuda`);f.cards.forEach((c,i)=>{if(S.at[i]!==c.b)S.at[i]=-1})}},"")},
-  card(f,A,i){const w=(A.W-40)/3;return{x:14+(i%3)*(w+6),y:52+Math.floor(i/3)*46,w,h:40}},
+  card(f,A,i){if(f.cards.some(c=>c.t.length>13)){const w=(A.W-34)/2;return{x:14+(i%2)*(w+6),y:50+Math.floor(i/2)*36,w,h:32}}const w=(A.W-40)/3;return{x:14+(i%3)*(w+6),y:52+Math.floor(i/3)*46,w,h:40}},
   bin(A,b){const w=A.W/2-18;return{x:12+b*(w+12),y:158,w,h:172}},
-  chip(f,S,A,i){const b=S.at[i],B=this.bin(A,b),k=f.cards.map((c,j)=>j).filter(j=>S.at[j]===b).indexOf(i),w=(B.w-18)/2;return{x:B.x+6+(k%2)*(w+6),y:B.y+44+Math.floor(k/2)*40,w,h:34}},
+  chip(f,S,A,i){const b=S.at[i],B=this.bin(A,b),k=f.cards.map((c,j)=>j).filter(j=>S.at[j]===b).indexOf(i);if(f.cards.some(c=>c.t.length>8)){const n=f.cards.filter((c,j)=>S.at[j]===b).length,hh=n>3?28:32;return{x:B.x+6,y:B.y+42+k*(hh+2),w:B.w-12,h:hh}}const w=(B.w-18)/2;return{x:B.x+6+(k%2)*(w+6),y:B.y+44+Math.floor(k/2)*40,w,h:34}},
   down(p,S,A){const f=S.f;if(S.locked)return;for(let i=0;i<f.cards.length;i++){if(S.at[i]<0){if(kHit(p,this.card(f,A,i))){S.pick=S.pick===i?-1:i;sfx.pop();return}}else if(kHit(p,this.chip(f,S,A,i))){S.at[i]=-1;S.pick=i;sfx.pop();return}}
     for(let b=0;b<2;b++){if(kHit(p,this.bin(A,b))){if(S.pick<0){msg(S,"Önce bir karta dokun");return}S.at[S.pick]=b;S.pick=-1;sfx.pop();return}}},
   draw(x,S,A){const f=S.f;
     for(let b=0;b<2;b++){const B=this.bin(A,b);gBlock(x,B.x,B.y,B.w,B.h,b?"#3a2c78":"#1f4a6e",12);x.fillStyle=b?"#8f76e8":"#4aa8ff";x.beginPath();x.roundRect(B.x,B.y,B.w,36,[12,12,0,0]);x.fill();const L=wrap2(f.bins[b],22);L.forEach((t,k)=>label(x,t,B.x+B.w/2,B.y+19+(k-(L.length-1)/2)*15,L.length>1?12:14,"#fff"))}
-    f.cards.forEach((c,i)=>{const at=S.locked?c.b:S.at[i];let r;if(at<0)r=this.card(f,A,i);else{const sv=S.at[i];S.at[i]=at;r=this.chip(f,S,A,i);S.at[i]=sv}const on=S.pick===i;gBlock(x,r.x,r.y,r.w,r.h,on?"#ffd85c":S.locked?"#bbf7d0":"#f4f7ff",8);const t=c.t;label(x,t,r.x+r.w/2,r.y+r.h/2+1,t.length>=7?(at<0?14:12):at<0?17:15,"#22314d")});
+    f.cards.forEach((c,i)=>{const at=S.locked?c.b:S.at[i];let r;if(at<0)r=this.card(f,A,i);else{const sv=S.at[i];S.at[i]=at;r=this.chip(f,S,A,i);S.at[i]=sv}const on=S.pick===i;gBlock(x,r.x,r.y,r.w,r.h,on?"#ffd85c":S.locked?"#bbf7d0":"#f4f7ff",8);const t=c.t,base=t.length>=7?(at<0?14:12):at<0?17:15,fs=Math.max(10,Math.min(base,Math.floor((r.w-8)/(0.56*t.length))));label(x,t,r.x+r.w/2,r.y+r.h/2+1,fs,"#22314d")});
     topTip(x,S,A,f,false)}};
 
 // ---------------- sorular: flaş
@@ -13666,8 +13724,319 @@ const EV={asans:HCx("Merdiven Asansörü","Sayı doğrusunda ileri-geri sayma","
   ayir:HCx("İki Kutu","Sayıları özelliğine göre sınıflama","Sayı kartları, iki kap",["Kaplara birer kural yazın: '10'dan küçük', '10'dan büyük'.","Çocuğunuz kartları tek tek doğru kaba atsın.","Kuralı o belirlesin, siz ayırın; yanlış yaparsanız yakalasın."],"Bu sayıyı neden o kutuya koydun?")};
 Object.keys(GFACT).filter(id=>/^(asans|karis|krater|motor|parca|mekik|kol|kantin|rota|kablo|flas|bulut|ayna|donen|ayir)[1-4]$/.test(id)).forEach(id=>{GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f})});
 if(typeof G!=="undefined"&&typeof KTIER!=="undefined"&&typeof ENGINES!=="undefined"&&typeof SETS!=="undefined"){
-  Object.keys(DEF).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;G[id]={id,name:DEF[b][0],ico:DEF[b][1],task:DEF[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG[b];if(typeof HOME!=="undefined")HOME[id]=EV[b];if(SETS[11]&&SETS[11][g]&&!SETS[11][g].includes(id))SETS[11][g].push(id)}});
+  Object.keys(DEF).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;G[id]={id,name:DEF[b][0],ico:DEF[b][1],task:DEF[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG[b];if(typeof HOME!=="undefined")HOME[id]=EV[b];if(id==="rota1")continue;/* 1. sınıf Kasım 30 gün: Yıldız Rotası Aralık'a (kış temasıyla) taşındı */if(SETS[11]&&SETS[11][g]&&!SETS[11][g].includes(id))SETS[11][g].push(id)}});
 }
+// ======================================================================== ARALIK · her güne 1 oyun (kış teması)
+const KB=(spec,bg)=>sbEngine(Object.assign({},spec,{bg:(x,W,H,t)=>(window.KBG&&KBG.BG[bg]?KBG.BG[bg](x,W,H,t):starfield(x,W,H,t))}));
+const KIS=f=>Object.assign(f,{th:"kis"});
+// ---------------- 1) Teleferik Kulesi (asansör motoru · soru türü: FARK)
+const btn=(d,up,u)=>({d:up?d:-d,lab:`${NF(d)} ${u} ${up?"yukarı":"aşağı"}`});
+const BT=(a,b,u)=>[btn(a,true,u),btn(b,true,u),btn(a,false,u),btn(b,false,u)];
+const tl=(r,o)=>{const up=o.a>o.start,d=Math.abs(o.a-o.start),un=o.lab==="Metre"?"metre":"kat";return KIS(Object.assign({min:0,nStops:d,k:1,stopCands:opts(r,d,o.alt(d)),p2q:up?`Kaç ${un} ${un==="kat"?"çıktın":"yükseldin"}?`:`Kaç ${un} ${un==="kat"?"indin":"alçaldın"}?`,p2fail:o.p2fail,ansTxt:`${NF(o.start)} → ${NF(o.a)}: ${NF(d)} ${un} ${up?(un==="kat"?"çıktın":"yükseldin"):(un==="kat"?"indin":"alçaldın")}`},o))};
+GFACT.tele1=[
+  r=>{const s=ri(r,2,8),d=ri(r,3,7),a=s+d;return tl(r,{t:"Kaç kat çıktın?",start:s,a,max:20,btns:B1,alt:d=>[d-1,d+1,a],ask:`Okti ${s}. katta. ${a}. kata çık`,q:`${s}. kattan ${a}. kata çık. Kaç kat çıkacaksın?`,hint:"Her basış 1 kat. Basışlarını say.",p2fail:"Basışlarını say: her basış 1 kat"})},
+  r=>{const s=ri(r,12,19),d=ri(r,3,8),a=s-d;return tl(r,{t:"Kaç kat indin?",start:s,a,max:20,btns:B1,alt:d=>[d-1,d+1,a],ask:`Okti ${s}. katta. ${a}. kata in`,q:`${s}. kattan ${a}. kata in. Kaç kat ineceksin?`,hint:"Her basış 1 kat. Basışlarını say.",p2fail:"Basışlarını say: her basış 1 kat"})},
+  r=>{const s=ri(r,2,6),a=ri(r,14,19),d=a-s;return tl(r,{t:"Uzun yolculuk",start:s,a,max:20,btns:B1,alt:d=>[d-1,d+1,a],ask:`Okti ${s}. katta. ${a}. kata çık`,q:`${s}. kattan ${a}. kata çık. Kaç kat çıkacaksın?`,hint:"10. kata kadar say, sonra devam et.",p2fail:"Basışlarını say: her basış 1 kat"})}];
+GFACT.tele2=[
+  r=>{let s,d,g=0;do{s=ri(r,12,35);d=10*ri(r,2,4)+ri(r,1,5)}while((s%10)+(d%10)>=10&&g++<50);const a=s+d;return tl(r,{t:"Onluk ve birlik fark",start:s,a,max:100,btns:B10,alt:d=>[d+10,d-10,d+1],ask:`${s}. kattan ${a}. kata çık`,q:`${s}. kattan ${a}. kata çık. ${a} − ${s} = ?`,hint:"Önce onar onar, sonra birer birer çık. Kaç kez 10, kaç kez 1 bastın?",p2fail:"Kaç kez 10, kaç kez 1 bastın? Onları topla"})},
+  r=>{let s,d,g=0;do{s=ri(r,15,45);d=10*ri(r,2,4)+ri(r,2,8)}while((s%10)+(d%10)<10&&g++<50);const a=s+d;return tl(r,{t:"Onluk geçerek",start:s,a,max:100,btns:B10,alt:d=>[d+10,d-10,d-1],ask:`${s}. kattan ${a}. kata çık`,q:`${s}. kattan ${a}. kata çık. ${a} − ${s} = ?`,hint:"Önce onar onar yaklaş, sonra birer birer çık.",p2fail:"Kaç kez 10, kaç kez 1 bastın? Onları topla"})},
+  r=>{const s=ri(r,62,95),d=ri(r,23,48),a=s-d;return tl(r,{t:"Aşağı fark",start:s,a,max:100,btns:B10,alt:d=>[d+10,d-10,d+1],ask:`${s}. kattan ${a}. kata in`,q:`${s}. kattan ${a}. kata in. ${s} − ${a} = ?`,hint:"Önce onar onar, sonra birer birer in.",p2fail:"Kaç kez 10, kaç kez 1 bastın? Onları topla"})}];
+const BM3=BT(100,10,"m"),BM4=BT(1000,100,"m");
+GFACT.tele3=[
+  r=>{let s,d,g=0;do{s=10*ri(r,12,40);d=10*ri(r,21,58)}while(((s/10)%10)+((d/10)%10)>=10&&g++<50);const a=s+d;return tl(r,{t:"Yüzlük ve onluk fark",lab:"Metre",fs:10,start:s,a,max:1000,btns:BM3,alt:d=>[d+100,d-10,d+10],ask:`Teleferik ${s} metrede. ${a} metreye çık`,q:`${s} metreden ${a} metreye çık. ${a} − ${s} = ?`,hint:"Önce yüzer yüzer, sonra onar onar çık.",p2fail:"Kaç kez 100, kaç kez 10 bastın? Onları topla"})},
+  r=>{let s,d,g=0;do{s=10*ri(r,15,40);d=10*ri(r,24,49)}while(((s/10)%10)+((d/10)%10)<10&&g++<50);const a=s+d;return tl(r,{t:"Yüzlük geçerek",lab:"Metre",fs:10,start:s,a,max:1000,btns:BM3,alt:d=>[d+100,d-100,d-10],ask:`Teleferik ${s} metrede. ${a} metreye çık`,q:`${s} metreden ${a} metreye çık. ${a} − ${s} = ?`,hint:"Önce yüzer yüzer yaklaş, sonra onar onar çık.",p2fail:"Kaç kez 100, kaç kez 10 bastın? Onları topla"})},
+  r=>{const s=10*ri(r,62,95),d=10*ri(r,23,48),a=s-d;return tl(r,{t:"Aşağı fark",lab:"Metre",fs:10,start:s,a,max:1000,btns:BM3,alt:d=>[d+100,d-100,d+10],ask:`Teleferik ${s} metrede. ${a} metreye in`,q:`${s} metreden ${a} metreye in. ${s} − ${a} = ?`,hint:"Önce yüzer yüzer, sonra onar onar in.",p2fail:"Kaç kez 100, kaç kez 10 bastın? Onları topla"})}];
+GFACT.tele4=[
+  r=>{let s,d,g=0;do{s=100*ri(r,12,40);d=100*ri(r,21,48)}while(((s/100)%10)+((d/100)%10)>=10&&g++<50);const a=s+d;return tl(r,{t:"Binlik ve yüzlük fark",lab:"Metre",fs:100,start:s,a,max:10000,btns:BM4,alt:d=>[d+1000,d-100,d+100],ask:`Teleferik ${NF(s)} metrede. ${NF(a)} metreye çık`,q:`${NF(s)} metreden ${NF(a)} metreye çık. ${NF(a)} − ${NF(s)} = ?`,hint:"Önce biner biner, sonra yüzer yüzer çık.",p2fail:"Kaç kez 1000, kaç kez 100 bastın? Onları topla"})},
+  r=>{let s,d,g=0;do{s=100*ri(r,15,40);d=100*ri(r,24,49)}while(((s/100)%10)+((d/100)%10)<10&&g++<50);const a=s+d;return tl(r,{t:"Binlik geçerek",lab:"Metre",fs:100,start:s,a,max:10000,btns:BM4,alt:d=>[d+1000,d-1000,d-100],ask:`Teleferik ${NF(s)} metrede. ${NF(a)} metreye çık`,q:`${NF(s)} metreden ${NF(a)} metreye çık. ${NF(a)} − ${NF(s)} = ?`,hint:"Önce biner biner yaklaş, sonra yüzer yüzer çık.",p2fail:"Kaç kez 1000, kaç kez 100 bastın? Onları topla"})},
+  r=>{const s=100*ri(r,62,95),d=100*ri(r,23,48),a=s-d;return tl(r,{t:"Aşağı fark",lab:"Metre",fs:100,start:s,a,max:10000,btns:BM4,alt:d=>[d+1000,d-1000,d+100],ask:`Teleferik ${NF(s)} metrede. ${NF(a)} metreye in`,q:`${NF(s)} metreden ${NF(a)} metreye in. ${NF(s)} − ${NF(a)} = ?`,hint:"Önce biner biner, sonra yüzer yüzer in.",p2fail:"Kaç kez 1000, kaç kez 100 bastın? Onları topla"})}];
+// ---------------- 2) Sıcak Çikolata (kupa · soru türü: KARŞILAŞTIRMA, KAT)
+const cik=(max,step,major,mid,e,need,o)=>KIS(Object.assign({fmt:"n",mug:1,tubes:[tube(max,step,major,{fix:e,col:"#a0643a",cap:o.tag?`Ece: ${NF(e)}`:"Ece",mid}),tube(max,step,major,{need,col:"#6b3a1e",cap:"Sen",mid})],a:need,ask:"Kendi kupanı doldur"},o));
+GFACT.cikol1=[
+  r=>{const e=ri(r,2,6),k=ri(r,2,4);return cik(10,1,5,0,e,e+k,{t:"Fazlası kadar",q:`Ece'nin kupasına bak. Seninkini ondan ${k} fazla doldur`,hint:`Ece'nin çizgisinden başla, ${k} çizgi daha yukarı say.`,ansTxt:`Ece ${e}, sen ${k} fazlası: ${e+k}`})},
+  r=>{const e=ri(r,6,10),k=ri(r,2,4);return cik(10,1,5,0,e,e-k,{t:"Eksiği kadar",q:`Ece'nin kupasına bak. Seninkini ondan ${k} az doldur`,hint:`Ece'nin çizgisinden başla, ${k} çizgi aşağı say.`,ansTxt:`Ece ${e}, sen ${k} azı: ${e-k}`})},
+  r=>{const e=ri(r,8,13),k=ri(r,3,6);return cik(20,1,5,0,e,e+k,{t:"20'ye kadar",q:`Ece'nin kupasına bak. Seninkini ondan ${k} fazla doldur`,hint:`Ece'nin çizgisinden başla, ${k} çizgi daha yukarı say.`,ansTxt:`Ece ${e}, sen ${k} fazlası: ${e+k}`})}];
+GFACT.cikol2=[
+  r=>{const e=5*ri(r,4,12),k=5*ri(r,2,6);return cik(100,5,50,10,e,e+k,{t:"Fazlası kadar",q:`Ece'nin kupasına bak. Seninkini ondan ${k} fazla doldur`,hint:"Küçük çizgi 5, uzun çizgi 10. Önce Ece'yi oku, sonra ekle.",ansTxt:`${e} + ${k} = ${e+k}`})},
+  r=>{const e=5*ri(r,10,19),k=5*ri(r,3,8);return cik(100,5,50,10,e,e-k,{t:"Eksiği kadar",q:`Ece'nin kupasına bak. Seninkini ondan ${k} az doldur`,hint:"Küçük çizgi 5, uzun çizgi 10. Önce Ece'yi oku, sonra çıkar.",ansTxt:`${e} − ${k} = ${e-k}`})},
+  r=>{const e=5*ri(r,3,10);return cik(100,5,50,10,e,2*e,{t:"İki katı",q:"Ece'nin kupasına bak. Seninkini onun iki katı doldur",hint:"İki katı demek, aynısından iki tane demek: Ece'ninkini iki kez topla.",ansTxt:`${e} + ${e} = ${2*e}`})}];
+const AKU=e=>e%1000===0?"i":e%100===0?"ü":e%50===0?"yi":"i";
+const katQ=(e,k,o)=>Object.assign({tag:1,q:`Ece'nin kupası ${NF(e)} çizgisine kadar dolu. Seninkini onun ${k} katına kadar doldur: ${k} × ${NF(e)} = ?`,hint:`${NF(e)}'${AKU(e)} ${k} kez topla ya da ${k} ile çarp. Sonra kupanda o sayının çizgisini bul.`,ansTxt:`${k} × ${NF(e)} = ${NF(k*e)}`},o);
+GFACT.cikol3=[
+  r=>{const e=pick(r,[100,200,300]);return cik(600,50,100,0,e,2*e,katQ(e,2,{t:"İki katı"}))},
+  r=>{const e=pick(r,[200,400,600]);return cik(600,50,100,0,e,e/2,{tag:1,t:"Yarısı",q:`Ece'nin kupası ${e} çizgisine kadar dolu. Seninkini onun yarısı kadar doldur`,hint:"Yarısı demek, iki eşit parçadan biri. Hangi sayının iki katı Ece'ninkini verir?",ansTxt:`${e}'ün yarısı ${e/2}`})},
+  r=>{const k=pick(r,[3,4]),e=k===3?pick(r,[100,150,200]):pick(r,[100,150]);return cik(600,50,100,0,e,k*e,katQ(e,k,{t:`${k} katı`}))}];
+GFACT.cikol4=[
+  r=>{const e=pick(r,[1000,1500,2000,2500,3000]);return cik(6000,500,1000,0,e,2*e,katQ(e,2,{t:"İki katı"}))},
+  r=>{const e=pick(r,[1500,3000,4500,6000]);return cik(6000,500,1000,0,e,e/3,{tag:1,t:"Üçte biri",q:`Ece'nin kupası ${NF(e)} çizgisine kadar dolu. Seninkini onun üçte biri kadar doldur: ${NF(e)} ÷ 3 = ?`,hint:"Üçte biri demek, 3 eşit parçadan biri: 3'e böl.",ansTxt:`${NF(e)} ÷ 3 = ${NF(e/3)}`})},
+  r=>{const k=pick(r,[3,4]),e=k===3?pick(r,[1000,1500,2000]):pick(r,[1000,1500]);return cik(6000,500,1000,0,e,k*e,katQ(e,k,{t:`${k} katı`}))}];
+// ---------------- 3) Buz Gölü (fener motoru · soru türü: KAÇ FAZLA, PAYLAŞ)
+const bg_=(o)=>KIS(Object.assign({failMsg:"Feneri yavaş gezdir, iki türü ayrı say"},o));
+GFACT.balik1=[
+  r=>{const a=ri(r,4,7),b=ri(r,2,a-1);const F=scatter(r,a,"fish",30),P=scatter(r,b,"penguin",32,F.map(p=>p.c));return bg_({items:[...F,...P],a:a-b,cands:opts(r,a-b,[a,b,a-b+1]),t:"Kaç fazla?",ask:"Balık penguenden kaç fazla?",q:"Feneri gezdir. Balık penguenden kaç fazla?",hint:"Her penguene bir balık eşle; eşi olmayan balıkları say.",ansTxt:`${a} balık, ${b} penguen: ${a-b} fazla`})},
+  r=>{const a=ri(r,6,10),b=ri(r,2,a-2);const F=scatter(r,a,"fish",30),P=scatter(r,b,"penguin",32,F.map(p=>p.c));return bg_({items:[...F,...P],a:a-b,cands:opts(r,a-b,[a,b,a-b+1]),t:"Kaç fazla?",ask:"Balık penguenden kaç fazla?",q:"Feneri gezdir. Balık penguenden kaç fazla?",hint:"Önce balıkları, sonra penguenleri say. Büyükten küçüğü çıkar.",ansTxt:`${a} balık, ${b} penguen: ${a-b} fazla`})},
+  r=>{const p=ri(r,6,10),b=ri(r,2,p-2);const P=scatter(r,p,"penguin",32),F=scatter(r,b,"fish",30,P.map(q=>q.c));return bg_({items:[...P,...F],a:p-b,cands:opts(r,p-b,[p,b,p-b+1]),t:"Kaç eksik?",ask:"Kaç balık daha gerekir?",q:"Her penguen bir balık yiyecek. Kaç balık daha gerekir?",hint:"Her penguene bir balık eşle; balığı olmayan penguenleri say.",ansTxt:`${p} penguen, ${b} balık: ${p-b} balık daha gerekir`})}];
+const two_arr=(R1,R2,C,s,dx,dy)=>{const x0=(380-(C-1)*dx)/2;return[...arr(R1,C,"fish",x0,78,dx,dy,s),...arr(R2,C,"penguin",x0,78+(R1+.35)*dy,dx,dy,s+4)]};
+GFACT.balik2=[
+  r=>{const C=5,R1=ri(r,3,4),R2=ri(r,1,R1-1),d=(R1-R2)*C;return bg_({items:two_arr(R1,R2,C,26,52,36),R:72,a:d,cands:opts(r,d,[R1*C,R2*C,d+C]),t:"Sıra sıra fark",ask:"Balık penguenden kaç fazla?",q:"Her sırada 5 tane var. Balık penguenden kaç fazla?",hint:"Sıraları say: balık sırası penguen sırasından kaç fazla? Her sıra 5.",ansTxt:`${R1*C} balık, ${R2*C} penguen: ${d} fazla`})},
+  r=>{const C=10,R1=ri(r,3,4),R2=ri(r,1,2),d=(R1-R2)*C;return bg_({items:two_arr(R1,R2,C,22,32,36),R:72,a:d,cands:opts(r,d,[R1*C,R2*C,d+C]),t:"Onluk sıralar",ask:"Balık penguenden kaç fazla?",q:"Her sırada 10 tane var. Balık penguenden kaç fazla?",hint:"Fazla sıraları onar say.",ansTxt:`${R1*C} balık, ${R2*C} penguen: ${d} fazla`})},
+  r=>{const R1=ri(r,3,4),R2=ri(r,1,2),e=ri(r,2,6),x0=(380-9*32)/2;const it=[...arr(R1,10,"fish",x0,78,32,36,22),...arr(1,e,"fish",x0,78+R1*36,32,36,22),...arr(R2,10,"penguin",x0,78+(R1+1.35)*36,32,36,26)];const d=(R1-R2)*10+e;return bg_({items:it,R:72,a:d,cands:opts(r,d,[d+10,d-e,R1*10+e]),t:"Onluk ve tekler",ask:"Balık penguenden kaç fazla?",q:"Balık penguenden kaç fazla? Fazla sıraları ve tekleri say",hint:"Fazla balık sıralarını onar say, sonra tek balıkları ekle.",ansTxt:`${R1*10+e} balık, ${R2*10} penguen: ${d} fazla`})}];
+GFACT.balik3=[
+  r=>{const C=ri(r,6,8),R1=ri(r,3,4),R2=ri(r,1,2),d=(R1-R2)*C;return bg_({items:two_arr(R1,R2,C,24,40,34),R:72,a:d,cands:opts(r,d,[R1*C,R2*C,d+C]),t:"Dizilim farkı",ask:"Balık penguenden kaç fazla?",q:`Her sırada ${C} tane var. Balık penguenden kaç fazla?`,hint:"Fazla sıra sayısını sıradaki sayıyla çarp.",ansTxt:`(${R1} − ${R2}) × ${C} = ${d}`})},
+  r=>{const C=ri(r,8,9),R1=ri(r,3,4),R2=ri(r,1,2),d=(R1-R2)*C;return bg_({items:two_arr(R1,R2,C,22,34,34),R:72,a:d,cands:opts(r,d,[R1*C,R2*C,d+C]),t:"Uzun sıralar",ask:"Balık penguenden kaç fazla?",q:`Her sırada ${C} tane var. Balık penguenden kaç fazla?`,hint:"Fazla sıra sayısını sıradaki sayıyla çarp.",ansTxt:`(${R1} − ${R2}) × ${C} = ${d}`})},
+  r=>{let R,C,k,g=0;do{R=ri(r,3,4);C=ri(r,4,6);k=pick(r,[2,3,4])}while(((R*C)%k||R*C/k>10)&&g++<80);const n=R*C/k,x0=(380-(C-1)*44)/2;return bg_({items:arr(R,C,"fish",x0,86,44,40,26),R:72,a:n,cands:opts(r,n,[n+1,n-1,R*C]),t:"Kaç penguen doyar?",ask:"Kaç penguen doyar?",q:`Her penguen ${k} balık yer. Bu balıklarla kaç penguen doyar?`,hint:`Balıkları say, ${k}'${k===3?"er":k===4?"er":"şer"} gruplara ayır.`,ansTxt:`${R*C} ÷ ${k} = ${n} penguen`})}];
+const peng=(p,y)=>{const o=[];for(let i=0;i<p;i++)o.push({x:190+(i-(p-1)/2)*34,y,k:"penguin",s:28});return o};
+GFACT.balik4=[
+  r=>{const R=4,C=12,p=pick(r,[3,4,6,8]),n=R*C/p;return bg_({items:[...arr(R,C,"fish",(380-11*28)/2,78,28,34,20),...peng(p,268)],R:74,a:n,cands:opts(r,n,[n+1,n-1,R*C-p]),t:"Eşit paylaş",ask:"Her penguene kaç balık düşer?",q:"Balıkları penguenlere eşit paylaştır. Her birine kaç balık düşer?",hint:"Önce balıkları çarparak say, sonra penguen sayısına böl.",ansTxt:`${R} × ${C} = ${R*C}, ${R*C} ÷ ${p} = ${n}`})},
+  r=>{const R=5,C=12,p=pick(r,[4,5,6,10]),n=R*C/p;return bg_({items:[...arr(R,C,"fish",(380-11*28)/2,72,28,32,19),...peng(p,276)],R:74,a:n,cands:opts(r,n,[n+1,n-2,R*C-p]),t:"Eşit paylaş",ask:"Her penguene kaç balık düşer?",q:"Balıkları penguenlere eşit paylaştır. Her birine kaç balık düşer?",hint:"Önce balıkları çarparak say, sonra penguen sayısına böl.",ansTxt:`${R} × ${C} = ${R*C}, ${R*C} ÷ ${p} = ${n}`})},
+  r=>{let R,C,p,g=0;do{R=ri(r,4,5);C=ri(r,11,12);p=ri(r,5,9)}while((R*C)%p===0&&g++<50);const m=(R*C)%p;return bg_({items:[...arr(R,C,"fish",(380-(C-1)*28)/2,74,28,34,19),...peng(p,276)],R:74,a:m,cands:opts(r,m,[m+1,Math.floor(R*C/p),p-m]),t:"Kaç artar?",ask:"Kaç balık artar?",q:"Balıkları penguenlere eşit paylaştır. Kaç balık artar?",hint:"Toplam balığı bul, penguen sayısına böl; kalanı bul.",ansTxt:`${R*C} ÷ ${p} = ${Math.floor(R*C/p)}, kalan ${m}`})}];
+// ---------------- 4) Kar Tanesi Rotası (petek motoru · soru türü: SIRALAMA)
+function siraFact(r,len,gen,gap,desc,C,o){const R=4;C=C||6;let path=null,g=0;while(!path&&g++<300){const p=[ri(r,0,R*C-1)];while(p.length<len){const nb=shuffle(r,HEXN(R,C,p[p.length-1]).filter(i=>!p.includes(i)));if(!nb.length)break;p.push(nb[0])}if(p.length===len)path=p}
+  const seq=[gen(r)];for(let i=1;i<len;i++)seq.push(seq[i-1]+gap(r));if(desc)seq.reverse();const lo=Math.min(...seq),hi=Math.max(...seq),vals=Array(R*C).fill(null);path.forEach((c,i)=>vals[c]=seq[i]);const used=new Set(seq);
+  for(let c=0;c<R*C;c++){if(vals[c]!=null)continue;let v,t=0;do{v=o.dist?o.dist(r,lo,hi):ri(r,lo,hi)}while(used.has(v)&&t++<80);used.add(v);vals[c]=v}
+  return KIS(Object.assign({R,C,vals,path,mode:"sira",desc:!!desc,goalSpr:"snowman",curSpr:"sled",goalMsg:"Kızak kardan adama ulaşmadı",a:"sira-"+path.length+"-"+path[0]+"-"+path[len-1],ask:desc?"Büyükten küçüğe git":"Küçükten büyüğe git",q:desc?"Kızakla kardan adama git: her adımda daha küçük bir sayıya bas":"Kızakla kardan adama git: her adımda daha büyük bir sayıya bas",ansTxt:seq.map(NF).join(desc?" > ":" < ")},o))}
+GFACT.krota1=[
+  r=>siraFact(r,6,r=>ri(r,1,4),r=>ri(r,1,3),0,6,{t:"Küçükten büyüğe",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
+  r=>siraFact(r,7,r=>ri(r,1,4),r=>ri(r,1,2),0,6,{t:"Uzun yol",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
+  r=>siraFact(r,6,r=>ri(r,1,4),r=>ri(r,1,3),1,6,{t:"Büyükten küçüğe",hint:"Kızağın yanındaki sayılara bak: daha küçük olanı seç."})];
+GFACT.krota2=[
+  r=>siraFact(r,7,r=>ri(r,10,25),r=>ri(r,4,11),0,6,{t:"Küçükten büyüğe",hint:"Önce onluklara bak; onluklar eşitse birliklere bak."}),
+  r=>siraFact(r,7,r=>ri(r,30,55),r=>ri(r,1,6),0,6,{dist:(r,lo,hi)=>ri(r,lo-3,hi+3),t:"Yakın sayılar",hint:"Onluklar aynıysa birliklere bak."}),
+  r=>siraFact(r,7,r=>ri(r,10,25),r=>ri(r,4,11),1,6,{t:"Büyükten küçüğe",hint:"Önce onluklara bak; onluklar eşitse birliklere bak."})];
+GFACT.krota3=[
+  r=>siraFact(r,7,r=>ri(r,110,300),r=>ri(r,30,110),0,6,{t:"Küçükten büyüğe",hint:"Önce yüzlüklere, sonra onluklara bak."}),
+  r=>siraFact(r,7,r=>ri(r,300,800),r=>ri(r,3,18),0,6,{dist:(r,lo,hi)=>ri(r,lo-15,hi+15),t:"Yakın sayılar",hint:"Yüzlükler aynıysa onluklara, onlar da aynıysa birliklere bak."}),
+  r=>siraFact(r,7,r=>ri(r,110,300),r=>ri(r,30,110),1,6,{t:"Büyükten küçüğe",hint:"Önce yüzlüklere, sonra onluklara bak."})];
+GFACT.krota4=[
+  r=>siraFact(r,7,r=>ri(r,10000,40000),r=>ri(r,1500,9000),0,5,{t:"Küçükten büyüğe",hint:"Önce on binliklere, sonra binliklere bak."}),
+  r=>siraFact(r,7,r=>ri(r,40000,90000),r=>ri(r,40,600),0,5,{dist:(r,lo,hi)=>ri(r,lo-300,hi+300),t:"Yakın sayılar",hint:"Aynı olan basamakları geç; ilk farklı basamağa bak."}),
+  r=>siraFact(r,7,r=>ri(r,10000,40000),r=>ri(r,1500,9000),1,5,{t:"Büyükten küçüğe",hint:"Önce on binliklere, sonra binliklere bak."})];
+// ---------------- 5) Yün Yumağı (eşleme motoru · soru türü: İŞLEM ↔ SONUÇ)
+const yun=(r,gen,o)=>KIS(kabFact(r,u4(r,gen),Object.assign({ask:"Her işlemi sonucuna bağla",ansTxt:"Bütün yünler doğru bağlandı"},o)));
+const ABL=n=>({0:"dan",1:"den",2:"den",3:"ten",4:"ten",5:"ten",6:"dan",7:"den",8:"den",9:"dan"})[n%10]||"dan";const ABL2=n=>n%10===0?(n===20?"den":"dan"):ABL(n);
+const W1p=(a,b)=>`${a} ile ${b} birlikte`,W1m=(a,b)=>`${a}'${ABL2(a)} ${b} gidince`;
+GFACT.eldiv1=[
+  r=>yun(r,r=>{const a=ri(r,1,6),b=ri(r,1,9-a);return[{t:W1p(a,b)},a+b]},{t:"Toplama",q:"Her işlemi sonucuna yünle bağla",hint:"Büyük sayıdan başla, küçüğü üstüne say."}),
+  r=>yun(r,r=>{const a=ri(r,6,15),b=ri(r,1,5);return[{t:W1m(a,b)},a-b]},{t:"Çıkarma",q:"Her işlemi sonucuna yünle bağla",hint:"Büyük sayıdan geriye doğru say."}),
+  r=>yun(r,(r,i)=>{if(i%2){const a=ri(r,11,18),b=ri(r,2,8);return[{t:W1m(a,b)},a-b]}const a=ri(r,5,12),b=ri(r,2,7);return[{t:W1p(a,b)},a+b]},{t:"Karışık",q:"Dikkat: birlikte de var, gidince de",hint:"Birlikte ise ileri say, gidince ise geri say."})];
+GFACT.eldiv2=[
+  r=>yun(r,r=>{const a=ri(r,12,45),b=pick(r,[10,20,30,40]);return[{t:`${a} + ${b}`},a+b]},{t:"Onluk ekle",q:"Her işlemi sonucuna yünle bağla",hint:"Onluk eklerken birlikler değişmez."}),
+  r=>yun(r,r=>{const a=ri(r,14,48),b=ri(r,13,39);return[{t:`${a} + ${b}`},a+b]},{t:"İki basamaklı toplama",q:"Her işlemi sonucuna yünle bağla",hint:"Önce onlukları, sonra birlikleri topla."}),
+  r=>yun(r,r=>{const a=ri(r,41,95),b=ri(r,12,a-10);return[{t:`${a} − ${b}`},a-b]},{t:"İki basamaklı çıkarma",q:"Her işlemi sonucuna yünle bağla",hint:"Önce onlukları, sonra birlikleri çıkar."})];
+GFACT.eldiv3=[
+  r=>yun(r,r=>{const a=ri(r,2,5),b=ri(r,2,9);return[{t:`${a} × ${b}`},a*b]},{t:"Çarpma",q:"Her işlemi sonucuna yünle bağla",hint:"Çarpım tablosunu düşün: ritmik say."}),
+  r=>yun(r,r=>{const a=ri(r,6,9),b=ri(r,3,9);return[{t:`${a} × ${b}`},a*b]},{t:"Büyük çarpanlar",q:"Her işlemi sonucuna yünle bağla",hint:"Bildiğin çarpımdan yararlan: 6 × 7, 6 × 6'dan 6 fazla."}),
+  r=>yun(r,r=>{const b=ri(r,2,9),q=ri(r,2,9);return[{t:`${b*q} ÷ ${b}`},q]},{t:"Bölme",q:"Her işlemi sonucuna yünle bağla",hint:"Bölmeyi çarpmayla düşün: kaç kere kaç?"})];
+GFACT.eldiv4=[
+  r=>yun(r,r=>{const a=ri(r,12,48),b=ri(r,3,9);return[{t:`${a} × ${b}`},a*b]},{t:"İki basamaklı çarpma",q:"Her işlemi sonucuna yünle bağla",hint:"Onlukları ve birlikleri ayrı çarp, sonra topla."}),
+  r=>yun(r,r=>{const b=ri(r,3,9),q=ri(r,21,99);return[{t:`${b*q} ÷ ${b}`},q]},{t:"Bölme",q:"Her işlemi sonucuna yünle bağla",hint:"Bölmeyi çarpmayla kontrol et: sonuç × bölen = bölünen."}),
+  r=>yun(r,(r,i)=>{if(i%2){const a=100*ri(r,30,95),b=10*ri(r,25,250);return[{t:`${NF(a)} − ${NF(b)}`},NF(a-b)]}const a=50*ri(r,20,90),b=50*ri(r,15,80);return[{t:`${NF(a)} + ${NF(b)}`},NF(a+b)]},{t:"Dört basamaklı",q:"Dikkat: toplama da var, çıkarma da",hint:"Basamakları alt alta düşün: binlik, yüzlük, onluk."})];
+// ---------------- KAYIT (Aralık 1. paket)
+const DEF12={tele:["Teleferik Kulesi","🚡","Asansörü hedefe götür, ne kadar çıktığını bul"],cikol:["Sıcak Çikolata","☕","Ece'nin kupasına bak, kendi kupanı ona göre doldur"],balik:["Buz Gölü","🐟","Fenerle buzun altına bak, karşılaştır ve paylaştır"],krota:["Kar Tanesi Rotası","❄️","Sıraya göre kardan kardan geç, kardan adama ulaş"],eldiv:["Yün Yumağı","🧶","Her işlemi sonucuna yünle bağla"]};
+const ENG12={tele:KB(SPEC_ASANS,"kale"),cikol:KB(SPEC_TUP,"pembe"),balik:KB(SPEC_KRATER,"gece"),krota:KB(SPEC_ROTA,"gece"),eldiv:KB(SPEC_KABLO,"kuzey")};
+const EV12={tele:HCx("Merdiven Farkı","İki sayı arasındaki fark","Merdiven ya da yere çizilmiş sayı şeridi",["Çocuğunuz bir basamakta, siz başka bir basamakta durun.","'Bana gelmek için kaç basamak çıkmalısın?' diye sorun.","Önce tahmin etsin, sonra sayarak çıksın."],"Saymadan nasıl bulabilirsin?"),
+  cikol:HCx("Bardak Bardağa","Karşılaştırma: fazla, az, katı","Aynı iki bardak, su, bant",["Bardaklara bantla eşit aralıklı çizgiler çizin.","Bir bardağı siz doldurun; çocuğunuz 'iki çizgi fazla' doldursun.","Büyük sınıflarda 'iki katı', 'yarısı' deyin."],"İki katı ile iki fazlası aynı mı?"),
+  balik:HCx("Eşini Bul","Fazla-eksik, eşit paylaştırma","Kaşık ve tabak ya da düğmeler",["Masaya birkaç tabak ve kaşık koyun.","Her tabağa bir kaşık eşleyin: hangisi fazla, kaç fazla?","Büyük sınıflarda kaşıkları tabaklara eşit dağıtın; artan var mı?"],"Saymadan hangisinin fazla olduğunu nasıl anladın?"),
+  krota:HCx("Sayı Sıralama","Sayıları karşılaştırma ve sıralama","Kâğıt parçaları, kalem",["Kâğıtlara karışık sayılar yazıp yere dağıtın.","Çocuğunuz küçükten büyüğe sırayla bassın.","Sonra büyükten küçüğe geri dönsün."],"İki sayıdan hangisi büyük, nasıl anladın?"),
+  eldiv:HCx("İşlem Eşleri","Toplama, çıkarma, çarpma, bölme","Kâğıt kartlar, kalem",["Kartların yarısına işlem, yarısına sonuç yazın.","Kartları karıştırın, çocuğunuz eşleri bulsun.","Sırayı değiştirin: işlemleri o yazsın, siz eşleyin."],"Hangi eşi en hızlı buldun? Neden?")};
+Object.keys(DEF12).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f});if(typeof G==="undefined")continue;G[id]={id,name:DEF12[b][0],ico:DEF12[b][1],task:DEF12[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG12[b];if(typeof HOME!=="undefined")HOME[id]=EV12[b];if(SETS[12]&&SETS[12][g]&&!SETS[12][g].includes(id))SETS[12][g].push(id)}});
+// ---------------- 6) Kızak Treni (mekik motoru · soru türü: BİLİNMEYEN DEĞİŞİM)
+const P_=(n,up,unk)=>({d:up?n:-n,n,txt:unk?`? penguen ${up?"bindi":"indi"}`:`${NF(n)} penguen ${up?"bindi":"indi"}`,unk:!!unk,solved:`${NF(n)} penguen ${up?"bindi":"indi"}`});
+const kz=(r,start,rows,o)=>{const endN=rows.reduce((s,q)=>s+q.d,start),u=rows.find(q=>q.unk);return KIS(Object.assign({start,rows,endN,a:u.n,kz:1,yer:"Kızakta",noun:"penguen",icon:"sled",rowSpr:"penguin",spr:1,cands:opts(r,u.n,[u.n+1,u.n-1,endN]),failMsg:"Kızaktakilerin başta ve sonda kaç olduğuna bak: aradaki fark kaç?"},o))};
+GFACT.kizak1=[
+  r=>{const s=ri(r,3,7),d=ri(r,2,5);return kz(r,s,[P_(d,1,1)],{t:"Kaç penguen bindi?",ask:"Kaç penguen bindi?",q:"Kaç penguen bindi? Baştakinden sona kadar say",hint:`${s}'den başla, ${s+d} olana kadar parmakla say.`,ansTxt:`${s} penguen vardı, ${d} penguen bindi: ${s+d} oldu`})},
+  r=>{const s=ri(r,8,13),d=ri(r,2,5);return kz(r,s,[P_(d,0,1)],{t:"Kaç penguen indi?",ask:"Kaç penguen indi?",q:"Kaç penguen indi? Baştakinden sona kadar geri say",hint:`${s}'den başla, ${s-d} olana kadar geri say.`,ansTxt:`${s} penguen vardı, ${d} penguen indi: ${s-d} kaldı`})},
+  r=>{const s=ri(r,4,7),u=ri(r,3,6),d=ri(r,2,4);return kz(r,s,[P_(u,1),P_(d,0,1)],{t:"Önce bindi, sonra kaç indi?",ask:"Kaç penguen indi?",q:"Önce kaç penguen olduğunu bul, sonra kaç penguen indiğini bul",hint:`Önce ${s} ile ${u} birlikte kaç eder bul. Oradan sona kadar geri say.`,ansTxt:`${s+u} penguenden ${d} penguen indi: ${s+u-d} kaldı`})}];
+GFACT.kizak2=[
+  r=>{const s=ri(r,21,45),d=ri(r,12,38);return kz(r,s,[P_(d,1,1)],{t:"Kaç penguen bindi?",ask:"Kaç penguen bindi?",q:`${s} + ? = ${s+d}`,hint:"Baştaki sayıdan sondakine kadar önce onar, sonra birer say.",ansTxt:`${s+d} − ${s} = ${d}`})},
+  r=>{const s=ri(r,52,95),d=ri(r,13,39);return kz(r,s,[P_(d,0,1)],{t:"Kaç penguen indi?",ask:"Kaç penguen indi?",q:`${s} − ? = ${s-d}`,hint:"Baştaki sayıdan sondakini çıkar.",ansTxt:`${s} − ${s-d} = ${d}`})},
+  r=>{const s=ri(r,24,40),u=ri(r,15,30),d=ri(r,11,25);return kz(r,s,[P_(u,1),P_(d,0,1)],{t:"Bindi, sonra kaç indi?",ask:"Kaç penguen indi?",q:`${s} + ${u} − ? = ${s+u-d}`,hint:"Önce binenleri ekle. Bulduğun sayıdan sondakini çıkar.",ansTxt:`${s+u} − ${s+u-d} = ${d}`})}];
+GFACT.kizak3=[
+  r=>{const s=ri(r,215,480),d=ri(r,120,390);return kz(r,s,[P_(d,1,1)],{t:"Kaç penguen bindi?",ask:"Kaç penguen bindi?",q:`${s} + ? = ${s+d}`,hint:"Sondaki sayıdan baştakini çıkar.",ansTxt:`${s+d} − ${s} = ${d}`})},
+  r=>{const s=ri(r,520,960),d=ri(r,140,380);return kz(r,s,[P_(d,0,1)],{t:"Kaç penguen indi?",ask:"Kaç penguen indi?",q:`${s} − ? = ${s-d}`,hint:"Baştaki sayıdan sondakini çıkar.",ansTxt:`${s} − ${s-d} = ${d}`})},
+  r=>{const s=ri(r,240,420),u=ri(r,150,320),d=ri(r,110,290);return kz(r,s,[P_(u,1),P_(d,0,1)],{t:"Bindi, sonra kaç indi?",ask:"Kaç penguen indi?",q:`${s} + ${u} − ? = ${s+u-d}`,hint:"Önce binenleri ekle. Bulduğun sayıdan sondakini çıkar.",ansTxt:`${s+u} − ${s+u-d} = ${d}`})}];
+GFACT.kizak4=[
+  r=>{const s=ri(r,1250,4800),d=ri(r,1120,3900);return kz(r,s,[P_(d,1,1)],{t:"Kaç penguen bindi?",ask:"Kaç penguen bindi?",q:`${s} + ? = ${s+d}`,hint:"Sondaki sayıdan baştakini çıkar.",ansTxt:`${s+d} − ${s} = ${d}`})},
+  r=>{const s=ri(r,5200,9600),d=ri(r,1400,3800);return kz(r,s,[P_(d,0,1)],{t:"Kaç penguen indi?",ask:"Kaç penguen indi?",q:`${s} − ? = ${s-d}`,hint:"Baştaki sayıdan sondakini çıkar.",ansTxt:`${s} − ${s-d} = ${d}`})},
+  r=>{const s=ri(r,2400,4200),u=ri(r,1500,3200),d=ri(r,1100,2900);return kz(r,s,[P_(u,1),P_(d,0,1)],{t:"Bindi, sonra kaç indi?",ask:"Kaç penguen indi?",q:`${s} + ${u} − ? = ${s+u-d}`,hint:"Önce binenleri ekle. Bulduğun sayıdan sondakini çıkar.",ansTxt:`${s+u} − ${s+u-d} = ${d}`})}];
+GFACT.kizak3=GFACT.kizak3.map(fn=>r=>{const f=fn(r);f.yer="Trende";return f});
+// ---------------- 7) Kar Topu Farkı (kol motoru · soru türü: FARK)
+function farkFact(r,a,b,pool,o){const tgt=a-b,cards=[a,b];let g=0;while(cards.length<8&&g++<500){const v=pool(r);if(v>0&&!cards.includes(v))cards.push(v)}const sh=shuffle(r,cards);return KIS(Object.assign({mode:"diff",target:tgt,cards:sh,k:2,sol:[sh.indexOf(a),sh.indexOf(b)],a:tgt},o))}
+GFACT.fark1=[
+  r=>{const b=ri(r,1,7),d=ri(r,2,4);return farkFact(r,b+d,b,r=>ri(r,1,12),{t:"Farkı bul",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Biri diğerinden ${d} fazla olan iki kar topunu seç`,hint:"Bir kar topu seç. Ondan ileri say: hangisine varıyorsun?",ansTxt:`${b+d}, ${b}'${ABL(b)} ${d} fazla`})},
+  r=>{const b=ri(r,3,10),d=ri(r,3,6);return farkFact(r,b+d,b,r=>ri(r,1,16),{t:"Farkı bul",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Biri diğerinden ${d} fazla olan iki kar topunu seç`,hint:"Bir kar topu seç. Ondan ileri say: hangisine varıyorsun?",ansTxt:`${b+d}, ${b}'${ABL(b)} ${d} fazla`})},
+  r=>{const b=ri(r,6,12),d=ri(r,5,8);return farkFact(r,b+d,b,r=>ri(r,2,20),{t:"Büyük fark",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Biri diğerinden ${d} fazla olan iki kar topunu seç`,hint:"Büyük sayılardan geri say: hangisine varıyorsun?",ansTxt:`${b+d}, ${b}'${ABL(b)} ${d} fazla`})}];
+GFACT.fark2=[
+  r=>{const b=ri(r,12,59),d=10*ri(r,1,4);return farkFact(r,b+d,b,r=>ri(r,11,99),{t:"Onluk farkı",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Birlikleri aynı olan sayılara bak.",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,14,55),d=ri(r,12,29);return farkFact(r,b+d,b,r=>ri(r,11,99),{t:"Farkı bul",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,18,49),d=ri(r,31,48);return farkFact(r,b+d,b,r=>ri(r,11,99),{t:"Büyük fark",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})}];
+GFACT.fark3=[
+  r=>{const b=ri(r,120,580),d=100*ri(r,1,4);return farkFact(r,b+d,b,r=>ri(r,110,990),{t:"Yüzlük farkı",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Onlukları ve birlikleri aynı olan sayılara bak.",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,130,520),d=ri(r,120,290);return farkFact(r,b+d,b,r=>ri(r,110,990),{t:"Farkı bul",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,150,420),d=ri(r,310,480);return farkFact(r,b+d,b,r=>ri(r,110,990),{t:"Büyük fark",ask:`Farkı ${d} olan iki kar topunu seç`,q:`Farkı ${d} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})}];
+GFACT.fark4=[
+  r=>{const b=ri(r,1200,5800),d=1000*ri(r,1,3);return farkFact(r,b+d,b,r=>ri(r,1100,9900),{t:"Binlik farkı",ask:`Farkı ${NF(d)} olan iki kar topunu seç`,q:`Farkı ${NF(d)} olan iki kar topunu seç`,hint:"Son üç basamağı aynı olan sayılara bak.",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,1300,5200),d=ri(r,1200,2900);return farkFact(r,b+d,b,r=>ri(r,1100,9900),{t:"Farkı bul",ask:`Farkı ${NF(d)} olan iki kar topunu seç`,q:`Farkı ${NF(d)} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})},
+  r=>{const b=ri(r,1500,4200),d=ri(r,3100,4800);return farkFact(r,b+d,b,r=>ri(r,1100,9900),{t:"Büyük fark",ask:`Farkı ${NF(d)} olan iki kar topunu seç`,q:`Farkı ${NF(d)} olan iki kar topunu seç`,hint:"Bir sayı seç, ona farkı ekle: o sayı var mı?",ansTxt:`${b+d} − ${b} = ${d}`})}];
+// ---------------- 8) Kurabiye Tabağı (kantin motoru · soru türü: PARÇA-BÜTÜN, EŞİT PAYLAŞTIRMA)
+const TB=[["mavi tabak","#1f4a6e"],["kırmızı tabak","#6e2a3a"],["sarı tabak","#6e5a1f"],["yeşil tabak","#1f5e3e"]];
+const tab=(i,need)=>({k:"e_1f36a",name:TB[i][0],tag:TB[i][0].split(" ")[0],bg:TB[i][1],need,dig:0});
+const kur=(o)=>KIS(Object.assign({mode:"say",fisLab:"NOT",emptyMsg:"Önce tabaklara kurabiye koy",failMsg:"Notu yeniden oku, tabakları düzelt"},o));
+GFACT.kurab1=[
+  r=>{const T=ri(r,7,10),m=ri(r,2,T-2);return kur({t:"Gerisi kırmızıya",lines:[`Toplam ${T} kurabiye var.`,`Mavi tabakta ${m} olsun, gerisi kırmızı tabakta.`],items:[tab(0,m),tab(1,T-m)],ask:"Kurabiyeleri tabaklara koy",q:`${T} kurabiyeyi notta yazdığı gibi tabaklara koy`,hint:`Mavi tabağa ${m} koy. Sonra ${T} olana kadar kırmızıya say.`,ansTxt:`${m} mavide, ${T-m} kırmızıda: hepsi ${T}`})},
+  r=>{const T=ri(r,11,16),m=ri(r,4,9);return kur({t:"Gerisi kırmızıya",lines:[`Toplam ${T} kurabiye var.`,`Mavi tabakta ${m} olsun, gerisi kırmızı tabakta.`],items:[tab(0,m),tab(1,T-m)],ask:"Kurabiyeleri tabaklara koy",q:`${T} kurabiyeyi notta yazdığı gibi tabaklara koy`,hint:`Mavi tabağa ${m} koy. Sonra ${T} olana kadar kırmızıya say.`,ansTxt:`${m} mavide, ${T-m} kırmızıda: hepsi ${T}`})},
+  r=>{const m=ri(r,3,6),s=ri(r,2,5),k=ri(r,2,5),T=m+s+k;return kur({t:"Üç tabak",lines:[`Toplam ${T} kurabiye var.`,`Mavide ${m}, sarıda ${s} olsun, gerisi kırmızıda.`],items:[tab(0,m),tab(2,s),tab(1,k)],ask:"Kurabiyeleri tabaklara koy",q:`${T} kurabiyeyi notta yazdığı gibi tabaklara koy`,hint:`Mavi ile sarı birlikte kaç eder? ${T} olana kadar kırmızıya say.`,ansTxt:`${m}, ${s} ve ${k}: hepsi ${T}`})}];
+GFACT.kurab2=[
+  r=>{const T=ri(r,15,20),m=ri(r,6,11);return kur({t:"Gerisi kırmızıya",lines:[`Toplam ${T} kurabiye var.`,`Mavi tabakta ${m} olsun, gerisi kırmızı tabakta.`],items:[tab(0,m),tab(1,T-m)],ask:"Kurabiyeleri tabaklara koy",q:`${T} kurabiyeyi notta yazdığı gibi tabaklara koy`,hint:`${T} − ${m} kaç eder? O kadarını kırmızıya koy.`,ansTxt:`${m} + ${T-m} = ${T}`})},
+  r=>{const m=ri(r,7,10),d=ri(r,2,5);return kur({t:"Fazlası kadar",lines:[`Mavi tabakta ${m} kurabiye olsun.`,`Kırmızı tabakta maviden ${d} fazla olsun.`],items:[tab(0,m),tab(1,m+d)],ask:"Kurabiyeleri tabaklara koy",q:"Kurabiyeleri notta yazdığı gibi tabaklara koy",hint:`${m} + ${d} kaç eder? O kadarını kırmızıya koy.`,ansTxt:`Mavide ${m}, kırmızıda ${m+d}`})},
+  r=>{const m=ri(r,5,8),s=ri(r,4,7),T=m+s+ri(r,4,7);return kur({t:"Üç tabak",lines:[`Toplam ${T} kurabiye var.`,`Mavide ${m}, sarıda ${s} olsun, gerisi kırmızıda.`],items:[tab(0,m),tab(2,s),tab(1,T-m-s)],ask:"Kurabiyeleri tabaklara koy",q:`${T} kurabiyeyi notta yazdığı gibi tabaklara koy`,hint:`${T} − ${m} − ${s} kaç eder? O kadarını kırmızıya koy.`,ansTxt:`${m} + ${s} + ${T-m-s} = ${T}`})}];
+const esit=(r,n,k,o)=>kur(Object.assign({t:`${n} tabağa eşit`,lines:[`${n*k} kurabiye var.`,`${n} tabağa eşit paylaştır.`],items:[...Array(n).keys()].map(i=>tab(i,k)),ask:"Kurabiyeleri eşit paylaştır",q:`${n*k} kurabiyeyi ${n} tabağa eşit paylaştır`,hint:"Her tabağa sırayla birer kurabiye koy; bitince say.",ansTxt:`${n*k} ÷ ${n} = ${k}: her tabakta ${k}`,failMsg:"Tabaklarda eşit sayıda mı var? Hepsi birlikte kaç ediyor?"},o));
+GFACT.kurab3=[r=>esit(r,2,ri(r,5,9)),r=>esit(r,3,ri(r,4,7)),r=>esit(r,4,ri(r,3,5))];
+const KUTU=(need,dig,name,k)=>({k:k||"e_1f381",name,need,dig});
+GFACT.kurab4=[
+  r=>{const n=ri(r,3,6),k=ri(r,12,25);return kur({mode:"cark",fisLab:"NOT",t:"Kutulara eşit",lines:[`${n*k} kurabiye var.`,`${n} kutuya eşit paylaştır. Her kutuda kaç olur?`],items:[KUTU(k,2,"her kutu")],ask:"Her kutuda kaç kurabiye olur?",q:"Her kutudaki kurabiye sayısını çarkla kur",hint:`${n*k} ÷ ${n} işlemini yap.`,ansTxt:`${n*k} ÷ ${n} = ${k}`})},
+  r=>{const n=ri(r,3,6),k=ri(r,11,24),m=ri(r,1,n-1),T=n*k+m;return kur({mode:"cark",fisLab:"NOT",t:"Kalanlı paylaştırma",lines:[`${T} kurabiye var. ${n} kutuya eşit paylaştır.`,`Her kutuda kaç olur, kaç kurabiye artar?`],items:[KUTU(k,2,"her kutu"),KUTU(m,1,"artan","e_1f36a")],ask:"Her kutuda kaç, kaç artar?",q:"Her kutudakini ve artanı çarkla kur",hint:`${T} ÷ ${n}: bölümü ve kalanı bul.`,ansTxt:`${T} ÷ ${n} = ${k}, kalan ${m}`})},
+  r=>{const n=ri(r,4,8),k=ri(r,21,98),m=ri(r,1,n-1),T=n*k+m;return kur({mode:"cark",fisLab:"NOT",t:"Üç basamaklı paylaştırma",lines:[`${T} kurabiye var. ${n} kutuya eşit paylaştır.`,`Her kutuda kaç olur, kaç kurabiye artar?`],items:[KUTU(k,2,"her kutu"),KUTU(m,1,"artan","e_1f36a")],ask:"Her kutuda kaç, kaç artar?",q:"Her kutudakini ve artanı çarkla kur",hint:`${T} ÷ ${n}: bölümü ve kalanı bul.`,ansTxt:`${T} ÷ ${n} = ${k}, kalan ${m}`})}];
+["kurab1","kurab2","kurab3","kurab4"].forEach(id=>{GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.a=f.ansTxt;return f})});
+// ---------------- 9) Doğru mu? (ayır motoru · soru türü: EŞİTLİĞİN DOĞRULUĞU)
+const dy=(o)=>KIS(Object.assign({ask:"Kartları doğru kutuya koy",ansTxt:"Bütün kartlar doğru kutuda"},o));
+const bozuk=(r,v,st)=>{let w;do{w=v+pick(r,st)}while(w<=0||w===v);return w};
+GFACT.dogru1=[
+  r=>dy(ayirFact(r,["Birlikte 10 eder","10 etmez"],(r,b)=>{const a=ri(r,1,9);const c=b?bozuk(r,10-a,[-2,-1,1,2]):10-a;return c<=0?null:`${a} ve ${c}`},{t:"10 eder mi?",q:"İki sayı birlikte 10 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 10'a kadar say: ikinci sayı kadar mı?"})),
+  r=>dy(ayirFact(r,["Birlikte 8 eder","8 etmez"],(r,b)=>{const a=ri(r,1,7);const c=b?bozuk(r,8-a,[-2,-1,1,2]):8-a;return c<=0?null:`${a} ve ${c}`},{t:"8 eder mi?",q:"İki sayı birlikte 8 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 8'e kadar say: ikinci sayı kadar mı?"})),
+  r=>{const T=ri(r,12,15);return dy(ayirFact(r,[`Birlikte ${T} eder`,`${T} etmez`],(r,b)=>{const a=ri(r,T-9,9);const c=b?bozuk(r,T-a,[-2,-1,1,2]):T-a;return c<=0||c>9?null:`${a} ve ${c}`},{t:`${T} eder mi?`,q:`İki sayı birlikte ${T} eder mi?`,hint:"Büyük sayıdan başla, küçüğü üstüne say."}))}];
+const eq=(a,op,b,c)=>`${NF(a)} ${op} ${NF(b)} = ${NF(c)}`;
+GFACT.dogru2=[
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,12,60),c=10*ri(r,1,3);return eq(a,"+",c,b?bozuk(r,a+c,[-10,10,-1,1]):a+c)},{t:"Doğru mu?",q:"İşlem doğru mu, yanlış mı? Karta, sonra kutuya dokun",hint:"Onluk eklerken birlik değişmez."})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,14,58),c=ri(r,12,39);return eq(a,"+",c,b?bozuk(r,a+c,[-10,10,-1,1]):a+c)},{t:"Toplama doğru mu?",q:"İşlem doğru mu, yanlış mı?",hint:"Önce birlikleri, sonra onlukları kontrol et."})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{if(r()<.5){const a=ri(r,41,95),c=ri(r,12,a-11);return eq(a,"−",c,b?bozuk(r,a-c,[-10,10,-1,1]):a-c)}const a=ri(r,14,58),c=ri(r,12,39);return eq(a,"+",c,b?bozuk(r,a+c,[-10,10,-1,1]):a+c)},{t:"Toplama ve çıkarma",q:"İşlem doğru mu, yanlış mı?",hint:"Çıkarmayı toplamayla kontrol et: sonuç + çıkan = ilk sayı mı?"}))];
+GFACT.dogru3=[
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,2,5),c=ri(r,2,9);return eq(a,"×",c,b?bozuk(r,a*c,[-a,a,-1,1]):a*c)},{t:"Çarpım doğru mu?",q:"İşlem doğru mu, yanlış mı? Karta, sonra kutuya dokun",hint:"Ritmik say: 3 × 4 için 3'er 4 kez say."})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,2,5),q=ri(r,2,9);return eq(a*q,"÷",a,b?bozuk(r,q,[-1,1,2]):q)},{t:"Bölme doğru mu?",q:"İşlem doğru mu, yanlış mı?",hint:"Bölmeyi çarpmayla kontrol et: sonuç × bölen = bölünen mi?"})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,110,480),c=ri(r,120,450);return r()<.5?eq(a,"+",c,b?bozuk(r,a+c,[-100,100,-10,10]):a+c):eq(a+c,"−",c,b?bozuk(r,a,[-100,100,-10,10]):a)},{t:"Üç basamaklı",q:"İşlem doğru mu, yanlış mı?",hint:"Basamak basamak kontrol et: yüzlük, onluk, birlik."}))];
+GFACT.dogru4=[
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,12,99),c=ri(r,3,9);return eq(a,"×",c,b?bozuk(r,a*c,[-10,10,-c,c]):a*c)},{t:"Çarpım doğru mu?",q:"İşlem doğru mu, yanlış mı? Karta, sonra kutuya dokun",hint:"Onlukları ve birlikleri ayrı çarp, sonra topla."})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,3,9),q=ri(r,12,99);return eq(a*q,"÷",a,b?bozuk(r,q,[-10,10,-1,1]):q)},{t:"Bölme doğru mu?",q:"İşlem doğru mu, yanlış mı?",hint:"Bölmeyi çarpmayla kontrol et: sonuç × bölen = bölünen mi?"})),
+  r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,1200,5800),c=ri(r,1100,3900);return r()<.5?eq(a,"+",c,b?bozuk(r,a+c,[-1000,1000,-100,100]):a+c):eq(a+c,"−",c,b?bozuk(r,a,[-1000,1000,-100,100]):a)},{t:"Dört basamaklı",q:"İşlem doğru mu, yanlış mı?",hint:"Basamak basamak kontrol et: binlik, yüzlük, onluk, birlik."}))];
+// ---------------- 10) Aralık Takvimi (panel motoru · soru türü: TABLO KURALI: +1, +5, +7)
+const TK=(o)=>KIS(o);
+GFACT.takvim1=[
+  r=>{const hi=ri(r,0,3),hj=ri(r,0,4);return TK(parcaFact(r,{R:4,C:5,kind:"sayi",val:(i,j)=>1+i*5+j,hole:[[hi,hj]],mk:numMk([1,-1,5,-5,2]),txt:{t:"Eksik sayı",ask:"Takvimin eksik sayısını bul",q:"Sağa gidince 1 artar. Eksik sayı hangisi?",hint:"Soldaki sayıdan bir sonrakini söyle."}}))},
+  r=>{const hj=ri(r,0,4);return TK(parcaFact(r,{R:4,C:5,kind:"sayi",val:(i,j)=>1+i*5+j,hole:[[1,hj],[2,hj]],mk:numMk([1,-1,5,-5]),txt:{t:"Alt alta",ask:"Alt alta iki eksik sayıyı bul",q:"Aşağı inince 5 artar. Hangi parça uyar?",hint:"Üstteki sayıdan 5 ileri say."}}))},
+  r=>{const hi=ri(r,1,3),hj=ri(r,0,3);return TK(parcaFact(r,{R:4,C:5,kind:"sayi",val:(i,j)=>1+i*5+j,hole:[[hi,hj],[hi,hj+1]],mk:numMk([1,-1,5,-5,2]),txt:{t:"Yan yana",ask:"Yan yana iki eksik sayıyı bul",q:"Sağa gidince 1 artar. Hangi parça uyar?",hint:"Soldaki sayıdan ileri say."}}))}];
+const cal=(R,start,step,down)=>(i,j)=>start+i*down+j*step;
+GFACT.takvim2=[
+  r=>{const s=ri(r,1,4),hi=ri(r,0,3),hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,1,7),hole:[[hi,hj]],mk:numMk([1,-1,7,-7,2]),txt:{t:"Takvimde eksik gün",ask:"Takvimin eksik gününü bul",q:"Bir haftanın gün sayısı 7. Aşağı inince 7 artar. Eksik gün hangisi?",hint:"Soldaki günden bir sonrakini ya da üstteki günden 7 sonrakini bul."}}))},
+  r=>{const s=ri(r,1,4),hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,1,7),hole:[[1,hj],[2,hj]],mk:numMk([1,-1,7,-7]),txt:{t:"Bir hafta sonra",ask:"Alt alta iki eksik günü bul",q:"Aşağı inince bir hafta geçer, sayı 7 artar. Hangi parça uyar?",hint:"Üstteki güne 7 ekle."}}))},
+  r=>{const s=ri(r,1,4),hi=ri(r,1,3),hj=ri(r,0,5);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,1,7),hole:[[hi,hj],[hi,hj+1]],mk:numMk([1,-1,7,-7,6]),txt:{t:"Yan yana günler",ask:"Yan yana iki eksik günü bul",q:"Hangi parça takvime uyar?",hint:"Üstteki günlere 7 ekle ya da soldaki günden ileri say."}}))}];
+GFACT.takvim3=[
+  r=>{const s=ri(r,100,300),hi=ri(r,0,3),hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,1,7),hole:[[hi,hj]],mk:numMk([1,-1,7,-7,10]),txt:{t:"Yılın günleri",ask:"Eksik günü bul",q:"Yılın günleri numaralı: sağa 1, aşağı 7 artar. Eksik gün hangisi?",hint:"Üstteki günden 7 sonrakini bul."}}))},
+  r=>{const s=ri(r,120,320),hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,1,7),hole:[[0,hj],[1,hj]],mk:numMk([1,-1,7,-7,10]),txt:{t:"Alt alta",ask:"Alt alta iki eksik günü bul",q:"Aşağı inince 7 artar. Hangi parça uyar?",hint:"Alttaki komşudan 7 çıkar ya da soldakinden ileri say."}}))},
+  r=>{const s=ri(r,150,330),k=pick(r,[2,3]),hj=ri(r,0,5);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,k,7*k),hole:[[2,hj],[2,hj+1]],mk:numMk([k,-k,7*k,-7*k,1]),txt:{t:`${k} günde bir`,ask:"Yan yana iki eksik sayıyı bul",q:`Her ${k} günde bir kar yağıyor: sağa ${k}, aşağı ${7*k} artar. Hangi parça uyar?`,hint:`Soldaki sayıya ${k} ekle; üsttekine ${7*k} ekle.`}}))}];
+GFACT.takvim4=[
+  r=>{const k=pick(r,[25,50]),s=ri(r,10,40)*100,hi=ri(r,0,3),hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,k,7*k),hole:[[hi,hj]],mk:numMk([k,-k,7*k,-7*k,100]),txt:{t:"Günlük biriktirme",ask:"Eksik sayıyı bul",q:`Her gün ${k} kar tanesi biriktiriliyor: sağa ${k}, aşağı ${7*k} artar. Eksik sayı hangisi?`,hint:`Bir hafta ${7*k} eder. Üstteki sayıya ${7*k} ekle.`}}))},
+  r=>{const k=pick(r,[75,125]),s=ri(r,10,40)*100,hj=ri(r,0,6);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,k,7*k),hole:[[1,hj],[2,hj]],mk:numMk([k,-k,7*k,-7*k]),txt:{t:"Haftalık artış",ask:"Alt alta iki eksik sayıyı bul",q:`Her gün ${k} artıyor. Bir haftada kaç artar? Hangi parça uyar?`,hint:`7 × ${k} = ${7*k}: üstteki sayıya ekle.`}}))},
+  r=>{const k=pick(r,[150,250]),s=ri(r,10,30)*100,hj=ri(r,0,5);return TK(parcaFact(r,{R:4,C:7,kind:"sayi",val:cal(4,s,k,7*k),hole:[[2,hj],[2,hj+1]],mk:numMk([k,-k,7*k,-7*k,100]),txt:{t:"Büyük adımlar",ask:"Yan yana iki eksik sayıyı bul",q:`Her gün ${k} artıyor. Hangi parça uyar?`,hint:`Üstteki sayılara 7 × ${k} = ${7*k} ekle.`}}))}];
+// ---------------- KAYIT (Aralık 2. paket)
+const DEF12b={kizak:["Kızak Treni","🛷","Baştaki ve sondaki sayıya bak, kaç bindi ya da indi bul"],fark:["Kar Topu Farkı","⛄","Farkı istenen sayı olan iki kar topunu seç"],kurab:["Kurabiye Tabağı","🍪","Notu oku, kurabiyeleri tabaklara koy"],dogru:["Doğru mu Yanlış mı?","✅","İşlemleri kontrol et, doğru kutuya koy"],takvim:["Aralık Takvimi","📅","Takvimin kuralını bul, eksik parçayı yerleştir"]};
+const ENG12b={kizak:KB(Object.assign({},SPEC_MEKIK,{H:444}),"gece"),fark:KB(SPEC_KOL,"kuzey"),kurab:KB(SPEC_KANTIN,"pembe"),dogru:KB(SPEC_AYIR,"kale"),takvim:KB(SPEC_PARCA,"buz")};
+const EV12b={kizak:HCx("Kaç Kişi Bindi?","Bilinmeyen toplanan ve çıkan","Oyuncaklar, bir kutu (araba)",["Kutuya 5 oyuncak koyun, sayın.","Çocuğunuz gözünü kapatırken birkaç oyuncak ekleyin.","Şimdi kaç tane olduğunu birlikte sayın: kaç tane eklenmiş?"],"Saymadan nasıl buldun?"),
+  fark:HCx("Fark Avı","İki sayının farkı","Sayı kartları",["Masaya 6-8 sayı kartı dizin.","'Farkı 3 olan iki kart bul' deyin.","Bulunca: 'Hangisi hangisinden 3 fazla?' diye sorun."],"Farkı nasıl buldun: ileri mi saydın, geri mi?"),
+  kurab:HCx("Tabaklara Paylaştır","Parça-bütün, eşit paylaştırma","Kurabiye ya da fasulye, 2-4 tabak",["Belli sayıda kurabiye sayın.","'Mavi tabağa 4, gerisi kırmızıya' deyin.","Büyük sınıflarda 'tabaklara eşit paylaştır' deyin; artan varsa konuşun."],"Her tabakta eşit mi? Nasıl kontrol ettin?"),
+  dogru:HCx("Doğru mu?","İşlem kontrolü","Kâğıt, kalem",["Kâğıda birkaç işlem yazın; bazılarında bilerek hata yapın.","Çocuğunuz yanlış olanları bulup düzeltsin.","Sırayı değiştirin: o yazsın, siz kontrol edin."],"Yanlış olduğunu nasıl anladın?"),
+  takvim:HCx("Takvim Oyunu","Tablo kuralı, haftalar (7 gün)","Duvar takvimi, yapışkan not",["Takvimde birkaç günün üstünü kapatın.","Çocuğunuz kapalı günleri tahmin etsin.","'Bugünden bir hafta sonra ayın kaçı?' diye sorun."],"Bir hafta sonrasını nasıl buldun?")};
+Object.keys(DEF12b).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f});if(typeof G==="undefined")continue;G[id]={id,name:DEF12b[b][0],ico:DEF12b[b][1],task:DEF12b[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG12b[b];if(typeof HOME!=="undefined")HOME[id]=EV12b[b];if(SETS[12]&&SETS[12][g]&&!SETS[12][g].includes(id))SETS[12][g].push(id)}});
+// ======================================================================== ARALIK 3. paket
+// ---------------- 11) Kar Evi Işıkları (panel motoru · soru türü: SIRA SAYILARI soldan/sağdan/üstten/alttan)
+const ISK=(o)=>KIS(Object.assign({fireLab:"💡 Işıkları yak",topLab:"KAR EVİ",failMsg:"Yanlış pencere yandı. Saymaya hangi taraftan başlamalısın?",a:"isik-"+o.need.slice().sort((a,b)=>a-b).join("-")},o));
+const POS=(R,C,r,c)=>r*C+c;
+GFACT.isik1=[
+  r=>{const C=6,k=ri(r,2,5);return ISK({R:1,C,need:[k-1],t:"Soldan say",ask:`Soldan ${k}. pencerenin ışığını yak`,q:`Soldan ${k}. pencerenin ışığını yak`,hint:"En soldaki pencere 1. Sağa doğru say.",ansTxt:`Soldan ${k}. pencere yandı`})},
+  r=>{const C=6,k=ri(r,2,5);return ISK({R:1,C,need:[C-k],t:"Sağdan say",ask:`Sağdan ${k}. pencerenin ışığını yak`,q:`Sağdan ${k}. pencerenin ışığını yak`,hint:"En sağdaki pencere 1. Sola doğru say.",ansTxt:`Sağdan ${k}. pencere yandı`})},
+  r=>{const C=7;let a=ri(r,2,5),b=ri(r,1,4);if(a-1===C-b)b=b===1?2:b-1;return ISK({R:1,C,need:[a-1,C-b],t:"Soldan ve sağdan",ask:`Soldan ${a}. ve sağdan ${b}. pencereyi yak`,q:`Soldan ${a}. ve sağdan ${b}. pencerenin ışığını yak`,hint:"Birini soldan, öbürünü sağdan say.",ansTxt:`Soldan ${a}. ve sağdan ${b}. pencere yandı`})}];
+GFACT.isik2=[
+  r=>{const R=2,C=5,k=ri(r,2,4);return ISK({R,C,need:[POS(R,C,0,C-k)],t:"Üst sıra, sağdan",ask:`Üst sıranın sağdan ${k}. penceresini yak`,q:`Üst sıranın sağdan ${k}. penceresini yak`,hint:"Önce üst sırayı bul. Sonra sağdan say.",ansTxt:`Üst sıranın sağdan ${k}. penceresi yandı`})},
+  r=>{const R=2,C=5,k=ri(r,2,5);return ISK({R,C,need:[POS(R,C,1,k-1)],t:"Alt sıra, soldan",ask:`Alt sıranın soldan ${k}. penceresini yak`,q:`Alt sıranın soldan ${k}. penceresini yak`,hint:"Önce alt sırayı bul. Sonra soldan say.",ansTxt:`Alt sıranın soldan ${k}. penceresi yandı`})},
+  r=>{const R=2,C=6,a=ri(r,1,4),b=ri(r,1,4);return ISK({R,C,need:[POS(R,C,0,a-1),POS(R,C,1,C-b)],t:"İki pencere",ask:"İki pencereyi yak",q:`Üst sıranın soldan ${a}. ve alt sıranın sağdan ${b}. penceresini yak`,hint:"Her pencere için önce sırayı, sonra hangi taraftan sayacağını bul.",ansTxt:"İki pencere doğru yandı"})}];
+GFACT.isik3=[
+  r=>{const R=3,C=5,a=ri(r,1,3),b=ri(r,2,4);return ISK({R,C,need:[POS(R,C,a-1,C-b)],t:"Üstten ve sağdan",ask:`Üstten ${a}. sıranın sağdan ${b}. penceresini yak`,q:`Üstten ${a}. sıranın sağdan ${b}. penceresini yak`,hint:"Sıraları yukarıdan, pencereleri sağdan say.",ansTxt:"Doğru pencere yandı"})},
+  r=>{const R=3,C=5,a=ri(r,1,3),b=ri(r,2,5);return ISK({R,C,need:[POS(R,C,R-a,b-1)],t:"Alttan ve soldan",ask:`Alttan ${a}. sıranın soldan ${b}. penceresini yak`,q:`Alttan ${a}. sıranın soldan ${b}. penceresini yak`,hint:"Sıraları aşağıdan, pencereleri soldan say.",ansTxt:"Doğru pencere yandı"})},
+  r=>{const R=3,C=6,a=ri(r,1,3),b=ri(r,1,4),c2=ri(r,1,3),d=ri(r,1,4);const p1=POS(R,C,R-a,C-b),p2=POS(R,C,c2-1,d-1);return ISK({R,C,need:p1===p2?[p1]:[p1,p2],t:"İki pencere",ask:"İki pencereyi yak",q:`Alttan ${a}. sıranın sağdan ${b}. ve üstten ${c2}. sıranın soldan ${d}. penceresini yak`,hint:"Her pencere için sırayı ve yönü ayrı ayrı bul.",ansTxt:"Pencereler doğru yandı"})}];
+GFACT.isik4=[
+  r=>{const R=4,C=5,a=ri(r,2,4),b=ri(r,2,4);return ISK({R,C,need:[POS(R,C,R-a,C-b)],t:"Alttan ve sağdan",ask:`Alttan ${a}. sıranın sağdan ${b}. penceresini yak`,q:`Alttan ${a}. sıranın sağdan ${b}. penceresini yak`,hint:"Sıraları aşağıdan, pencereleri sağdan say.",ansTxt:"Doğru pencere yandı"})},
+  r=>{const R=4,C=5,k=ri(r,1,4);return ISK({R,C,need:[0,1,2,3].map(q=>POS(R,C,q,C-k)),t:"Bütün sütun",ask:`Sağdan ${k}. sütundaki bütün pencereleri yak`,q:`Her sıranın sağdan ${k}. penceresini yak`,hint:"Her sırada aynı yerdeki pencere: alt alta dizilirler.",ansTxt:`Sağdan ${k}. sütundaki 4 pencere yandı`})},
+  r=>{const R=4,C=6,a=ri(r,1,4),b=ri(r,1,3),c2=ri(r,1,4),d=ri(r,1,3);const p1=POS(R,C,a-1,C-b),p2=POS(R,C,R-c2,d-1);return ISK({R,C,need:p1===p2?[p1]:[p1,p2],t:"İki pencere",ask:"İki pencereyi yak",q:`Üstten ${a}. sıranın sağdan ${b}. ve alttan ${c2}. sıranın soldan ${d}. penceresini yak`,hint:"Her pencere için sırayı ve yönü ayrı ayrı bul.",ansTxt:"Pencereler doğru yandı"})}];
+// ---------------- 12) Kar Tanesi Flaşı (flaş motoru · soru türü: TAMAMLAMA)
+const tf=(o)=>KIS(flas(Object.assign({ask:"Kaç tane daha gerekir?",fail:"Ekrana yeniden dokun, eksik olanları say"},o)));
+GFACT.tflas1=[
+  r=>{const n=ri(r,5,9),a=10-n;return tf({kind:"frame",n,a,ms:1800,cands:opts(r,a,[n,a+1,a-1]),t:"10'a tamamla",q:"Ekrana dokun, çerçeveye bak: 10 olması için kaç yıldız daha gerekir?",hint:"Boş kutuları say: her boş kutu bir yıldız eksik.",ansTxt:`${n} yıldız var, ${a} yıldız daha gerekir`})},
+  r=>{const n=ri(r,2,6),a=10-n;return tf({kind:"frame",n,a,ms:1800,cands:opts(r,a,[n,a+1,a-1]),t:"10'a tamamla",q:"Ekrana dokun, çerçeveye bak: 10 olması için kaç yıldız daha gerekir?",hint:"Boş kutuları say: her boş kutu bir yıldız eksik.",ansTxt:`${n} yıldız var, ${a} yıldız daha gerekir`})},
+  r=>{const n=ri(r,11,18),a=20-n;return tf({kind:"frame",n,a,ms:2200,cands:opts(r,a,[n-10,a+1,a-1]),t:"20'ye tamamla",q:"Ekrana dokun: 20 olması için kaç yıldız daha gerekir?",hint:"Üstteki çerçeve dolu: 10. Alttaki boş kutuları say.",ansTxt:`${n} yıldız var, ${a} yıldız daha gerekir`})}];
+GFACT.tflas2=[
+  r=>{const t=ri(r,3,8),a=10-t;return tf(fb({t},1800,{a,cands:opts(r,a,[t,a+1,a*10]),t:"Kaç çubuk daha?",q:"Ekrana dokun: 100 küp olması için kaç onluk çubuk daha gerekir?",hint:"10 çubuk 100 küp eder. Kaç çubuk var, 10'a kaç kaldı?",ansTxt:`${t} çubuk var, ${a} çubuk daha gerekir`}))},
+  r=>{const t=ri(r,3,7),u=ri(r,1,8),v=t*10+u,a=100-v;return tf(fb({t,u},2200,{a,cands:opts(r,a,[a+10,a-10,v]),t:"100'e tamamla",q:"Ekrana dokun: 100 olması için kaç küp daha gerekir?",hint:"Önce küpleri sayıp sayıyı bul. Sonra bir sonraki onluğa, oradan 100'e tamamla.",ansTxt:`${v} + ${a} = 100`}))},
+  r=>{const t=ri(r,1,5),u=ri(r,2,9),v=t*10+u,a=100-v;return tf(fb({t,u},2400,{a,cands:opts(r,a,[a+10,a-10,a+1]),t:"100'e tamamla",q:"Ekrana dokun: 100 olması için kaç küp daha gerekir?",hint:"Önce bir sonraki onluğa, oradan 100'e tamamla.",ansTxt:`${v} + ${a} = 100`}))}];
+GFACT.tflas3=[
+  r=>{const h=ri(r,2,8),a=1000-h*100;return tf(fb({h},1800,{a,cands:opts(r,a,[a+100,a-100,h*100]),t:"1000'e tamamla",q:"Ekrana dokun: 1000 olması için kaç küp daha gerekir?",hint:"10 levha 1000 eder. Kaç levha eksik?",ansTxt:`${h*100} + ${a} = 1000`}))},
+  r=>{const h=ri(r,2,7),t=ri(r,1,8),v=h*100+t*10,a=1000-v;return tf(fb({h,t},2400,{a,cands:opts(r,a,[a+100,a-10,v]),t:"1000'e tamamla",q:"Ekrana dokun: 1000 olması için kaç küp daha gerekir?",hint:"Önce bir sonraki yüzlüğe, oradan 1000'e tamamla.",ansTxt:`${v} + ${a} = 1000`}))},
+  r=>{const h=ri(r,1,6),t=ri(r,1,7),u=ri(r,1,8),v=h*100+t*10+u,a=1000-v;return tf(fb({h,t,u},2800,{a,cands:opts(r,a,[a+10,a-100,a+1]),t:"1000'e tamamla",q:"Ekrana dokun: 1000 olması için kaç küp daha gerekir?",hint:"Birlikleri onluğa, onlukları yüzlüğe, yüzlükleri 1000'e tamamla.",ansTxt:`${v} + ${a} = 1000`}))}];
+GFACT.tflas4=[
+  r=>{const th=ri(r,2,8),a=10000-th*1000;return tf(fb({th},1800,{a,cands:opts(r,a,[a+1000,a-1000,th*1000]),t:"10 000'e tamamla",q:"Ekrana dokun: 10 000 olması için kaç küp daha gerekir?",hint:"Her mor blok 1000. 10 blok 10 000 eder.",ansTxt:`${NF(th*1000)} + ${NF(a)} = 10 000`}))},
+  r=>{const th=ri(r,2,7),h=ri(r,1,8),v=th*1000+h*100,a=10000-v;return tf(fb({th,h},2400,{a,cands:opts(r,a,[a+1000,a-100,v]),t:"10 000'e tamamla",q:"Ekrana dokun: 10 000 olması için kaç küp daha gerekir?",hint:"Önce bir sonraki binliğe, oradan 10 000'e tamamla.",ansTxt:`${NF(v)} + ${NF(a)} = 10 000`}))},
+  r=>{const th=ri(r,1,6),h=ri(r,1,7),t=ri(r,1,8),v=th*1000+h*100+t*10,a=10000-v;return tf(fb({th,h,t},3000,{a,cands:opts(r,a,[a+100,a-1000,a+10]),t:"10 000'e tamamla",q:"Ekrana dokun: 10 000 olması için kaç küp daha gerekir?",hint:"Onlukları yüzlüğe, yüzlükleri binliğe, binlikleri 10 000'e tamamla.",ansTxt:`${NF(v)} + ${NF(a)} = 10 000`}))}];
+// ---------------- 13) Farklı Kar Tanesi (dönen motoru · soru türü: FARKLI OLANI BUL)
+function oddFact(r,n,lit,k,o){let g=0;while(g++<400){const idx=shuffle(r,[...Array(n*n).keys()]).slice(0,lit);const p=Array(n*n).fill(0);idx.forEach((i,q)=>p[i]=1+(q%k));const R=rots(p,n),key=a=>a.join("");if(new Set(R.map(key)).size<4)continue;
+    const mir=p.map((_,i)=>p[Math.floor(i/n)*n+(n-1-i%n)]);const RK=new Set(R.map(key));const M=rots(mir,n).filter(m=>!RK.has(key(m)));if(!M.length)continue;
+    const [a,b]=shuffle(r,[0,1,2,3]).slice(0,2);const odd=pick(r,M);const os=shuffle(r,[R[a],R[b],odd]);const ai=os.findIndex(q=>key(q)===key(odd));
+    return KIS(Object.assign({odd:1,n,target:p,opts:os,ai,a:"odd-"+ai+key(odd).replace(/\d/g,d=>"wxyz"[d]),ask:"Farklı olan hangisi?",q:"İki kar tanesi paneli aynı, yalnız döndürülmüş. Farklı olan hangisi?",failMsg:"Seçtiğin panel ötekilerden birinin döndürülmüş hâli. Köşelere bak.",ansTxt:"Bu panel aynadaki gibi ters: ötekilerden farklı"},o))}}
+GFACT.odd1=[r=>oddFact(r,2,2,2,{t:"İki renk",hint:"Panelleri kafanda çevir: hangisi ötekilere uymuyor?"}),r=>oddFact(r,2,3,3,{t:"Üç renk",hint:"Renklerin sırasını saat yönünde oku; farklı olanda sıra ters."}),r=>oddFact(r,3,3,1,{t:"Dokuz kare",hint:"Köşelerdeki ışıklara bak."})];
+GFACT.odd2=[r=>oddFact(r,3,3,1,{t:"Dokuz kare",hint:"Köşelerdeki ışıklara bak."}),r=>oddFact(r,3,4,1,{t:"Dört ışık",hint:"Işıkların komşularına bak."}),r=>oddFact(r,3,4,2,{t:"İki renk",hint:"Renklerin sırasını saat yönünde oku; farklı olanda sıra ters."})];
+GFACT.odd3=[r=>oddFact(r,3,4,2,{t:"İki renk",hint:"Renklerin sırasını saat yönünde oku; farklı olanda sıra ters."}),r=>oddFact(r,3,5,2,{t:"Beş ışık",hint:"Bir köşeyi seç, döndürünce nereye gittiğini izle."}),r=>oddFact(r,4,5,2,{t:"Büyük panel",hint:"Bir kenardaki sırayı oku; öteki panellerde aynı sırayı ara."})];
+GFACT.odd4=[r=>oddFact(r,4,5,2,{t:"Büyük panel",hint:"Bir kenardaki sırayı oku; öteki panellerde aynı sırayı ara."}),r=>oddFact(r,4,6,3,{t:"Üç renk",hint:"Renklerin sırasını saat yönünde oku; farklı olanda sıra ters."}),r=>oddFact(r,4,8,3,{t:"Kalabalık panel",hint:"Bir köşeyi seç, döndürünce nereye gittiğini izle."})];
+// ---------------- 14) Kartpostal (fiş motoru, çark · soru türü: SAYI OKUMA-YAZMA)
+const BIR=["","bir","iki","üç","dört","beş","altı","yedi","sekiz","dokuz"],ON=["","on","yirmi","otuz","kırk","elli","altmış","yetmiş","seksen","doksan"];
+const yaz3=n=>{const y=Math.floor(n/100),o=Math.floor(n/10)%10,b=n%10;return[(y?(y>1?BIR[y]+" ":"")+"yüz":""),ON[o],BIR[b]].filter(Boolean).join(" ")};
+const okunus=n=>{if(n===0)return"sıfır";const b=Math.floor(n/1000),k=n%1000;return[(b?(b>1?yaz3(b)+" ":"")+"bin":""),yaz3(k)].filter(Boolean).join(" ")};
+const kart=(r,n,o)=>KIS(Object.assign({mode:"cark",fisLab:"KARTPOSTAL",lines:[`"${okunus(n)}"`,"Bu sayıyı rakamlarla yaz."],items:[{k:"e_2744",name:"sayı",need:n,dig:String(n).length}],ask:"Sayıyı rakamlarla yaz",q:"Kartpostaldaki sayıyı çarkla rakamlarla yaz",hint:"Okunuşu parça parça oku: önce büyük basamak, sonra küçükler.",ansTxt:`${okunus(n)} = ${NF(n)}`,emptyMsg:"Önce çarkları çevir",failMsg:"Okunuşu yeniden oku: her basamağı ayrı düşün"},o,{a:n}));
+GFACT.kart1=[r=>kart(r,ri(r,11,15),{t:"On bir - on beş",hint:"'On' bir onluk demek: önce 1, sonra birliği yaz."}),r=>kart(r,ri(r,16,19),{t:"On altı - on dokuz",hint:"'On' bir onluk demek: önce 1, sonra birliği yaz."}),r=>kart(r,pick(r,[20,12,17,19,14]),{t:"Yirmiye kadar",hint:"'Yirmi' iki onluk demek."})];
+GFACT.kart2=[r=>kart(r,10*ri(r,3,9),{t:"Onluklar",hint:"Onluk sayısını yaz, birliğe 0 koy."}),r=>kart(r,ri(r,2,9)*10+ri(r,1,9),{t:"İki basamaklı",hint:"Önce onluğu, sonra birliği yaz."}),r=>kart(r,pick(r,[ri(r,2,9)*10+ri(r,1,9),100]),{t:"Yüze kadar",hint:"Önce onluğu, sonra birliği yaz."})];
+GFACT.kart3=[r=>kart(r,100*ri(r,2,9),{t:"Yüzlükler",hint:"Yüzlük sayısını yaz, onluk ve birliğe 0 koy."}),r=>kart(r,100*ri(r,1,9)+10*ri(r,1,9),{t:"Yüzlük ve onluk",hint:"Birlik söylenmiyorsa birliğe 0 yaz."}),r=>kart(r,100*ri(r,1,9)+ri(r,1,9),{t:"Onluk yok",hint:"Onluk söylenmiyorsa ortaya 0 yaz."})];
+GFACT.kart4=[r=>kart(r,1000*ri(r,11,59),{t:"Binler",hint:"Bin sayısını yaz, kalan üç basamağa 0 koy."}),r=>kart(r,1000*ri(r,11,59)+100*ri(r,1,9),{t:"Binlik ve yüzlük",hint:"'bin'den sonraki kısım üç basamaktır."}),r=>kart(r,1000*ri(r,11,59)+ri(r,11,99),{t:"Boş yüzlük",hint:"'bin'den sonra yüz söylenmiyorsa yüzler basamağına 0 yaz."})];
+// ---------------- 15) Kar Yığını (bulut motoru · soru türü: KATLAR, İKİZLER)
+const ky=(o)=>KIS(Object.assign({objSpr:"penguin",fail:"Saklanan kısım görünenle nasıl ilişkili? Önce onu bul, sonra topla"},o));
+GFACT.yigin1=[
+  r=>{const v=ri(r,2,5);return ky({kind:"obj",v,hid:v,plate:"Arkada da bu kadar var",a:2*v,cands:opts(r,2*v,[v,2*v+1,2*v-1]),t:"İkizler",ask:"Hepsi kaç penguen?",q:"Kar yığınının arkasında da görünen kadar penguen var. Hepsi kaç?",hint:"Görünenleri say. Arkada da o kadar var: bir daha say.",ansTxt:`${v} ile ${v} birlikte ${2*v}`})},
+  r=>{const v=ri(r,6,9);return ky({kind:"obj",v,hid:v,plate:"Arkada da bu kadar var",a:2*v,cands:opts(r,2*v,[v,2*v+1,2*v-1]),t:"İkizler",ask:"Hepsi kaç penguen?",q:"Kar yığınının arkasında da görünen kadar penguen var. Hepsi kaç?",hint:"Görünenleri say. Arkada da o kadar var: üstüne bir daha say.",ansTxt:`${v} ile ${v} birlikte ${2*v}`})},
+  r=>{const v=ri(r,4,8);return ky({kind:"obj",v,hid:v+1,plate:"Arkada 1 fazlası var",a:2*v+1,cands:opts(r,2*v+1,[2*v,v+1,2*v+2]),t:"Bir fazlası",ask:"Hepsi kaç penguen?",q:"Kar yığınının arkasında görünenden 1 fazla penguen var. Hepsi kaç?",hint:"Arkadakini bul: görünenden 1 fazla. Sonra ikisini topla.",ansTxt:`${v} ile ${v+1} birlikte ${2*v+1}`})}];
+const kyb=(c,hidF,o)=>{const v=b10val(c),h=hidF(v);return ky(Object.assign({kind:"b10",c,hid:h,a:v+h},o(v,h)))};
+GFACT.yigin2=[
+  r=>kyb({t:ri(r,1,4),u:ri(r,1,4)},v=>v,(v,h)=>({plate:"Arkada da bu kadar var",cands:opts(r,2*v,[v,2*v+10,2*v-1]),t:"İkizler",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında da görünen kadar küp var. Hepsi kaç?",hint:"Görünen sayıyı bul ve kendisiyle topla.",ansTxt:`${v} + ${v} = ${2*v}`})),
+  r=>kyb({t:ri(r,2,3),u:ri(r,1,4)},v=>v+10,(v,h)=>({plate:"Arkada 10 fazlası var",cands:opts(r,v+h,[v+10,2*v,v+h+10]),t:"10 fazlası",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenden 10 fazla küp var. Hepsi kaç?",hint:"Arkadakini bul: görünene 10 ekle. Sonra ikisini topla.",ansTxt:`${v} + ${h} = ${v+h}`})),
+  r=>kyb({t:ri(r,2,4),u:ri(r,2,9)},v=>v-10,(v,h)=>({plate:"Arkada 10 eksiği var",cands:opts(r,v+h,[v-10,2*v,v+h+10]),t:"10 eksiği",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenden 10 eksik küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenden 10 çıkar. Sonra ikisini topla.",ansTxt:`${v} + ${h} = ${v+h}`}))];
+GFACT.yigin3=[
+  r=>kyb({h:ri(r,1,3),t:ri(r,1,3)},v=>2*v,(v,h)=>({plate:"Arkada 2 katı var",cands:opts(r,3*v,[2*v,v+2,3*v+10]),t:"2 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 2 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 2 katı. Sonra ikisini topla.",ansTxt:`${v} + ${h} = ${3*v}`})),
+  r=>kyb({h:ri(r,1,2),t:ri(r,1,4)},v=>3*v,(v,h)=>({plate:"Arkada 3 katı var",cands:opts(r,4*v,[3*v,v+3,4*v+10]),t:"3 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 3 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 3 katı. Sonra ikisini topla.",ansTxt:`${v} + ${h} = ${4*v}`})),
+  r=>kyb({h:1,t:ri(r,1,8)},v=>4*v,(v,h)=>({plate:"Arkada 4 katı var",cands:opts(r,5*v,[4*v,v+4,5*v+10]),t:"4 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 4 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 4 katı. Sonra ikisini topla.",ansTxt:`${v} + ${h} = ${5*v}`}))];
+GFACT.yigin4=[
+  r=>kyb({th:ri(r,1,3),h:ri(r,1,4)},v=>2*v,(v,h)=>({plate:"Arkada 2 katı var",cands:opts(r,3*v,[2*v,v+2,3*v+100]),t:"2 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 2 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 2 katı. Sonra ikisini topla.",ansTxt:`${NF(v)} + ${NF(h)} = ${NF(3*v)}`})),
+  r=>kyb({th:ri(r,1,2),h:ri(r,1,4)},v=>3*v,(v,h)=>({plate:"Arkada 3 katı var",cands:opts(r,4*v,[3*v,v+3,4*v+100]),t:"3 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 3 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 3 katı. Sonra ikisini topla.",ansTxt:`${NF(v)} + ${NF(h)} = ${NF(4*v)}`})),
+  r=>kyb({th:1,h:ri(r,1,8)},v=>4*v,(v,h)=>({plate:"Arkada 4 katı var",cands:opts(r,5*v,[4*v,v+4,5*v+100]),t:"4 katı",ask:"Hepsi kaç küp?",q:"Kar yığınının arkasında görünenin 4 katı küp var. Hepsi kaç?",hint:"Arkadakini bul: görünenin 4 katı. Sonra ikisini topla.",ansTxt:`${NF(v)} + ${NF(h)} = ${NF(5*v)}`}))];
+// ---------------- 16) Kar Küresi (ayna motoru · soru türü: BAŞ AŞAĞI ÇEVİRME) — 2-4. sınıf
+const KQ="Üstteki ev baş aşağı çevrilirse pencereler nasıl görünür? Alttakine dokunarak yak";
+const kk=(r,R,C,lit,k,o)=>{const f=aynaFact(r,R,C,lit,"h",k,Object.assign({r180:1,q:k===2?KQ+". İki dokunuş mavi yapar":KQ,hint:"Baş aşağı çevirince üstteki alta, soldaki sağa geçer.",failMsg:"Baş aşağı çevirince üstteki alta, soldaki sağa geçer"},o));f.a="kure-"+letters(SPEC_AYNA.target(f));return KIS(f)};
+GFACT.kure2=[r=>kk(r,2,3,2,1,{t:"Baş aşağı"}),r=>kk(r,3,3,3,1,{t:"Üç sıra"}),r=>kk(r,3,4,4,1,{t:"Geniş küre"})];
+GFACT.kure3=[r=>kk(r,3,4,4,1,{t:"Baş aşağı"}),r=>kk(r,4,4,5,1,{t:"Dört sıra"}),r=>kk(r,3,4,5,2,{t:"İki renk"})];
+GFACT.kure4=[r=>kk(r,4,4,5,2,{t:"İki renk"}),r=>kk(r,4,5,6,2,{t:"Büyük küre"}),r=>kk(r,4,5,8,2,{t:"Kalabalık küre"})];
+// ---------------- KAYIT (Aralık 3. paket)
+const DEF12c={isik:["Kar Evi Işıkları","💡","Saymaya doğru yerden başla, doğru pencereyi yak"],tflas:["Kar Tanesi Flaşı","✨","Bir bakışta gör, kaç tane daha gerektiğini bul"],odd:["Farklı Kar Tanesi","🔷","İki panel aynı, biri farklı: farklı olanı bul"],kart:["Kartpostal","💌","Okunuşu yazılan sayıyı rakamlarla yaz"],yigin:["Kar Yığını","❄️","Saklanan kısmı bul, hepsini hesapla"],kure:["Baş Aşağı Ev","🔄","Evi baş aşağı çevir, pencereleri yak"]};
+const ENG12c={isik:KB(SPEC_MOTOR,"gece"),tflas:KB(SPEC_FLAS,"kuzey"),odd:KB(SPEC_DONEN,"buz"),kart:KB(SPEC_KANTIN,"pembe"),yigin:KB(SPEC_BULUT,"tepe"),kure:KB(SPEC_AYNA,"gece")};
+const EV12c={isik:HCx("Kaçıncı Pencere?","Sıra sayıları, yön","Bardak, düğme ya da oyuncak dizisi",["Masaya 6-7 nesne dizin.","'Soldan 3.' ve 'sağdan 2.' nesneyi gösterin.","Çocuğunuz bir nesne seçsin, size iki yoldan söylesin: soldan kaçıncı, sağdan kaçıncı?"],"Aynı nesne soldan 3. ise sağdan kaçıncı?"),
+  tflas:HCx("10'a Tamamla","Tamamlama, onluk","Yumurta kolisi ya da 10 bölmeli kap, düğme",["Kaba birkaç düğme koyun, iki saniye gösterin.","Çocuğunuz 10 olması için kaç düğme daha gerektiğini söylesin.","Sonra düğmeleri ekleyip birlikte kontrol edin."],"Boş yerleri saymadan nasıl buldun?"),
+  odd:HCx("Farklı Olan","Döndürme ve yansıma","Kareli kâğıt, renkli kalem",["Üç küçük kareye aynı deseni çizin; birini aynadaki gibi ters çizin.","Kâğıtları farklı yönlere çevirerek çocuğunuza gösterin.","Farklı olanı bulsun; nedenini anlatsın."],"Döndürünce aynı olan, aynada da aynı mı?"),
+  kart:HCx("Sayı Mektubu","Sayıları okuma ve yazma","Kâğıt, kalem",["Bir kâğıda sayıyı yazıyla yazın: 'üç yüz sekiz'.","Çocuğunuz rakamlarla yazsın.","Sonra o size yazıyla bir sayı yazsın, siz rakamla yazın."],"Ortadaki 0'ı neden yazdın?"),
+  yigin:HCx("Saklı Yığın","İkizler, katlar","Fasulye, bir bez",["Bir avuç fasulye görünsün, bir kısmını bezin altına saklayın.","'Bezin altında bunun iki katı var' deyin.","Çocuğunuz hepsinin kaç olduğunu hesaplasın; bezi kaldırıp kontrol edin."],"Saklananı nasıl buldun?"),
+  kure:HCx("Baş Aşağı","Yarım tur döndürme","Kareli kâğıt, kalem",["Kâğıda 3×3 kare çizin, birkaçını boyayın.","Çocuğunuz kâğıt baş aşağı çevrilince nasıl görüneceğini başka bir kareye çizsin.","Kâğıdı çevirip karşılaştırın."],"Sol üstteki kare çevirince nereye gitti?")};
+Object.keys(DEF12c).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f});if(typeof G==="undefined")continue;G[id]={id,name:DEF12c[b][0],ico:DEF12c[b][1],task:DEF12c[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG12c[b];if(typeof HOME!=="undefined")HOME[id]=EV12c[b];if(SETS[12]&&SETS[12][g]&&!SETS[12][g].includes(id))SETS[12][g].push(id)}});
 window.K30={SPEC_ASANS,SPEC_TUP,SPEC_KRATER,SPEC_MOTOR,SPEC_PARCA};
 })();
 
