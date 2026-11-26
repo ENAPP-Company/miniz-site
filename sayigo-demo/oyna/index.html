@@ -13902,9 +13902,9 @@ GFACT.kurab4=[
 const dy=(o)=>KIS(Object.assign({ask:"Kartları doğru kutuya koy",ansTxt:"Bütün kartlar doğru kutuda"},o));
 const bozuk=(r,v,st)=>{let w;do{w=v+pick(r,st)}while(w<=0||w===v);return w};
 GFACT.dogru1=[
-  r=>dy(ayirFact(r,["Birlikte 10 eder","10 etmez"],(r,b)=>{const a=ri(r,1,9);const c=b?bozuk(r,10-a,[-2,-1,1,2]):10-a;return c<=0?null:`${a} ve ${c}`},{t:"10 eder mi?",q:"İki sayı birlikte 10 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 10'a kadar say: ikinci sayı kadar mı?"})),
-  r=>dy(ayirFact(r,["Birlikte 8 eder","8 etmez"],(r,b)=>{const a=ri(r,1,7);const c=b?bozuk(r,8-a,[-2,-1,1,2]):8-a;return c<=0?null:`${a} ve ${c}`},{t:"8 eder mi?",q:"İki sayı birlikte 8 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 8'e kadar say: ikinci sayı kadar mı?"})),
-  r=>{const T=ri(r,12,15);return dy(ayirFact(r,[`Birlikte ${T} eder`,`${T} etmez`],(r,b)=>{const a=ri(r,T-9,9);const c=b?bozuk(r,T-a,[-2,-1,1,2]):T-a;return c<=0||c>9?null:`${a} ve ${c}`},{t:`${T} eder mi?`,q:`İki sayı birlikte ${T} eder mi?`,hint:"Büyük sayıdan başla, küçüğü üstüne say."}))}];
+  r=>dy(ayirFact(r,["10 eder","10 etmez"],(r,b)=>{const a=ri(r,1,9);const c=b?bozuk(r,10-a,[-2,-1,1,2]):10-a;return c<=0?null:`${a} ile ${c} birlikte`},{t:"10 eder mi?",q:"Her karttaki iki sayı birlikte 10 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 10'a kadar say: ikinci sayı kadar mı?"})),
+  r=>dy(ayirFact(r,["8 eder","8 etmez"],(r,b)=>{const a=ri(r,1,7);const c=b?bozuk(r,8-a,[-2,-1,1,2]):8-a;return c<=0?null:`${a} ile ${c} birlikte`},{t:"8 eder mi?",q:"Her karttaki iki sayı birlikte 8 eder mi? Karta, sonra kutuya dokun",hint:"Birinci sayıdan 8'e kadar say: ikinci sayı kadar mı?"})),
+  r=>{const T=ri(r,12,15);return dy(ayirFact(r,[`${T} eder`,`${T} etmez`],(r,b)=>{const a=ri(r,T-9,9);const c=b?bozuk(r,T-a,[-2,-1,1,2]):T-a;return c<=0||c>9?null:`${a} ile ${c} birlikte`},{t:`${T} eder mi?`,q:`Her karttaki iki sayı birlikte ${T} eder mi? Karta, sonra kutuya dokun`,hint:"Büyük sayıdan başla, küçüğü üstüne say."}))}];
 const eq=(a,op,b,c)=>`${NF(a)} ${op} ${NF(b)} = ${NF(c)}`;
 GFACT.dogru2=[
   r=>dy(ayirFact(r,["Doğru","Yanlış"],(r,b)=>{const a=ri(r,12,60),c=10*ri(r,1,3);return eq(a,"+",c,b?bozuk(r,a+c,[-10,10,-1,1]):a+c)},{t:"Doğru mu?",q:"İşlem doğru mu, yanlış mı? Karta, sonra kutuya dokun",hint:"Onluk eklerken birlik değişmez."})),
