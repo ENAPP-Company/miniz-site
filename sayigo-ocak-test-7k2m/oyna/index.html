@@ -14640,16 +14640,16 @@ const SPEC_AGLA={H:490,
   init(f,S,A){A.c.noTheme=true;S.msg=null;S.pos=f.items.map(()=>null);S.sel=null;
     A.btn("↩ Boşalt",()=>{if(S.locked)return;S.pos=f.items.map(()=>null);S.sel=null});
     A.btn("Tamam",()=>{if(S.locked)return;if(S.pos.some(p=>!p)){msg(S,"Önce bütün canlıları yerleştir");return}const bi=f.items.findIndex((it,i)=>this.region(f,A,S.pos[i])!==f.reg[i]);if(bi<0)A.done();else{A.fail();S.bad=bi;S.badT=S.t;msg(S,"Kırmızı çerçeveli olanın yerini yeniden düşün")}},"")},
-  nets(f,A){const W=A.W;return f.sets.length===1?[{x:W/2,y:192,rx:118,ry:100}]:[{x:W/2-60,y:196,rx:108,ry:102},{x:W/2+60,y:196,rx:108,ry:102}]},
+  nets(f,A){const W=A.W;return f.sets.length===1?[{x:W/2,y:196,rx:100,ry:94}]:[{x:W/2-50,y:200,rx:92,ry:94},{x:W/2+50,y:200,rx:92,ry:94}]},
   inN(n,p){return((p.x-n.x)/n.rx)**2+((p.y-n.y)/n.ry)**2<=1},
   region(f,A,p){return this.nets(f,A).reduce((s,n,k)=>s+(this.inN(n,p)?(1<<k):0),0)},
-  ptFor(f,A,reg,i){const N=this.nets(f,A),W=A.W,j=(i%3-1)*26,k=Math.floor(i/3)%3;if(reg===0)return{x:W-20,y:90+(i%8)*26};if(N.length===1)return{x:N[0].x+j,y:N[0].y-30+k*30};return reg===1?{x:N[0].x-52,y:N[0].y-40+k*34+(i%2)*6}:reg===2?{x:N[1].x+52,y:N[1].y-40+k*34+(i%2)*6}:{x:W/2,y:N[0].y-48+(i%4)*30}},
+  ptFor(f,A,reg,i){const N=this.nets(f,A),W=A.W,j=(i%3-1)*26,k=Math.floor(i/3)%3;if(reg===0)return{x:i%2?W-26:26,y:96+(i%6)*34};if(N.length===1)return{x:N[0].x+j,y:N[0].y-30+k*30};return reg===1?{x:N[0].x-52,y:N[0].y-40+k*34+(i%2)*6}:reg===2?{x:N[1].x+52,y:N[1].y-40+k*34+(i%2)*6}:{x:W/2,y:N[0].y-48+(i%4)*30}},
   tray(f,A,i){const n=f.items.length,per=Math.min(5,n),row=Math.floor(i/per),col=i%per,w=62,h=46,gx=(A.W-per*w-(per-1)*8)/2;return{x:gx+col*(w+8),y:340+row*(h+8),w,h}},
   item(x,it,cx,cy,sz){if(it.n!=null){const r=sz*.44;x.fillStyle="rgba(0,0,0,.2)";x.beginPath();x.arc(cx+1,cy+2,r,0,7);x.fill();const g=x.createRadialGradient(cx-r*.4,cy-r*.4,2,cx,cy,r);g.addColorStop(0,"#ffffff");g.addColorStop(.7,"#f3f0ff");g.addColorStop(1,"#c9c0f2");x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.strokeStyle="#8c7ae6";x.lineWidth=2;x.stroke();x.fillStyle="rgba(255,255,255,.9)";x.beginPath();x.ellipse(cx-r*.38,cy-r*.45,r*.22,r*.1,-.6,0,7);x.fill();label(x,NF(it.n),cx,cy+1,String(it.n).length>3?12:String(it.n).length>2?14:17,"#2b2350");return}
     seaFish(x,cx,cy,sz*1.05,AG_FC[it.c],it.s)},
   down(p,S,A){const f=S.f;if(S.locked)return;
     for(let i=0;i<f.items.length;i++){if(S.pos[i])continue;if(kHit(p,this.tray(f,A,i))){S.sel=S.sel===i?null:i;sfx.pop();return}}
-    if(p.y>60&&p.y<326){if(S.sel!=null){S.pos[S.sel]={x:Math.max(20,Math.min(A.W-20,p.x)),y:p.y};S.sel=null;sfx.pop();return}
+    if(p.y>60&&p.y<326){if(S.sel!=null){S.pos[S.sel]={x:Math.max(24,Math.min(A.W-24,p.x)),y:p.y};S.sel=null;sfx.pop();return}
       for(let i=f.items.length-1;i>=0;i--){const q=S.pos[i];if(q&&Math.abs(q.x-p.x)<24&&Math.abs(q.y-p.y)<18){S.pos[i]=null;S.sel=i;sfx.pop();return}}}},
   net(x,n,col){x.save();x.beginPath();x.ellipse(n.x,n.y,n.rx,n.ry,0,0,7);x.fillStyle=col+"2a";x.fill();x.clip();x.strokeStyle="rgba(240,236,210,.5)";x.lineWidth=1.3;for(let d=-420;d<420;d+=15){x.beginPath();x.moveTo(n.x+d-220,n.y-220);x.lineTo(n.x+d+220,n.y+220);x.stroke();x.beginPath();x.moveTo(n.x+d+220,n.y-220);x.lineTo(n.x+d-220,n.y+220);x.stroke()}x.restore();
     const P=[];for(let k=0;k<=64;k++){const a=k/64*Math.PI*2;P.push({x:n.x+Math.cos(a)*n.rx,y:n.y+Math.sin(a)*n.ry})}ropeLine(x,P,"#d9b382",6);
@@ -14964,8 +14964,8 @@ function scFact(r,mk,o){for(let g=0;g<300;g++){const [a,op,b]=mk(r);const c=op==
     return Object.assign({toks:pz,sol:T,solTxt:scVal(T).s.replace(/([+−=])/g," $1 "),a:"cubuk-"+pz.map(t=>t.m||0).join("."),keepOrder:1},o)}return null}
 const SPEC_SCUB={H:400,
   init(f,S,A){A.c.noTheme=true;S.msg=null;S.tok=f.toks.map(z=>Object.assign({},z));S.held=null;S.moved=false;
-    A.btn("↩ Baştan",()=>{if(S.locked)return;S.tok=f.toks.map(z=>Object.assign({},z));S.held=null;S.moved=false});
-    A.btn("Tamam",()=>{if(S.locked)return;if(S.held){msg(S,"Elindeki çubuğu boş bir yere koy");return}if(!S.moved){msg(S,"Bir çubuğu alıp başka yere taşı");return}const v=scVal(S.tok);if(v&&v.ok)A.done();else{A.fail();msg(S,"İşlem hâlâ doğru değil: ↩ Baştan ile başka çubuk dene")}},"")},
+    A.btn("↩ Baştan",()=>{if(S.locked)return;S.tok=f.toks.map(z=>Object.assign({},z));S.held=null;S.moved=false;S.failT=null});
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.held){msg(S,"Elindeki çubuğu boş bir yere koy");return}if(!S.moved){msg(S,"Bir çubuğu alıp başka yere taşı");return}const v=scVal(S.tok);if(v&&v.ok)A.done();else{A.fail();S.failT=S.t;msg(S,"İşlem hâlâ doğru değil: ↩ Baştan ile başka çubuk dene")}},"")},
   geo(f,A){const T=f.toks,ws=T.map(t=>t.k==="d"?44:34),gp=T.map((t,i)=>i<T.length-1&&t.k==="d"&&T[i+1].k==="d"?3:12);const tot=ws.reduce((a,b)=>a+b,0)+gp.slice(0,-1).reduce((a,b)=>a+b,0),sc=Math.min(1.25,(A.W-24)/tot),gx=(A.W-tot*sc)/2;let X=gx;const xs=ws.map((w,i)=>{const o=X;X+=(w+gp[i])*sc;return o});return{sc,xs,cy:176}},
   segs(t,X,cy,sc){const L=26*sc,w=44*sc,x0=X+(w-L)/2,x1=x0+L,yt=cy-L,ym=cy,yb=cy+L;if(t.k==="d")return[[x0,yt,x1,yt],[x1,yt,x1,ym],[x1,ym,x1,yb],[x0,yb,x1,yb],[x0,ym,x0,yb],[x0,yt,x0,ym],[x0,ym,x1,ym]].map((s,i)=>({bit:SG[i],s}));const c=X+17*sc,h=12*sc;if(t.k==="op")return[{bit:1,s:[c-h,cy,c+h,cy]},{bit:2,s:[c,cy-h,c,cy+h]}];return[{bit:0,s:[c-h,cy-6*sc,c+h,cy-6*sc]},{bit:0,s:[c-h,cy+6*sc,c+h,cy+6*sc]}]},
   stick(x,s,mode){const [a,b,c,d]=s;if(mode==="slot"){x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=3;x.setLineDash([3,5]);x.lineCap="round";x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.setLineDash([]);return}
@@ -14982,7 +14982,7 @@ const SPEC_SCUB={H:400,
     const G=this.geo(f,A);x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.roundRect(8,G.cy-58*G.sc-10,W-16,116*G.sc+20,16);x.fill();
     S.tok.forEach((t,i)=>{const sg=this.segs(t,G.xs[i],G.cy,G.sc);sg.forEach(q=>{if(t.k==="eq")this.stick(x,q.s,"fixed");else if(t.m&q.bit)this.stick(x,q.s,"on");else if(S.held)this.stick(x,q.s,"slot")})});
     if(S.held){const t=S.tok[S.held.i],q=this.segs(t,G.xs[S.held.i],G.cy,G.sc).find(z=>z.bit===S.held.bit);this.stick(x,q.s.map((v,k)=>k%2?v-6:v),"held");woodSign(x,W/2,G.cy+80*G.sc,"Çubuk elinde: boş yere dokun",13)}
-    else if(S.moved&&!S.locked)woodSign(x,W/2,G.cy+80*G.sc,"Çubuk taşındı. Tamam'a bas",13);
+    else if(S.moved&&!S.locked)woodSign(x,W/2,G.cy+80*G.sc,S.failT!=null?"↩ Baştan ile yeniden dene":"Çubuk taşındı. Tamam'a bas",13);
     if(S.locked)woodSign(x,W/2,G.cy+80*G.sc,f.solTxt,18);
     topTip(x,S,A,f)}};
 const sc=(r,mk,t,h)=>{let f=null;while(!f)f=scFact(r,mk,{t,ask:"Bir çubuğu taşıyarak işlemi düzelt",q:"Sadece bir çubuğu al ve başka bir yere koy: işlem doğru olsun",hint:h});f.ansTxt="Doğru işlem: "+f.solTxt;return f};
