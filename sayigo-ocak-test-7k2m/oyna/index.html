@@ -10979,12 +10979,13 @@ const ENG_YTAHTA=sbEngine({H:330,
     x.fillStyle="rgba(255,255,255,.08)";x.beginPath();x.roundRect(24,60,A.W-48,230,18);x.fill();x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=2;x.stroke();
     // lastik
     if(S.sel.length>1){x.save();x.strokeStyle="#ff7a3d";x.lineWidth=6;x.lineJoin="round";x.lineCap="round";x.shadowColor="rgba(255,122,61,.6)";x.shadowBlur=10;x.beginPath();const p0=this.peg(S,A,S.sel[0]);x.moveTo(p0.x,p0.y);
-      this.segs(S).forEach(([a,b])=>{const P=this.peg(S,A,a),Q=this.peg(S,A,b),L=Math.hypot(Q.x-P.x,Q.y-P.y),ux=(Q.x-P.x)/L,uy=(Q.y-P.y)/L,nx=uy,ny=-ux;
-        this.between(S,a,b).forEach(i=>{const m=this.peg(S,A,i);x.lineTo(m.x-ux*22,m.y-uy*22);x.quadraticCurveTo(m.x+nx*30,m.y+ny*30,m.x+ux*22,m.y+uy*22)});x.lineTo(Q.x,Q.y)});
-      if(S.sel.length>2)x.closePath();x.stroke();x.fillStyle="rgba(255,122,61,.12)";x.fill();x.restore()}
+      const SG=this.segs(S),closing=S.sel.length>2?SG.pop():null;const seg=([a,b])=>{const P=this.peg(S,A,a),Q=this.peg(S,A,b),L=Math.hypot(Q.x-P.x,Q.y-P.y),ux=(Q.x-P.x)/L,uy=(Q.y-P.y)/L,nx=uy,ny=-ux;
+        this.between(S,a,b).forEach(i=>{const m=this.peg(S,A,i);x.lineTo(m.x-ux*22,m.y-uy*22);x.quadraticCurveTo(m.x+nx*30,m.y+ny*30,m.x+ux*22,m.y+uy*22)});x.lineTo(Q.x,Q.y)};SG.forEach(seg);
+      if(closing){x.stroke();if(S.locked){x.fillStyle="rgba(255,122,61,.14)";x.beginPath();S.sel.forEach((i,k)=>{const q=this.peg(S,A,i);k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.closePath();x.fill()}x.beginPath();const pl=this.peg(S,A,closing[0]);x.moveTo(pl.x,pl.y);if(!S.locked){x.setLineDash([9,9]);x.lineDashOffset=-S.t*.6;x.globalAlpha=.75}seg(closing)}
+      x.stroke();x.restore()}
     for(let i=0;i<S.cols*S.rows;i++){const q=this.peg(S,A,i),on=S.sel.includes(i);
       if(!sp(x,on?"gstar":"star",q.x,q.y,on?34:24)){x.fillStyle=on?"#ffd85c":"#9aa3c7";x.beginPath();x.arc(q.x,q.y,on?12:8,0,7);x.fill()}
-      if(on){const up=i>=S.cols&&S.sel.includes(i-S.cols);label(x,String(S.sel.indexOf(i)+1),q.x,q.y+(up?25:-24),13,"#ffd85c")}}
+}
     if(S.locked)tip(x,f.ansTxt,A.W/2,22,A.W,15);
     else if(S.msg&&S.t-S.msg.t<130)tip(x,`Lastik ${S.msg.n} yıldızdan geçiyor, ${f.need} olmalı`,A.W/2,22,A.W,14);
     else tip(x,`Lastik ${S.sel.length} yıldızdan geçiyor · hedef ${f.need}`,A.W/2,22,A.W,15);
@@ -13347,7 +13348,7 @@ GFACT.parca4=[
 const wrap2=(t,n)=>{if(t.length<=n)return[t];const w=t.split(" ");let a="",i=0;while(i<w.length&&(a+" "+w[i]).trim().length<=n){a=(a+" "+w[i]).trim();i++}return[a,w.slice(i).join(" ")]};
 // ---------------------------------------------------------------- 6) UZAY MEKİĞİ (binen-inen)
 // f:{start,rows:[{txt,d,n}],a,cands,spr}
-const SPEC_MEKIK={H:310,
+const SPEC_MEKIK={H:350,
   drawKz(x,S,A){const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(104,Math.floor((A.H-58)/n)),Y0=48+Math.max(6,(A.H-48-n*rh)/2),nn=f.noun||"penguen";
     const szOf=c=>Math.min(52,Math.floor((rh-46)*1.25),Math.floor(270/(Math.max(c,1)*.56)));
     const peng=(cnt,x0,yb,sz)=>{for(let k=0;k<cnt;k++)sp(x,f.rowSpr,x0+k*sz*.56,yb,sz,{bottom:true})};
@@ -13427,7 +13428,43 @@ const SPEC_MEKIK={H:310,
         else if(f.pt){truck(bx+bw/2+20,yb+7,up,Math.min(200,bw-90))}else{const show=row.n<=20?row.n:5,sz=Math.min(44,szOf(show)),x0=bx+60;peng(show,x0,yb,sz);if(row.n>20)label(x,"…",x0+show*sz*.56+8,yb-12,22,"#fff")}}}
     topTip(x,S,A,f,false)},
   init(f,S,A){A.c.noTheme=true;S.msg=null;f.cands.forEach(v=>A.btn(String(v),()=>{if(S.locked)return;if(v===f.a)A.done();else{A.fail();msg(S,f.failMsg||"Durakları sırayla oku: binenleri ekle, inenleri çıkar")}}))},
-  draw(x,S,A){if(S.f.kz)return this.drawKz(x,S,A);const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(58,Math.floor((A.H-62)/n)),Y0=50+Math.max(12,(A.H-50-n*rh)/2),yer=f.yer||"Mekikte";
+  drawSpr(x,S,A){const f=S.f,W=A.W,H=A.H;
+    // önce: duraklar (alt), sonra mekik (üst)
+    const n=f.rows.length+1,rh=40,Y0=H-8-n*rh;
+    const rowY=i=>Y0+i*rh+rh/2;
+    x.strokeStyle="rgba(255,255,255,.3)";x.lineWidth=3;x.setLineDash([2,7]);x.beginPath();x.moveTo(34,rowY(0));x.lineTo(34,rowY(n-1));x.stroke();x.setLineDash([]);
+    const icoX=(i,k)=>W-56-k*24;
+    f.rows.forEach((row,i)=>{const y=Y0+i*rh,up=row.d>0;gBlock(x,56,y+3,W-68,rh-6,"#22305e",10);x.fillStyle="#dfe7fb";x.beginPath();x.arc(34,y+rh/2,12,0,7);x.fill();label(x,String(i+1),34,y+rh/2+1,13,"#22314d");
+      label(x,row.txt,56+70,y+rh/2+1,14,"#fff");x.fillStyle=up?"#3dbb8a":"#ef6f4b";const ax=W-24,ay=y+rh/2;x.beginPath();if(up){x.moveTo(ax,ay-8);x.lineTo(ax+7,ay+5);x.lineTo(ax-7,ay+5)}else{x.moveTo(ax,ay+8);x.lineTo(ax+7,ay-5);x.lineTo(ax-7,ay-5)}x.closePath();x.fill();
+      if(!S.locked||!up)for(let k=0;k<row.n;k++)if(up||!S.locked)alienPic(x,icoX(i,k),y+rh/2,22,k+i*3,S.t)});
+    {const y=Y0+(n-1)*rh;gBlock(x,56,y+3,W-68,rh-6,"#3a2c78",10);x.fillStyle="#ffd85c";x.beginPath();x.arc(34,y+rh/2,14,0,7);x.fill();label(x,"?",34,y+rh/2+1,15,"#3a2c78");label(x,S.locked?`Mekikte şimdi ${NF(f.a)} yolcu var`:"Mekikte şimdi kaç yolcu var?",56+(W-68)/2,y+rh/2+1,15,"#ffd85c")}
+    // mekik
+    const maxN=Math.max(f.start,f.a,...f.rows.reduce((o,r)=>{o.push(o[o.length-1]+r.d);return o},[f.start])),N=Math.max(6,maxN),two=N>8,per=two?Math.ceil(N/2):N;
+    const cx=W/2-6,cy=50+(Y0-50)/2,bw=W-92,bh=two?82:68,sway=Math.sin(S.t/38)*.025,bobY=Math.sin(S.t/24)*3;
+    x.save();x.translate(cx,cy+bobY);x.rotate(sway);
+    // alev
+    const fl=1+Math.sin(S.t/3)*.15;[["#ff9f43",26],["#ffd85c",17],["#fff6d0",9]].forEach(([c,r])=>{x.fillStyle=c;x.beginPath();x.moveTo(-bw/2+4,-r*.55);x.quadraticCurveTo(-bw/2-r*1.9*fl,0,-bw/2+4,r*.55);x.fill()});
+    // kanatlar
+    x.fillStyle="#e5484d";x.strokeStyle="#9b2226";x.lineWidth=2;x.beginPath();x.moveTo(-bw/2+18,-bh/2+4);x.lineTo(-bw/2-6,-bh/2-22);x.lineTo(-bw/2+40,-bh/2+4);x.closePath();x.fill();x.stroke();x.beginPath();x.moveTo(-bw/2+18,bh/2-4);x.lineTo(-bw/2-6,bh/2+20);x.lineTo(-bw/2+44,bh/2-4);x.closePath();x.fill();x.stroke();
+    // gövde
+    const g=x.createLinearGradient(0,-bh/2,0,bh/2);g.addColorStop(0,"#ffffff");g.addColorStop(.55,"#dfe5f3");g.addColorStop(1,"#9aa6c6");x.fillStyle=g;x.beginPath();x.moveTo(-bw/2,-bh/2+6);x.lineTo(bw/2-40,-bh/2);x.quadraticCurveTo(bw/2+18,-bh/2+4,bw/2+22,0);x.quadraticCurveTo(bw/2+18,bh/2-4,bw/2-40,bh/2);x.lineTo(-bw/2,bh/2-6);x.closePath();x.fill();x.strokeStyle="#5b6594";x.lineWidth=2.2;x.stroke();
+    x.fillStyle="#2f8fd8";x.fillRect(-bw/2+2,bh/2-14,bw-44,5);x.fillStyle="#e5484d";x.fillRect(-bw/2+2,-bh/2+8,bw-44,4);
+    x.fillStyle="#7fd3ff";x.beginPath();x.moveTo(bw/2-24,-bh/2+6);x.quadraticCurveTo(bw/2+8,-bh/2+10,bw/2+12,-4);x.lineTo(bw/2-22,-4);x.closePath();x.fill();x.strokeStyle="#3a4a86";x.lineWidth=1.5;x.stroke();
+    // pencereler
+    const ws=two?26:32,gap=(bw-70)/per,wpos=k=>{const row=two?(k<per?0:1):0,col=two&&k>=per?k-per:k;return[-bw/2+22+gap*(col+.5),two?(row?12:-14):-1]};
+    // doluluk animasyonu
+    let occ=[];for(let k=0;k<f.start;k++)occ.push({w:k,ph:0});
+    const tt=S.locked?(S.lt=S.lt==null?S.t:S.lt,S.t-S.lt):(S.lt=null,0),PH=36;const fly=[];
+    if(S.locked){let cur=f.start;f.rows.forEach((row,i)=>{const t0=8+i*PH,d=Math.min(1,Math.max(0,(tt-t0)/PH));if(row.d>0){for(let k=0;k<row.d;k++){const dk=Math.min(1,Math.max(0,(tt-t0-k*5)/(PH-10)));const w=cur+k;if(dk>=1)occ.push({w});else if(dk>0)fly.push({w,d:dk,from:[icoX(i,k),rowY(i)],k:k+i*3,in:1})}cur+=row.d}else{for(let k=0;k<row.n;k++){const w=cur-1-k,dk=Math.min(1,Math.max(0,(tt-t0-k*5)/(PH-10)));if(dk>0){occ=occ.filter(o=>o.w!==w);if(dk<1)fly.push({w,d:dk,to:[icoX(i,k),rowY(i)],k:w,in:0})}}cur+=row.d}})}
+    for(let k=0;k<N;k++){const [wx,wy]=wpos(k);x.fillStyle="#1b2552";x.beginPath();x.arc(wx,wy,ws/2+2,0,7);x.fill();const on=occ.some(o=>o.w===k);const wg=x.createRadialGradient(wx,wy,2,wx,wy,ws/2);wg.addColorStop(0,on?"#fff6c8":"#cfe8ff");wg.addColorStop(1,on?"#ffc94d":"#7fb0e0");x.fillStyle=wg;x.beginPath();x.arc(wx,wy,ws/2,0,7);x.fill();
+      if(on){x.save();x.beginPath();x.arc(wx,wy,ws/2,0,7);x.clip();alienPic(x,wx,wy+3,ws*1.05,k,S.t);x.restore()}
+      x.strokeStyle="#c9d2ea";x.lineWidth=2;x.beginPath();x.arc(wx,wy,ws/2+1,0,7);x.stroke()}
+    x.restore();
+    // uçan yolcular (ekran koordinatı)
+    fly.forEach(o=>{const [wx,wy]=wpos(o.w),c=Math.cos(sway),s_=Math.sin(sway),W2=[cx+wx*c-wy*s_,cy+bobY+wx*s_+wy*c];const A0=o.in?o.from:W2,B0=o.in?W2:o.to,e=o.d;const X=A0[0]+(B0[0]-A0[0])*e,Y=A0[1]+(B0[1]-A0[1])*e-Math.sin(Math.PI*e)*40;alienPic(x,X,Y,24,o.k,S.t)});
+    label(x,`Başta ${NF(f.start)} yolcu`,cx,cy-bh/2-18+bobY,13,"#b8c6f5");
+    topTip(x,S,A,f,false)},
+  draw(x,S,A){if(S.f.kz)return this.drawKz(x,S,A);if(S.f.spr)return this.drawSpr(x,S,A);const f=S.f,W=A.W,n=f.rows.length+2,rh=Math.min(58,Math.floor((A.H-62)/n)),Y0=50+Math.max(12,(A.H-50-n*rh)/2),yer=f.yer||"Mekikte";
     x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=3;x.setLineDash([2,7]);x.beginPath();x.moveTo(40,Y0+rh/2);x.lineTo(40,Y0+rh*(n-1)+rh/2);x.stroke();x.setLineDash([]);
     for(let i=0;i<n;i++){const y=Y0+i*rh,first=i===0,last=i===n-1,row=f.rows[i-1];
       gBlock(x,66,y+3,W-82,rh-8,first?"#2c3a78":last?"#3a2c78":"#22305e",10);
@@ -13461,14 +13498,14 @@ const SPEC_KANTIN={H:322,
   top(f){return 54+f.lines.reduce((s,l)=>s+wrap2(l,40).length,0)*18+38},
   row(f,A,i){const y0=this.top(f),n=f.items.length;if(f.mode==="say"){const rh=Math.min(84,Math.floor((A.H-y0-6)/n));return{y:y0+i*rh,h:rh}}const rh=Math.min(130,Math.floor((A.H-y0-4)/n));return{y:y0+i*rh,h:rh}},
   hits(f,A){const o=[];f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2;if(f.mode==="say"){o.push({i,d:-1,x:14,y:cy-20,w:40,h:40});o.push({i,d:1,x:A.W-54,y:cy-20,w:40,h:40})}else{for(let d=0;d<it.dig;d++){const p=Math.pow(10,it.dig-1-d),bx=A.W/2+30+(d-(it.dig-1)/2)*50-20;o.push({i,d:p,dg:d,x:bx,y:cy-45,w:40,h:24});o.push({i,d:-p,dg:d,x:bx,y:cy+21,w:40,h:24})}}});return o},
-  down(p,S,A){const f=S.f;if(S.locked)return;for(const h of this.hits(f,A)){if(kHit(p,{x:h.x-3,y:h.y-3,w:h.w+6,h:h.h+6})){const it=f.items[h.i];if(f.mode==="say"){const nv=S.v[h.i]+h.d;if(nv<0||nv>20)return;S.v[h.i]=nv}else{const p10=Math.abs(h.d),dg=Math.floor(S.v[h.i]/p10)%10,nd=(dg+(h.d>0?1:9))%10;S.v[h.i]+=(nd-dg)*p10}S.touched=true;sfx.pop();return}}},
+  down(p,S,A){const f=S.f;if(S.locked)return;for(const h of this.hits(f,A)){if(kHit(p,{x:h.x-3,y:h.y-3,w:h.w+6,h:h.h+6})){const it=f.items[h.i];if(f.mode==="say"){const nv=S.v[h.i]+h.d;if(nv<0||nv>20)return;S.v[h.i]=nv;if(h.d>0){S.popT=S.t;S.popI=h.i}}else{const p10=Math.abs(h.d),dg=Math.floor(S.v[h.i]/p10)%10,nd=(dg+(h.d>0?1:9))%10;S.v[h.i]+=(nd-dg)*p10}S.touched=true;sfx.pop();return}}},
   draw(x,S,A){const f=S.f,W=A.W;const y0=this.top(f);
     // fiş
     const nl=f.lines.reduce((s,l)=>s+wrap2(l,40).length,0);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(22,48,W-40,nl*18+36,6);x.fill();x.fillStyle="#fffdf2";x.beginPath();x.roundRect(18,44,W-36,nl*18+36,6);x.fill();label(x,f.fisLab||"SİPARİŞ FİŞİ",W/2,57,11,"#9a8f6a");x.strokeStyle="#d9d2b8";x.setLineDash([4,4]);x.lineWidth=1;x.beginPath();x.moveTo(30,67);x.lineTo(W-30,67);x.stroke();x.setLineDash([]);
     let ly=44+38;f.lines.forEach(l=>wrap2(l,40).forEach(t=>{label(x,t,W/2,ly,14,"#22314d");ly+=18}));
-    f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2+(it.tag&&f.mode==="say"?6:0);gBlock(x,8,r.y+2,W-16,r.h-5,it.bg||"#22305e",10);if(it.tag&&f.mode==="say"){x.fillStyle="rgba(255,255,255,.9)";x.beginPath();x.roundRect(60,r.y+4,it.tag.length*7+12,14,6);x.fill();label(x,it.tag,66+it.tag.length*3.5,r.y+11,11,"#22314d")}
-      if(f.mode==="say"){const v=S.v[i];for(let k=0;k<v;k++){const col=k%10,rw=Math.floor(k/10),two=v>10;sp(x,it.k,72+col*25.5,cy+(two?(rw?11:-11):0),two?20:23)}if(!v){sp(x,it.k,W/2-44,cy,24,{alpha:.45});label(x,it.name,W/2+14,cy+1,14,"#8fa0d8")}}
-      else{sp(x,it.k,52,cy-6,40);label(x,it.name,52,cy+26,12,"#dbe4ff");for(let d=0;d<it.dig;d++){const bx=W/2+30+(d-(it.dig-1)/2)*50-20,p10=Math.pow(10,it.dig-1-d),dg=Math.floor(S.v[i]/p10)%10;x.fillStyle="#fff";x.beginPath();x.roundRect(bx,cy-17,40,34,7);x.fill();label(x,String(dg),bx+20,cy+1,22,"#22314d")}}});
+    f.items.forEach((it,i)=>{const r=this.row(f,A,i),cy=r.y+r.h/2+(it.tag&&f.mode==="say"?6:0);if(it.food&&f.mode==="say"){const tx=60,tw=W-120,ty=r.y+5,th=r.h-11;x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(tx+2,ty+4,tw,th,12);x.fill();const tg=x.createLinearGradient(0,ty,0,ty+th);tg.addColorStop(0,"#eef2fa");tg.addColorStop(1,"#aab4cc");x.fillStyle=tg;x.beginPath();x.roundRect(tx,ty,tw,th,12);x.fill();x.strokeStyle="#7d88a8";x.lineWidth=2;x.stroke();x.fillStyle="#dfe5f2";x.beginPath();x.roundRect(tx+6,ty+5,tw-12,th-10,8);x.fill()}else gBlock(x,8,r.y+2,W-16,r.h-5,it.bg||"#22305e",10);if(it.tag&&f.mode==="say"){x.fillStyle="rgba(255,255,255,.9)";x.beginPath();x.roundRect(60,r.y+4,it.tag.length*7+12,14,6);x.fill();label(x,it.tag,66+it.tag.length*3.5,r.y+11,11,"#22314d")}
+      if(f.mode==="say"){const v=S.v[i];const fs=it.food?(W-140)/10:25.5;for(let k=0;k<v;k++){const col=k%10,rw=Math.floor(k/10),two=v>10;const pop=it.food&&k===v-1&&S.popT!=null&&S.popI===i?Math.min(1,(S.t-S.popT)/8):1;itPic(x,it,(it.food?70+fs/2:72)+col*fs,cy+(two?(rw?11:-11):0),(it.food?(two?21:Math.min(30,fs*1.18)):(two?20:23))*(pop<1?.4+.6*pop:1))}if(!v){itPic(x,it,W/2-44,cy,24,{alpha:.45});label(x,it.full||it.name,W/2+(it.full?30:14),cy+1,14,it.food?"#7d88a8":"#8fa0d8")}}
+      else{itPic(x,it,52,cy-6,40);label(x,it.name,52,cy+26,12,"#dbe4ff");for(let d=0;d<it.dig;d++){const bx=W/2+30+(d-(it.dig-1)/2)*50-20,p10=Math.pow(10,it.dig-1-d),dg=Math.floor(S.v[i]/p10)%10;x.fillStyle="#fff";x.beginPath();x.roundRect(bx,cy-17,40,34,7);x.fill();label(x,String(dg),bx+20,cy+1,22,"#22314d")}}});
     this.hits(f,A).forEach(h=>{if(S.locked)return;gBlock(x,h.x,h.y,h.w,h.h,"#6c5ce7",f.mode==="say"?12:7);if(f.mode==="say")label(x,h.d>0?"+":"−",h.x+h.w/2,h.y+h.h/2+1,24,"#fff");else{x.fillStyle="#fff";x.beginPath();const mx=h.x+h.w/2,my=h.y+h.h/2;if(h.d>0){x.moveTo(mx,my-6);x.lineTo(mx+8,my+5);x.lineTo(mx-8,my+5)}else{x.moveTo(mx,my+6);x.lineTo(mx+8,my-5);x.lineTo(mx-8,my-5)}x.closePath();x.fill()}});
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 9) YILDIZ ROTASI (petek harita, ritmik sayma)
@@ -13553,22 +13590,42 @@ GFACT.kol4=[
 const IT={u:{k:"alien",name:"uzaylı"},k:{k:"gem",name:"kristal"},r:{k:"rocket",name:"roket"},y:{k:"star",name:"yıldız"},p:{k:"package",name:"paket"}};
 const itm=(c,need,dig)=>Object.assign({need,dig:dig||0},IT[c]);
 const Cap=s=>s[0].toLocaleUpperCase("tr")+s.slice(1);
+const FOOD={K:{food:"kurabiye",name:"kurabiye",full:"Ay kurabiyesi"},D:{food:"dondurma",name:"dondurma",full:"Roket dondurma"},Y:{food:"seker",name:"şeker",full:"Yıldız şeker"},G:{food:"kek",name:"kek",full:"Gezegen kek"}};
+const fd=(c,need,dig)=>Object.assign({need,dig:dig||0,k:"star"},FOOD[c]);
+function foodPic(x,kind,cx,cy,s,o){x.save();x.translate(cx,cy);const u=s/40;x.scale(u,u);if(o&&o.alpha!=null)x.globalAlpha=o.alpha;x.lineJoin="round";x.lineCap="round";
+  if(kind==="kurabiye"){const g=x.createRadialGradient(-6,-6,2,0,0,19);g.addColorStop(0,"#f6d58e");g.addColorStop(1,"#d79a45");x.fillStyle=g;x.beginPath();x.arc(0,0,18,0,7);x.fill();x.strokeStyle="#9c6424";x.lineWidth=2;x.stroke();
+    x.fillStyle="rgba(156,100,36,.45)";[[-7,-5,4],[6,4,5],[-3,9,3]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,7);x.fill()});x.fillStyle="#5a3417";[[5,-8],[-10,5],[10,-1],[1,1]].forEach(([a,b])=>{x.beginPath();x.arc(a,b,2.2,0,7);x.fill()});
+    x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2.5;x.beginPath();x.arc(0,0,13,3.6,4.6);x.stroke()}
+  else if(kind==="dondurma"){x.strokeStyle="#c08a52";x.lineWidth=5;x.beginPath();x.moveTo(0,10);x.lineTo(0,20);x.stroke();
+    x.fillStyle="#3aa0e8";x.beginPath();x.moveTo(-8,4);x.lineTo(-15,14);x.lineTo(-8,12);x.closePath();x.fill();x.beginPath();x.moveTo(8,4);x.lineTo(15,14);x.lineTo(8,12);x.closePath();x.fill();
+    const g=x.createLinearGradient(-9,0,9,0);g.addColorStop(0,"#ff7a8a");g.addColorStop(.5,"#ffd1d8");g.addColorStop(1,"#f45d72");x.fillStyle=g;x.beginPath();x.moveTo(0,-20);x.quadraticCurveTo(10,-12,9,12);x.lineTo(-9,12);x.quadraticCurveTo(-10,-12,0,-20);x.fill();x.strokeStyle="#b23a50";x.lineWidth=1.6;x.stroke();
+    x.fillStyle="#fff";x.beginPath();x.arc(0,-3,4.5,0,7);x.fill();x.strokeStyle="#3aa0e8";x.lineWidth=2;x.stroke();x.fillStyle="#ffd85c";x.beginPath();x.moveTo(-9,8);x.lineTo(9,8);x.lineTo(9,12);x.lineTo(-9,12);x.fill()}
+  else if(kind==="seker"){x.fillStyle="#b07cf2";[[-1,1]].forEach(()=>{});[-1,1].forEach(d=>{x.beginPath();x.moveTo(d*11,0);x.lineTo(d*20,-7);x.lineTo(d*18,0);x.lineTo(d*20,7);x.closePath();x.fill();x.strokeStyle="#6d3fb8";x.lineWidth=1.3;x.stroke()});
+    const g=x.createRadialGradient(-3,-4,1,0,0,15);g.addColorStop(0,"#fff6b0");g.addColorStop(1,"#ffbf1f");x.fillStyle=g;x.beginPath();for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?6.5:14.5;x.lineTo(Math.cos(a)*r,Math.sin(a)*r+1)}x.closePath();x.fill();x.strokeStyle="#c98a00";x.lineWidth=1.6;x.stroke();
+    x.fillStyle="#7a4a00";x.beginPath();x.arc(-3,0,1.4,0,7);x.arc(3,0,1.4,0,7);x.fill();x.strokeStyle="#7a4a00";x.lineWidth=1.2;x.beginPath();x.arc(0,3,2.6,.3,2.8);x.stroke()}
+  else{// gezegen kek
+    x.fillStyle="#e07a3c";x.beginPath();x.moveTo(-14,0);x.lineTo(14,0);x.lineTo(10,19);x.lineTo(-10,19);x.closePath();x.fill();x.strokeStyle="#a24e1c";x.lineWidth=1.6;x.stroke();x.strokeStyle="rgba(255,255,255,.35)";[-6,0,6].forEach(a=>{x.beginPath();x.moveTo(a,2);x.lineTo(a*.8,17);x.stroke()});
+    x.fillStyle="#ff9ed2";x.beginPath();x.moveTo(-16,2);x.quadraticCurveTo(-17,-10,-6,-11);x.quadraticCurveTo(0,-15,6,-11);x.quadraticCurveTo(17,-10,16,2);x.quadraticCurveTo(0,6,-16,2);x.fill();x.strokeStyle="#d4589a";x.lineWidth=1.5;x.stroke();
+    x.fillStyle="#5fd0ff";x.beginPath();x.arc(0,-15,6,0,7);x.fill();x.strokeStyle="#2a7fb8";x.stroke();x.strokeStyle="#ffd85c";x.lineWidth=2.2;x.beginPath();x.ellipse(0,-15,11,3.2,-.3,0,7);x.stroke();
+    ["#fff","#ffd85c","#7cf0b0"].forEach((c,k)=>{x.fillStyle=c;x.beginPath();x.arc(-9+k*8,-4+(k%2)*2,1.4,0,7);x.fill()})}
+  x.restore()}
+const itPic=(x,it,cx,cy,s,o)=>it.food?foodPic(x,it.food,cx,cy,s,o):sp(x,it.k,cx,cy,s,o);
 GFACT.kantin1=[
-  r=>{const a=ri(r,2,5),b=ri(r,3,6);return{mode:"say",t:"Fişi oku, say",lines:[`Uzaylı: ${a}`,`Kristal: ${b}`],items:[itm("u",a),itm("k",b)],ask:"Fişteki kadar koy",q:"Fişte yazan sayı kadar koy",hint:"Her satırdaki sayıyı oku; artıya basarken say.",ansTxt:`${a} uzaylı, ${b} kristal`}},
-  r=>{const a=ri(r,4,8),b=ri(r,5,9),c=ri(r,3,7);return{mode:"say",t:"Üç satırlı fiş",lines:[`Uzaylı: ${a}`,`Kristal: ${b}`,`Roket: ${c}`],items:[itm("u",a),itm("k",b),itm("r",c)],ask:"Fişteki kadar koy",q:"Fişte yazan sayı kadar koy",hint:"Her satırdaki sayıyı oku; artıya basarken say.",ansTxt:`${a} uzaylı, ${b} kristal, ${c} roket`}},
-  r=>{const a=ri(r,3,6),d=ri(r,1,3);return{mode:"say",t:"Fazla olan",lines:[`Roket: ${a}`,`Kristal: roketten ${d} fazla`],items:[itm("r",a),itm("k",a+d)],ask:"Fişteki kadar koy",q:`Kristal roketten ${d} fazla olacak`,hint:`Önce ${a} roket koy. Kristal için ${S(a,"den")} sonra ${d} daha say.`,ansTxt:`${a} roket, ${a+d} kristal`}}];
+  r=>{const a=ri(r,2,5),b=ri(r,3,6);return{mode:"say",t:"Fişi oku, say",lines:[`Ay kurabiyesi: ${a}`,`Roket dondurma: ${b}`],items:[fd("K",a),fd("D",b)],ask:"Fişteki kadar koy",q:"Fişte yazan sayı kadar tepsiye koy",hint:"Her satırdaki sayıyı oku; artıya basarken say.",ansTxt:`${a} kurabiye, ${b} dondurma`}},
+  r=>{const a=ri(r,4,8),b=ri(r,5,9),c=ri(r,3,7);return{mode:"say",t:"Üç satırlı fiş",lines:[`Ay kurabiyesi: ${a}`,`Roket dondurma: ${b}`,`Yıldız şeker: ${c}`],items:[fd("K",a),fd("D",b),fd("Y",c)],ask:"Fişteki kadar koy",q:"Fişte yazan sayı kadar tepsiye koy",hint:"Her satırdaki sayıyı oku; artıya basarken say.",ansTxt:`${a} kurabiye, ${b} dondurma, ${c} şeker`}},
+  r=>{const a=ri(r,3,6),d=ri(r,1,3);return{mode:"say",t:"Fazla olan",lines:[`Yıldız şeker: ${a}`,`Gezegen kek: şekerden ${d} fazla`],items:[fd("Y",a),fd("G",a+d)],ask:"Fişteki kadar koy",q:`Kek şekerden ${d} fazla olacak`,hint:`Önce ${a} şeker koy. Kek için ${S(a,"den")} sonra ${d} daha say.`,ansTxt:`${a} şeker, ${a+d} kek`}}];
 GFACT.kantin2=[
-  r=>{const a=ri(r,6,11),d=ri(r,3,6);return{mode:"say",t:"Fazla olan",lines:[`Roket: ${a}`,`Kristal: roketten ${d} fazla`],items:[itm("r",a),itm("k",a+d)],ask:"Fişteki kadar koy",q:`Kristal roketten ${d} fazla olacak`,hint:`${a} + ${d} işlemini yap.`,ansTxt:`${a} roket, ${a} + ${d} = ${a+d} kristal`}},
-  r=>{const a=ri(r,11,17),d=ri(r,4,8);return{mode:"say",t:"Az olan",lines:[`Kristal: ${a}`,`Yıldız: kristalden ${d} az`],items:[itm("k",a),itm("y",a-d)],ask:"Fişteki kadar koy",q:`Yıldız kristalden ${d} az olacak`,hint:`${a} − ${d} işlemini yap.`,ansTxt:`${a} kristal, ${a} − ${d} = ${a-d} yıldız`}},
-  r=>{const a=ri(r,7,10),d=ri(r,4,8),e=ri(r,3,6);return{mode:"say",t:"Zincir fiş",lines:[`Roket: ${a}`,`Kristal: roketten ${d} fazla`,`Yıldız: kristalden ${e} az`],items:[itm("r",a),itm("k",a+d),itm("y",a+d-e)],ask:"Fişteki kadar koy",q:"Satırları sırayla çöz: her satır bir öncekine bağlı",hint:"Önce kristali bul; yıldızı kristalden hesapla.",ansTxt:`${a} roket, ${a+d} kristal, ${a+d-e} yıldız`}}];
+  r=>{const a=ri(r,6,11),d=ri(r,3,6);return{mode:"say",t:"Fazla olan",lines:[`Yıldız şeker: ${a}`,`Roket dondurma: şekerden ${d} fazla`],items:[fd("Y",a),fd("D",a+d)],ask:"Fişteki kadar koy",q:`Dondurma şekerden ${d} fazla olacak`,hint:`${a} + ${d} işlemini yap.`,ansTxt:`${a} şeker, ${a} + ${d} = ${a+d} dondurma`}},
+  r=>{const a=ri(r,11,17),d=ri(r,4,8);return{mode:"say",t:"Az olan",lines:[`Ay kurabiyesi: ${a}`,`Gezegen kek: kurabiyeden ${d} az`],items:[fd("K",a),fd("G",a-d)],ask:"Fişteki kadar koy",q:`Kek kurabiyeden ${d} az olacak`,hint:`${a} − ${d} işlemini yap.`,ansTxt:`${a} kurabiye, ${a} − ${d} = ${a-d} kek`}},
+  r=>{const a=ri(r,7,10),d=ri(r,4,8),e=ri(r,3,6);return{mode:"say",t:"Zincir fiş",lines:[`Yıldız şeker: ${a}`,`Roket dondurma: şekerden ${d} fazla`,`Gezegen kek: dondurmadan ${e} az`],items:[fd("Y",a),fd("D",a+d),fd("G",a+d-e)],ask:"Fişteki kadar koy",q:"Satırları sırayla çöz: her satır bir öncekine bağlı",hint:"Önce dondurmayı bul; keki dondurmadan hesapla.",ansTxt:`${a} şeker, ${a+d} dondurma, ${a+d-e} kek`}}];
 GFACT.kantin3=[
-  r=>{const n=ri(r,3,6),k=ri(r,2,5);return{mode:"cark",t:"Herkese eşit",lines:[`${n} astronot var.`,`Her astronota ${k} kristal verilecek.`],items:[itm("k",n*k,2)],ask:"Toplam kaç kristal gerekir?",q:"Toplam kaç kristal gerekir? Sayıyı çarkla kur",hint:`${S(k,"şer")} say: ${n} kez.`,ansTxt:`${n} × ${k} = ${n*k} kristal`}},
-  r=>{const n=ri(r,6,9),k=ri(r,3,5),m=ri(r,2,4);return{mode:"cark",t:"İki sipariş",lines:[`${n} astronot var.`,`Her birine ${k} kristal ve ${m} yıldız verilecek.`],items:[itm("k",n*k,2),itm("y",n*m,2)],ask:"Toplam kaç kristal, kaç yıldız gerekir?",q:"Toplam kaç kristal, kaç yıldız gerekir?",hint:"Her biri için ayrı çarp.",ansTxt:`${n} × ${k} = ${n*k} kristal, ${n} × ${m} = ${n*m} yıldız`}},
-  r=>{const n=ri(r,6,9),k=ri(r,3,5),e=ri(r,4,9);return{mode:"cark",t:"Yedek de olsun",lines:[`${n} astronot var. Her birine ${k} kristal verilecek.`,`${e} kristal de yedek alınacak.`],items:[itm("k",n*k+e,2)],ask:"Toplam kaç kristal gerekir?",q:"Toplam kaç kristal gerekir? Sayıyı çarkla kur",hint:"Önce çarp, sonra yedekleri ekle.",ansTxt:`${n} × ${k} + ${e} = ${n*k+e} kristal`}}];
+  r=>{const n=ri(r,3,6),k=ri(r,2,5);return{mode:"cark",t:"Herkese eşit",lines:[`${n} astronot var.`,`Her astronota ${k} kurabiye verilecek.`],items:[fd("K",n*k,2)],ask:"Toplam kaç kurabiye gerekir?",q:"Toplam kaç kurabiye gerekir? Sayıyı çarkla kur",hint:`${S(k,"şer")} say: ${n} kez.`,ansTxt:`${n} × ${k} = ${n*k} kurabiye`}},
+  r=>{const n=ri(r,6,9),k=ri(r,3,5),m=ri(r,2,4);return{mode:"cark",t:"İki sipariş",lines:[`${n} astronot var.`,`Her birine ${k} kurabiye ve ${m} şeker verilecek.`],items:[fd("K",n*k,2),fd("Y",n*m,2)],ask:"Toplam kaç kurabiye, kaç şeker gerekir?",q:"Toplam kaç kurabiye, kaç şeker gerekir?",hint:"Her biri için ayrı çarp.",ansTxt:`${n} × ${k} = ${n*k} kurabiye, ${n} × ${m} = ${n*m} şeker`}},
+  r=>{const n=ri(r,6,9),k=ri(r,3,5),e=ri(r,4,9);return{mode:"cark",t:"Yedek de olsun",lines:[`${n} astronot var. Her birine ${k} kurabiye verilecek.`,`${e} kurabiye de yedek alınacak.`],items:[fd("K",n*k+e,2)],ask:"Toplam kaç kurabiye gerekir?",q:"Toplam kaç kurabiye gerekir? Sayıyı çarkla kur",hint:"Önce çarp, sonra yedekleri ekle.",ansTxt:`${n} × ${k} + ${e} = ${n*k+e} kurabiye`}}];
 GFACT.kantin4=[
-  r=>{const n=ri(r,4,8),k=pick(r,[12,15,24]);return{mode:"cark",t:"Kutularla sipariş",lines:[`${n} kutu kristal istendi.`,`Her kutuda ${k} kristal var.`],items:[itm("k",n*k,3)],ask:"Toplam kaç kristal gerekir?",q:"Toplam kaç kristal gerekir? Sayıyı çarkla kur",hint:`${S(k,"i")} 10 ve ${k-10} diye ayır, ikisini de ${n} ile çarp.`,ansTxt:`${n} × ${k} = ${n*k} kristal`}},
-  r=>{const n=ri(r,5,9),k=pick(r,[14,16,25]),e=ri(r,12,35);return{mode:"cark",t:"Kutu ve yedek",lines:[`${n} kutu kristal istendi. Her kutuda ${k} kristal var.`,`${e} kristal de yedek alınacak.`],items:[itm("k",n*k+e,3)],ask:"Toplam kaç kristal gerekir?",q:"Toplam kaç kristal gerekir? Sayıyı çarkla kur",hint:"Önce çarp, sonra yedekleri ekle.",ansTxt:`${n} × ${k} + ${e} = ${n*k+e} kristal`}},
-  r=>{const n=ri(r,6,9),k=pick(r,[18,24,32]),e=ri(r,14,38);return{mode:"cark",t:"Kırılanlar çıkar",lines:[`${n} kutu kristal geldi. Her kutuda ${k} kristal var.`,`Yolda ${e} kristal kırıldı.`],items:[itm("k",n*k-e,3)],ask:"Sağlam kaç kristal kaldı?",q:"Sağlam kaç kristal kaldı? Sayıyı çarkla kur",hint:"Önce çarp, sonra kırılanları çıkar.",ansTxt:`${n} × ${k} − ${e} = ${n*k-e} kristal`}}];
+  r=>{const n=ri(r,4,8),k=pick(r,[12,15,24]);return{mode:"cark",t:"Kutularla sipariş",lines:[`${n} kutu kurabiye istendi.`,`Her kutuda ${k} kurabiye var.`],items:[fd("K",n*k,3)],ask:"Toplam kaç kurabiye gerekir?",q:"Toplam kaç kurabiye gerekir? Sayıyı çarkla kur",hint:`${S(k,"i")} 10 ve ${k-10} diye ayır, ikisini de ${n} ile çarp.`,ansTxt:`${n} × ${k} = ${n*k} kurabiye`}},
+  r=>{const n=ri(r,5,9),k=pick(r,[14,16,25]),e=ri(r,12,35);return{mode:"cark",t:"Kutu ve yedek",lines:[`${n} kutu şeker istendi. Her kutuda ${k} şeker var.`,`${e} şeker de yedek alınacak.`],items:[fd("Y",n*k+e,3)],ask:"Toplam kaç şeker gerekir?",q:"Toplam kaç şeker gerekir? Sayıyı çarkla kur",hint:"Önce çarp, sonra yedekleri ekle.",ansTxt:`${n} × ${k} + ${e} = ${n*k+e} şeker`}},
+  r=>{const n=ri(r,6,9),k=pick(r,[18,24,32]),e=ri(r,14,38);return{mode:"cark",t:"Kırılanlar çıkar",lines:[`${n} kutu kurabiye geldi. Her kutuda ${k} kurabiye var.`,`Yolda ${e} kurabiye kırıldı.`],items:[fd("K",n*k-e,3)],ask:"Sağlam kaç kurabiye kaldı?",q:"Sağlam kaç kurabiye kaldı? Sayıyı çarkla kur",hint:"Önce çarp, sonra kırılanları çıkar.",ansTxt:`${n} × ${k} − ${e} = ${n*k-e} kurabiye`}}];
 ["kantin1","kantin2","kantin3","kantin4"].forEach(id=>{GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.a=f.ansTxt;return f})});
 // ---------------- sorular: rota
 const SAYS={1:"birer",2:"ikişer",3:"üçer",4:"dörder",5:"beşer",6:"altışar",7:"yedişer",8:"sekizer",9:"dokuzar",10:"onar",25:"yirmi beşer",50:"ellişer",100:"yüzer",125:"yüz yirmi beşer",250:"iki yüz ellişer",500:"beş yüzer",1000:"biner"};
@@ -13646,19 +13703,40 @@ const SPEC_FLAS={H:318,
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 12) BULUTUN ARKASI (saklanan parça)
 // f:{total,kind:"obj"|"b10",v|c,a,cands,name}
+
+const ALC=[["#7ee08a","#3f9e52"],["#ff9ecf","#c2508e"],["#6fd6ff","#2c8fc0"],["#ffc35c","#c7822a"],["#b99cff","#7454c9"]];
+function alienPic(x,cx,cy,s,k,t){const [c1,c2]=ALC[k%ALC.length],u=s/40;x.save();x.translate(cx,cy);x.scale(u,u);x.lineJoin="round";x.lineCap="round";
+  const bob=Math.sin((t||0)/14+k)*1.2;x.translate(0,bob);
+  x.fillStyle="rgba(0,0,0,.22)";x.beginPath();x.ellipse(0,20,14,3.5,0,0,7);x.fill();
+  x.strokeStyle=c2;x.lineWidth=2.4;x.beginPath();x.moveTo(-5,-13);x.quadraticCurveTo(-9,-21,-7,-25);x.moveTo(5,-13);x.quadraticCurveTo(9,-21,7,-25);x.stroke();x.fillStyle="#ffe45c";[-7,7].forEach(a=>{x.beginPath();x.arc(a,-25,3.2,0,7);x.fill()});
+  x.fillStyle=c1;x.beginPath();x.moveTo(-9,10);x.lineTo(-11,18);x.lineTo(-4,18);x.lineTo(-3,12);x.moveTo(9,10);x.lineTo(11,18);x.lineTo(4,18);x.lineTo(3,12);x.fill();
+  const g=x.createRadialGradient(-4,-6,2,0,0,17);g.addColorStop(0,"#ffffff");g.addColorStop(.25,c1);g.addColorStop(1,c2);x.fillStyle=g;x.beginPath();x.ellipse(0,-1,14,14.5,0,0,7);x.fill();x.strokeStyle=c2;x.lineWidth=1.6;x.stroke();
+  [-1,1].forEach(d=>{x.fillStyle=c1;x.beginPath();x.ellipse(d*14,3,3.5,6,d*.5,0,7);x.fill()});
+  x.fillStyle="#fff";x.beginPath();x.ellipse(0,-4,7,7.5,0,0,7);x.fill();x.fillStyle="#22243d";x.beginPath();x.arc(1,-3,3.8,0,7);x.fill();x.fillStyle="#fff";x.beginPath();x.arc(2.4,-4.6,1.4,0,7);x.fill();
+  x.strokeStyle="#22243d";x.lineWidth=1.8;x.beginPath();x.arc(0,5,4.5,.25,Math.PI-.25);x.stroke();x.fillStyle="rgba(255,120,150,.55)";[-8,8].forEach(a=>{x.beginPath();x.ellipse(a,5,2.6,1.6,0,0,7);x.fill()});
+  x.restore()}
 const SPEC_BULUT={H:318,
   init(f,S,A){A.c.noTheme=true;S.msg=null;f.cands.forEach(v=>A.btn(NF(v),()=>{if(S.locked)return;if(v===f.a)A.done();else{A.fail();msg(S,f.fail||(f.kind==="b10"?"Görünen küpleri say; toplama ulaşmak için kaç küp gerekir?":"Görünenleri say; hepsine ulaşmak için kaç tane gerekir?"))}}))},
   draw(x,S,A){const f=S.f,W=A.W;
     gBlock(x,W/2-104,48,208,40,"#22305e",12);label(x,f.plate,W/2,69,16,"#ffd85c");
     const lx=W*.27,ly=176;
-    if(f.kind==="obj"){for(let k=0;k<f.v;k++){const col=k%5,row=Math.floor(k/5);sp(x,f.objSpr||"alien",lx-56+col*28,ly-34+row*30+Math.sin(S.t/20+k)*1.5,f.objSpr?30:26)}}
+    let cloudA=1,cloudK=1;
+    if(f.kind==="obj"){const hN=f.hid!=null?f.hid:f.a,T=f.v+hN;if(S.locked){S.lt=S.lt==null?S.t:S.lt}else S.lt=null;const tt=S.lt==null?0:S.t-S.lt;cloudA=Math.max(0,1-tt/22);cloudK=1+tt/30;
+      const pr1=Math.ceil(f.v/2),s1=Math.min(f.objSpr?32:34,(W*.5-14)/Math.max(pr1,1)-2),pr2=Math.ceil(T/2),s2=Math.min(f.objSpr?30:34,(W-40)/pr2-4);
+      const pos1=k=>{const row=k<pr1?0:1,col=row?k-pr1:k,n=row?f.v-pr1:pr1;return[lx+(col-(n-1)/2)*(s1+4),ly-24+row*(s1+14)]};
+      const pos2=k=>{const row=k<pr2?0:1,col=row?k-pr2:k,n=row?T-pr2:pr2;return[W/2+(col-(n-1)/2)*(s2+4),ly-26+row*(s2+18)]};
+      const drawOne=(k,X,Y,sz)=>{if(f.objSpr)sp(x,f.objSpr,X,Y,sz);else alienPic(x,X,Y,sz,k,S.t)};
+      const mv=Math.min(1,Math.max(0,(tt-6)/24)),e=mv<.5?2*mv*mv:1-Math.pow(-2*mv+2,2)/2;
+      for(let k=0;k<f.v;k++){const [ax,ay]=pos1(k),[bx2,by2]=pos2(k);drawOne(k,ax+(bx2-ax)*e,ay+(by2-ay)*e+Math.sin(S.t/20+k)*1.5,s1+(s2-s1)*e)}
+      if(S.locked)for(let j=0;j<hN;j++){const k=f.v+j,d=Math.min(1,Math.max(0,(tt-8-j*4)/22));if(d<=0)continue;const [bx2,by2]=pos2(k),sx=W*.74,sy=ly;const X=sx+(bx2-sx)*d,Y=sy+(by2-sy)*d-Math.sin(Math.PI*d)*60;if(d>=1){x.fillStyle="rgba(255,216,92,.22)";x.beginPath();x.arc(X,Y,s2*.62,0,7);x.fill()}drawOne(k,X,Y,s2*(.6+.4*d))}}
     else{b10(x,f.c,W*.26,ly,Math.min(1,(W*.5-8)/b10size(f.c)));if(f.th==="kis"){x.fillStyle="rgba(20,34,70,.85)";x.beginPath();x.roundRect(30,288,W-60,24,10);x.fill()}b10legend(x,f.c,W/2,300)}
     // nebula bulutu
     const bx=W*.74,by=ly;const g=x.createRadialGradient(bx,by,8,bx,by,84);g.addColorStop(0,"#c9b6ff");g.addColorStop(.6,"#8f76e8");g.addColorStop(1,"rgba(110,84,210,0)");
-    [[0,0,64],[-42,14,44],[44,12,46],[-18,-30,44],[26,-28,42],[0,32,48]].forEach(([dx,dy,r],i)=>{x.fillStyle=f.th==="kis"?(i?"#dbe9f7":"#f4f9ff"):(i?"#8f76e8":"#a48cf5");x.beginPath();x.arc(bx+dx+Math.sin(S.t/40+i)*2,by+dy,r,0,7);x.fill()});
+    x.save();x.globalAlpha=cloudA;if(cloudA>0){
+    [[0,0,64],[-42,14,44],[44,12,46],[-18,-30,44],[26,-28,42],[0,32,48]].forEach(([dx,dy,r],i)=>{dx*=cloudK;dy*=cloudK;x.fillStyle=f.th==="kis"?(i?"#dbe9f7":"#f4f9ff"):(i?"#8f76e8":"#a48cf5");x.beginPath();x.arc(bx+dx+Math.sin(S.t/40+i)*2,by+dy,r,0,7);x.fill()});
     x.fillStyle="rgba(255,255,255,.18)";x.beginPath();x.arc(bx-16,by-22,30,0,7);x.fill();
-    {const hv=f.hid!=null?f.hid:f.a;label(x,S.locked?NF(hv):"?",bx,by+2,S.locked?(String(hv).length>=4?24:30):40,f.th==="kis"?"#2b4a6e":"#fff")}
-    {const lc=f.th==="kis"?"#2b4a6e":"#b8c6f5";label(x,"görünen",lx,272,13,lc);label(x,"saklanan",bx,272,13,lc)}
+    {const hv=f.hid!=null?f.hid:f.a;label(x,S.locked?NF(hv):"?",bx,by+2,S.locked?(String(hv).length>=4?24:30):40,f.th==="kis"?"#2b4a6e":"#fff")}}x.restore();
+    {const lc=f.th==="kis"?"#2b4a6e":"#b8c6f5";if(f.kind==="obj"&&S.locked){const hv=f.hid!=null?f.hid:f.a;if(cloudA<.3){x.fillStyle=f.th==="kis"?"rgba(255,255,255,.85)":"rgba(20,26,60,.75)";x.beginPath();x.roundRect(22,258,W-44,28,12);x.fill();label(x,`${f.v} görünen + ${hv} saklanan = ${f.v+hv}`,W/2,272,14,f.th==="kis"?"#2b4a6e":"#ffd85c")}}else{label(x,"görünen",lx,272,13,lc);label(x,"saklanan",bx,272,13,lc)}}
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 13) AYNA İSTASYON (yansıma)
 // f:{R,C,pat:[R*C renk 0..k],axis:"h"|"v",k}
