@@ -14728,6 +14728,43 @@ const woodSign=(x,cx,y,t,sz)=>{x.font=`900 ${sz||14}px Nunito,sans-serif`;const 
 const deepBg=(x,W,H,t)=>{const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#4cc3ee");g.addColorStop(.5,"#1677b8");g.addColorStop(1,"#08345e");x.fillStyle=g;x.fillRect(0,0,W,H);x.save();x.globalAlpha=.12;x.fillStyle="#fff";for(let i=0;i<5;i++){const X=40+i*80+Math.sin(t/60+i)*10;x.beginPath();x.moveTo(X,0);x.lineTo(X+30,0);x.lineTo(X-30,H*.8);x.lineTo(X-60,H*.8);x.fill()}x.restore();
   x.fillStyle="rgba(255,255,255,.35)";for(let i=0;i<14;i++){const bx=(i*67)%W,by=H-((t*.6+i*53)%H);x.beginPath();x.arc(bx+Math.sin(t/20+i)*4,by,1.5+(i%3),0,7);x.fill()}};
 
+function drawChest(x,cx,by,s,t,spr){// cx: orta, by: taban çizgisi, s: genişlik
+  const w=s,h=s*.5,lidH=s*.42,L=cx-w/2,R=cx+w/2,top=by-h;x.save();
+  const gold=(y0,y1)=>{const g=x.createLinearGradient(0,y0,0,y1);g.addColorStop(0,"#fff3a8");g.addColorStop(.35,"#f7c948");g.addColorStop(.7,"#d99a0b");g.addColorStop(1,"#a86b00");return g};
+  const goldH=(x0,x1)=>{const g=x.createLinearGradient(x0,0,x1,0);g.addColorStop(0,"#a86b00");g.addColorStop(.3,"#ffe27a");g.addColorStop(.6,"#f2b705");g.addColorStop(1,"#a86b00");return g};
+  // gölge
+  x.fillStyle="rgba(0,0,0,.28)";x.beginPath();x.ellipse(cx,by+3,w*.62,w*.09,0,0,7);x.fill();
+  // ışık
+  const pulse=.75+.25*Math.sin(t/12);const gl=x.createRadialGradient(cx,top,4,cx,top,w*.95);gl.addColorStop(0,`rgba(255,236,140,${.75*pulse})`);gl.addColorStop(1,"rgba(255,236,140,0)");x.fillStyle=gl;x.beginPath();x.arc(cx,top,w*.95,0,7);x.fill();
+  // açık kapak (arkada, geriye yatık)
+  const lb=top+2,lt=top-lidH;x.fillStyle="#4a2309";x.beginPath();x.moveTo(L+4,lb);x.lineTo(L-2,lt+lidH*.35);x.quadraticCurveTo(cx,lt-lidH*.35,R+2,lt+lidH*.35);x.lineTo(R-4,lb);x.closePath();x.fill();
+  const lw=x.createLinearGradient(0,lt,0,lb);lw.addColorStop(0,"#7a3e12");lw.addColorStop(1,"#4d240a");x.fillStyle=lw;x.beginPath();x.moveTo(L+9,lb-2);x.lineTo(L+4,lt+lidH*.38);x.quadraticCurveTo(cx,lt-lidH*.22,R-4,lt+lidH*.38);x.lineTo(R-9,lb-2);x.closePath();x.fill();
+  x.strokeStyle="rgba(0,0,0,.3)";x.lineWidth=1.5;for(let k=1;k<4;k++){const yy=lt+lidH*.38+(lb-lt-lidH*.38)*k/4;x.beginPath();x.moveTo(L+6,yy);x.lineTo(R-6,yy);x.stroke()}
+  x.strokeStyle=gold(lt,lb);x.lineWidth=w*.075;x.beginPath();x.moveTo(L+3,lb);x.lineTo(L-1,lt+lidH*.36);x.quadraticCurveTo(cx,lt-lidH*.34,R+1,lt+lidH*.36);x.lineTo(R-3,lb);x.stroke();
+  [L+w*.25,R-w*.25].forEach(bx=>{x.fillStyle=goldH(bx-w*.05,bx+w*.05);x.beginPath();x.moveTo(bx-w*.05,lb);x.lineTo(bx-w*.05,lt+lidH*.08);x.lineTo(bx+w*.05,lt+lidH*.08);x.lineTo(bx+w*.05,lb);x.closePath();x.fill()});
+  // içerideki altınlar
+  const ib=top+h*.18;x.save();x.beginPath();x.rect(L,top-w*.4,w,h*.18+w*.4);x.clip();
+  const coinsIn=[[-.32,0,.22],[-.12,-.06,.24],[.1,-.04,.24],[.3,0,.22],[-.22,-.14,.22],[.02,-.17,.24],[.22,-.13,.22]];
+  coinsIn.forEach(([u,v,z])=>spr(x,"coin",cx+u*w,ib+v*w,z*w,{bottom:true}));spr(x,"gem",cx-.05*w,ib-.12*w,.3*w,{bottom:true});spr(x,"gem",cx+.26*w,ib-.08*w,.2*w,{bottom:true});x.restore();
+  // gövde
+  const bw=x.createLinearGradient(0,top,0,by);bw.addColorStop(0,"#b5651d");bw.addColorStop(.55,"#94501a");bw.addColorStop(1,"#6b3510");x.fillStyle=bw;x.beginPath();x.roundRect(L,top,w,h,w*.05);x.fill();
+  x.strokeStyle="rgba(50,20,0,.45)";x.lineWidth=2;for(let k=1;k<3;k++){const yy=top+h*k/3;x.beginPath();x.moveTo(L+3,yy);x.lineTo(R-3,yy);x.stroke()}
+  x.strokeStyle="rgba(255,210,160,.18)";x.lineWidth=1.5;for(let k=0;k<3;k++){const yy=top+h*k/3+5;x.beginPath();x.moveTo(L+6,yy);x.bezierCurveTo(L+w*.3,yy-2,L+w*.6,yy+3,R-6,yy);x.stroke()}
+  // üst kenar kuşak
+  x.fillStyle=gold(top-3,top+w*.07);x.beginPath();x.roundRect(L-3,top-3,w+6,w*.08,4);x.fill();x.strokeStyle="rgba(120,70,0,.6)";x.lineWidth=1;x.stroke();
+  // dikey kuşaklar
+  [L+w*.25,R-w*.25].forEach(bx=>{x.fillStyle=goldH(bx-w*.055,bx+w*.055);x.fillRect(bx-w*.055,top,w*.11,h);x.strokeStyle="rgba(120,70,0,.6)";x.strokeRect(bx-w*.055,top,w*.11,h);x.fillStyle="#fff5c2";[top+h*.3,top+h*.75].forEach(yy=>{x.beginPath();x.arc(bx,yy,w*.017,0,7);x.fill();x.fillStyle="#a86b00";x.beginPath();x.arc(bx+.6,yy+.6,w*.017,0,7);x.fill();x.fillStyle="#fff5c2"})});
+  // köşe parçaları
+  [[L,top,1,1],[R,top,-1,1],[L,by,1,-1],[R,by,-1,-1]].forEach(([px,py,dx,dy])=>{x.fillStyle=gold(py-8,py+8);x.beginPath();x.moveTo(px,py);x.lineTo(px+dx*w*.11,py);x.lineTo(px,py+dy*w*.11);x.closePath();x.fill()});
+  // kilit
+  const ky=top+h*.2;x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(cx-w*.085+1,ky+2,w*.17,w*.2,w*.03);x.fill();x.fillStyle=gold(ky,ky+w*.2);x.beginPath();x.moveTo(cx-w*.085,ky);x.lineTo(cx+w*.085,ky);x.lineTo(cx+w*.085,ky+w*.13);x.quadraticCurveTo(cx,ky+w*.24,cx-w*.085,ky+w*.13);x.closePath();x.fill();x.strokeStyle="#8a5600";x.lineWidth=1.2;x.stroke();
+  x.fillStyle="#2b1600";x.beginPath();x.arc(cx,ky+w*.07,w*.025,0,7);x.fill();x.beginPath();x.moveTo(cx-w*.014,ky+w*.08);x.lineTo(cx+w*.014,ky+w*.08);x.lineTo(cx+w*.008,ky+w*.14);x.lineTo(cx-w*.008,ky+w*.14);x.closePath();x.fill();
+  // dökülen altınlar
+  [[-.62,.0,.18],[.6,-.01,.17],[.48,.03,.15]].forEach(([u,v,z])=>spr(x,"coin",cx+u*w,by+v*w+2,z*w,{bottom:true}));
+  // parıltılar
+  for(let k=0;k<4;k++){const ph=((t/50)+k/4)%1,sx=cx+Math.cos(k*1.7)*w*.45,sy=top-w*.18-ph*w*.3;x.globalAlpha=Math.sin(ph*Math.PI);x.fillStyle="#fff";x.beginPath();for(let i=0;i<8;i++){const a=i*Math.PI/4,r=i%2?w*.012:w*.045;x.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r)}x.closePath();x.fill();x.globalAlpha=1}
+  x.restore()}
+
 // ---------------------------------------------------------------- O11) TERSİNE DALIŞ
 function tdFact(r,start0,ops,lim,o){for(let g=0;g<400;g++){const st=typeof start0==="function"?start0(r):start0;let v=st;const L=[];let ok=true;for(const op of ops){const c=op(r,v);if(!c){ok=false;break}v=c.to;L.push(c);if(v<0||v>lim||!Number.isInteger(v)){ok=false;break}}if(!ok||v===st)continue;
     return Object.assign({ops:L,start:st,end:v,a:st,dig:Math.max(2,String(Math.max(st,v,...L.map(z=>z.to))).length),unit:"başta",keepOrder:1},o)}return null}
@@ -14760,10 +14797,7 @@ const SPEC_TDAL=dialSpec({H:460,
       if(k<n-1){const y=yS+(k+1)*step;x.fillStyle="rgba(255,255,255,.25)";x.beginPath();x.arc(X,y,20,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.85)";x.lineWidth=2;x.setLineDash(lock?[]:[4,4]);x.stroke();x.setLineDash([]);x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.ellipse(X-7,y-8,6,3,-.6,0,7);x.fill();label(x,lock?String(vals[k+1]):"…",X,y+1,lock?17:20,"#fff")}}
     // sandık
     const yc=yE;x.fillStyle="#e2c58a";x.beginPath();x.moveTo(0,yc+34);for(let Xs=0;Xs<=W;Xs+=16)x.lineTo(Xs,yc+28+Math.sin(Xs/40)*5);x.lineTo(W,yc+60);x.lineTo(0,yc+60);x.fill();
-    const cx=X-96;x.fillStyle="rgba(255,224,120,.35)";x.beginPath();x.ellipse(cx,yc+20,46,12,0,0,7);x.fill();
-    [[cx-30,yc+26,22],[cx+28,yc+26,22],[cx-14,yc+30,24],[cx+12,yc+31,24],[cx,yc+22,24],[cx-22,yc+16,20],[cx+20,yc+17,20]].forEach(([a,b,w])=>sp(x,"coin",a,b,w,{bottom:true}));
-    sp(x,"gem",cx,yc+10+Math.sin(S.t/14)*1.5,40,{bottom:true});sp(x,"spiral_shell",cx+44,yc+32,24,{bottom:true});
-    const sh=(S.t%90)/90;x.fillStyle=`rgba(255,255,255,${.8*(1-sh)})`;x.beginPath();x.arc(cx-8,yc-14,2+sh*3,0,7);x.fill();
+    drawChest(x,X-114,yc+34,92,S.t,sp);
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(X-58,yc-21,150,44,14);x.fill();x.fillStyle="#fff";x.beginPath();x.roundRect(X-60,yc-23,150,44,14);x.fill();x.strokeStyle="#2f9e44";x.lineWidth=3;x.stroke();label(x,"Sonunda:",X-14,yc,16,"#5b6b86");label(x,String(f.end),X+58,yc,24,"#22314d");
     this.dial(x,S,A);topTip(x,S,A,f)}});
 const tdq="Okti bir sayıyla daldı. Oklardaki işlemleri yaparak hazineye indi. Başta hangi sayı vardı?";
