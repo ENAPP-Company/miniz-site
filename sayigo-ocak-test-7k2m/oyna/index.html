@@ -14750,8 +14750,9 @@ const SPEC_TDAL=dialSpec({H:460,
   draw(x,S,A){const f=S.f,W=A.W;deepBg(x,W,A.H,S.t);
     const n=f.ops.length,yS=70,yE=A.H-166,X=W/2-10,step=(yE-yS)/n;
     const vals=[f.start];f.ops.forEach(o=>vals.push(o.to));const lock=S.locked;
-    // başlangıç
-    this.diver(x,X-112,yS-2,1,S.t);
+    // yüzey, yelkenli ve dalan Okti
+    x.fillStyle="rgba(255,255,255,.5)";x.beginPath();x.moveTo(0,40);for(let Xs=0;Xs<=W;Xs+=8)x.lineTo(Xs,40+Math.sin(Xs/18+S.t/14)*2.5);x.lineTo(W,0);x.lineTo(0,0);x.fill();
+    okti(x,X-108,yS+4+Math.sin(S.t/20)*3,62,lock?"wow":"happy");
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(X-58,yS-21,130,44,14);x.fill();x.fillStyle=lock?"#d3f9d8":"#fff";x.beginPath();x.roundRect(X-60,yS-23,130,44,14);x.fill();x.strokeStyle=lock?"#2f9e44":"#7c6cf0";x.lineWidth=3;x.stroke();
     label(x,"Başta:",X-24,yS,16,"#5b6b86");label(x,lock?String(f.start):"?",X+36,yS,24,lock?"#2f9e44":"#7c6cf0");
     for(let k=0;k<n;k++){const y0=yS+k*step+26,y1=yS+(k+1)*step-26;this.arrow(x,X,y0,y1);this.pill(x,X+86,(y0+y1)/2,f.ops[k].t,"#fff3bf","#22314d","#f59f00");
@@ -14759,12 +14760,15 @@ const SPEC_TDAL=dialSpec({H:460,
       if(k<n-1){const y=yS+(k+1)*step;x.fillStyle="rgba(255,255,255,.25)";x.beginPath();x.arc(X,y,20,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.85)";x.lineWidth=2;x.setLineDash(lock?[]:[4,4]);x.stroke();x.setLineDash([]);x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.ellipse(X-7,y-8,6,3,-.6,0,7);x.fill();label(x,lock?String(vals[k+1]):"…",X,y+1,lock?17:20,"#fff")}}
     // sandık
     const yc=yE;x.fillStyle="#e2c58a";x.beginPath();x.moveTo(0,yc+34);for(let Xs=0;Xs<=W;Xs+=16)x.lineTo(Xs,yc+28+Math.sin(Xs/40)*5);x.lineTo(W,yc+60);x.lineTo(0,yc+60);x.fill();
-    const cx=X-90;x.fillStyle="#7a4a1c";x.beginPath();x.roundRect(cx-26,yc-6,52,32,4);x.fill();x.fillStyle="#a0642a";x.beginPath();x.roundRect(cx-28,yc-20,56,16,8);x.fill();x.strokeStyle="#f6c445";x.lineWidth=3;x.strokeRect(cx-26,yc-6,52,32);x.fillStyle="#f6c445";x.fillRect(cx-5,yc-8,10,12);x.fillStyle="rgba(255,224,120,.55)";x.beginPath();x.arc(cx,yc-20,8+Math.sin(S.t/10)*2,0,7);x.fill();
+    const cx=X-96;x.fillStyle="rgba(255,224,120,.35)";x.beginPath();x.ellipse(cx,yc+20,46,12,0,0,7);x.fill();
+    [[cx-30,yc+26,22],[cx+28,yc+26,22],[cx-14,yc+30,24],[cx+12,yc+31,24],[cx,yc+22,24],[cx-22,yc+16,20],[cx+20,yc+17,20]].forEach(([a,b,w])=>sp(x,"coin",a,b,w,{bottom:true}));
+    sp(x,"gem",cx,yc+10+Math.sin(S.t/14)*1.5,40,{bottom:true});sp(x,"spiral_shell",cx+44,yc+32,24,{bottom:true});
+    const sh=(S.t%90)/90;x.fillStyle=`rgba(255,255,255,${.8*(1-sh)})`;x.beginPath();x.arc(cx-8,yc-14,2+sh*3,0,7);x.fill();
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(X-58,yc-21,150,44,14);x.fill();x.fillStyle="#fff";x.beginPath();x.roundRect(X-60,yc-23,150,44,14);x.fill();x.strokeStyle="#2f9e44";x.lineWidth=3;x.stroke();label(x,"Sonunda:",X-14,yc,16,"#5b6b86");label(x,String(f.end),X+58,yc,24,"#22314d");
     this.dial(x,S,A);topTip(x,S,A,f)}});
-const tdq="Dalgıç bir sayıyla başladı. Oklardaki işlemleri yaparak sandığa indi. Başta hangi sayı vardı?";
-const td=(r,st,ops,lim,t,h)=>{let f=null;while(!f)f=tdFact(r,st,ops,lim,{t,ask:"Sandıktan yukarı geri git: başta kaç vardı?",q:tdq,hint:h,failMsg:"Sandıktan yukarı çık: her işlemi tersine çevir"});const stp=[];let v=f.end;f.ops.slice().reverse().forEach(o=>{const [s1,k]=o.inv.split(" ");const nv=s1==="+"?v+ +k:s1==="−"?v-k:s1==="×"?v*k:v/k;stp.push(`${v} ${s1} ${k} = ${nv}`);v=nv});f.ansTxt="Geriye: "+stp.join(", ");return f};
-const TDH=["Sondan başla: + yerine − yap.","Sandıktan yukarı çık: her işlemi tersine çevir. + yerine −, − yerine +.","Sondan başla: × yerine ÷, ÷ yerine ×, + yerine −."];
+const tdq="Okti bir sayıyla daldı. Oklardaki işlemleri yaparak hazineye indi. Başta hangi sayı vardı?";
+const td=(r,st,ops,lim,t,h)=>{let f=null;while(!f)f=tdFact(r,st,ops,lim,{t,ask:"Hazineden yukarı geri git: başta kaç vardı?",q:tdq,hint:h,failMsg:"Hazineden yukarı çık: her işlemi tersine çevir"});const stp=[];let v=f.end;f.ops.slice().reverse().forEach(o=>{const [s1,k]=o.inv.split(" ");const nv=s1==="+"?v+ +k:s1==="−"?v-k:s1==="×"?v*k:v/k;stp.push(`${v} ${s1} ${k} = ${nv}`);v=nv});f.ansTxt="Geriye: "+stp.join(", ");return f};
+const TDH=["Sondan başla: + yerine − yap.","Hazineden yukarı çık: her işlemi tersine çevir. + yerine −, − yerine +.","Sondan başla: × yerine ÷, ÷ yerine ×, + yerine −."];
 GFACT.tdal1=[r=>td(r,r=>ri(r,3,12),[tA(2,6)],20,"Bir işlem",TDH[0]),r=>td(r,r=>ri(r,9,18),[tS(2,6)],20,"Bir işlem",TDH[1]),r=>td(r,r=>ri(r,4,12),[tA(2,5),tS(1,4)],20,"İki işlem",TDH[1])];
 GFACT.tdal2=[r=>td(r,r=>ri(r,20,60),[tA(10,30),tS(5,20)],99,"İki işlem",TDH[1]),r=>td(r,r=>ri(r,30,70),[tS(11,25),tA(12,28)],99,"İki işlem",TDH[1]),r=>td(r,r=>ri(r,20,50),[tA(11,25),tS(6,19),tA(5,15)],99,"Üç işlem",TDH[1])];
 GFACT.tdal3=[r=>td(r,r=>ri(r,3,9),[tM([2,3,4,5,10],50),tA(10,90)],1000,"Çarpma",TDH[2]),r=>td(r,r=>ri(r,4,9),[tM([2,5,10],50),tS(5,30)],1000,"Çarpma",TDH[2]),r=>td(r,r=>ri(r,2,6),[tA(1,4),tM([2,3,4,5],50),tS(3,20)],1000,"Üç işlem",TDH[2])];
@@ -14955,7 +14959,7 @@ GFACT.scub3=[r=>sc(r,r=>{const a=ri(r,12,60);return[a,"+",ri(r,11,39)]},"İki ba
 GFACT.scub4=[r=>sc(r,r=>{const a=ri(r,30,99);return[a,"-",ri(r,11,a-10)]},"Çıkarma",SCH[2]),r=>sc(r,r=>{const a=ri(r,20,70);return[a,"+",ri(r,20,29)]},"Toplama",SCH[2]),r=>sc(r,r=>{const a=ri(r,40,99);return r()<.5?[a,"-",ri(r,20,a-10)]:[ri(r,20,60),"+",ri(r,20,39)]},"Usta",SCH[2])];
 
 // ---------------------------------------------------------------- kayıt
-const DEF1c={tdal:["Tersine Dalış","🤿","Sondan başa düşün, dalgıcın başladığı sayıyı bul"],fkod:["Fener Işık Kodu","🗼","Fenerin ışıklarını say, gönderilen sayıyı bul"],pbal:["Balon Balığı","🐡","Düğmelerle balığı hedef sayıya getir"],ypus:["Pusula","🧭","Dönüşleri düşün, teknenin bakacağı yeri bul"],ksif:["Kaptanın Şifresi","📜","İşlemleri hesapla, gizli mesajı çöz"],scub:["Sahil Çubukları","🪵","Bir çubuğu taşı, işlemi düzelt"]};
+const DEF1c={tdal:["Tersine Dalış","🐙","Sondan başa düşün, Okti'nin başladığı sayıyı bul"],fkod:["Fener Işık Kodu","🗼","Fenerin ışıklarını say, gönderilen sayıyı bul"],pbal:["Balon Balığı","🐡","Düğmelerle balığı hedef sayıya getir"],ypus:["Pusula","🧭","Dönüşleri düşün, teknenin bakacağı yeri bul"],ksif:["Kaptanın Şifresi","📜","İşlemleri hesapla, gizli mesajı çöz"],scub:["Sahil Çubukları","🪵","Bir çubuğu taşı, işlemi düzelt"]};
 const ENG1c={tdal:sbEngine(Object.assign({},SPEC_TDAL,{bg:()=>{}})),fkod:sbEngine(Object.assign({},SPEC_FKOD,{bg:()=>{}})),pbal:sbEngine(Object.assign({},SPEC_PBAL,{bg:(x,W,H,t)=>deepBg(x,W,H,t)})),ypus:sbEngine(Object.assign({},SPEC_PUS,{bg:()=>{}})),ksif:sbEngine(Object.assign({},SPEC_KSIF,{bg:()=>{}})),scub:sbEngine(Object.assign({},SPEC_SCUB,{bg:()=>{}}))};
 const EV1c={tdal:HCx("Geriye Doğru","Ters işlem","Kâğıt, kalem",["Aklınızdan bir sayı tutun, 3 ekleyin, sonucu söyleyin.","Çocuğunuz başta hangi sayıyı tuttuğunuzu bulsun.","Sonra rolleri değiştirin."],"Nasıl geriye gittin?"),
   fkod:HCx("El Feneri Kodu","Onluk ve birlik","El feneri",["Uzun yakma 10, kısa yakma 1 olsun.","Karanlık odada feneri yakıp söndürerek bir sayı gönderin.","Çocuğunuz sayıyı bulsun, sonra o göndersin."],"Uzunları mı önce saydın, kısaları mı?"),
