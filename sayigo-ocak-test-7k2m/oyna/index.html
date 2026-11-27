@@ -14722,6 +14722,237 @@ const EV1b={kgemi:HCx("Küp Kulesi","Birim küp, yapı","Lego ya da küp şeklin
 Object.keys(DEF1b).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f});if(typeof G==="undefined")continue;G[id]={id,name:DEF1b[b][0],ico:DEF1b[b][1],task:DEF1b[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG1b[b];if(typeof HOME!=="undefined")HOME[id]=EV1b[b];if(SETS[1]&&SETS[1][g]&&!SETS[1][g].includes(id))SETS[1][g].push(id)}});
 window.O1B={SPEC_KGEMI,SPEC_BHAR,SPEC_ISKEL,SPEC_AGLA,SPEC_HALAT};
 
+
+// ============ OCAK · HER GÜNE 1 OYUN · 3. grup (Tersine Dalış, Fener Işık Kodu, Balon Balığı, Pusula, Kaptanın Şifresi, Sahil Çubukları) ============
+const woodSign=(x,cx,y,t,sz)=>{x.font=`900 ${sz||14}px Nunito,sans-serif`;const tw=x.measureText(t).width+26;x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(cx-tw/2+1,y+3,tw,28,8);x.fill();const g=x.createLinearGradient(0,y,0,y+28);g.addColorStop(0,"#d6a26a");g.addColorStop(1,"#a8713f");x.fillStyle=g;x.beginPath();x.roundRect(cx-tw/2,y,tw,28,8);x.fill();x.strokeStyle="#6b4423";x.lineWidth=1.5;x.stroke();label(x,t,cx,y+15,sz||14,"#fff")};
+const deepBg=(x,W,H,t)=>{const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#4cc3ee");g.addColorStop(.5,"#1677b8");g.addColorStop(1,"#08345e");x.fillStyle=g;x.fillRect(0,0,W,H);x.save();x.globalAlpha=.12;x.fillStyle="#fff";for(let i=0;i<5;i++){const X=40+i*80+Math.sin(t/60+i)*10;x.beginPath();x.moveTo(X,0);x.lineTo(X+30,0);x.lineTo(X-30,H*.8);x.lineTo(X-60,H*.8);x.fill()}x.restore();
+  x.fillStyle="rgba(255,255,255,.35)";for(let i=0;i<14;i++){const bx=(i*67)%W,by=H-((t*.6+i*53)%H);x.beginPath();x.arc(bx+Math.sin(t/20+i)*4,by,1.5+(i%3),0,7);x.fill()}};
+
+// ---------------------------------------------------------------- O11) TERSİNE DALIŞ
+function tdFact(r,start0,ops,lim,o){for(let g=0;g<400;g++){const st=typeof start0==="function"?start0(r):start0;let v=st;const L=[];let ok=true;for(const op of ops){const c=op(r,v);if(!c){ok=false;break}v=c.to;L.push(c);if(v<0||v>lim||!Number.isInteger(v)){ok=false;break}}if(!ok||v===st)continue;
+    return Object.assign({ops:L,start:st,end:v,a:st,dig:Math.max(2,String(Math.max(st,v,...L.map(z=>z.to))).length),unit:"başta",keepOrder:1},o)}return null}
+const tA=(lo,hi)=>(r,v)=>{const k=ri(r,lo,hi);return{t:"+ "+k,inv:"− "+k,to:v+k}},tS=(lo,hi)=>(r,v)=>{const k=ri(r,lo,Math.min(hi,v-1));return k<lo?null:{t:"− "+k,inv:"+ "+k,to:v-k}},tM=(L,mx)=>(r,v)=>{const ks=L.filter(k=>!mx||v*k<=mx);if(!ks.length)return null;const k=pick(r,ks);return{t:"× "+k,inv:"÷ "+k,to:v*k}},tD=(L)=>(r,v)=>{const ks=L.filter(k=>v%k===0&&v/k>0);if(!ks.length)return null;const k=pick(r,ks);return{t:"÷ "+k,inv:"× "+k,to:v/k}};
+const SPEC_TDAL=dialSpec({H:450,
+  draw(x,S,A){const f=S.f,W=A.W;deepBg(x,W,A.H,S.t);
+    const sy=58;x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.moveTo(0,sy);for(let X=0;X<=W;X+=8)x.lineTo(X,sy+Math.sin(X/18+S.t/14)*2.5);x.lineTo(W,0);x.lineTo(0,0);x.fill();
+    const bx=70;x.fillStyle="#e8590c";x.beginPath();x.moveTo(bx-38,sy-6);x.lineTo(bx+38,sy-6);x.lineTo(bx+28,sy+8);x.lineTo(bx-30,sy+8);x.closePath();x.fill();x.fillStyle="#fff";x.fillRect(bx-38,sy-8,76,4);x.fillStyle="#f8f9fa";x.beginPath();x.roundRect(bx-14,sy-26,26,20,4);x.fill();x.fillStyle="#74c0fc";x.fillRect(bx-9,sy-22,7,7);x.fillRect(bx+1,sy-22,7,7);
+    const n=f.ops.length,y0=100,y1=A.H-172,lx=bx;x.strokeStyle="#d9b382";x.lineWidth=3;x.setLineDash([2,5]);x.beginPath();x.moveTo(lx,sy+6);x.lineTo(lx,y1+30);x.stroke();x.setLineDash([]);
+    const Y=k=>y0+(y1-y0)*(k+.5)/(n+.5);
+    // dalgıç (başta)
+    {const dy=sy+30;x.fillStyle="#fff";x.beginPath();x.roundRect(lx+22,dy-16,104,32,16);x.fill();x.strokeStyle="#7c6cf0";x.lineWidth=2;x.stroke();sp(x,EM("🤿"),lx+40,dy,24);label(x,S.locked?String(f.start):"?",lx+96,dy+1,20,S.locked?"#2f9e44":"#7c6cf0")}
+    f.ops.forEach((op,k)=>{const y=Y(k);x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.arc(lx+2,y+3,15,0,7);x.fill();const g=x.createRadialGradient(lx-5,y-5,2,lx,y,15);g.addColorStop(0,"#ffd8a8");g.addColorStop(1,"#e8590c");x.fillStyle=g;x.beginPath();x.arc(lx,y,15,0,7);x.fill();x.fillStyle="#fff";x.fillRect(lx-15,y-3,30,6);
+      x.strokeStyle="rgba(255,255,255,.85)";x.lineWidth=3;x.beginPath();x.moveTo(lx+22,y);x.lineTo(lx+46,y);x.stroke();x.beginPath();x.moveTo(lx+50,y);x.lineTo(lx+42,y-6);x.lineTo(lx+42,y+6);x.closePath();x.fillStyle="rgba(255,255,255,.85)";x.fill();
+      x.fillStyle="#fff";x.beginPath();x.roundRect(lx+56,y-18,96,36,12);x.fill();x.strokeStyle="#e8590c";x.lineWidth=2.5;x.stroke();label(x,op.t,lx+104,y+1,22,"#22314d");
+      if(S.locked){label(x,"geri: "+op.inv,lx+210,y+1,14,"#ffe066")}});
+    // dip ve sandık
+    const by=y1+30;x.fillStyle="#e2c58a";x.beginPath();x.moveTo(0,by+20);for(let X=0;X<=W;X+=16)x.lineTo(X,by+14+Math.sin(X/40)*5);x.lineTo(W,by+40);x.lineTo(0,by+40);x.fill();
+    x.fillStyle="#8a5a2b";x.beginPath();x.roundRect(lx-26,by-10,52,30,4);x.fill();x.fillStyle="#b07a3c";x.beginPath();x.roundRect(lx-28,by-22,56,14,6);x.fill();x.fillStyle="#f6c445";x.fillRect(lx-5,by-12,10,10);x.strokeStyle="#f6c445";x.lineWidth=2;x.strokeRect(lx-26,by-10,52,30);
+    x.fillStyle="#fff";x.beginPath();x.roundRect(lx+40,by-20,96,36,12);x.fill();x.strokeStyle="#2f9e44";x.lineWidth=2.5;x.stroke();label(x,"= "+f.end,lx+88,by-1,20,"#22314d");
+    this.dial(x,S,A);topTip(x,S,A,f)}});
+const tdq="Dalgıç bir sayıyla başladı, işlemleri yaparak sandığa indi. Başta hangi sayı vardı?";
+const td=(r,st,ops,lim,t,h)=>{let f=null;while(!f)f=tdFact(r,st,ops,lim,{t,ask:"Dalgıç hangi sayıyla başladı?",q:tdq,hint:h,failMsg:"Sandıktan yukarı çık: her işlemi tersine çevir"});const stp=[];let v=f.end;f.ops.slice().reverse().forEach(o=>{const [s1,k]=o.inv.split(" ");const nv=s1==="+"?v+ +k:s1==="−"?v-k:s1==="×"?v*k:v/k;stp.push(`${v} ${s1} ${k} = ${nv}`);v=nv});f.ansTxt="Geriye: "+stp.join(", ");return f};
+const TDH=["Sondan başla: + yerine − yap.","Sandıktan yukarı çık: her işlemi tersine çevir. + yerine −, − yerine +.","Sondan başla: × yerine ÷, ÷ yerine ×, + yerine −."];
+GFACT.tdal1=[r=>td(r,r=>ri(r,3,12),[tA(2,6)],20,"Bir işlem",TDH[0]),r=>td(r,r=>ri(r,9,18),[tS(2,6)],20,"Bir işlem",TDH[1]),r=>td(r,r=>ri(r,4,12),[tA(2,5),tS(1,4)],20,"İki işlem",TDH[1])];
+GFACT.tdal2=[r=>td(r,r=>ri(r,20,60),[tA(10,30),tS(5,20)],99,"İki işlem",TDH[1]),r=>td(r,r=>ri(r,30,70),[tS(11,25),tA(12,28)],99,"İki işlem",TDH[1]),r=>td(r,r=>ri(r,20,50),[tA(11,25),tS(6,19),tA(5,15)],99,"Üç işlem",TDH[1])];
+GFACT.tdal3=[r=>td(r,r=>ri(r,3,9),[tM([2,3,4,5,10],50),tA(10,90)],1000,"Çarpma",TDH[2]),r=>td(r,r=>ri(r,4,9),[tM([2,5,10],50),tS(5,30)],1000,"Çarpma",TDH[2]),r=>td(r,r=>ri(r,2,6),[tA(1,4),tM([2,3,4,5],50),tS(3,20)],1000,"Üç işlem",TDH[2])];
+GFACT.tdal4=[r=>td(r,r=>ri(r,12,90),[tM([3,4,6,8]),tD([2,4])],5000,"Çarpma bölme",TDH[2]),r=>td(r,r=>ri(r,40,300),[tD([2,4,5]),tA(25,150),tM([3,6])],5000,"Üç işlem",TDH[2]),r=>td(r,r=>ri(r,100,900),[tA(120,600),tD([2,5,10]),tM([7,9]),tS(50,300)],10000,"Dört işlem",TDH[2])];
+
+// ---------------------------------------------------------------- O12) FENER IŞIK KODU (basamak değeri)
+const FK={th:{v:1000,lab:"kırmızı ışık",dur:34},h:{v:100,lab:"büyük parlama",dur:30},t:{v:10,lab:"uzun ışık",dur:26},o:{v:1,lab:"kısa ışık",dur:10}};
+const SPEC_FKOD=dialSpec({H:470,
+  init(f,S,A){A.c.noTheme=true;S.msg=null;S.v=0;S.touched=false;S.play=S.t;
+    A.btn("▶ Tekrar izle",()=>{if(S.locked)return;S.play=S.t});
+    A.btn("Tamam",()=>{if(S.locked)return;if(!S.touched){msg(S,"Önce okları kullanarak sayıyı ayarla");return}if(S.v===f.a)A.done();else{A.fail();S.badT=S.t;msg(S,f.failMsg)}},"")},
+  sched(f){let t=24;return f.seq.map(k=>{const o={k,t0:t,t1:t+FK[k].dur};t=o.t1+16;return o})},
+  draw(x,S,A){const f=S.f,W=A.W,H=A.H;
+    const g=x.createLinearGradient(0,0,0,230);g.addColorStop(0,"#0b1e3f");g.addColorStop(1,"#27426e");x.fillStyle=g;x.fillRect(0,0,W,230);x.fillStyle="rgba(255,255,255,.8)";for(let i=0;i<30;i++){const sx=(i*73)%W,sy=(i*41)%150+6;x.globalAlpha=.4+.6*Math.abs(Math.sin(S.t/40+i));x.fillRect(sx,sy,1.6,1.6)}x.globalAlpha=1;
+    x.fillStyle="#f8f1d4";x.beginPath();x.arc(W-50,40,15,0,7);x.fill();x.fillStyle="#27426e";x.beginPath();x.arc(W-44,36,13,0,7);x.fill();
+    const sg=x.createLinearGradient(0,230,0,H);sg.addColorStop(0,"#163a63");sg.addColorStop(1,"#081a30");x.fillStyle=sg;x.fillRect(0,230,W,H-230);x.strokeStyle="rgba(180,210,255,.22)";x.lineWidth=1.5;for(let k=0;k<5;k++){x.beginPath();for(let X=0;X<=W;X+=10)x.lineTo(X,240+k*k*9+Math.sin(X/18+S.t/18+k)*2);x.stroke()}
+    // fener
+    const lx=74,base=232;x.fillStyle="#495057";x.beginPath();x.moveTo(lx-52,base+6);x.quadraticCurveTo(lx-30,base-22,lx,base-18);x.quadraticCurveTo(lx+40,base-24,lx+56,base+6);x.fill();
+    const tw0=22,tw1=14,top=base-140;x.save();x.beginPath();x.moveTo(lx-tw0,base-14);x.lineTo(lx-tw1,top);x.lineTo(lx+tw1,top);x.lineTo(lx+tw0,base-14);x.closePath();x.clip();x.fillStyle="#f8f9fa";x.fillRect(lx-30,top,60,140);x.fillStyle="#e03131";for(let k=0;k<4;k++)x.fillRect(lx-30,top+12+k*32,60,15);x.fillStyle="rgba(0,0,0,.15)";x.fillRect(lx+4,top,30,140);x.restore();
+    x.fillStyle="#343a40";x.fillRect(lx-20,top-6,40,7);
+    // ışık
+    const tt=S.t-S.play,sch=this.sched(f);const cur=sch.find(o=>tt>=o.t0&&tt<o.t1);const col=cur?(cur.k==="th"?"#ff4d4d":"#fff3a3"):"#5c5f66";
+    x.fillStyle=cur?col:"#3b3f46";x.beginPath();x.roundRect(lx-12,top-28,24,22,4);x.fill();x.strokeStyle="#212529";x.lineWidth=2;x.stroke();x.fillStyle="#c92a2a";x.beginPath();x.moveTo(lx-16,top-28);x.lineTo(lx,top-42);x.lineTo(lx+16,top-28);x.closePath();x.fill();
+    if(cur){const len=cur.k==="o"?90:cur.k==="t"?260:320,wd=cur.k==="h"?60:cur.k==="th"?50:28;const bg=x.createLinearGradient(lx,0,lx+len,0);bg.addColorStop(0,cur.k==="th"?"rgba(255,80,80,.85)":"rgba(255,240,160,.85)");bg.addColorStop(1,"rgba(255,240,160,0)");x.fillStyle=bg;x.beginPath();x.moveTo(lx,top-17);x.lineTo(lx+len,top-17-wd);x.lineTo(lx+len,top-17+wd);x.closePath();x.fill();
+      x.fillStyle=cur.k==="th"?"rgba(255,90,90,.5)":"rgba(255,245,180,.55)";x.beginPath();x.arc(lx,top-17,cur.k==="h"?34:22,0,7);x.fill()}
+    // gösterge
+    const keys=f.keys;let lgx=W/2+10;keys.forEach((k,i)=>{const y=86+i*28;x.fillStyle="rgba(255,255,255,.12)";x.beginPath();x.roundRect(lgx-10,y-12,W-lgx,24,12);x.fill();this.mark(x,k,lgx+12,y);label(x,"= "+FK[k].v,lgx+64,y+1,14,"#fff")});
+    // kayıt şeridi
+    const done=sch.filter(o=>tt>=o.t0),rx0=16,rw=W-32,ry=262;x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(rx0,ry,rw,56,12);x.fill();label(x,"Kayıt:",rx0+30,ry+14,12,"#5b6b86");
+    const per=Math.floor((rw-20)/22);done.forEach((o,i)=>{const cx=rx0+20+(i%per)*22,cy=ry+30+Math.floor(i/per)*16;this.mark(x,o.k,cx,cy,true)});
+    this.dial(x,S,A);topTip(x,S,A,f)},
+  mark(x,k,cx,cy,small){const s=small?.8:1;if(k==="o"){x.fillStyle="#f59f00";x.beginPath();x.arc(cx,cy,5*s,0,7);x.fill()}else if(k==="t"){x.fillStyle="#f59f00";x.beginPath();x.roundRect(cx-10*s,cy-4*s,20*s,8*s,4);x.fill()}else if(k==="h"){x.fillStyle="#f59f00";x.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?4*s:10*s;x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}x.closePath();x.fill()}else{x.fillStyle="#e03131";x.beginPath();x.moveTo(cx,cy-9*s);x.lineTo(cx+8*s,cy);x.lineTo(cx,cy+9*s);x.lineTo(cx-8*s,cy);x.closePath();x.fill()}}});
+function fkFact(r,c,shuf,o){const seq=[];["th","h","t","o"].forEach(k=>{for(let i=0;i<(c[k]||0);i++)seq.push(k)});const S2=shuf?shuffle(r,seq):seq;const a=(c.th||0)*1000+(c.h||0)*100+(c.t||0)*10+(c.o||0);const keys=["th","h","t","o"].filter(k=>o.keys.includes(k));
+  return Object.assign({seq:S2,a,dig:Math.max(2,String(a).length),unit:"",keepOrder:1,failMsg:"Kayıttaki işaretleri gruplara ayır: onlukları ve birlikleri ayrı say",ansTxt:["th","h","t","o"].filter(k=>c[k]).map(k=>`${c[k]} ${FK[k].lab} = ${c[k]*FK[k].v}`).join(", ")+` → ${a}`},o,{keys})}
+const fk=(r,c,shuf,keys,t,h)=>fkFact(r,c,shuf,{keys,t,ask:"Fener hangi sayıyı gönderdi?",q:"Feneri izle. Her ışığın değeri var. Gönderilen sayıyı bul",hint:h});
+const FKH=["Uzun ışıklar onluk, kısa ışıklar birlik. Önce uzunları say.","Işıklar karışık gelebilir: kayıtta aynı işaretleri grupla.","Her işaret bir basamak: büyük parlama yüzlük, uzun onluk, kısa birlik."];
+GFACT.fkod1=[r=>fk(r,{t:1,o:ri(r,1,9)},false,["t","o"],"Onluk ve birlik",FKH[0]),r=>fk(r,{t:1,o:ri(r,0,9)},false,["t","o"],"Onluk ve birlik",FKH[0]),r=>{const t=r()<.3?2:1;return fk(r,{t,o:t===2?0:ri(r,1,9)},true,["t","o"],"Karışık",FKH[1])}];
+GFACT.fkod2=[r=>fk(r,{t:ri(r,2,9),o:ri(r,0,9)},false,["t","o"],"İki basamak",FKH[0]),r=>fk(r,{t:ri(r,2,9),o:ri(r,1,9)},true,["t","o"],"Karışık",FKH[1]),r=>fk(r,{t:ri(r,1,9),o:ri(r,1,9)},true,["t","o"],"Karışık",FKH[1])];
+GFACT.fkod3=[r=>fk(r,{h:ri(r,1,5),t:ri(r,1,6),o:ri(r,1,6)},false,["h","t","o"],"Üç basamak",FKH[2]),r=>fk(r,{h:ri(r,1,6),t:ri(r,1,6),o:ri(r,1,6)},true,["h","t","o"],"Karışık",FKH[2]),r=>fk(r,{h:ri(r,2,7),t:0,o:ri(r,2,7)},true,["h","t","o"],"Onluk yok","Uzun ışık yoksa onlar basamağına 0 yaz.")];
+GFACT.fkod4=[r=>fk(r,{th:ri(r,1,4),h:ri(r,1,4),t:ri(r,1,4),o:ri(r,1,4)},false,["th","h","t","o"],"Dört basamak","Kırmızı ışık binlik demek."),r=>fk(r,{th:ri(r,1,5),h:ri(r,0,4),t:ri(r,1,4),o:ri(r,1,5)},true,["th","h","t","o"],"Karışık",FKH[1]),r=>fk(r,{th:ri(r,2,6),h:0,t:ri(r,1,5),o:0},true,["th","h","t","o"],"Sıfırlar","Gelmeyen basamağa 0 yaz.")];
+
+// ---------------------------------------------------------------- O13) BALON BALIĞI (hedef sayıya ulaş)
+const PB_OPS={d2:{lab:"Şiş (2 katı)",f:v=>v*2},p1:{lab:"Yem ye (+1)",f:v=>v+1},p10:{lab:"Yem ye (+10)",f:v=>v+10},m1:{lab:"Sön (−1)",f:v=>v-1},x2:{lab:"× 2",f:v=>v*2},x3:{lab:"× 3",f:v=>v*3},h2:{lab:"÷ 2",f:v=>v%2?null:v/2},p5:{lab:"+ 5",f:v=>v+5},m5:{lab:"− 5",f:v=>v-5},m10:{lab:"− 10",f:v=>v-10},p100:{lab:"+ 100",f:v=>v+100}};
+function pbFact(r,st,ops,k,lim,o){for(let g=0;g<400;g++){const s=typeof st==="function"?st(r):st;let v=s;const path=[];let ok=true;for(let i=0;i<k;i++){const cand=ops.filter(op=>{const nv=PB_OPS[op].f(v);return nv!=null&&nv>0&&nv<=lim});if(!cand.length){ok=false;break}const op=pick(r,cand);v=PB_OPS[op].f(v);path.push(op)}
+    if(!ok||v===s)continue;// en az k-1 hamlede ulaşılamasın (bulmaca olsun)
+    let reach=new Set([s]);for(let i=0;i<k-1;i++){const nx=new Set();reach.forEach(u=>ops.forEach(op=>{const nv=PB_OPS[op].f(u);if(nv!=null&&nv>0&&nv<=lim*2)nx.add(nv)}));reach=new Set([...reach,...nx])}if(k>1&&reach.has(v))continue;
+    return Object.assign({start:s,target:v,ops,k,path,a:"pb-"+s+"-"+v,keepOrder:1},o)}return null}
+const SPEC_PBAL={H:430,
+  init(f,S,A){A.c.noTheme=true;S.msg=null;S.cur=f.start;S.hist=[];S.disp=f.start;
+    f.ops.forEach(op=>A.btn(PB_OPS[op].lab,()=>{if(S.locked)return;if(S.hist.length>=f.k){msg(S,`Hamle hakkın bitti: ↩ Baştan ile yeniden dene`);return}const nv=PB_OPS[op].f(S.cur);if(nv==null){msg(S,"Tek sayı ikiye bölünmez");return}if(nv<=0){msg(S,"Balık bundan küçük olamaz");return}S.hist.push({op,from:S.cur});S.cur=nv;sfx.pop()}));
+    A.btn("↩ Baştan",()=>{if(S.locked)return;S.cur=f.start;S.hist=[]});
+    A.btn("Tamam",()=>{if(S.locked)return;if(!S.hist.length){msg(S,"Önce düğmelerle balığı değiştir");return}if(S.cur===f.target)A.done();else{A.fail();msg(S,`Balık ${S.cur} oldu, hedef ${f.target}. Baştan dene`)}},"")},
+  draw(x,S,A){const f=S.f,W=A.W;S.disp+=(S.cur-S.disp)*.15;
+    woodSign(x,W-74,46,"Hedef: "+NF(f.target),16);
+    // hamle noktaları
+    x.font="800 13px Nunito,sans-serif";x.textAlign="left";x.textBaseline="middle";x.fillStyle="#fff";x.fillText("Hamle:",16,60);for(let i=0;i<f.k;i++){x.fillStyle=i<S.hist.length?"#ffe066":"rgba(255,255,255,.3)";x.beginPath();x.arc(74+i*18,60,6,0,7);x.fill()}
+    const mx=Math.log(Math.max(f.target,f.start,S.cur)*1.2+1),rr=24+70*Math.min(1,Math.log(S.disp+1)/Math.max(mx,1.6));const cx=W/2,cy=192+Math.sin(S.t/24)*3;
+    this.puffer(x,cx,cy,rr,S.t);
+    x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.roundRect(cx-30,cy+rr*.25,60,26,13);x.fill();label(x,NF(Math.round(S.disp)),cx,cy+rr*.25+14,18,"#22314d");
+    // geçmiş
+    const chips=[String(f.start)].concat(S.hist.map((h,i)=>PB_OPS[h.op].lab.replace(/^.*\((.*)\)$/,"$1")+" → "+(i+1<S.hist.length?S.hist[i+1].from:S.cur)));x.font="800 12px Nunito,sans-serif";let tx=12,ty=A.H-42;chips.forEach(c=>{const w=x.measureText(c).width+16;if(tx+w>W-8){tx=12;ty+=24}x.fillStyle="rgba(255,255,255,.88)";x.beginPath();x.roundRect(tx,ty,w,20,10);x.fill();label(x,c,tx+w/2,ty+10,12,"#22314d");tx+=w+5});
+    topTip(x,S,A,f)},
+  puffer(x,cx,cy,r,t){x.save();x.translate(cx,cy);
+    x.fillStyle="#e8a33d";const n=Math.round(10+r/5);for(let i=0;i<n;i++){const a=i/n*Math.PI*2;x.beginPath();x.moveTo(Math.cos(a-.12)*r*.95,Math.sin(a-.12)*r*.95);x.lineTo(Math.cos(a)*(r+r*.18+3),Math.sin(a)*(r+r*.18+3));x.lineTo(Math.cos(a+.12)*r*.95,Math.sin(a+.12)*r*.95);x.fill()}
+    x.fillStyle="#f0b44c";x.beginPath();x.moveTo(-r*.9,0);x.lineTo(-r*1.35,-r*.35);x.quadraticCurveTo(-r*1.2,0,-r*1.35,r*.35);x.closePath();x.fill();
+    const g=x.createRadialGradient(-r*.3,-r*.35,r*.1,0,0,r);g.addColorStop(0,"#fff3bf");g.addColorStop(.6,"#ffd43b");g.addColorStop(1,"#e8a33d");x.fillStyle=g;x.beginPath();x.arc(0,0,r,0,7);x.fill();x.strokeStyle="#b67a20";x.lineWidth=2;x.stroke();
+    x.fillStyle="rgba(140,90,20,.35)";for(let i=0;i<7;i++){const a=i*.9,d=r*.55;x.beginPath();x.arc(Math.cos(a)*d*.8-r*.1,Math.sin(a)*d*.6-r*.2,r*.06,0,7);x.fill()}
+    x.fillStyle="#fff";x.beginPath();x.arc(r*.42,-r*.28,r*.2,0,7);x.fill();x.fillStyle="#1b1d27";x.beginPath();x.arc(r*.46,-r*.28,r*.11,0,7);x.fill();x.fillStyle="#fff";x.beginPath();x.arc(r*.49,-r*.32,r*.04,0,7);x.fill();
+    x.fillStyle="#c2410c";x.beginPath();x.ellipse(r*.86,r*.05,r*.08,r*.1,0,0,7);x.fill();
+    x.fillStyle="#f0b44c";x.beginPath();x.ellipse(r*.05,r*.45,r*.18,r*.1,.5+Math.sin(t/8)*.3,0,7);x.fill();x.restore()}};
+const pb=(r,st,ops,k,lim,t,h)=>{let f=null;while(!f)f=pbFact(r,st,ops,k,lim,{t,ask:`${k} hamlede hedefe ulaş`,q:`Balon balığını düğmelerle hedef sayıya getir. En çok ${k} hamle`,hint:h});f.ansTxt=`${f.start}`+f.path.map(op=>" "+PB_OPS[op].lab.replace(/^.*\((.*)\)$/,"$1")).join("")+` = ${f.target}`;return f};
+const PBH=["Her şişişte iki katına çıkar: 3, 6, 12…","Hedeften geriye düşün: hedef çift ise yarısından gelmiş olabilir.","Hedeften geriye düşün: hangi düğme seni hedefe götürür?"];
+GFACT.pbal1=[r=>pb(r,r=>ri(r,1,5),["d2"],2,20,"İki katı",PBH[0]),r=>pb(r,r=>ri(r,1,4),["d2","p1"],2,20,"Şiş ve ye",PBH[1]),r=>pb(r,r=>ri(r,1,3),["d2","p1"],3,20,"Üç hamle",PBH[1])];
+GFACT.pbal2=[r=>pb(r,r=>ri(r,2,6),["d2","p1"],3,99,"Üç hamle",PBH[1]),r=>pb(r,r=>ri(r,2,9),["d2","p10"],3,99,"Onluk yem",PBH[2]),r=>pb(r,r=>ri(r,3,9),["d2","p1","m1"],4,99,"Dört hamle",PBH[2])];
+GFACT.pbal3=[r=>pb(r,r=>ri(r,3,15),["x2","h2","p5"],3,1000,"Üç düğme",PBH[2]),r=>pb(r,r=>ri(r,5,20),["x3","p5","m10"],3,1000,"Üç düğme",PBH[2]),r=>pb(r,r=>ri(r,4,30),["x2","x3","h2","p5"],4,1000,"Dört hamle",PBH[2])];
+GFACT.pbal4=[r=>pb(r,r=>ri(r,10,60),["x3","h2","p5"],4,5000,"Dört hamle",PBH[2]),r=>pb(r,r=>ri(r,20,90),["x2","x3","m10","p100"],4,5000,"Dört düğme",PBH[2]),r=>pb(r,r=>ri(r,15,80),["x2","x3","h2","m5","p100"],5,9999,"Beş hamle",PBH[2])];
+
+// ---------------------------------------------------------------- O14) PUSULA (dönüşler)
+const PU_IT=[{e:"🐋",dat:"balinaya",nom:"Balina"},{e:"🦀",dat:"yengece",nom:"Yengeç"},{e:"🌴",dat:"adaya",nom:"Ada"},{e:"🐙",dat:"ahtapota",nom:"Ahtapot"}];
+const PU_D=["K","D","G","B"],PU_DN=["kuzey","doğu","güney","batı"],PU_DD=["kuzeye","doğuya","güneye","batıya"];
+const SPEC_PUS={H:440,
+  init(f,S,A){A.c.noTheme=true;S.msg=null;S.sel=null;S.ang=f.face*Math.PI/2;
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.sel==null){msg(S,"Önce teknenin bakacağı yere dokun");return}if(S.sel===f.ai){S.goal=f.ai;A.done()}else{A.fail();S.badT=S.t;msg(S,f.failMsg)}},"")},
+  pos(A,i){const cx=A.W/2,cy=214,R=128;const a=-Math.PI/2+i*Math.PI/2;return{x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R*.86}},
+  down(p,S,A){if(S.locked)return;for(let i=0;i<4;i++){const q=this.pos(A,i);if(Math.hypot(p.x-q.x,p.y-q.y)<34){S.sel=i;sfx.pop();return}}},
+  draw(x,S,A){const f=S.f,W=A.W,cx=W/2,cy=214;
+    const g=x.createRadialGradient(cx,cy,20,cx,cy,260);g.addColorStop(0,"#3fb4e5");g.addColorStop(1,"#0c5c94");x.fillStyle=g;x.fillRect(0,0,W,A.H);
+    x.strokeStyle="rgba(255,255,255,.18)";x.lineWidth=1.5;for(let k=0;k<12;k++){const y=(k*37+S.t*.3)%A.H;x.beginPath();for(let X=0;X<=W;X+=12)x.lineTo(X,y+Math.sin(X/22+k)*3);x.stroke()}
+    // pusula gülü
+    x.save();x.translate(cx,cy);x.globalAlpha=.55;x.strokeStyle="#fff";x.lineWidth=2;x.beginPath();x.arc(0,0,92,0,7);x.stroke();x.beginPath();x.arc(0,0,80,0,7);x.stroke();for(let k=0;k<32;k++){const a=k*Math.PI/16,l=k%8===0?14:k%4===0?9:5;x.beginPath();x.moveTo(Math.cos(a)*92,Math.sin(a)*92);x.lineTo(Math.cos(a)*(92-l),Math.sin(a)*(92-l));x.stroke()}
+    for(let k=0;k<4;k++){x.rotate(Math.PI/2);x.fillStyle=k%2?"#fff":"#dbe4ff";x.beginPath();x.moveTo(0,-78);x.lineTo(10,0);x.lineTo(-10,0);x.closePath();x.fill()}x.globalAlpha=1;x.restore();
+    // hedefler
+    for(let i=0;i<4;i++){const q=this.pos(A,i),sel=S.sel===i;x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.arc(q.x+2,q.y+3,30,0,7);x.fill();x.fillStyle=sel?"#fff3bf":"#fff";x.beginPath();x.arc(q.x,q.y,30,0,7);x.fill();x.strokeStyle=sel?"#f59f00":S.locked&&i===f.ai?"#3dbb8a":"#7c6cf0";x.lineWidth=sel?4:2.5;x.stroke();
+      if(f.mode==="ico")sp(x,EM(f.items[i].e),q.x,q.y,38);else{label(x,PU_D[i],q.x,q.y-4,24,"#22314d");label(x,PU_DN[i],q.x,q.y+16,11,"#5b6b86")}}
+    // tekne (üstten)
+    const tgt=S.goal!=null?S.goal*Math.PI/2:f.face*Math.PI/2;let d=tgt-S.ang;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;if(S.goal!=null&&f.turn){const want=f.turnRad;S.spun=(S.spun||0);if(Math.abs(S.spun)<Math.abs(want)){const st=Math.sign(want)*.05;S.ang+=st;S.spun+=st}}else S.ang+=d*.12;
+    x.save();x.translate(cx,cy);x.rotate(S.ang);
+    x.fillStyle="rgba(255,255,255,.4)";x.beginPath();x.moveTo(-14,46);x.lineTo(-30,96);x.lineTo(30,96);x.lineTo(14,46);x.closePath();x.fill();
+    x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.moveTo(3,-52);x.quadraticCurveTo(28,-16,22,46);x.lineTo(-16,46);x.quadraticCurveTo(-22,-16,3,-52);x.fill();
+    const hg=x.createLinearGradient(-22,0,22,0);hg.addColorStop(0,"#c92a2a");hg.addColorStop(.5,"#fa5252");hg.addColorStop(1,"#a61e1e");x.fillStyle=hg;x.beginPath();x.moveTo(0,-56);x.quadraticCurveTo(25,-20,20,44);x.lineTo(-20,44);x.quadraticCurveTo(-25,-20,0,-56);x.fill();x.strokeStyle="#7a1515";x.lineWidth=2;x.stroke();
+    x.fillStyle="#d29c64";x.beginPath();x.moveTo(0,-46);x.quadraticCurveTo(18,-16,15,38);x.lineTo(-15,38);x.quadraticCurveTo(-18,-16,0,-46);x.fill();x.strokeStyle="rgba(90,50,20,.4)";x.lineWidth=1;for(let k=-10;k<=10;k+=5){x.beginPath();x.moveTo(k,-30);x.lineTo(k,36);x.stroke()}
+    x.fillStyle="#f8f9fa";x.beginPath();x.roundRect(-10,0,20,24,4);x.fill();x.strokeStyle="#adb5bd";x.stroke();x.fillStyle="#74c0fc";x.fillRect(-7,3,14,6);
+    x.fillStyle="#fff";x.beginPath();x.moveTo(0,-56);x.lineTo(6,-46);x.lineTo(-6,-46);x.closePath();x.fill();x.restore();
+    // kulak: yön oku
+    const fx=cx+Math.cos(S.ang-Math.PI/2)*70,fy=cy+Math.sin(S.ang-Math.PI/2)*70;x.strokeStyle="#ffe066";x.lineWidth=3;x.setLineDash([4,4]);x.beginPath();x.moveTo(cx+Math.cos(S.ang-Math.PI/2)*58,cy+Math.sin(S.ang-Math.PI/2)*58);x.lineTo(fx,fy);x.stroke();x.setLineDash([]);
+    topTip(x,S,A,f)}};
+const TURN={r:[1,"sağa çeyrek","saat yönünde çeyrek"],l:[-1,"sola çeyrek","saat yönünün tersine çeyrek"],h:[2,"yarım","yarım"],t3:[3,"","saat yönünde üç çeyrek"]};
+function puFact(r,mode,steps,o){const face=mode==="ico"&&o.up?0:ri(r,0,3);const items=shuffle(r,PU_IT.slice());const sum=steps.reduce((s,k)=>s+TURN[k][0],0);const ai=((face+sum)%4+4)%4;
+  const desc=steps.map(k=>mode==="ico"?(k==="r"?"sağa dön":k==="l"?"sola dön":"arkasını dön"):TURN[k][2]+" dönüş").join(", sonra ");
+  const q=mode==="ico"?`Tekne ${items[face].dat} bakıyor. Tekne ${desc}se neye bakar?`:`Gemi ${PU_DD[face]} bakıyor. ${desc[0].toLocaleUpperCase("tr")+desc.slice(1)} yaparsa hangi yöne bakar?`;
+  return Object.assign({mode,face,items,ai,turn:true,turnRad:sum*Math.PI/2,a:"pus-"+face+"-"+steps.join("")+"-"+ai,q,ask:mode==="ico"?"Teknenin bakacağı yere dokun":"Geminin bakacağı yöne dokun",failMsg:mode==="ico"?"Kendini teknenin içinde düşün: sağ elin hangi yanda?":"Saat yönü: K → D → G → B. Çeyrek dönüş bir adım",ansTxt:mode==="ico"?`Tekne ${items[ai].nom.toLocaleLowerCase("tr")}${["ya","a","ya","a"][0]}`:`Gemi ${PU_DD[ai]} bakar`,keepOrder:1},o)}
+const pu=(r,mode,steps,t,h,up)=>{const f=puFact(r,mode,steps,{t,hint:h,up});if(mode==="ico")f.ansTxt=`Tekne artık ${f.items[f.ai].dat} bakıyor`;return f};
+const PUH=["Kendini teknede düşün: sağ elin hangi yanda?","Her çeyrek dönüş bir adım. Yarım dönüş iki adım.","Saat yönü: K → D → G → B → K. Tersi geri gider."];
+GFACT.ypus1=[r=>pu(r,"ico",["r"],"Sağa dön",PUH[0],true),r=>pu(r,"ico",["l"],"Sola dön",PUH[0],true),r=>pu(r,"ico",["h"],"Arkasını dön","Arkasını dönen tekne tam ters yöne bakar.",true)];
+GFACT.ypus2=[r=>pu(r,"ico",[pick(r,["r","l"])],"Tekne dönük",PUH[0]),r=>pu(r,"ico",["r","r"],"İki kez",PUH[1]),r=>pu(r,"ico",[pick(r,["r","l"]),pick(r,["r","l","h"])],"İki dönüş",PUH[1])];
+GFACT.ypus3=[r=>pu(r,"dir",["r"],"Çeyrek dönüş",PUH[2]),r=>pu(r,"dir",[pick(r,["l","h"])],"Ters ve yarım",PUH[2]),r=>pu(r,"dir",[pick(r,["r","l"]),pick(r,["r","l","h"])],"İki dönüş",PUH[2])];
+GFACT.ypus4=[r=>pu(r,"dir",["t3"],"Üç çeyrek",PUH[2]),r=>pu(r,"dir",[pick(r,["r","l","h"]),pick(r,["t3","h"])],"İki dönüş",PUH[2]),r=>pu(r,"dir",[pick(r,["r","l"]),"h",pick(r,["t3","l","r"])],"Üç dönüş",PUH[2])];
+
+// ---------------------------------------------------------------- O15) KAPTANIN ŞİFRESİ
+const KS_W={3:["KUM","ADA","SAL","TUZ"],4:["GEMİ","ÇIPA","KAYA","YELK"],5:["DALGA","LİMAN","FENER","DENİZ","BALIK","YOSUN"],6:["KAPTAN","MERCAN","PUSULA","HAZİNE"]};
+KS_W[4]=["GEMİ","ÇIPA","KAYA","ORKA","İNCİ"];
+function ksFact(r,len,expr,o){for(let g=0;g<200;g++){const word=pick(r,KS_W[len]);const L=[...word],U=[...new Set(L)];const pool=[..."ABCDEFGHIKLMNOPRSTUVYZ"].filter(c=>!U.includes(c));const letters=shuffle(r,U.concat(shuffle(r,pool).slice(0,Math.max(0,7-U.length))));const nums=shuffle(r,[1,2,3,4,5,6,7,8,9]).slice(0,letters.length);
+    const key={};letters.forEach((c,i)=>key[c]=nums[i]);const msgs=L.map(c=>expr(r,key[c]));if(msgs.some(m=>!m))continue;
+    const table=letters.map(c=>({c,n:key[c]})).sort((a,b)=>a.n-b.n);return Object.assign({word,L,table,msgs,a:"sifre-"+word,keepOrder:1},o)}return null}
+const eP=v=>()=>String(v),eA=(r,v)=>{if(v<2)return String(v);const a=ri(r,1,v-1);return`${a} + ${v-a}`},eS=(r,v)=>{const b=ri(r,2,9);return`${v+b} − ${b}`},eM=(r,v)=>{const ps=[];for(let a=2;a<=5;a++)if(v%a===0&&v/a>=1&&v/a<=5)ps.push([a,v/a]);if(!ps.length){const d=pick(r,[2,3,4,5]);return`${v*d} ÷ ${d}`}const [a,b]=pick(r,ps);return`${a} × ${b}`},eD=(r,v)=>{const d=ri(r,6,9);return`${v*d} ÷ ${d}`},eX=(r,v)=>{const a=ri(r,3,8),b=ri(r,3,8),p=a*b;return p-v>0?`${a} × ${b} − ${p-v}`:`${a} × ${b} + ${v-p}`};
+const SPEC_KSIF={H:470,
+  init(f,S,A){A.c.noTheme=true;S.msg=null;S.word=[];
+    A.btn("⌫ Sil",()=>{if(S.locked)return;S.word.pop()});
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.word.length<f.L.length){msg(S,"Bütün harfleri doldur");return}const bi=f.L.findIndex((c,i)=>S.word[i]!==c);if(bi<0)A.done();else{A.fail();S.bad=bi;S.badT=S.t;msg(S,`${bi+1}. işlemi yeniden hesapla, tabloda o sayının harfini bul`)}},"")},
+  box(f,A,i){const n=f.L.length,w=Math.min(60,(A.W-24-(n-1)*6)/n),gx=(A.W-n*w-(n-1)*6)/2;return{x:gx+i*(w+6),y:78,w,h:90}},
+  cell(f,A,i){const n=f.table.length,per=Math.ceil(n/2),w=Math.min(64,(A.W-40-(per-1)*8)/per),row=Math.floor(i/per),col=i%per,cnt=row?n-per:per,gx=(A.W-cnt*w-(cnt-1)*8)/2;return{x:gx+col*(w+8),y:236+row*72,w,h:62}},
+  down(p,S,A){const f=S.f;if(S.locked)return;for(let i=0;i<f.table.length;i++)if(kHit(p,this.cell(f,A,i))){if(S.word.length>=f.L.length){msg(S,"Bütün kutular dolu: ⌫ ile silebilirsin");return}S.word.push(f.table[i].c);sfx.pop();return}},
+  draw(x,S,A){const f=S.f,W=A.W;deckTop(x,4,40,W-8,A.H-44,5);
+    // mesaj kâğıdı
+    x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(14,54,W-28,128,10);x.fill();const pg=x.createLinearGradient(0,50,0,180);pg.addColorStop(0,"#fff8e6");pg.addColorStop(1,"#efd9a7");x.fillStyle=pg;x.beginPath();x.roundRect(12,50,W-24,128,10);x.fill();x.strokeStyle="#a0763c";x.lineWidth=1.5;x.stroke();label(x,"KAPTANIN GİZLİ MESAJI",W/2,64,11,"#8a6a3a");
+    f.msgs.forEach((m,i)=>{const b=this.box(f,A,i);x.fillStyle="rgba(255,255,255,.75)";x.beginPath();x.roundRect(b.x,b.y,b.w,36,8);x.fill();x.strokeStyle="#c9a96e";x.lineWidth=1;x.stroke();label(x,m,b.x+b.w/2,b.y+18,m.length>7?11:m.length>4?13:18,"#3b2a14");
+      x.strokeStyle="#8a6a3a";x.lineWidth=1.5;x.beginPath();x.moveTo(b.x+b.w/2,b.y+38);x.lineTo(b.x+b.w/2,b.y+46);x.stroke();
+      const lb={x:b.x+4,y:b.y+48,w:b.w-8,h:40};const c=S.word[i],red=S.bad===i&&S.t-S.badT<150;x.fillStyle=S.locked?"#d3f9d8":"#fff";x.beginPath();x.roundRect(lb.x,lb.y,lb.w,lb.h,8);x.fill();x.strokeStyle=red?"#ef4b4b":S.word.length===i&&!S.locked?"#7c6cf0":"#c9a96e";x.lineWidth=red||S.word.length===i?3:1.5;x.stroke();if(c)label(x,c,lb.x+lb.w/2,lb.y+21,22,"#22314d")});
+    // şifre tablosu (pirinç çerçeve)
+    const n=f.table.length,c0=this.cell(f,A,0),cl=this.cell(f,A,n-1);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(14,214,W-28,166,14);x.fill();const bg=x.createLinearGradient(0,210,0,380);bg.addColorStop(0,"#2b3a55");bg.addColorStop(1,"#1a2438");x.fillStyle=bg;x.beginPath();x.roundRect(12,210,W-24,166,14);x.fill();x.strokeStyle="#d4a72c";x.lineWidth=3;x.stroke();label(x,"ŞİFRE TABLOSU · harfe dokun",W/2,224,11,"#ffe8a3");
+    f.table.forEach((e,i)=>{const b=this.cell(f,A,i);x.fillStyle="rgba(0,0,0,.3)";x.beginPath();x.roundRect(b.x+1,b.y+3,b.w,b.h,10);x.fill();const cg=x.createLinearGradient(0,b.y,0,b.y+b.h);cg.addColorStop(0,"#fffaf0");cg.addColorStop(1,"#f0dfb8");x.fillStyle=cg;x.beginPath();x.roundRect(b.x,b.y,b.w,b.h,10);x.fill();x.strokeStyle="#d4a72c";x.lineWidth=2;x.stroke();
+      x.fillStyle="#7c6cf0";x.beginPath();x.roundRect(b.x+6,b.y+6,b.w-12,20,6);x.fill();label(x,String(e.n),b.x+b.w/2,b.y+16,15,"#fff");label(x,e.c,b.x+b.w/2,b.y+43,24,"#22314d")});
+    if(S.locked){const t="Mesaj: "+f.word;x.font="900 20px Nunito,sans-serif";const tw=x.measureText(t).width+34;const g2=x.createLinearGradient(0,A.H-52,0,A.H-16);g2.addColorStop(0,"#ffe066");g2.addColorStop(1,"#f59f00");x.fillStyle=g2;x.beginPath();x.roundRect((W-tw)/2,A.H-52,tw,36,18);x.fill();label(x,t,W/2,A.H-33,19,"#5a3300")}
+    topTip(x,S,A,f)}};
+const ks=(r,len,expr,t,h)=>{let f=null;while(!f)f=ksFact(r,len,expr,{t,ask:"Mesajı çöz",q:"Her işlemi hesapla, tabloda o sayının harfine dokun",hint:h,ansTxt:""});f.ansTxt="Gizli mesaj: "+f.word;return f};
+const KSH=["Her sayıyı tabloda bul, altındaki harfe dokun.","Önce işlemi yap, çıkan sayının harfini tabloda bul.","Önce işlemi yap. Aynı sayı aynı harf demek."];
+GFACT.ksif1=[r=>ks(r,3,(r,v)=>String(v),"Üç harf",KSH[0]),r=>ks(r,4,(r,v)=>String(v),"Dört harf",KSH[0]),r=>ks(r,3,eA,"Toplama",KSH[1])];
+GFACT.ksif2=[r=>ks(r,4,eA,"Toplama",KSH[1]),r=>ks(r,4,eS,"Çıkarma",KSH[1]),r=>ks(r,5,(r,v)=>r()<.5?eA(r,v):eS(r,v),"Beş harf",KSH[2])];
+GFACT.ksif3=[r=>ks(r,4,eM,"Çarpma bölme",KSH[1]),r=>ks(r,5,(r,v)=>r()<.5?eM(r,v):eS(r,v),"Karışık",KSH[2]),r=>ks(r,5,eM,"Beş harf",KSH[2])];
+GFACT.ksif4=[r=>ks(r,5,eD,"Bölme",KSH[1]),r=>ks(r,5,eX,"İki işlem",KSH[2]),r=>ks(r,6,(r,v)=>r()<.5?eD(r,v):eX(r,v),"Altı harf",KSH[2])];
+
+// ---------------------------------------------------------------- O16) SAHİL ÇUBUKLARI (bir çubuğu taşı)
+const SG=[1,2,4,8,16,32,64],DIGM=[63,6,91,79,102,109,125,7,127,111],MDIG={};DIGM.forEach((m,d)=>MDIG[m]=d);
+function scLay(toks){return toks}
+function scVal(toks){let s="";for(const t of toks){if(t.k==="d"){if(MDIG[t.m]==null)return null;s+=MDIG[t.m]}else if(t.k==="op"){if(t.m===3)s+="+";else if(t.m===1)s+="-";else return null}else s+="="}const [l,rr]=s.split("=");if(!/^\d+[+-]\d+$/.test(l)||!/^\d+$/.test(rr))return null;const m=l.match(/^(\d+)([+-])(\d+)$/);const v=m[2]==="+"?+m[1]+ +m[3]:+m[1]-+m[3];return{ok:v===+rr,s:s.replace("-","−")}}
+function scMoves(toks){const out=[];toks.forEach((t,i)=>{if(t.k==="eq")return;const segs=t.k==="d"?SG:[1,2];segs.forEach(s=>{if(!(t.m&s))return;toks.forEach((u,j)=>{if(u.k==="eq")return;const segs2=u.k==="d"?SG:[1,2];segs2.forEach(s2=>{if(i===j&&s===s2)return;const base=i===j?(t.m&~s):u.m;if(base&s2)return;const nt=toks.map(z=>Object.assign({},z));nt[i].m&=~s;nt[j].m|=s2;if(nt[i].k==="d"&&MDIG[nt[i].m]==null)return;if(nt[j].k==="d"&&MDIG[nt[j].m]==null)return;if(nt[i].k==="op"&&!(nt[i].m===1||nt[i].m===3))return;if(nt[j].k==="op"&&!(nt[j].m===1||nt[j].m===3))return;out.push({i,s,j,s2,toks:nt})})})})});return out}
+function scToks(a,op,b,c){const T=[];String(a).split("").forEach(d=>T.push({k:"d",m:DIGM[+d]}));T.push({k:"op",m:op==="+"?3:1});String(b).split("").forEach(d=>T.push({k:"d",m:DIGM[+d]}));T.push({k:"eq"});String(c).split("").forEach(d=>T.push({k:"d",m:DIGM[+d]}));return T}
+function scFact(r,mk,o){for(let g=0;g<300;g++){const [a,op,b]=mk(r);const c=op==="+"?a+b:a-b;if(c<0)continue;const T=scToks(a,op,b,c);const mv=shuffle(r,scMoves(T)).filter(m=>{const v=scVal(m.toks);return v&&!v.ok});if(!mv.length)continue;const pz=mv[0].toks;
+    return Object.assign({toks:pz,sol:T,solTxt:scVal(T).s.replace(/([+−=])/g," $1 "),a:"cubuk-"+pz.map(t=>t.m||0).join("."),keepOrder:1},o)}return null}
+const SPEC_SCUB={H:400,
+  init(f,S,A){A.c.noTheme=true;S.msg=null;S.tok=f.toks.map(z=>Object.assign({},z));S.held=null;S.moved=false;
+    A.btn("↩ Baştan",()=>{if(S.locked)return;S.tok=f.toks.map(z=>Object.assign({},z));S.held=null;S.moved=false});
+    A.btn("Tamam",()=>{if(S.locked)return;if(S.held){msg(S,"Elindeki çubuğu boş bir yere koy");return}if(!S.moved){msg(S,"Bir çubuğu alıp başka yere taşı");return}const v=scVal(S.tok);if(v&&v.ok)A.done();else{A.fail();msg(S,"İşlem hâlâ doğru değil: ↩ Baştan ile başka çubuk dene")}},"")},
+  geo(f,A){const T=f.toks,ws=T.map(t=>t.k==="d"?44:34),gp=T.map((t,i)=>i<T.length-1&&t.k==="d"&&T[i+1].k==="d"?3:12);const tot=ws.reduce((a,b)=>a+b,0)+gp.slice(0,-1).reduce((a,b)=>a+b,0),sc=Math.min(1.25,(A.W-24)/tot),gx=(A.W-tot*sc)/2;let X=gx;const xs=ws.map((w,i)=>{const o=X;X+=(w+gp[i])*sc;return o});return{sc,xs,cy:176}},
+  segs(t,X,cy,sc){const L=26*sc,w=44*sc,x0=X+(w-L)/2,x1=x0+L,yt=cy-L,ym=cy,yb=cy+L;if(t.k==="d")return[[x0,yt,x1,yt],[x1,yt,x1,ym],[x1,ym,x1,yb],[x0,yb,x1,yb],[x0,ym,x0,yb],[x0,yt,x0,ym],[x0,ym,x1,ym]].map((s,i)=>({bit:SG[i],s}));const c=X+17*sc,h=12*sc;if(t.k==="op")return[{bit:1,s:[c-h,cy,c+h,cy]},{bit:2,s:[c,cy-h,c,cy+h]}];return[{bit:0,s:[c-h,cy-6*sc,c+h,cy-6*sc]},{bit:0,s:[c-h,cy+6*sc,c+h,cy+6*sc]}]},
+  stick(x,s,mode){const [a,b,c,d]=s;if(mode==="slot"){x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=3;x.setLineDash([3,5]);x.lineCap="round";x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.setLineDash([]);return}
+    x.lineCap="round";x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=9;x.beginPath();x.moveTo(a+2,b+3);x.lineTo(c+2,d+3);x.stroke();x.strokeStyle=mode==="held"?"#ffd43b":"#6b4423";x.lineWidth=9;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.strokeStyle=mode==="fixed"?"#8d6e4a":"#d29c64";x.lineWidth=6;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.strokeStyle="rgba(255,235,200,.55)";x.lineWidth=1.5;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.fillStyle="#4a2c12";[[a,b],[c,d]].forEach(([p,q])=>{x.beginPath();x.arc(p,q,2.2,0,7);x.fill()})},
+  dist(p,s){const [a,b,c,d]=s,dx=c-a,dy=d-b,t=Math.max(0,Math.min(1,((p.x-a)*dx+(p.y-b)*dy)/(dx*dx+dy*dy)));return Math.hypot(p.x-(a+dx*t),p.y-(b+dy*t))},
+  down(p,S,A){const f=S.f;if(S.locked)return;const G=this.geo(f,A);let best=null,bd=12;
+    S.tok.forEach((t,i)=>{if(t.k==="eq")return;this.segs(t,G.xs[i],G.cy,G.sc).forEach(q=>{const d=this.dist(p,q.s);if(d<bd){const on=!!(t.m&q.bit);if((S.held&&!on)||(!S.held&&on&&!S.moved)){bd=d;best={i,bit:q.bit,on}}}})});
+    if(!best){if(S.moved&&!S.held)msg(S,"Bir çubuk taşıdın. Yeniden denemek için ↩ Baştan");return}
+    if(!S.held){S.tok[best.i].m&=~best.bit;S.held=best;sfx.pop()}else{S.tok[best.i].m|=best.bit;if(!(best.i===S.held.i&&best.bit===S.held.bit))S.moved=true;S.held=null;sfx.pop()}},
+  draw(x,S,A){const f=S.f,W=A.W;const g=x.createLinearGradient(0,0,0,A.H);g.addColorStop(0,"#f6e7bd");g.addColorStop(1,"#e2c58a");x.fillStyle=g;x.fillRect(0,0,W,A.H);
+    x.fillStyle="rgba(42,159,214,.85)";x.beginPath();x.moveTo(0,0);x.lineTo(W,0);x.lineTo(W,40);for(let X=W;X>=0;X-=10)x.lineTo(X,44+Math.sin(X/24+S.t/20)*5);x.closePath();x.fill();x.strokeStyle="rgba(255,255,255,.9)";x.lineWidth=3;x.beginPath();for(let X=0;X<=W;X+=10)x.lineTo(X,46+Math.sin(X/24+S.t/20)*5);x.stroke();
+    x.fillStyle="rgba(150,110,60,.28)";for(let k=0;k<70;k++){x.beginPath();x.arc((k*97)%W,60+(k*53)%(A.H-70),1.3,0,7);x.fill()}
+    [[30,A.H-40,"🐚"],[W-34,A.H-60,"⭐"],[W-60,90,"🦀"]].forEach(([a,b,e])=>sp(x,EM(e),a,b,26,{alpha:.8}));
+    const G=this.geo(f,A);x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.roundRect(8,G.cy-58*G.sc-10,W-16,116*G.sc+20,16);x.fill();
+    S.tok.forEach((t,i)=>{const sg=this.segs(t,G.xs[i],G.cy,G.sc);sg.forEach(q=>{if(t.k==="eq")this.stick(x,q.s,"fixed");else if(t.m&q.bit)this.stick(x,q.s,"on");else if(S.held)this.stick(x,q.s,"slot")})});
+    if(S.held){const t=S.tok[S.held.i],q=this.segs(t,G.xs[S.held.i],G.cy,G.sc).find(z=>z.bit===S.held.bit);this.stick(x,q.s.map((v,k)=>k%2?v-6:v),"held");woodSign(x,W/2,G.cy+80*G.sc,"Çubuk elinde: boş yere dokun",13)}
+    else if(S.moved&&!S.locked)woodSign(x,W/2,G.cy+80*G.sc,"Çubuk taşındı. Tamam'a bas",13);
+    if(S.locked)woodSign(x,W/2,G.cy+80*G.sc,f.solTxt,18);
+    topTip(x,S,A,f)}};
+const sc=(r,mk,t,h)=>{let f=null;while(!f)f=scFact(r,mk,{t,ask:"Bir çubuğu taşıyarak işlemi düzelt",q:"Sadece bir çubuğu al ve başka bir yere koy: işlem doğru olsun",hint:h});f.ansTxt="Doğru işlem: "+f.solTxt;return f};
+const SCH=["Önce sonucu hesapla. Hangi rakam bir çubukla değişebilir: 6↔5, 9↔8, 3↔2?","İşaret de değişebilir: + işaretinin dik çubuğu alınırsa − olur.","Bir rakamdan çubuk alınca o rakam başka bir rakama döner. Her iki tarafı da dene."];
+GFACT.scub1=[r=>sc(r,r=>{const a=ri(r,1,8);return[a,"+",ri(r,1,9-a)]},"Toplama",SCH[0]),r=>sc(r,r=>{const a=ri(r,3,9);return[a,"-",ri(r,1,a)]},"Çıkarma",SCH[1]),r=>sc(r,r=>r()<.5?(()=>{const a=ri(r,1,8);return[a,"+",ri(r,1,9-a)]})():(()=>{const a=ri(r,3,9);return[a,"-",ri(r,1,a)]})(),"Karışık",SCH[2])];
+GFACT.scub2=[r=>sc(r,r=>{const a=ri(r,2,9);return[a,"+",ri(r,10-a,9)]},"Onluğa geç",SCH[0]),r=>sc(r,r=>{const a=ri(r,11,19);return[a,"-",ri(r,1,a-10)]},"İki basamak",SCH[2]),r=>sc(r,r=>{const a=ri(r,11,40);return[a,"+",ri(r,2,9)]},"İki basamak",SCH[2])];
+GFACT.scub3=[r=>sc(r,r=>{const a=ri(r,12,60);return[a,"+",ri(r,11,39)]},"İki basamak",SCH[2]),r=>sc(r,r=>{const a=ri(r,40,99);return[a,"-",ri(r,11,a-10)]},"Çıkarma",SCH[2]),r=>sc(r,r=>{const a=ri(r,20,70);return r()<.5?[a,"+",ri(r,11,29)]:[a,"-",ri(r,11,a-10)]},"Karışık",SCH[2])];
+GFACT.scub4=[r=>sc(r,r=>{const a=ri(r,30,99);return[a,"-",ri(r,11,a-10)]},"Çıkarma",SCH[2]),r=>sc(r,r=>{const a=ri(r,20,70);return[a,"+",ri(r,20,29)]},"Toplama",SCH[2]),r=>sc(r,r=>{const a=ri(r,40,99);return r()<.5?[a,"-",ri(r,20,a-10)]:[ri(r,20,60),"+",ri(r,20,39)]},"Usta",SCH[2])];
+
+// ---------------------------------------------------------------- kayıt
+const DEF1c={tdal:["Tersine Dalış","🤿","Sondan başa düşün, dalgıcın başladığı sayıyı bul"],fkod:["Fener Işık Kodu","🗼","Fenerin ışıklarını say, gönderilen sayıyı bul"],pbal:["Balon Balığı","🐡","Düğmelerle balığı hedef sayıya getir"],ypus:["Pusula","🧭","Dönüşleri düşün, teknenin bakacağı yeri bul"],ksif:["Kaptanın Şifresi","📜","İşlemleri hesapla, gizli mesajı çöz"],scub:["Sahil Çubukları","🪵","Bir çubuğu taşı, işlemi düzelt"]};
+const ENG1c={tdal:sbEngine(Object.assign({},SPEC_TDAL,{bg:()=>{}})),fkod:sbEngine(Object.assign({},SPEC_FKOD,{bg:()=>{}})),pbal:sbEngine(Object.assign({},SPEC_PBAL,{bg:(x,W,H,t)=>deepBg(x,W,H,t)})),ypus:sbEngine(Object.assign({},SPEC_PUS,{bg:()=>{}})),ksif:sbEngine(Object.assign({},SPEC_KSIF,{bg:()=>{}})),scub:sbEngine(Object.assign({},SPEC_SCUB,{bg:()=>{}}))};
+const EV1c={tdal:HCx("Geriye Doğru","Ters işlem","Kâğıt, kalem",["Aklınızdan bir sayı tutun, 3 ekleyin, sonucu söyleyin.","Çocuğunuz başta hangi sayıyı tuttuğunuzu bulsun.","Sonra rolleri değiştirin."],"Nasıl geriye gittin?"),
+  fkod:HCx("El Feneri Kodu","Onluk ve birlik","El feneri",["Uzun yakma 10, kısa yakma 1 olsun.","Karanlık odada feneri yakıp söndürerek bir sayı gönderin.","Çocuğunuz sayıyı bulsun, sonra o göndersin."],"Uzunları mı önce saydın, kısaları mı?"),
+  pbal:HCx("Sayı Yolculuğu","İşlem planlama","Kâğıt, kalem",["'2 katı' ve '+1' diye iki kural koyun.","3'ten başlayıp 14'e en az kaç adımda varılır? Birlikte deneyin.","Farklı hedefler seçin."],"Geriye doğru düşünmek işe yaradı mı?"),
+  ypus:HCx("Sağa Dön, Sola Dön","Yön ve dönüş","Odadaki eşyalar",["Çocuğunuz kapıya bakarak dursun.","'Sağa dön' deyin: şimdi neye bakıyor?","'Arkanı dön', 'iki kez sola dön' gibi komutlarla devam edin."],"Hangi komut seni başladığın yere geri getirir?"),
+  ksif:HCx("Gizli Mesaj","İşlem ve kod","Kâğıt, kalem",["Harflere sayı verin: 1=A, 2=K, 3=L…","Bir kelimeyi işlemlerle yazın: 1+1, 3−2…","Çocuğunuz mesajı çözsün, sonra o size mesaj yazsın."],"En zor işlem hangisiydi?"),
+  scub:HCx("Kürdan Bulmacası","Rakam ve işlem","Kürdan ya da kibrit çöpü (yetişkinle)",["Kürdanlarla '3 + 5 = 9' gibi yanlış bir işlem dizin.","Çocuğunuz tek bir kürdanı taşıyarak işlemi düzeltsin.","Siz de onun kurduğunu çözün."],"Hangi rakamlar tek kürdanla değişebiliyor?")};
+Object.keys(DEF1c).forEach(b=>{for(let g=1;g<=4;g++){const id=b+g;if(!GFACT[id])continue;GFACT[id]=GFACT[id].map(fn=>r=>{const f=fn(r);f.keepOrder=1;return f});if(typeof G==="undefined")continue;G[id]={id,name:DEF1c[b][0],ico:DEF1c[b][1],task:DEF1c[b][2]};KTIER[id]={E:[[0]],N:[[1]],F:[[2]]};ENGINES[id]=ENG1c[b];if(typeof HOME!=="undefined")HOME[id]=EV1c[b];if(SETS[1]&&SETS[1][g]&&!SETS[1][g].includes(id))SETS[1][g].push(id)}});
+window.O1C={SPEC_TDAL,SPEC_FKOD,SPEC_PBAL,SPEC_PUS,SPEC_KSIF,SPEC_SCUB,scVal,scMoves,PB_OPS};
+
 window.K30={SPEC_ASANS,SPEC_TUP,SPEC_KRATER,SPEC_MOTOR,SPEC_PARCA};
 })();
 
