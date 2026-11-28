@@ -12625,7 +12625,7 @@ const KT={H:330,
     const zR=this.zone(A,1);for(let k=0;k<S.on;k++){const col=k%5,row=Math.floor(k/5);let bx=zR.x+22+col*32,rot=null;if(k===S.on-1&&S.addT!=null&&S.t-S.addT<16){const e=(S.t-S.addT)/16;bx+=(1-e)*(1-e)*90;rot=-e*8}this.ball(x,bx,zR.y+zR.h-24-row*32,13.5,rot)}
     if(!S.on){label(x,"Dokun: top ekle",zR.x+zR.w/2,zR.y+zR.h/2+8,13,"rgba(255,255,255,.85)")}
     if(S.on>=10)pill(x,"10 top bir kule olur!",zR.x+zR.w/2,zR.y+44,{size:12,bg:"#ffd85c",col:"#4a3b00"});
-    if(S.locked){x.save();x.fillStyle="rgba(20,40,80,.35)";x.fillRect(0,0,W,H);x.restore();if(!SP(x,"snowman",W/2-30,H-60,120,{bottom:true})){}okti(x,W/2+70,H-96,70,"wow");for(let k=0;k<6;k++){const a=S.t/8+k;x.fillStyle=["#ffd85c","#fff","#9be7ff"][k%3];x.beginPath();x.arc(W/2+70+Math.cos(a)*48,H-110+Math.sin(a*1.3)*30,3,0,7);x.fill()}}
+    if(S.locked){S.lkT=S.lkT==null?S.t:S.lkT;const fa=Math.min(1,(S.t-S.lkT)/25);snowSky(x,W,H,S.t);x.save();x.globalAlpha=1-fa;x.restore();x.fillStyle="#eaf3fb";x.beginPath();x.moveTo(0,H-58);for(let k=0;k<=W;k+=20)x.lineTo(k,H-58+Math.sin(k/40)*4);x.lineTo(W,H);x.lineTo(0,H);x.fill();pill(x,`${f.target} kar topu: ${S.tw} kule ve ${S.on} top`,W/2,30,{size:20,bg:"#fff",line:"#ffd85c",col:"#1f3b66"});if(!SP(x,"snowman",W/2-30,H-60,120,{bottom:true})){}okti(x,W/2+70,H-96,70,"wow");for(let k=0;k<6;k++){const a=S.t/8+k;x.fillStyle=["#ffd85c","#fff","#9be7ff"][k%3];x.beginPath();x.arc(W/2+70+Math.cos(a)*48,H-110+Math.sin(a*1.3)*30,3,0,7);x.fill()}}
     // canlı toplam
     const tot=S.tw*10+S.on;pill(x,`${S.tw} kule ve ${S.on} top: ${tot} kar topu`,W/2,H-34,{size:17,bg:"#fff",col:"#1f3b66",minW:220});
     // ilk turda yol gösteren el
