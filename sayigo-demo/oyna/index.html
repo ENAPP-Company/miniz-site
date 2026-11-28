@@ -13587,9 +13587,10 @@ const SPEC_ROTA={H:324,
   draw(x,S,A){const f=S.f,n=f.R*f.C,goal=f.path[f.path.length-1];const show=S.locked?f.path:S.sel;
     for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),isG=i===goal,isS=i===f.path[0];
       this.hex(x,{x:q.x+1,y:q.y+3},q.R-2);x.fillStyle="rgba(0,0,0,.3)";x.fill();this.hex(x,q,q.R-2);const g=x.createLinearGradient(0,q.y-q.R,0,q.y+q.R);if(on){g.addColorStop(0,S.locked?"#b9f5cd":"#ffe89a");g.addColorStop(1,S.locked?"#5fcf8c":"#f5b93a")}else{if(f.th==="kis"){g.addColorStop(0,"#7fb6e0");g.addColorStop(1,"#3d6fa3")}else{g.addColorStop(0,"#4a5aa8");g.addColorStop(1,"#2a3470")}}x.fillStyle=g;x.fill();x.strokeStyle=isG?"#ff8a5c":isS?"#7be08a":"rgba(255,255,255,.35)";x.lineWidth=isG||isS?3.5:1.5;x.stroke()}
+    if(!S.locked&&f.mode==="sira"){const last=S.sel[S.sel.length-1];HEXN(f.R,f.C,last).forEach(i=>{if(S.sel.includes(i))return;const q=this.cen(f,A,i);x.save();x.globalAlpha=.55+.3*Math.sin(S.t/10);x.strokeStyle="#fff6b0";x.lineWidth=3;x.shadowColor="#fff6b0";x.shadowBlur=10;this.hex(x,q,q.R-4);x.stroke();x.restore()})}
     if(show.length>1){x.strokeStyle="rgba(120,70,0,.55)";x.lineWidth=4;x.lineCap="round";x.setLineDash([1,8]);x.beginPath();show.forEach((i,k)=>{const q=this.cen(f,A,i);x[k?"lineTo":"moveTo"](q.x,q.y+q.R*.5)});x.stroke();x.setLineDash([])}
-    for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),t=NF(f.vals[i]);label(x,t,q.x,q.y+1,t.length>=6?13:t.length>=4?14:17,on?"#22314d":"#fff");if(i===goal)sp(x,f.goalSpr||"planet",q.x+17,q.y-19,22)}
-    const cur=this.cen(f,A,show[show.length-1]);sp(x,f.curSpr||"rocket",cur.x-17,cur.y-19+Math.sin(S.t/14)*1.5,24);
+    for(let i=0;i<n;i++){const q=this.cen(f,A,i),on=show.includes(i),t=NF(f.vals[i]);label(x,t,q.x,q.y+1,t.length>=6?13:t.length>=4?14:17,on?"#22314d":"#fff");if(i===goal)sp(x,f.goalSpr||"planet",q.x+17,q.y-19,f.mode==="sira"?30:22)}
+    const cur=this.cen(f,A,show[show.length-1]);sp(x,f.curSpr||"rocket",cur.x-17,cur.y-19+Math.sin(S.t/14)*1.5,f.mode==="sira"?30:24);
     topTip(x,S,A,f,false)}};
 // ---------------------------------------------------------------- 10) KABLO BAĞLA (gösterim eşleme)
 // f:{L:[{t}|{dots}|{tally}|{two:[a,b]}],Rt:[txt],map:[j]}
@@ -14056,14 +14057,24 @@ GFACT.balik4=[
   r=>{const R=5,C=12,p=pick(r,[4,5,6,10]),n=R*C/p;return bg_({items:[...arr(R,C,"fish",(380-11*28)/2,72,28,32,19),...peng(p,276)],R:74,a:n,cands:opts(r,n,[n+1,n-2,R*C-p]),t:"Eşit paylaş",ask:"Her penguene kaç balık düşer?",q:"Balıkları penguenlere eşit paylaştır. Her birine kaç balık düşer?",hint:"Önce balıkları çarparak say, sonra penguen sayısına böl.",ansTxt:`${R} × ${C} = ${R*C}, ${R*C} ÷ ${p} = ${n}`})},
   r=>{let R,C,p,g=0;do{R=ri(r,4,5);C=ri(r,11,12);p=ri(r,5,9)}while((R*C)%p===0&&g++<50);const m=(R*C)%p;return bg_({items:[...arr(R,C,"fish",(380-(C-1)*28)/2,74,28,34,19),...peng(p,276)],R:74,a:m,cands:opts(r,m,[m+1,Math.floor(R*C/p),p-m]),t:"Kaç artar?",ask:"Kaç balık artar?",q:"Balıkları penguenlere eşit paylaştır. Kaç balık artar?",hint:"Toplam balığı bul, penguen sayısına böl; kalanı bul.",ansTxt:`${R*C} ÷ ${p} = ${Math.floor(R*C/p)}, kalan ${m}`})}];
 // ---------------- 4) Kar Tanesi Rotası (petek motoru · soru türü: SIRALAMA)
-function siraFact(r,len,gen,gap,desc,C,o){const R=4;C=C||6;let path=null,g=0;while(!path&&g++<300){const p=[ri(r,0,R*C-1)];while(p.length<len){const nb=shuffle(r,HEXN(R,C,p[p.length-1]).filter(i=>!p.includes(i)));if(!nb.length)break;p.push(nb[0])}if(p.length===len)path=p}
-  const seq=[gen(r)];for(let i=1;i<len;i++)seq.push(seq[i-1]+gap(r));if(desc)seq.reverse();const lo=Math.min(...seq),hi=Math.max(...seq),vals=Array(R*C).fill(null);path.forEach((c,i)=>vals[c]=seq[i]);const used=new Set(seq);
-  for(let c=0;c<R*C;c++){if(vals[c]!=null)continue;let v,t=0;do{v=o.dist?o.dist(r,lo,hi):ri(r,lo,hi)}while(used.has(v)&&t++<80);used.add(v);vals[c]=v}
-  return KIS(Object.assign({R,C,vals,path,mode:"sira",desc:!!desc,goalSpr:"snowman",curSpr:"sled",goalMsg:"Kızak kardan adama ulaşmadı",a:"sira-"+path.length+"-"+path[0]+"-"+path[len-1],ask:desc?"Büyükten küçüğe git":"Küçükten büyüğe git",q:desc?"Kızakla kardan adama git: her adımda daha küçük bir sayıya bas":"Kızakla kardan adama git: her adımda daha büyük bir sayıya bas",ansTxt:seq.map(NF).join(desc?" > ":" < ")},o))}
+function siraShort(R,C,vals,start,goal,desc){const n=R*C,d=Array(n).fill(Infinity);d[start]=0;const ord=[...Array(n).keys()].sort((a,b)=>desc?vals[b]-vals[a]:vals[a]-vals[b]);for(const c of ord){if(d[c]===Infinity)continue;for(const nb of HEXN(R,C,c))if(desc?vals[nb]<vals[c]:vals[nb]>vals[c])d[nb]=Math.min(d[nb],d[c]+1)}return d[goal]}
+function siraPath(r,R,C,len){for(let tr=0;tr<400;tr++){const p=[ri(r,0,R-1)*C];let ok=true;while(p.length<len){const cur=p[p.length-1],cc=cur%C,left=len-p.length,need=C-1-cc;let nb=HEXN(R,C,cur).filter(i=>!p.includes(i)&&i%C>=cc&&p.every(q=>q===cur||!HEXN(R,C,q).includes(i)||q===p[p.length-1]));
+      nb=nb.filter(i=>{const c2=i%C;return C-1-c2<=left-1&&(left-1>0||c2===C-1)});if(need>=left)nb=nb.filter(i=>i%C>cc);if(!nb.length){ok=false;break}p.push(pick(r,nb))}
+    if(ok&&p[p.length-1]%C===C-1&&new Set(p.map(i=>Math.floor(i/C))).size>=2&&p.filter((q,k)=>k&&Math.floor(q/C)!==Math.floor(p[k-1]/C)).length>=2)return p}return null}
+window.siraShort=siraShort;
+function siraFact(r,len,gen,gap,desc,C,o){o=o||{};const R=o.R||4;C=C||6;
+  for(let tr=0;tr<300;tr++){const path=siraPath(r,R,C,len);if(!path)continue;
+    const seq=[gen(r)];for(let i=1;i<len;i++)seq.push(seq[i-1]+gap(r));if(desc)seq.reverse();const lo=Math.min(...seq),hi=Math.max(...seq),vals=Array(R*C).fill(null);path.forEach((c,i)=>vals[c]=seq[i]);const used=new Set(seq);let dup=false;
+    for(let c=0;c<R*C;c++){if(vals[c]!=null)continue;let v,t=0;do{v=o.dist?o.dist(r,lo,hi):ri(r,lo,hi)}while(used.has(v)&&t++<120);if(used.has(v))dup=true;used.add(v);vals[c]=v}
+    if(dup&&tr<250)continue;
+    if(siraShort(R,C,vals,path[0],path[len-1],!!desc)<len-1)continue;
+    const oo=Object.assign({},o);delete oo.R;delete oo.dist;
+    return KIS(Object.assign({R,C,vals,path,mode:"sira",desc:!!desc,goalSpr:"snowman",curSpr:"sled",goalMsg:"Kızak kardan adama ulaşmadı",a:"sira-"+path.length+"-"+path[0]+"-"+path[len-1],ask:desc?"Büyükten küçüğe git":"Küçükten büyüğe git",q:desc?"Kızakla kardan adama git: her adımda daha küçük bir sayıya bas":"Kızakla kardan adama git: her adımda daha büyük bir sayıya bas",ansTxt:seq.map(NF).join(desc?" > ":" < ")},oo))}
+  return null}
 GFACT.krota1=[
-  r=>siraFact(r,6,r=>ri(r,1,4),r=>ri(r,1,3),0,6,{t:"Küçükten büyüğe",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
-  r=>siraFact(r,7,r=>ri(r,1,4),r=>ri(r,1,2),0,6,{t:"Uzun yol",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
-  r=>siraFact(r,6,r=>ri(r,1,4),r=>ri(r,1,3),1,6,{t:"Büyükten küçüğe",hint:"Kızağın yanındaki sayılara bak: daha küçük olanı seç."})];
+  r=>siraFact(r,7,r=>ri(r,1,4),r=>ri(r,1,2),0,6,{R:3,dist:(r)=>ri(r,1,20),t:"Küçükten büyüğe",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
+  r=>siraFact(r,8,r=>ri(r,1,3),r=>ri(r,1,2),0,6,{R:3,dist:(r)=>ri(r,1,20),t:"Uzun yol",hint:"Kızağın yanındaki sayılara bak: daha büyük olanı seç."}),
+  r=>siraFact(r,7,r=>ri(r,1,4),r=>ri(r,1,2),1,6,{R:3,dist:(r)=>ri(r,1,20),t:"Büyükten küçüğe",hint:"Kızağın yanındaki sayılara bak: daha küçük olanı seç."})];
 GFACT.krota2=[
   r=>siraFact(r,7,r=>ri(r,10,25),r=>ri(r,4,11),0,6,{t:"Küçükten büyüğe",hint:"Önce onluklara bak; onluklar eşitse birliklere bak."}),
   r=>siraFact(r,7,r=>ri(r,30,55),r=>ri(r,1,6),0,6,{dist:(r,lo,hi)=>ri(r,lo-3,hi+3),t:"Yakın sayılar",hint:"Onluklar aynıysa birliklere bak."}),
@@ -14371,6 +14382,7 @@ function mtPiece(x,k,col,cx,cy,s,ghost){x.save();x.translate(cx,cy);const a=ghos
 function mtCount(f,clues,lim){const n=f.pieces.length,pos=Array(n).fill(-1),used=Array(n).fill(-1);let cnt=0;
   const pOk=(p,c)=>{for(const q of clues){if(q.p===p){if(q.t==="ex"&&q.c!==c)return false;if(q.t==="not"&&q.cs.includes(c))return false;if(q.t==="any"&&!q.cs.includes(c))return false}else if(q.p==null&&q.c===c){if(q.t==="kind"&&f.pieces[p].k!==q.v)return false;if(q.t==="col"&&f.pieces[p].c!==q.v)return false}}return true};
   const rec=p=>{if(cnt>=lim)return;if(p===n){cnt++;return}for(let c=0;c<n;c++){if(used[c]>=0||!pOk(p,c))continue;used[c]=p;pos[p]=c;rec(p+1);used[c]=-1;pos[p]=-1;if(cnt>=lim)return}};rec(0);return cnt}
+window.mtCount=mtCount;
 function mtFact(r,R,C,kinds,cols,types,o){const pieces=[];kinds.forEach(k=>cols.forEach(c=>pieces.push({k,c})));while(pieces.length>R*C)pieces.pop();const n=pieces.length;
   for(let tries=0;tries<60;tries++){if(tries===25&&!types.includes("ex"))types=types.concat("ex");const sol=shuffle(r,[...Array(n).keys()]);const f={R,C,pieces,sol};
     const pool=[];const cells=[...Array(n).keys()];
@@ -14379,10 +14391,16 @@ function mtFact(r,R,C,kinds,cols,types,o){const pieces=[];kinds.forEach(k=>cols.
       if(types.includes("not"))pool.push({t:"not",p,cs:oth.slice(0,ri(r,1,Math.min(3,oth.length)))});
       if(types.includes("any"))pool.push({t:"any",p,cs:shuffle(r,[c,...oth.slice(0,ri(r,1,2))])})});
     cells.forEach(c=>{const p=sol.indexOf(c);if(types.includes("kind")&&kinds.length>1)pool.push({t:"kind",c,v:pieces[p].k});if(types.includes("col")&&cols.length>1)pool.push({t:"col",c,v:pieces[p].c})});
+    const cov=(cl,p)=>cl.some(q=>q.p===p||(q.p==null&&q.c===sol[p]&&((q.t==="kind"&&q.v===pieces[p].k)||(q.t==="col"&&q.v===pieces[p].c))));
+    const allCov=cl=>pieces.every((_,p)=>cov(cl,p));
     let clues=[];const P=shuffle(r,pool);for(const q of P){if(mtCount(f,clues,2)===1)break;clues.push(q)}
     if(mtCount(f,clues,2)!==1)continue;
     for(let i=clues.length-1;i>=0;i--){const t=clues.slice(0,i).concat(clues.slice(i+1));if(mtCount(f,t,2)===1)clues=t}
-    if(clues.length>8)continue;
+    // her canlının en az bir kartı olsun
+    for(let p=0;p<n&&!allCov(clues);p++){if(cov(clues,p))continue;const cand=shuffle(r,pool.filter(q=>cov([q],p)&&q.t!=="ex"));const q=cand[0]||pool.find(q=>cov([q],p));if(q)clues.push(q)}
+    if(!allCov(clues))continue;
+    for(let i=clues.length-1;i>=0;i--){const t=clues.slice(0,i).concat(clues.slice(i+1));if(allCov(t)&&mtCount(f,t,2)===1)clues=t}
+    if(clues.length>n)continue;
     clues=shuffle(r,clues);return Object.assign(f,{clues,a:"mtep-"+sol.map(v=>"abcdefghi"[v]).join(""),keepOrder:1},o)}
   return null}
 const SPEC_MTEP={H:468,
@@ -14415,7 +14433,7 @@ const SPEC_MTEP={H:468,
         if(anyc){x.fillStyle="#1f7a55";x.font="900 "+(m-3)+"px Nunito,sans-serif";x.textAlign="center";x.textBaseline="middle";x.fillText("?",cx+m/2,cy+m/2+1)}
         if(notc){x.strokeStyle="#e5484d";x.lineWidth=2;x.beginPath();x.moveTo(cx+2,cy+2);x.lineTo(cx+m-2,cy+m-2);x.moveTo(cx+m-2,cy+2);x.lineTo(cx+2,cy+m-2);x.stroke()}}});
     const B=this.board(f);
-    const ly=this.legY(f)+6;x.font="800 11px Nunito,sans-serif";x.textBaseline="middle";x.textAlign="left";const leg=[["#3dbb8a","burada"],["#bdeed6","biri burada"],["x","burada değil"]];let lx=(W-260)/2;
+    const ly=this.legY(f)+6;x.font="800 11px Nunito,sans-serif";x.textBaseline="middle";x.textAlign="left";const TY=new Set(f.clues.map(q=>q.t));const leg=[["#3dbb8a","burada","ex"],["#bdeed6","biri burada","any"],["x","burada değil","not"]].filter(l=>TY.has(l[2]));let lx=(W-leg.reduce((a,l)=>a+x.measureText(l[1]).width+32,0)+18)/2;
     leg.forEach(([c,t])=>{if(c==="x"){x.strokeStyle="#e5484d";x.lineWidth=2;x.beginPath();x.moveTo(lx,ly-5);x.lineTo(lx+10,ly+5);x.moveTo(lx+10,ly-5);x.lineTo(lx,ly+5);x.stroke()}else{x.fillStyle=c;x.fillRect(lx,ly-5,10,10)}x.fillStyle="#fff";x.fillText(t,lx+14,ly+1);lx+=x.measureText(t).width+32});
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(B.x-8,B.y-6+4,B.w+16,B.h+12,14);x.fill();x.fillStyle="#d8a66b";x.beginPath();x.roundRect(B.x-8,B.y-6,B.w+16,B.h+12,14);x.fill();
     for(let c=0;c<f.R*f.C;c++){const b=this.cell(f,c);x.fillStyle=(c+Math.floor(c/f.C))%2?"#fff1da":"#ffe7c2";x.fillRect(b.x+2,b.y+2,b.w-4,b.h-4);
@@ -14494,6 +14512,7 @@ function aaCount(R,C,lens,clue,lim){const n=R*C,own=Array(n).fill(-1);let cnt=0;
   const fam=fi=>{if(cnt>=lim)return;if(fi===lens.length){if(own.every(v=>v>=0))cnt++;return}const L=lens[fi];
     const path=(c,k)=>{if(cnt>=lim)return;own[c]=fi;if(k===L-1){fam(fi+1)}else for(const d of nb(c))if(own[d]<0&&okAt(d,fi,k+1))path(d,k+1);own[c]=-1};
     for(let c=0;c<n;c++)if(own[c]<0&&okAt(c,fi,0))path(c,0)};fam(0);return cnt}
+window.aaCount=aaCount;
 function aaFact(r,R,C,lens,types,o){const n=R*C;for(let g=0;g<300;g++){const own=Array(n).fill(-1),idx=Array(n).fill(-1);const nb=c=>{const v=[],rr=Math.floor(c/C),cc=c%C;if(rr)v.push(c-C);if(rr<R-1)v.push(c+C);if(cc)v.push(c-1);if(cc<C-1)v.push(c+1);return shuffle(r,v)};
     let ok=true;for(let fi=0;fi<lens.length&&ok;fi++){let placed=false;for(let t=0;t<40&&!placed;t++){const free=[...Array(n).keys()].filter(c=>own[c]<0);let c=pick(r,free),pth=[c];own[c]=fi;
         while(pth.length<lens[fi]){const nx=nb(c).filter(d=>own[d]<0);if(!nx.length)break;c=nx[0];own[c]=fi;pth.push(c)}
@@ -15029,15 +15048,19 @@ const SPEC_TDAL=dialSpec({H:530,
     const vals=[f.start];f.ops.forEach(o=>vals.push(o.to));const lock=S.locked;
     // yüzey, yelkenli ve dalan Okti
     x.fillStyle="rgba(255,255,255,.5)";x.beginPath();x.moveTo(0,40);for(let Xs=0;Xs<=W;Xs+=8)x.lineTo(Xs,40+Math.sin(Xs/18+S.t/14)*2.5);x.lineTo(W,0);x.lineTo(0,0);x.fill();
-    {const oy=yS+4+Math.sin(S.t/20)*3;if(window.oktiCanvas)oktiCanvas(x,X-108,oy,68,lock?"wow":"happy",false,["dalis"]);x.fillStyle="rgba(255,255,255,.75)";for(let k=0;k<3;k++){const ph=((S.t/40)+k/3)%1;x.beginPath();x.arc(X-108+23+Math.sin(ph*6+k)*3,oy-36-ph*40,2+ph*3,0,7);x.fill()}}
+    let OX=X-108,OY=yS+4,arrived=false,tA=0;if(lock){S.lt=S.lt==null?S.t:S.lt;const tt=S.t-S.lt,DB=60*n,ez=v=>v<.5?2*v*v:1-Math.pow(-2*v+2,2)/2;if(tt<20){const e=ez(tt/20);OX=X-108+108*e;OY=yS+4}else if(tt<20+DB){OX=X;OY=yS+4+(yE-10-yS-4)*ez((tt-20)/DB)}else if(tt<40+DB){const e=ez((tt-20-DB)/20);OX=X-114*e;OY=yE-10+4*e}else{OX=X-114;OY=yE-6;arrived=true;tA=tt-40-DB}}else S.lt=null;S._oy=OY;
+    {const oy=OY+(lock?0:Math.sin(S.t/20)*3);if(!lock&&window.oktiCanvas)oktiCanvas(x,X-108,oy,68,"happy",false,["dalis"]);x.fillStyle="rgba(255,255,255,.75)";for(let k=0;k<3;k++){const ph=((S.t/40)+k/3)%1;x.beginPath();x.arc(X-108+23+Math.sin(ph*6+k)*3,oy-36-ph*40,2+ph*3,0,7);x.fill()}}
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(X-58,yS-21,130,44,14);x.fill();x.fillStyle=lock?"#d3f9d8":"#fff";x.beginPath();x.roundRect(X-60,yS-23,130,44,14);x.fill();x.strokeStyle=lock?"#2f9e44":"#7c6cf0";x.lineWidth=3;x.stroke();
     label(x,"Başta:",X-24,yS,16,"#5b6b86");label(x,lock?String(f.start):"?",X+36,yS,24,lock?"#2f9e44":"#7c6cf0");
-    for(let k=0;k<n;k++){const y0=yS+k*step+26,y1=yS+(k+1)*step-26;this.arrow(x,X,y0,y1);const cy=(y0+y1)/2;this.pill(x,lock?X+64:X+86,cy,f.ops[k].t,"#fff3bf","#22314d","#f59f00");if(lock)this.pill(x,X+150,cy,"↑ geri "+f.ops[k].inv,"#fff9db","#7a4a00","#ffe066",13);
+    for(let k=0;k<n;k++){const y0=yS+k*step+26,y1=yS+(k+1)*step-26;this.arrow(x,X,y0,y1);const cy=(y0+y1)/2;if(lock&&Math.abs(S._oy-cy)<34){x.save();x.shadowColor="#ffe066";x.shadowBlur=24;x.fillStyle="rgba(255,230,100,.55)";x.beginPath();x.roundRect(X+64-58,cy-26,116,50,24);x.fill();x.restore()}this.pill(x,lock?X+64:X+86,cy,f.ops[k].t,"#fff3bf","#22314d","#f59f00");if(lock)this.pill(x,X+150,cy,"↑ geri "+f.ops[k].inv,"#fff9db","#7a4a00","#ffe066",13);
       if(k<n-1){const y=yS+(k+1)*step;x.fillStyle="rgba(255,255,255,.25)";x.beginPath();x.arc(X,y,20,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.85)";x.lineWidth=2;x.setLineDash(lock?[]:[4,4]);x.stroke();x.setLineDash([]);x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.ellipse(X-7,y-8,6,3,-.6,0,7);x.fill();label(x,lock?String(vals[k+1]):"…",X,y+1,lock?17:20,"#fff")}}
     // sandık
     const yc=yE;x.fillStyle="#e2c58a";x.beginPath();x.moveTo(0,yc+34);for(let Xs=0;Xs<=W;Xs+=16)x.lineTo(Xs,yc+28+Math.sin(Xs/40)*5);x.lineTo(W,yc+60);x.lineTo(0,yc+60);x.fill();
     drawChest(x,X-114,yc+34,92,S.t,sp);
+    if(!arrived){const cx=X-114,by=yc+34,w=92,h=w*.5,top=by-h;x.save();const lg=x.createLinearGradient(0,top-w*.34,0,top+6);lg.addColorStop(0,"#8a4a18");lg.addColorStop(1,"#5a2c0c");x.fillStyle=lg;x.beginPath();x.moveTo(cx-w/2-3,top+6);x.lineTo(cx-w/2-3,top-w*.12);x.quadraticCurveTo(cx,top-w*.46,cx+w/2+3,top-w*.12);x.lineTo(cx+w/2+3,top+6);x.closePath();x.fill();x.strokeStyle="#d99a0b";x.lineWidth=5;x.stroke();x.fillStyle="#f7c948";x.fillRect(cx-6,top-6,12,14);x.fillStyle="#5a2c0c";x.beginPath();x.arc(cx,top,2.5,0,7);x.fill();x.restore()}
+    else{const cx=X-114,top=yc+34-46;for(let k=0;k<14;k++){const a=-Math.PI/2+(k-6.5)*.18,v=4+(k%4),tt2=Math.min(tA,70)/2,px=cx+Math.cos(a)*v*tt2,py=top+Math.sin(a)*v*tt2+.09*tt2*tt2;if(py>yc+40)continue;x.fillStyle="#f7c948";x.strokeStyle="#a86b00";x.lineWidth=1.2;x.beginPath();x.ellipse(px,py,6,6*Math.abs(Math.cos(S.t/5+k)),0,0,7);x.fill();x.stroke()}}
     x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.roundRect(X-58,yc-21,150,44,14);x.fill();x.fillStyle="#fff";x.beginPath();x.roundRect(X-60,yc-23,150,44,14);x.fill();x.strokeStyle="#2f9e44";x.lineWidth=3;x.stroke();label(x,"Sonunda:",X-14,yc,16,"#5b6b86");label(x,String(f.end),X+58,yc,24,"#22314d");
+    if(lock&&window.oktiCanvas)oktiCanvas(x,OX,S._oy,68,"wow",false,["dalis"]);
     this.dial(x,S,A);topTip(x,S,A,f)}});
 const tdq="Okti bir sayıyla daldı. Oklardaki işlemleri yaparak hazineye indi. Başta hangi sayı vardı?";
 const td=(r,st,ops,lim,t,h)=>{let f=null;while(!f)f=tdFact(r,st,ops,lim,{t,ask:"Hazineden yukarı geri git: başta kaç vardı?",q:tdq,hint:h,failMsg:"Hazineden yukarı çık: her işlemi tersine çevir"});const stp=[];let v=f.end;f.ops.slice().reverse().forEach(o=>{const [s1,k]=o.inv.split(" ");const nv=s1==="+"?v+ +k:s1==="−"?v-k:s1==="×"?v*k:v/k;stp.push(`${v} ${s1} ${k} = ${nv}`);v=nv});f.ansTxt="Geriye: "+stp.join(", ");return f};
@@ -15210,17 +15233,20 @@ const SPEC_SCUB={H:400,
   stick(x,s,mode){const [a,b,c,d]=s;if(mode==="slot"){x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=3;x.setLineDash([3,5]);x.lineCap="round";x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.setLineDash([]);return}
     x.lineCap="round";x.strokeStyle="rgba(0,0,0,.25)";x.lineWidth=9;x.beginPath();x.moveTo(a+2,b+3);x.lineTo(c+2,d+3);x.stroke();x.strokeStyle=mode==="held"?"#ffd43b":"#6b4423";x.lineWidth=9;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.strokeStyle=mode==="fixed"?"#8d6e4a":"#d29c64";x.lineWidth=6;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.strokeStyle="rgba(255,235,200,.55)";x.lineWidth=1.5;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.fillStyle="#4a2c12";[[a,b],[c,d]].forEach(([p,q])=>{x.beginPath();x.arc(p,q,2.2,0,7);x.fill()})},
   dist(p,s){const [a,b,c,d]=s,dx=c-a,dy=d-b,t=Math.max(0,Math.min(1,((p.x-a)*dx+(p.y-b)*dy)/(dx*dx+dy*dy)));return Math.hypot(p.x-(a+dx*t),p.y-(b+dy*t))},
-  down(p,S,A){const f=S.f;if(S.locked)return;const G=this.geo(f,A);let best=null,bd=12;
+  near(p,S,A,want){const f=S.f,G=this.geo(f,A);let best=null,bd=want==="slot"?26:18;S.tok.forEach((t,i)=>{if(t.k==="eq")return;this.segs(t,G.xs[i],G.cy,G.sc).forEach(q=>{const d=this.dist(p,q.s);const on=!!(t.m&q.bit);if(d<bd&&(want==="slot"?!on:on)){bd=d;best={i,bit:q.bit,on}}})});return best},
+  up(p,S,A){if(S.locked||!S.held||!S.drag)return;const moved=Math.hypot(p.x-S.drag.x0,p.y-S.drag.y0)>14;S.drag=null;if(!moved)return;const b=this.near(p,S,A,"slot");if(b){S.tok[b.i].m|=b.bit;if(!(b.i===S.held.i&&b.bit===S.held.bit))S.moved=true;S.held=null;sfx.pop()}},
+  move(p,S,A){if(S.drag){S.drag.x=p.x;S.drag.y=p.y}},
+  down(p,S,A){const f=S.f;if(S.locked)return;const G=this.geo(f,A);let best=null,bd=S.held?26:18;
     S.tok.forEach((t,i)=>{if(t.k==="eq")return;this.segs(t,G.xs[i],G.cy,G.sc).forEach(q=>{const d=this.dist(p,q.s);if(d<bd){const on=!!(t.m&q.bit);if((S.held&&!on)||(!S.held&&on&&!S.moved)){bd=d;best={i,bit:q.bit,on}}}})});
     if(!best){if(S.moved&&!S.held)msg(S,"Bir çubuk taşıdın. Yeniden denemek için ↩ Baştan");return}
-    if(!S.held){S.tok[best.i].m&=~best.bit;S.held=best;sfx.pop()}else{S.tok[best.i].m|=best.bit;if(!(best.i===S.held.i&&best.bit===S.held.bit))S.moved=true;S.held=null;sfx.pop()}},
+    if(!S.held){S.tok[best.i].m&=~best.bit;S.held=best;S.drag={x0:p.x,y0:p.y,x:p.x,y:p.y};sfx.pop()}else{S.tok[best.i].m|=best.bit;if(!(best.i===S.held.i&&best.bit===S.held.bit))S.moved=true;S.held=null;sfx.pop()}},
   draw(x,S,A){const f=S.f,W=A.W;const g=x.createLinearGradient(0,0,0,A.H);g.addColorStop(0,"#f6e7bd");g.addColorStop(1,"#e2c58a");x.fillStyle=g;x.fillRect(0,0,W,A.H);
     x.fillStyle="rgba(42,159,214,.85)";x.beginPath();x.moveTo(0,0);x.lineTo(W,0);x.lineTo(W,40);for(let X=W;X>=0;X-=10)x.lineTo(X,44+Math.sin(X/24+S.t/20)*5);x.closePath();x.fill();x.strokeStyle="rgba(255,255,255,.9)";x.lineWidth=3;x.beginPath();for(let X=0;X<=W;X+=10)x.lineTo(X,46+Math.sin(X/24+S.t/20)*5);x.stroke();
     x.fillStyle="rgba(150,110,60,.28)";for(let k=0;k<70;k++){x.beginPath();x.arc((k*97)%W,60+(k*53)%(A.H-70),1.3,0,7);x.fill()}
     [[30,A.H-40,"🐚"],[W-34,A.H-60,"⭐"],[W-60,90,"🦀"]].forEach(([a,b,e])=>sp(x,EM(e),a,b,26,{alpha:.8}));
     const G=this.geo(f,A);x.fillStyle="rgba(255,255,255,.35)";x.beginPath();x.roundRect(8,G.cy-58*G.sc-10,W-16,116*G.sc+20,16);x.fill();
-    S.tok.forEach((t,i)=>{const sg=this.segs(t,G.xs[i],G.cy,G.sc);sg.forEach(q=>{if(t.k==="eq")this.stick(x,q.s,"fixed");else if(t.m&q.bit)this.stick(x,q.s,"on");else if(S.held)this.stick(x,q.s,"slot")})});
-    if(S.held){const t=S.tok[S.held.i],q=this.segs(t,G.xs[S.held.i],G.cy,G.sc).find(z=>z.bit===S.held.bit);this.stick(x,q.s.map((v,k)=>k%2?v-6:v),"held");woodSign(x,W/2,G.cy+80*G.sc,"Çubuk elinde: boş yere dokun",13)}
+    S.tok.forEach((t,i)=>{const sg=this.segs(t,G.xs[i],G.cy,G.sc);sg.forEach(q=>{if(t.k==="eq")this.stick(x,q.s,"fixed");else if(t.m&q.bit)this.stick(x,q.s,"on");else if(S.held){const [a1,b1,c1,d1]=q.s;x.save();x.globalAlpha=.35+.3*Math.sin(S.t/7);x.strokeStyle="#fff6b0";x.lineWidth=14;x.lineCap="round";x.beginPath();x.moveTo(a1,b1);x.lineTo(c1,d1);x.stroke();x.restore();this.stick(x,q.s,"slot")}})});
+    if(S.held){const t=S.tok[S.held.i],q=this.segs(t,G.xs[S.held.i],G.cy,G.sc).find(z=>z.bit===S.held.bit);let ss=q.s.map((v,k)=>k%2?v-6:v);if(S.drag&&Math.hypot(S.drag.x-S.drag.x0,S.drag.y-S.drag.y0)>14){const mx=(q.s[0]+q.s[2])/2,my=(q.s[1]+q.s[3])/2;ss=q.s.map((v,k)=>k%2?v-my+S.drag.y-20:v-mx+S.drag.x)}this.stick(x,ss,"held");woodSign(x,W/2,G.cy+80*G.sc,"Çubuk elinde: boş yere dokun",13)}
     else if(S.moved&&!S.locked)woodSign(x,W/2,G.cy+80*G.sc,S.failT!=null?"↩ Baştan ile yeniden dene":"Çubuk taşındı. Tamam'a bas",13);
     if(S.locked)woodSign(x,W/2,G.cy+80*G.sc,f.solTxt,18);
     topTip(x,S,A,f)}};
